@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISU_Medieval_Odyssey", "ISU_Medieval_Odyssey\ISU_Medieval_Odyssey.csproj", "{66A21802-9F02-4E4D-B1CC-607C1961072A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66A21802-9F02-4E4D-B1CC-607C1961072A}.Debug|x86.ActiveCfg = Debug|x86
+		{66A21802-9F02-4E4D-B1CC-607C1961072A}.Debug|x86.Build.0 = Debug|x86
+		{66A21802-9F02-4E4D-B1CC-607C1961072A}.Release|x86.ActiveCfg = Release|x86
+		{66A21802-9F02-4E4D-B1CC-607C1961072A}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F35B5CD2-E065-46E1-AFFF-8101182E95D3}
+	EndGlobalSection
+EndGlobal
