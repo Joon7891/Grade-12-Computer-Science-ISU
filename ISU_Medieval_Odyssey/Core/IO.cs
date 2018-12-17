@@ -6,14 +6,19 @@
 // Desription: Class to various subprograms to hold in various data
 
 using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.Core
+namespace ISU_Medieval_Odyssey
 {
     public static class IO
     {
+        public Chunk LoadChunk(int x, int y)
+        {
+            
+        }
     }
 }
