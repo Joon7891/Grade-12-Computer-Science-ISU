@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey.Screen
     /// <summary>
     /// ScreenMode enum to hold various Screen Modes
     /// </summary>
-    public enum ScreenMode
+    public enum ScreenMode : byte
     {
         MainMenu
         // Need to add more...

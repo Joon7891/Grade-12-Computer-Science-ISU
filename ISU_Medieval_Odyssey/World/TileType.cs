@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey
     /// <summary>
     /// TileType enum to hold various tile types
     /// </summary>
-    public enum TileType
+    public enum TileType : byte
     {
         // To Do: Add tile types
     };
