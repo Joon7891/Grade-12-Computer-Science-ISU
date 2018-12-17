@@ -1,4 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Author: Joon Song, Steven Ung
+// File Name: Main.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 12/17/2018
+// Modified Date: 01/20/2019
+// Description: Driver/Main class for Medieval Odyssey game
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -26,8 +33,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Initializing graphics window size and mouse as visible
+            graphics.PreferredBackBufferHeight = SharedData.SCREEN_HEIGHT;
+            graphics.PreferredBackBufferWidth = SharedData.SCREEN_WIDTH;
+            graphics.ApplyChanges();
+            IsMouseVisible = true;
 
+            // Initializing base game
             base.Initialize();
         }
 
