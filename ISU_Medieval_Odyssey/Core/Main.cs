@@ -19,6 +19,26 @@ namespace ISU_Medieval_Odyssey
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        /// <summary>
+        /// The mouse state of the mouse 1 frame back
+        /// </summary>
+        public static MouseState OldMouse { get; private set; }
+
+        /// <summary>
+        /// The mouse state of the mouse currently
+        /// </summary>
+        public static MouseState NewMouse { get; private set; }
+
+        /// <summary>
+        /// The keyboard state of the keyboard 1 frame back
+        /// </summary>
+        public static KeyboardState OldKeyboard { get; private set; }
+
+        /// <summary>
+        /// The keyboard state of the keyboard currently
+        /// </summary>
+        public static KeyboardState NewKeyboard { get; private set; }
+
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -71,11 +91,13 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            // Updating old and new keyboard and mouse states
+            OldKeyboard = NewKeyboard;
+            OldMouse = NewMouse;
+            NewKeyboard = Keyboard.GetState();
+            NewMouse = Mouse.GetState();
 
-            // TODO: Add your update logic here
-
+            // Updating base game
             base.Update(gameTime);
         }
 

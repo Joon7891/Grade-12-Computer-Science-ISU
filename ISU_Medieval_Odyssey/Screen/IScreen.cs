@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ISU_Medieval_Odyssey.Screen
+namespace ISU_Medieval_Odyssey
 {
     public interface IScreen
     {
