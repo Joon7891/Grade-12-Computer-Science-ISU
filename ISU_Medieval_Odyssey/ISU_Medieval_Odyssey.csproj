@@ -45,6 +45,11 @@
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Core\SharedData.cs" />
+    <Compile Include="Item\Armour\Armour.cs" />
+    <Compile Include="Item\Armour\Belt\Belt.cs" />
+    <Compile Include="Item\Armour\Belt\LeatherBelt.cs" />
+    <Compile Include="Item\Armour\Belt\RopeBelt.cs" />
+    <Compile Include="Item\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\IScreen.cs" />
     <Compile Include="Screen\ScreenMode.cs" />
