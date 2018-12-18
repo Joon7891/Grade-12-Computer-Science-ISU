@@ -19,8 +19,6 @@ namespace ISU_Medieval_Odyssey
         // Dictionary to map a TileType to a given Tile image
         private static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
 
-
-
         /// <summary>
         /// Stastic constructor for Tile object
         /// </summary>
