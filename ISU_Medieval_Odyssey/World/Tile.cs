@@ -27,6 +27,12 @@ namespace ISU_Medieval_Odyssey
             // To Do: Load images
         }
 
+
+        public Tile(float tileData)
+        {
+
+        }
+
         /// <summary>
         /// Subprogram to draw Tile object
         /// </summary>
