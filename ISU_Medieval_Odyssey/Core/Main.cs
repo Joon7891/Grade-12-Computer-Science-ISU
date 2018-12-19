@@ -21,8 +21,6 @@ namespace ISU_Medieval_Odyssey
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-
-
         /// <summary>
         /// Instance of ContentManager; used for loading various content
         /// </summary>
