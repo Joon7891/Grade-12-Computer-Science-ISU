@@ -16,39 +16,22 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class ArmourShoes : Shoes
     {
-        private new static Dictionary<MovementType, Texture2D[,]> images = new Dictionary<MovementType, Texture2D[,]>();
+        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         /// <summary>
         /// Static constructor to set up various ArmourShoes components
         /// </summary>
         static ArmourShoes()
         {
-            // Array of directional images for each type of movement
+            // Temporary strings to help with file paths
             string basePath = "Images/Sprites/Armour/Shoes/ArmourShoes/";
-            Texture2D[,] walkImages = new Texture2D[4, 9];
-            Texture2D[,] slashImages = new Texture2D[4, 6];
-            Texture2D[,] shootImages = new Texture2D[4, 13];
-            Texture2D[,] thrustImages = new Texture2D[4, 8];
+            string armourName = "armourShoes";
 
-            // Loading in walk images
-            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
-            {
-                for (byte i = 0; i < walkImages.GetLength(1); ++i)
-                {
-                    walkImages[(int)direction, i] = Main.Content.Load<Texture2D>(basePath + $"Walk/{direction.ToString()}/armourShoesWalk{direction.ToString()}{i}");
-                }
-            }
-            images.Add(MovementType.Walk, walkImages);
-
-            // Loading in slash images
-            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
-            {
-                for (byte i = 0; i < slashImages.GetLength(1); ++i)
-                {
-                    slashImages[(int)direction, i] = Main.Content.Load<Texture2D>(basePath + $"Slash/{direction.ToString()}/armourShoesSlash{direction.ToString()}{i}");
-                }
-            }
-            images.Add(MovementType.Slash, slashImages);
+            // Loading in movement images for each Movement Type
+            movementImages.Add(MovementType.Walk, LoadMovementImages(basePath, MovementType.Walk, armourName, SharedData.NUM_WALK_FRAMES));
+            movementImages.Add(MovementType.Slash, LoadMovementImages(basePath, MovementType.Slash, armourName, SharedData.NUM_SLASH_FRAMES));
+            movementImages.Add(MovementType.Shoot, LoadMovementImages(basePath, MovementType.Shoot, armourName, SharedData.NUM_SHOOT_FRAMES));
+            movementImages.Add(MovementType.Thrust, LoadMovementImages(basePath, MovementType.Thrust, armourName, SharedData.NUM_THRUST_FRAMES));
         }
     }
 }

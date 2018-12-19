@@ -6205,18 +6205,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Down/armourShoesThrustDown7.png
 
-#begin Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Down/armourShoesThrustLeft0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Down/armourShoesThrustLeft0.png
-
 #begin Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -8652,4 +8640,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Armour/Shoes/LeatherShoes/Walk/Up/leatherShoesWalkUp8.png
+
+#begin Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft0.png
 

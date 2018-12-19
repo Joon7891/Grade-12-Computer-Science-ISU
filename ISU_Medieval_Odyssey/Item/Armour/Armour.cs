@@ -16,22 +16,33 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Armour : Item
     {
-        protected Dictionary<MovementType, Texture2D[,]> images = new Dictionary<MovementType, Texture2D[,]>();
+        protected Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
-        protected Texture2D[,] LoadImage(string basePath, MovementType movementType, string armourName, byte width)
+        /// <summary>
+        /// Subprogram to load in a set of Movement Images
+        /// </summary>
+        /// <param name="basePath">The base file path</param>
+        /// <param name="movementType">The type of movement</param>
+        /// <param name="armourName">The name of the armour</param>
+        /// <param name="numFrames">The number of frames</param>
+        /// <returns>The images for the MovementType</returns>
+        protected static Texture2D[,] LoadMovementImages(string basePath, MovementType movementType, string armourName, byte numFrames)
         {
-            Texture2D[,] loadedImage = new Texture2D[4, width];
+            // Initializing 2D array to hold loaded images
+            Texture2D[,] loadedImages = new Texture2D[4, numFrames];
 
+            // Loading in images for each direction and frame
             for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
             {
-                for (int i = 0; i < width; ++i)
+                for (int i = 0; i < numFrames; ++i)
                 {
-                    loadedImage[(int)direction, i] = Main.Content.Load<Texture2D>
+                    loadedImages[(int)direction, i] = Main.Content.Load<Texture2D>
                         (basePath + $"{movementType.ToString()}/{direction.ToString()}/{armourName}{movementType.ToString()}{direction.ToString()}{i}");
                 }
             }
 
-            return loadedImage;
+            // Returning loaded images
+            return loadedImages;
         }
     }
 }

@@ -26,6 +26,26 @@ namespace ISU_Medieval_Odyssey
         public const int SCREEN_HEIGHT = 820;
 
         /// <summary>
+        /// The number of frames in Walk animation
+        /// </summary>
+        public const byte NUM_WALK_FRAMES = 9;
+
+        /// <summary>
+        /// The number of frames in Slash animation 
+        /// </summary>
+        public const byte NUM_SLASH_FRAMES = 6;
+
+        /// <summary>
+        /// The number of frames in Shoot animation
+        /// </summary>
+        public const byte NUM_SHOOT_FRAMES = 13;
+
+        /// <summary>
+        /// The number of frames in Thrust animation
+        /// </summary>
+        public const byte NUM_THRUST_FRAMES = 8;
+
+        /// <summary>
         /// Random number generator
         /// </summary>
         public static Random RNG { get; private set; }
