@@ -26,12 +26,12 @@ namespace ISU_Medieval_Odyssey
             float tileData;
             Tile[,] tiles = new Tile[CHUNK_SIZE, CHUNK_SIZE];
 
-            for (int i = 0; i < CHUNK_SIZE; ++i)
+            for (int tileX = 0; tileX < CHUNK_SIZE; ++tileX)
             {
-                for (int j = 0; j < CHUNK_SIZE; ++j)
+                for (int tileY = 0; tileY < CHUNK_SIZE; ++tileY)
                 {
-                    tileData = Noise.CalcPixel2D(x * CHUNK_SIZE + i, y * CHUNK_SIZE + j, SCALE);
-                    tiles[i, j] = new Tile(tileData);
+                    tileData = Noise.CalcPixel2D(x * CHUNK_SIZE + tileX, y * CHUNK_SIZE + tileY, SCALE);
+                    tiles[tileX, tileY] = new Tile(tileData);
                 }
             }
 

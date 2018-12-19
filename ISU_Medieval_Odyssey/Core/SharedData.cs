@@ -5,6 +5,7 @@
 // Modified Date: 01/01/2019
 // Description: Static class to hold shared data
 
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,33 @@ namespace ISU_Medieval_Odyssey
         {
             // Constructing Random Number Generator
             RNG = new Random();
+        }
+
+        /// <summary>
+        /// Subprogram to load in a set of Movement Images
+        /// </summary>
+        /// <param name="basePath">The base file path</param>
+        /// <param name="movementType">The type of movement</param>
+        /// <param name="entityName">The name of the entity</param>
+        /// <param name="numFrames">The number of frames</param>
+        /// <returns>The images for the MovementType</returns>
+        public static Texture2D[,] LoadMovementImages(string basePath, MovementType movementType, string entityName, byte numFrames)
+        {
+            // Initializing 2D array to hold loaded images
+            Texture2D[,] loadedImages = new Texture2D[4, numFrames];
+
+            // Loading in images for each direction and frame
+            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
+            {
+                for (byte i = 0; i < numFrames; ++i)
+                {
+                    loadedImages[(byte)direction, i] = Main.Content.Load<Texture2D>
+                        (basePath + $"{movementType.ToString()}/{direction.ToString()}/{entityName}{movementType.ToString()}{direction.ToString()}{i}");
+                }
+            }
+
+            // Returning loaded images
+            return loadedImages;
         }
     }
 }

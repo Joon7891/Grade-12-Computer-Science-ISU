@@ -105,6 +105,8 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
+            Player player = new Player();
+
             // Updating base game
             base.Update(gameTime);
         }

@@ -29,10 +29,10 @@ namespace ISU_Medieval_Odyssey
             string armourName = "ropeBelt";
 
             // Loading in movement images for each Movement Type
-            movementImages.Add(MovementType.Walk, LoadMovementImages(basePath, MovementType.Walk, armourName, SharedData.NUM_WALK_FRAMES));
-            movementImages.Add(MovementType.Slash, LoadMovementImages(basePath, MovementType.Slash, armourName, SharedData.NUM_SLASH_FRAMES));
-            movementImages.Add(MovementType.Shoot, LoadMovementImages(basePath, MovementType.Shoot, armourName, SharedData.NUM_SHOOT_FRAMES));
-            movementImages.Add(MovementType.Thrust, LoadMovementImages(basePath, MovementType.Thrust, armourName, SharedData.NUM_THRUST_FRAMES));
+            movementImages.Add(MovementType.Walk, SharedData.LoadMovementImages(basePath, MovementType.Walk, armourName, SharedData.NUM_WALK_FRAMES));
+            movementImages.Add(MovementType.Slash, SharedData.LoadMovementImages(basePath, MovementType.Slash, armourName, SharedData.NUM_SLASH_FRAMES));
+            movementImages.Add(MovementType.Shoot, SharedData.LoadMovementImages(basePath, MovementType.Shoot, armourName, SharedData.NUM_SHOOT_FRAMES));
+            movementImages.Add(MovementType.Thrust, SharedData.LoadMovementImages(basePath, MovementType.Thrust, armourName, SharedData.NUM_THRUST_FRAMES));
         }
     }
 }
