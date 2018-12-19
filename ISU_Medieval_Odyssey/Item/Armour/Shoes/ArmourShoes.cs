@@ -16,6 +16,7 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class ArmourShoes : Shoes
     {
+        // Dictionary to map MovementTypes to the appropriate images
         private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         /// <summary>

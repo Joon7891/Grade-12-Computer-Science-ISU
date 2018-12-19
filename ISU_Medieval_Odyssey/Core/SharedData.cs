@@ -18,12 +18,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The width of the screen
         /// </summary>
-        public const int SCREEN_WIDTH = 1280;
+        public const int SCREEN_WIDTH = 1000;
 
         /// <summary>
         /// The height of the screen
         /// </summary>
-        public const int SCREEN_HEIGHT = 820;
+        public const int SCREEN_HEIGHT = 800;
 
         /// <summary>
         /// The number of frames in Walk animation

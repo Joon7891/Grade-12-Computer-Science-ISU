@@ -6913,7 +6913,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Armour/Shoes/ArmourShoes/Walk/Up/armourShoesWalkUp8.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown0.png
+#begin Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6923,9 +6923,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown0.png
+/build:Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft0.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown1.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6935,9 +6935,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown1.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown0.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown10.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6947,9 +6947,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown10.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown1.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown11.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6959,9 +6959,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown11.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown10.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown12.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6971,9 +6971,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown12.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown11.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown2.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown12.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6983,9 +6983,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown2.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown12.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown3.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -6995,9 +6995,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown3.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown2.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown4.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7007,9 +7007,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown4.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown3.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown5.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7019,9 +7019,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown5.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown4.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown6.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7031,9 +7031,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown6.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown5.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown7.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown6.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7043,9 +7043,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown7.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown6.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown8.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown7.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7055,9 +7055,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown8.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown7.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown9.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown8.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7067,9 +7067,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootDown9.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown8.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft0.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown9.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7079,9 +7079,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft0.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Down/leatherShoesShootDown9.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft1.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7091,9 +7091,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft1.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft0.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft10.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7103,9 +7103,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft10.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft1.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft11.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7115,9 +7115,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft11.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft10.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft12.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7127,9 +7127,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft12.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft11.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft2.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft12.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7139,9 +7139,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft2.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft12.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft3.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7151,9 +7151,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft3.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft2.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft4.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7163,9 +7163,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft4.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft3.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft5.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7175,9 +7175,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft5.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft4.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft6.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7187,9 +7187,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft6.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft5.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft7.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft6.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7199,9 +7199,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft7.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft6.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft8.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft7.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7211,9 +7211,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft8.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft7.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft9.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft8.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7223,9 +7223,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootLeft9.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft8.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight0.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft9.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7235,9 +7235,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight0.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Left/leatherShoesShootLeft9.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight1.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7247,9 +7247,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight1.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight0.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight10.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7259,9 +7259,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight10.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight1.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight11.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7271,9 +7271,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight11.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight10.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight12.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7283,9 +7283,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight12.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight11.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight2.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight12.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7295,9 +7295,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight2.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight12.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight3.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7307,9 +7307,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight3.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight2.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight4.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7319,9 +7319,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight4.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight3.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight5.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7331,9 +7331,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight5.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight4.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight6.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7343,9 +7343,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight6.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight5.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight7.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight6.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7355,9 +7355,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight7.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight6.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight8.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight7.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7367,9 +7367,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight8.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight7.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight9.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight8.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7379,9 +7379,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootRight9.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight8.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp0.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight9.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7391,9 +7391,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp0.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Right/leatherShoesShootRight9.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp1.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7403,9 +7403,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp1.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp0.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp10.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7415,9 +7415,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp10.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp1.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp11.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7427,9 +7427,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp11.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp10.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp12.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7439,9 +7439,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp12.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp11.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp2.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp12.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7451,9 +7451,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp2.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp12.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp3.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7463,9 +7463,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp3.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp2.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp4.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7475,9 +7475,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp4.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp3.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp5.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7487,9 +7487,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp5.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp4.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp6.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7499,9 +7499,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp6.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp5.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp7.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp6.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7511,9 +7511,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp7.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp6.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp8.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp7.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7523,9 +7523,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp8.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp7.png
 
-#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp9.png
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp8.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -7535,7 +7535,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/leatherShoesShootUp9.png
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp8.png
+
+#begin Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp9.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Armour/Shoes/LeatherShoes/Shoot/Up/leatherShoesShootUp9.png
 
 #begin Images/Sprites/Armour/Shoes/LeatherShoes/Slash/Down/leatherShoesSlashDown0.png
 /importer:TextureImporter
@@ -8640,16 +8652,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Armour/Shoes/LeatherShoes/Walk/Up/leatherShoesWalkUp8.png
-
-#begin Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Sprites/Armour/Shoes/ArmourShoes/Thrust/Left/armourShoesThrustLeft0.png
 
