@@ -6,6 +6,7 @@
 // Description: Driver/Main class for Medieval Odyssey game
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -16,8 +17,14 @@ namespace ISU_Medieval_Odyssey
     /// </summary>
     public class Main : Game
     {
+        // Instances of graphics classes for in-game graphics
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        /// <summary>
+        /// Instance of ContentManager; used for loading various content
+        /// </summary>
+        public new static ContentManager Content { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse 1 frame back
@@ -42,6 +49,7 @@ namespace ISU_Medieval_Odyssey
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            Content = base.Content;
             Content.RootDirectory = "Content";
         }
 
@@ -96,6 +104,8 @@ namespace ISU_Medieval_Odyssey
             OldMouse = NewMouse;
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
+
+            Armour test = new ArmourShoes();
 
             // Updating base game
             base.Update(gameTime);

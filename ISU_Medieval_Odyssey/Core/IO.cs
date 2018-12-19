@@ -27,7 +27,7 @@ namespace ISU_Medieval_Odyssey
         public static Chunk LoadChunk(int x, int y)
         {
             // Variables to hold the file name and loaded chunk
-            string fileName = $"Chunk_x_{x}y_{y}.json";
+            string fileName = $"World/Chunk_x_{x}y_{y}.json";
             Chunk loadedChunk;
 
             // If the appropraite Json file exists, deserialize it
