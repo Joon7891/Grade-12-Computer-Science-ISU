@@ -27,8 +27,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="playerRectangle">The corresponding player's rectangle</param>
         /// <param name="movementType">The movement type</param>
         /// <param name="direction">The current direction</param>
-        /// <param name="frameNo">The current frame number</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, MovementType movementType, Direction direction, byte frameNo)
+        /// <param name="currentFrame">The current frame number</param>
+        public void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, MovementType movementType, Direction direction, byte currentFrame)
         {
             // Drawing armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, frameNo] , playerRectangle, Color.White);

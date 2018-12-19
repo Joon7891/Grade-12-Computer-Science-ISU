@@ -57,6 +57,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, currentFrame], rectangle, Color.White);
+            shoes?.Draw(spriteBatch, rectangle, movementType, direction, currentFrame);
         }
     }
 }
