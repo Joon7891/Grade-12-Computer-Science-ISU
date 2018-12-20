@@ -39,6 +39,7 @@ namespace ISU_Medieval_Odyssey.World
 
         private void UpdateAdj(Vector2 playerLoc)
         {
+            
             // TODO: create connections 
         }
 
@@ -46,9 +47,9 @@ namespace ISU_Medieval_Odyssey.World
         {
             for(int i = -RENDERDIST; i < RENDERDIST; i++)
             {
-                for(int j = -RENDERDIST; i < RENDERDIST; i++)
+                for(int j = -RENDERDIST; j < RENDERDIST; j++)
                 {
-                    UpdateAdj(new Vector2(playerLoc.X + i, playerLoc.Y + j ));
+                    UpdateAdj(new Vector2(playerLoc.X + i, playerLoc.Y + j));
                 }
             }
         }
