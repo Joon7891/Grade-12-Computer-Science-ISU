@@ -23,6 +23,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="key">The key to check for new keystroke</param>
         /// <returns>Whether the keystroke was a new one</returns>
-        public static bool NewKeyStroke(Keys key) => Main.NewKeyboard.IsKeyDown(key) && !Main.OldKeyboard.IsKeyDown(key);
+        public static bool NewKeyStroke(Keys key) => Main.Context.NewKeyboard.IsKeyDown(key) && !Main.Context.OldKeyboard.IsKeyDown(key);
     }
 }

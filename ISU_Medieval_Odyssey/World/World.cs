@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ISU_Medieval_Odyssey.Utility;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -33,6 +35,8 @@ namespace ISU_Medieval_Odyssey
         private readonly List<IWorldGenerator> worldGeneratorPasses;
         private WorldData worldData;
 
+        private readonly Dictionary<Tile, Texture2D> tiles;
+
         public World()
         {
             Current = this;
@@ -42,6 +46,54 @@ namespace ISU_Medieval_Odyssey
             unloadChunkQueue = new Queue<Chunk>();
 
             worldGeneratorPasses = new List<IWorldGenerator>();
+            tiles = new Dictionary<Tile, Texture2D>();
+
+            ChunkLoaded += OnChunkLoaded;
+            ChunkUnloaded += OnChunkUnloaded;
+            TileChanged += OnTileChanged;
+        }
+
+        private void OnChunkLoaded(object sender, ChunkEventArgs args)
+        {
+            for (int x = 0; x < Chunk.Size; x++)
+            {
+                for (int y = 0; y < Chunk.Size; y++)
+                {
+                    Tile tile = args.Chunk[x, y];
+                    if (tile == null) continue;
+
+                    tiles[tile] = null;
+                    OnTileChanged(this, new TileEventArgs(tile));
+                }
+            }
+        }
+
+        private void OnChunkUnloaded(object sender, ChunkEventArgs args)
+        {
+            for (int x = 0; x < Chunk.Size; x++)
+            {
+                for (int y = 0; y < Chunk.Size; y++)
+                {
+                    Tile tile = args.Chunk[x, y];
+                    if (tile == null || !tiles.ContainsKey(tile)) continue;
+                    tiles.Remove(tile);
+                }
+            }
+        }
+
+        private void OnTileChanged(object sender, TileEventArgs args)
+        {
+            if (!tiles.ContainsKey(args.Tile)) return;
+            switch (args.Tile.Type)
+            {
+                case TileType.Empty:
+                    tiles[args.Tile] = null;
+                    break;
+                default:
+                    string tileTypeName = Enum.GetName(args.Tile.Type.GetType(), args.Tile.Type);
+                    tiles[args.Tile] = Main.Context.Content.Load<Texture2D>($"Images/Sprites/Tiles/Tile_{tileTypeName}");
+                    break;
+            }
         }
 
         public void Initialize(int width, int height)
@@ -56,24 +108,41 @@ namespace ISU_Medieval_Odyssey
             worldData = new WorldData(WidthInTiles, HeightInTiles);
         }
 
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            spriteBatch.Begin(transformMatrix: Main.Context.Camera.ViewMatrix, samplerState: SamplerState.PointClamp);
+
+            foreach (KeyValuePair<Tile, Texture2D> pair in tiles)
+            {
+                if (pair.Key == null || pair.Value == null) continue;
+
+                float sx = Tile.Size / (float)pair.Value.Width;
+                float sy = Tile.Size / (float)pair.Value.Height;
+
+                spriteBatch.Draw(pair.Value, pair.Key.WorldPosition.ToVector2() * Tile.Size, null, Color.White, 0,
+                    new Vector2(pair.Value.Width / 2.0f, pair.Value.Height / 2.0f), new Vector2(sx, sy), SpriteEffects.None, 0);
+            }
+
+            spriteBatch.End();
+        }
+
         public void Generate()
         {
             CreateChunks();
             foreach (IWorldGenerator pass in worldGeneratorPasses)
             {
-                pass.Reseed();
                 pass.Generate(worldData);
             }
         }
 
         public void Generate(int seed)
         {
-            CreateChunks();
             foreach (IWorldGenerator pass in worldGeneratorPasses)
             {
                 pass.Reseed(seed);
-                pass.Generate(worldData);
             }
+
+            Generate();
         }
 
         public void CreateChunks()
@@ -82,12 +151,12 @@ namespace ISU_Medieval_Odyssey
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    chunks[x, y] = new Chunk(new Vector2(x, y), new Vector2(x, y) * Chunk.Size);
+                    chunks[x, y] = new Chunk(new Vector2Int(x, y), new Vector2Int(x, y) * Chunk.Size);
                 }
             }
         }
 
-        public void AddGenerator(TerrainWorldGenerator worldGenerator)
+        public void AddGenerator(IWorldGenerator worldGenerator)
         {
             worldGeneratorPasses.Add(worldGenerator);
         }
@@ -123,68 +192,11 @@ namespace ISU_Medieval_Odyssey
             return chunks[x, y];
         }
 
-        public void Save(string fileName)
+        public Tile GetTileFromWorldCoordinate(Vector2 worldCoordinate)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (BinaryWriter writer = new BinaryWriter(memoryStream))
-                {
-                    writer.Write(Width);
-                    writer.Write(Height);
-
-                    Vector2 cameraPosition = Camera.Main.Transform.Position;
-                    writer.Write(cameraPosition.X);
-                    writer.Write(cameraPosition.Y);
-
-                    for (int x = 0; x < Width; x++)
-                    {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            for (int tx = 0; tx < Chunk.Size; tx++)
-                            {
-                                for (int ty = 0; ty < Chunk.Size; ty++)
-                                {
-                                    writer.Write((byte)worldData.Tiles[x * Chunk.Size + tx, y * Chunk.Size + ty]);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                File.WriteAllBytes(fileName, memoryStream.ToArray());
-            }
-        }
-
-        public void Load(string fileName)
-        {
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
-            {
-                using (BinaryReader reader = new BinaryReader(fileStream))
-                {
-                    int width = reader.ReadInt32();
-                    int height = reader.ReadInt32();
-
-                    Initialize(width, height);
-
-                    float cameraX = reader.ReadSingle();
-                    float cameraY = reader.ReadSingle();
-                    Camera.Main.Transform.Position = new Vector2(cameraX, cameraY);
-
-                    for (int x = 0; x < Width; x++)
-                    {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            for (int tx = 0; tx < Chunk.Size; tx++)
-                            {
-                                for (int ty = 0; ty < Chunk.Size; ty++)
-                                {
-                                    worldData.Tiles[x * Chunk.Size + tx, y * Chunk.Size + ty] = (TileType)reader.ReadByte();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            int x = (int) Math.Floor(worldCoordinate.X / Tile.Size + 0.5f);
+            int y = (int) Math.Floor(worldCoordinate.Y / Tile.Size + 0.5f);
+            return GetTileAt(x, y);
         }
 
         public void Update()
@@ -192,11 +204,11 @@ namespace ISU_Medieval_Odyssey
             int screenWidth = Main.Context.GraphicsDevice.Viewport.Width;
             int screenHeight = Main.Context.GraphicsDevice.Viewport.Height;
 
-            float zoom = Camera.Main.OrthographicSize;
+            float zoom = Main.Context.Camera.OrthographicSize;
             int viewportWidth = (int)Math.Ceiling((double)screenWidth / (Chunk.Size * Tile.Size * 2 * zoom)) + 2;
             int viewportHeight = (int)Math.Ceiling((double)screenHeight / (Chunk.Size * Tile.Size * 2 * zoom)) + 2;
 
-            Vector2 cameraPosition = Camera.Main.Transform.Position;
+            Vector2 cameraPosition = Main.Context.Camera.Position;
             Vector2 tileAtCameraPosition = new Vector2(cameraPosition.X / Tile.Size, cameraPosition.Y / Tile.Size);
             Chunk chunkContaining = GetChunkContaining((int)Math.Round(tileAtCameraPosition.X), (int)Math.Round(tileAtCameraPosition.Y));
 
@@ -244,7 +256,6 @@ namespace ISU_Medieval_Odyssey
                 loadedChunks.Remove(chunk);
             }
 
-            // ReSharper disable once InvertIf
             if (loadChunkQueue.Count > 0)
             {
                 Chunk chunk = loadChunkQueue.Dequeue();

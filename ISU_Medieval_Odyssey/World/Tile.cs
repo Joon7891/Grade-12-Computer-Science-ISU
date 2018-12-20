@@ -39,30 +39,20 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Chunk Chunk { get; }
 
-        /// <summary>
-        /// The type of this <see cref="Tile"/>.
-        /// </summary>
-        public TileType Type { get; set; }
+        private TileType type;
+        public TileType Type
+        {
+            get => type;
+            set
+            {
+                TileType oldTileType = type;
+                type = value;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="positionX"></param>
-        /// <param name="positionY"></param>
-        /// <param name="worldPositionX"></param>
-        /// <param name="worldPositionY"></param>
-        /// <param name="chunk"></param>
-        public Tile(TileType type, int positionX, int positionY, int worldPositionX, int worldPositionY, Chunk chunk) : 
-            this(type, new Vector2Int(positionX, positionY), new Vector2Int(worldPositionX, worldPositionY), chunk) { }
+                if (oldTileType == type) return;
+                World.Current.OnTileChanged(new TileEventArgs(this));
+            }
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="position"></param>
-        /// <param name="worldPosition"></param>
-        /// <param name="chunk"></param>
         public Tile(TileType type, Vector2Int position, Vector2Int worldPosition, Chunk chunk)
         {
             Type = type;

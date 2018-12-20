@@ -46,6 +46,7 @@
     <Compile Include="Core\Program.cs" />
     <Compile Include="Core\SharedData.cs" />
     <Compile Include="Graphics\Button.cs" />
+    <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Item\Armour\Armour.cs" />
     <Compile Include="Item\Armour\Belt\Belt.cs" />
     <Compile Include="Item\Armour\Belt\LeatherBelt.cs" />
@@ -79,9 +80,12 @@
     <Compile Include="Utility\MovementType.cs" />
     <Compile Include="Utility\Vector2Int.cs" />
     <Compile Include="World\Chunk.cs" />
+    <Compile Include="World\IWorldGenerator.cs" />
+    <Compile Include="World\TerrainWorldGenerator.cs" />
     <Compile Include="World\Tile.cs" />
     <Compile Include="World\TileType.cs" />
     <Compile Include="World\World.cs" />
+    <Compile Include="World\WorldData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

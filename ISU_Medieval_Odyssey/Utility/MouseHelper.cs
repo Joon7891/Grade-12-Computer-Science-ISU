@@ -22,6 +22,6 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to check if a mouse click was a new one
         /// </summary>
         /// <returns>Whether or whether not a mouse click was a new one</returns>
-        public static bool NewClick() => Main.NewMouse.LeftButton == ButtonState.Pressed && Main.OldMouse.LeftButton != ButtonState.Pressed;
+        public static bool NewClick() => Main.Context.NewMouse.LeftButton == ButtonState.Pressed && Main.Context.OldMouse.LeftButton != ButtonState.Pressed;
     }
 }

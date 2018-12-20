@@ -5,6 +5,7 @@
 // Modified Date: 01/20/2019
 // Description: Driver/Main class for Medieval Odyssey game
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -23,11 +24,6 @@ namespace ISU_Medieval_Odyssey
         private SpriteBatch spriteBatch;
 
         public static Main Context { get; private set; }
-
-        /// <summary>
-        /// Instance of ContentManager; used for loading various content
-        /// </summary>
-        public ContentManager Content { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse 1 frame back
@@ -50,18 +46,19 @@ namespace ISU_Medieval_Odyssey
         public KeyboardState NewKeyboard { get; private set; }
 
         private Player player;
+        public Camera Camera { get; private set; }
+        private World world;
 
-        // Screen related variables to map current ScreenMode to appropraite subprograms 
-        private ScreenMode screenMode = ScreenMode.MainMenu;
+        // Screen related variables to map current ScreenMode to appropriate subprograms 
+        private readonly ScreenMode screenMode = ScreenMode.MainMenu;
         private delegate void UpdateMethod(GameTime gameTime);
         private delegate void DrawMethod(SpriteBatch spriteBatch);
-        private Dictionary<ScreenMode, UpdateMethod> updateMethodDictionary = new Dictionary<ScreenMode, UpdateMethod>();
-        private Dictionary<ScreenMode, DrawMethod> drawMethodDictionary = new Dictionary<ScreenMode, DrawMethod>();
+        private readonly Dictionary<ScreenMode, UpdateMethod> updateMethodDictionary = new Dictionary<ScreenMode, UpdateMethod>();
+        private readonly Dictionary<ScreenMode, DrawMethod> drawMethodDictionary = new Dictionary<ScreenMode, DrawMethod>();
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content = base.Content;
             Content.RootDirectory = "Content";
             Context = this;
         }
@@ -82,6 +79,13 @@ namespace ISU_Medieval_Odyssey
 
             // Initializing base game
             base.Initialize();
+
+            Camera = new Camera();
+            world = new World();
+
+            world.AddGenerator(new TerrainWorldGenerator());
+            world.Initialize(1, 1);
+            world.Generate("some_random_seed".GetHashCode());
         }
 
         /// <summary>
@@ -93,12 +97,12 @@ namespace ISU_Medieval_Odyssey
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Setting up screen method dictionary
-            updateMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Update);
-            updateMethodDictionary.Add(ScreenMode.Game, GameScreen.Update);
-            updateMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Update);
-            drawMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Draw);
-            drawMethodDictionary.Add(ScreenMode.Game, GameScreen.Draw);
-            drawMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Draw);
+            //updateMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Update);
+            //updateMethodDictionary.Add(ScreenMode.Game, GameScreen.Update);
+            //updateMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Update);
+            //drawMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Draw);
+            //drawMethodDictionary.Add(ScreenMode.Game, GameScreen.Draw);
+            //drawMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Draw);
         }
 
         /// <summary>
@@ -123,8 +127,20 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
-            // Updating appropraite screen
-            updateMethodDictionary[screenMode](gameTime);
+            // print current tile under mouse
+            if (MouseHelper.NewClick())
+            {
+                Vector2 worldPosition = Camera.ScreenToWorldPoint(NewMouse.Position.ToVector2());
+                Tile tile = world.GetTileFromWorldCoordinate(worldPosition);
+                if (tile != null)
+                {
+                    Console.WriteLine($"Tile Type: {tile.Type} ({tile.WorldPosition.X}, {tile.WorldPosition.Y})");
+                }
+            }
+
+            world.Update();
+            // Updating appropriate screen
+            //updateMethodDictionary[screenMode](gameTime);
 
             // Updating base game
             base.Update(gameTime);
@@ -138,16 +154,12 @@ namespace ISU_Medieval_Odyssey
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Beginning spriteBatch
-            spriteBatch.Begin();
 
             // Drawing appropriate screen
-            drawMethodDictionary[screenMode](spriteBatch);
+            //drawMethodDictionary[screenMode](spriteBatch);
 
             //player.Draw(spriteBatch);
-
-            // Ending spriteBatch
-            spriteBatch.End();
+            world.Draw(spriteBatch, gameTime);
 
             // Drawing base game
             base.Draw(gameTime);

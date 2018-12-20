@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ISU_Medieval_Odyssey.Graphics
+namespace ISU_Medieval_Odyssey
 {
     public class Camera
     {
