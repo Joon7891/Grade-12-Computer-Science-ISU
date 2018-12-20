@@ -10,11 +10,24 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class World
     {
+        /// <summary>
+        /// Static instance of World representing the current World
+        /// </summary>
         public static World Current { get; private set; }
 
+        /// <summary>
+        /// The width of the world
+        /// </summary>
         public int Width { get; private set; }
+
+        /// <summary>
+        /// The height of the world
+        /// </summary>
         public int Height { get; private set; }
 
+        /// <summary>
+        /// The width of the world in tiles
+        /// </summary>
         public int WidthInTiles { get; private set; }
         public int HeightInTiles { get; private set; }
 
