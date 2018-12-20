@@ -25,8 +25,8 @@ namespace ISU_Medieval_Odyssey
         public void Reset()
         {
             OrthographicSize = 1;
-            Origin = new Vector2(Main.Context.GraphicsDevice.Viewport.Width / 2.0f,
-                Main.Context.GraphicsDevice.Viewport.Height / 2.0f);
+            Origin = new Vector2(Main.Instance.GraphicsDevice.Viewport.Width / 2.0f,
+                Main.Instance.GraphicsDevice.Viewport.Height / 2.0f);
         }
     }
 }
