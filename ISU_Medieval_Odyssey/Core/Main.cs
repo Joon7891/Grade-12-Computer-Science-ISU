@@ -5,6 +5,7 @@
 // Modified Date: 01/20/2019
 // Description: Driver/Main class for Medieval Odyssey game
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -46,6 +47,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static KeyboardState NewKeyboard { get; private set; }
 
+        // Screen related variables to map current ScreenMode to appropraite subprograms 
+        private ScreenMode screenMode = ScreenMode.MainMenu;
+        private delegate void UpdateMethod(GameTime gameTime);
+        private delegate void DrawMethod(SpriteBatch spriteBatch);
+        private Dictionary<ScreenMode, UpdateMethod> updateMethodDictionary = new Dictionary<ScreenMode, UpdateMethod>();
+        private Dictionary<ScreenMode, DrawMethod> drawMethodDictionary = new Dictionary<ScreenMode, DrawMethod>();
+
         Player player;
 
         public Main()
@@ -82,6 +90,14 @@ namespace ISU_Medieval_Odyssey
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Setting up screen method dictionary
+            updateMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Update);
+            updateMethodDictionary.Add(ScreenMode.Game, GameScreen.Update);
+            updateMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Update);
+            drawMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Draw);
+            drawMethodDictionary.Add(ScreenMode.Game, GameScreen.Draw);
+            drawMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Draw);
+
             // TODO: use this.Content to load your game content here
             player = new Player();
         }
@@ -108,7 +124,8 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
-            player.Update(gameTime);
+            // Updating appropraite screen
+            updateMethodDictionary[screenMode](gameTime);
 
             // Updating base game
             base.Update(gameTime);
@@ -125,7 +142,10 @@ namespace ISU_Medieval_Odyssey
             // Beginning spriteBatch
             spriteBatch.Begin();
 
-            player.Draw(spriteBatch);
+            // Drawing appropriate screen
+            drawMethodDictionary[screenMode](spriteBatch);
+
+            //player.Draw(spriteBatch);
 
             // Ending spriteBatch
             spriteBatch.End();

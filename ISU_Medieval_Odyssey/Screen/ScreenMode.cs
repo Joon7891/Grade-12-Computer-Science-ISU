@@ -11,14 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.Screen
+namespace ISU_Medieval_Odyssey
 {
     /// <summary>
     /// ScreenMode enum to hold various Screen Modes
     /// </summary>
     public enum ScreenMode : byte
     {
-        MainMenu
-        // Need to add more...
+        MainMenu,
+        Game,
+        Settings
     };
 }
