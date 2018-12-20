@@ -45,6 +45,7 @@
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Core\SharedData.cs" />
+    <Compile Include="Graphics\Button.cs" />
     <Compile Include="Item\Armour\Armour.cs" />
     <Compile Include="Item\Armour\Belt\Belt.cs" />
     <Compile Include="Item\Armour\Belt\LeatherBelt.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\ScreenMode.cs" />
+    <Compile Include="Utility\CollissionHelper.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\EntityHelper.cs" />
     <Compile Include="Utility\KeyboardHelper.cs" />
