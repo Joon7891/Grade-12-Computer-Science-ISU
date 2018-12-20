@@ -19,7 +19,7 @@ namespace ISU_Medieval_Odyssey
     {
         // Graphics related data
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
-        private MovementType movementType = MovementType.Thrust;
+        private MovementType movementType = MovementType.Walk;
         private Direction direction = Direction.Down;
         private Rectangle rectangle = new Rectangle(0, 0, 128, 128);
         private int currentFrame = 0;
