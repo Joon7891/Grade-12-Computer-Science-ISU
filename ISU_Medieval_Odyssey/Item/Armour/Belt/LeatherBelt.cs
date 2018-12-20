@@ -24,15 +24,10 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static LeatherBelt()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Belt/LeatherBelt/";
-            string armourName = "leatherBelt";
-
-            // Loading in movement images for each Movement Type
-            movementImages.Add(MovementType.Walk, SharedData.LoadMovementImages(basePath, MovementType.Walk, armourName, SharedData.NUM_WALK_FRAMES));
-            movementImages.Add(MovementType.Slash, SharedData.LoadMovementImages(basePath, MovementType.Slash, armourName, SharedData.NUM_SLASH_FRAMES));
-            movementImages.Add(MovementType.Shoot, SharedData.LoadMovementImages(basePath, MovementType.Shoot, armourName, SharedData.NUM_SHOOT_FRAMES));
-            movementImages.Add(MovementType.Thrust, SharedData.LoadMovementImages(basePath, MovementType.Thrust, armourName, SharedData.NUM_THRUST_FRAMES));
+            string armourTypeName = "leatherBelt";
+            movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
     }
 }

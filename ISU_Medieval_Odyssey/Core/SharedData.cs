@@ -27,24 +27,9 @@ namespace ISU_Medieval_Odyssey
         public const int SCREEN_HEIGHT = 800;
 
         /// <summary>
-        /// The number of frames in Walk animation
+        /// Dictionary to map movement types to its number of frames
         /// </summary>
-        public const byte NUM_WALK_FRAMES = 9;
-
-        /// <summary>
-        /// The number of frames in Slash animation 
-        /// </summary>
-        public const byte NUM_SLASH_FRAMES = 6;
-
-        /// <summary>
-        /// The number of frames in Shoot animation
-        /// </summary>
-        public const byte NUM_SHOOT_FRAMES = 13;
-
-        /// <summary>
-        /// The number of frames in Thrust animation
-        /// </summary>
-        public const byte NUM_THRUST_FRAMES = 8;
+        public static Dictionary<MovementType, byte> MovementNumFrames { get; private set; }
 
         /// <summary>
         /// Random number generator
@@ -58,33 +43,13 @@ namespace ISU_Medieval_Odyssey
         {
             // Constructing Random Number Generator
             RNG = new Random();
-        }
 
-        /// <summary>
-        /// Subprogram to load in a set of Movement Images
-        /// </summary>
-        /// <param name="basePath">The base file path</param>
-        /// <param name="movementType">The type of movement</param>
-        /// <param name="entityName">The name of the entity</param>
-        /// <param name="numFrames">The number of frames</param>
-        /// <returns>The images for the MovementType</returns>
-        public static Texture2D[,] LoadMovementImages(string basePath, MovementType movementType, string entityName, byte numFrames)
-        {
-            // Initializing 2D array to hold loaded images
-            Texture2D[,] loadedImages = new Texture2D[4, numFrames];
-
-            // Loading in images for each direction and frame
-            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
-            {
-                for (byte i = 0; i < numFrames; ++i)
-                {
-                    loadedImages[(byte)direction, i] = Main.Content.Load<Texture2D>
-                        (basePath + $"{movementType.ToString()}/{direction.ToString()}/{entityName}{movementType.ToString()}{direction.ToString()}{i}");
-                }
-            }
-
-            // Returning loaded images
-            return loadedImages;
+            // Setting up movement type num frames dictionary
+            MovementNumFrames = new Dictionary<MovementType, byte>();
+            MovementNumFrames.Add(MovementType.Walk, 9);
+            MovementNumFrames.Add(MovementType.Slash, 6);
+            MovementNumFrames.Add(MovementType.Shoot, 13);
+            MovementNumFrames.Add(MovementType.Thrust, 8);
         }
     }
 }
