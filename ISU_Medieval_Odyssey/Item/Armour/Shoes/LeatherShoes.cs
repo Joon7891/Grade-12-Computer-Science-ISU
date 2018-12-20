@@ -29,5 +29,10 @@ namespace ISU_Medieval_Odyssey
             string armourTypeName = "leatherShoes";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
+
+        public LeatherShoes()
+        {
+            base.movementImages = movementImages;
+        }
     }
 }

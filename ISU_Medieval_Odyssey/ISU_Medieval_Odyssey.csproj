@@ -49,10 +49,12 @@
     <Compile Include="Item\Armour\Belt\Belt.cs" />
     <Compile Include="Item\Armour\Belt\LeatherBelt.cs" />
     <Compile Include="Item\Armour\Belt\RopeBelt.cs" />
+    <Compile Include="Item\Armour\Helmet\MetalHelmet.cs" />
     <Compile Include="Item\Armour\Helmet\ChainHelmet.cs" />
     <Compile Include="Item\Armour\Helmet\ChainHood.cs" />
     <Compile Include="Item\Armour\Helmet\Helmet.cs" />
-    <Compile Include="Item\Armour\Shoes\ArmourShoes.cs" />
+    <Compile Include="Item\Armour\Helmet\LeatherHat.cs" />
+    <Compile Include="Item\Armour\Shoes\MetalShoes.cs" />
     <Compile Include="Item\Armour\Shoes\LeatherShoes.cs" />
     <Compile Include="Item\Armour\Shoes\Shoes.cs" />
     <Compile Include="Item\Item.cs" />

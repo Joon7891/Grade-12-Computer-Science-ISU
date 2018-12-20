@@ -19,11 +19,12 @@ namespace ISU_Medieval_Odyssey
     {
         // Graphics related data
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
-        private MovementType movementType;
-        private Direction direction;
-        private Rectangle rectangle;
-        private byte currentFrame;
-        
+        private MovementType movementType = MovementType.Thrust;
+        private Direction direction = Direction.Left;
+        private Rectangle rectangle = new Rectangle(0, 0, 128, 128);
+        private int currentFrame = 0;
+        private int counter = 0;
+
         // Instances of each type of armour
         private Shoes shoes;
         private Belt belt;
@@ -41,19 +42,24 @@ namespace ISU_Medieval_Odyssey
 
         public Player()
         {
-
+            shoes = new LeatherShoes();
         }
 
         public void Update(GameTime gameTime)
         {
-
+            if (counter == 5)
+            {
+                currentFrame = (currentFrame + 1) % SharedData.MovementNumFrames[movementType];
+                counter = 0;
+            }
+            ++counter;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, currentFrame], rectangle, Color.White);
-            //shoes?.Draw(spriteBatch, rectangle, movementType, direction, currentFrame);
+            shoes?.Draw(spriteBatch, rectangle, movementType, direction, currentFrame);
         }
     }
 }

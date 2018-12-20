@@ -46,6 +46,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static KeyboardState NewKeyboard { get; private set; }
 
+        Player player;
+
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -81,6 +83,7 @@ namespace ISU_Medieval_Odyssey
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            player = new Player();
         }
 
         /// <summary>
@@ -105,7 +108,7 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
-            Armour test = new ChainHood();
+            player.Update(gameTime);
 
             // Updating base game
             base.Update(gameTime);
@@ -119,8 +122,15 @@ namespace ISU_Medieval_Odyssey
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // Beginning spriteBatch
+            spriteBatch.Begin();
 
+            player.Draw(spriteBatch);
+
+            // Ending spriteBatch
+            spriteBatch.End();
+
+            // Drawing base game
             base.Draw(gameTime);
         }
     }
