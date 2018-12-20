@@ -19,33 +19,37 @@ namespace ISU_Medieval_Odyssey
     public class Main : Game
     {
         // Instances of graphics classes for in-game graphics
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private readonly GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+
+        public static Main Context { get; private set; }
 
         /// <summary>
         /// Instance of ContentManager; used for loading various content
         /// </summary>
-        public new static ContentManager Content { get; private set; }
+        public ContentManager Content { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse 1 frame back
         /// </summary>
-        public static MouseState OldMouse { get; private set; }
+        public MouseState OldMouse { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse currently
         /// </summary>
-        public static MouseState NewMouse { get; private set; }
+        public MouseState NewMouse { get; private set; }
 
         /// <summary>
         /// The keyboard state of the keyboard 1 frame back
         /// </summary>
-        public static KeyboardState OldKeyboard { get; private set; }
+        public KeyboardState OldKeyboard { get; private set; }
 
         /// <summary>
         /// The keyboard state of the keyboard currently
         /// </summary>
-        public static KeyboardState NewKeyboard { get; private set; }
+        public KeyboardState NewKeyboard { get; private set; }
+
+        private Player player;
 
         // Screen related variables to map current ScreenMode to appropraite subprograms 
         private ScreenMode screenMode = ScreenMode.MainMenu;
@@ -54,13 +58,12 @@ namespace ISU_Medieval_Odyssey
         private Dictionary<ScreenMode, UpdateMethod> updateMethodDictionary = new Dictionary<ScreenMode, UpdateMethod>();
         private Dictionary<ScreenMode, DrawMethod> drawMethodDictionary = new Dictionary<ScreenMode, DrawMethod>();
 
-        Player player;
-
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
             Content = base.Content;
             Content.RootDirectory = "Content";
+            Context = this;
         }
 
         /// <summary>

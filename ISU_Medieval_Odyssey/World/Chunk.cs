@@ -6,58 +6,120 @@
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Simplex;
-using Microsoft.Xna.Framework.Graphics;
+using ISU_Medieval_Odyssey.Utility;
+using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
+    public delegate void ChunkLoadedEventHandler(object sender, ChunkEventArgs args);
+    public class ChunkEventArgs : EventArgs
+    {
+        public Chunk Chunk { get; }
+        public ChunkEventArgs(Chunk chunk)
+        {
+            Chunk = chunk;
+        }
+    }
+
     public sealed class Chunk
     {
-        private const float SCALE = 0.5f;
-        private const int CHUNK_SIZE = 16;
-        private Tile[,] tiles = new Tile[CHUNK_SIZE, CHUNK_SIZE];
-
-        public static Chunk GenerateChunk(int x, int y)
-        {
-            float tileData;
-            Tile[,] tiles = new Tile[CHUNK_SIZE, CHUNK_SIZE];
-
-            for (int tileX = 0; tileX < CHUNK_SIZE; ++tileX)
-            {
-                for (int tileY = 0; tileY < CHUNK_SIZE; ++tileY)
-                {
-                    tileData = Noise.CalcPixel2D(x * CHUNK_SIZE + tileX, y * CHUNK_SIZE + tileY, SCALE);
-                    tiles[tileX, tileY] = new Tile(tileData);
-                }
-            }
-
-            return new Chunk(tiles);
-        }
-
-        public Chunk(Tile[,] tiles)
-        {
-            this.tiles = tiles;
-        }
-
+        /// <summary>
+        /// The amount of tiles that a signal chunk contains.
+        /// </summary>
+        public const int Size = 32;
 
         /// <summary>
-        /// Subprogram to draw a given chunk
+        /// Gets or sets a tile.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="x">The x-coordinate of the tile.</param>
+        /// <param name="y">The y-coordinate of the tile.</param>
+        /// <returns></returns>
+        public Tile this[int x, int y]
         {
-            // Drawing tiles in chunk
-            for (int i = 0; i < CHUNK_SIZE; ++i)
+            get => GetTileAt(x, y);
+            set => SetTileAt(x, y, value);
+        }
+
+        /// <summary>
+        /// The position of this <see cref="Chunk"/> in chunk-space.
+        /// </summary>
+        public Vector2Int Position { get; }
+
+        /// <summary>
+        /// The position of this <see cref="Chunk"/> in world-space.
+        /// </summary>
+        public Vector2Int WorldPosition { get; }
+
+        /// <summary>
+        /// Indicates whether the chunk is loaded.
+        /// </summary>
+        public bool Loaded { get; set; }
+
+        private Tile[,] tiles;
+
+        public Chunk(Vector2Int position, Vector2Int worldPosition)
+        {
+            Position = position;
+            WorldPosition = worldPosition;
+            Generate();
+        }
+
+        private void Generate()
+        {
+            tiles = new Tile[Size, Size];
+            for (int x = 0; x < Size; x++)
             {
-                for (int j = 0; j < CHUNK_SIZE; ++j)
+                for (int y = 0; y < Size; y++)
                 {
-                    tiles[i, j].Draw(spriteBatch);
+                    Vector2Int position = new Vector2Int(x, y);
+                    tiles[x, y] = new Tile(TileType.Empty, position, WorldPosition + position, this);
                 }
             }
+        }
+
+        public Tile GetTileAt(int x, int y)
+        {
+            if (x < 0 || x >= Size || y < 0 || y >= Size) return null;
+            return tiles?[x, y];
+        }
+
+        public void SetTileAt(int x, int y, Tile value)
+        {
+            if (x < 0 || x >= Size || y < 0 || y >= Size) return;
+            if (value == null) return;
+
+            tiles[x, y] = value;
+        }
+
+        public void Load(WorldData worldData)
+        {
+            if (Loaded) return;
+
+            Loaded = true;
+
+            Generate();
+            int startX = (int)Position.X * Size;
+            int startY = (int)Position.Y * Size;
+
+            for (int x = 0; x < Size; x++)
+            {
+                for (int y = 0; y < Size; y++)
+                {
+                    tiles[x, y].Type = worldData.Tiles[startX + x, startY + y];
+                }
+            }
+
+            World.Current.OnChunkLoaded(new ChunkEventArgs(this));
+        }
+
+        public void Unload()
+        {
+            if (!Loaded) return;
+
+            Loaded = false;
+            World.Current.OnChunkUnloaded(new ChunkEventArgs(this));
+
+            tiles = null;
         }
     }
 }

@@ -5,12 +5,6 @@
 // Modified Date: 12/20/2018
 // Description: Class to hold TileType enum
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ISU_Medieval_Odyssey
 {
     /// <summary>
@@ -18,6 +12,9 @@ namespace ISU_Medieval_Odyssey
     /// </summary>
     public enum TileType : byte
     {
-        // To Do: Add tile types
-    };
+        Empty,
+        Grass,
+        Sand,
+        Rock
+    }
 }
