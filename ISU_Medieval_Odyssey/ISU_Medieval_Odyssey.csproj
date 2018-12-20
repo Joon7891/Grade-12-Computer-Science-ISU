@@ -50,6 +50,7 @@
     <Compile Include="Item\Armour\Belt\LeatherBelt.cs" />
     <Compile Include="Item\Armour\Belt\RopeBelt.cs" />
     <Compile Include="Item\Armour\Helmet\ChainHelmet.cs" />
+    <Compile Include="Item\Armour\Helmet\ChainHood.cs" />
     <Compile Include="Item\Armour\Helmet\Helmet.cs" />
     <Compile Include="Item\Armour\Shoes\ArmourShoes.cs" />
     <Compile Include="Item\Armour\Shoes\LeatherShoes.cs" />

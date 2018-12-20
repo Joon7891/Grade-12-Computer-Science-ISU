@@ -105,6 +105,8 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
+            Armour test = new ChainHood();
+
             // Updating base game
             base.Update(gameTime);
         }
