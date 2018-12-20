@@ -82,8 +82,7 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
+        /// LoadContent will be called once per game and is the place to load all of your content.
         /// </summary>
         protected override void LoadContent()
         {
@@ -97,9 +96,6 @@ namespace ISU_Medieval_Odyssey
             drawMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Draw);
             drawMethodDictionary.Add(ScreenMode.Game, GameScreen.Draw);
             drawMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Draw);
-
-            // TODO: use this.Content to load your game content here
-            player = new Player();
         }
 
         /// <summary>
