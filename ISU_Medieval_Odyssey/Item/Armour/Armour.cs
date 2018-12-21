@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ISU_Medieval_Odyssey.Utility;
 
 namespace ISU_Medieval_Odyssey.Item.Armour
 {

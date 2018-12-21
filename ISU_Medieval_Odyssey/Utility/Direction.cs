@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.Utility
 {
     /// <summary>
     /// Direction enum to hold various directions
