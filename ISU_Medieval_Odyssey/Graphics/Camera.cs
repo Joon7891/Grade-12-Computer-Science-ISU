@@ -49,7 +49,12 @@ namespace ISU_Medieval_Odyssey.Graphics
             Reset();
         }
 
-        public Vector2 ScreenToWorldPoint(Vector2 screenPoint) => Position + screenPoint;
+        /// <summary>
+        /// Determines and returns the world coordiante point - adjusting for Camera movement
+        /// </summary>
+        /// <param name="screenPoint">The screen coordinate point</param>
+        /// <returns>The world coordinate point</returns>
+        public Vector2 ScreenPointToWorldPoint(Vector2 screenPoint) => Position + screenPoint;
 
         /// <summary>
         /// Resets the Camera
