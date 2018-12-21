@@ -71,10 +71,10 @@ namespace ISU_Medieval_Odyssey
 
         private void Generate()
         {
-            tiles = new Tile[Size, Size];
-            for (int x = 0; x < Size; x++)
+            tiles = new Tile[SIZE, SIZE];
+            for (int x = 0; x < SIZE; x++)
             {
-                for (int y = 0; y < Size; y++)
+                for (int y = 0; y < SIZE; y++)
                 {
                     Vector2Int relativePosition = new Vector2Int(x, y);
                     tiles[x, y] = new Tile(TileType.Empty, relativePosition, WorldPosition + relativePosition, this);
@@ -110,12 +110,12 @@ namespace ISU_Medieval_Odyssey
             Loaded = true;
 
             Generate();
-            int startX = Position.X * Size;
-            int startY = Position.Y * Size;
+            int startX = Position.X * SIZE;
+            int startY = Position.Y * SIZE;
 
-            for (int x = 0; x < Size; x++)
+            for (int x = 0; x < SIZE; x++)
             {
-                for (int y = 0; y < Size; y++)
+                for (int y = 0; y < SIZE; y++)
                 {
                     tiles[x, y].Type = worldData.Tiles[startX + x, startY + y];
                 }

@@ -14,7 +14,7 @@ namespace ISU_Medieval_Odyssey.Graphics
         /// <summary>
         /// The orthographic size of the camera
         /// </summary>
-        public float OrthographicSize { get; private set; }
+        public float OrthographicSize { get; set; }
 
         /// <summary>
         /// The position of the camera

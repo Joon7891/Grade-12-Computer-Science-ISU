@@ -94,8 +94,8 @@ namespace ISU_Medieval_Odyssey
 
             world.AddGenerator(new TerrainWorldGenerator());
             world.Initialize(100, 100);
-            Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.Size * Tile.Size,
-                (world.Height - 1) / 2 * Chunk.Size * Tile.Size);
+            Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.SIZE * Tile.Size,
+                (world.Height - 1) / 2 * Chunk.SIZE * Tile.Size);
 
             world.Generate();
         }

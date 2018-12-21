@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey
 
             if (targetPosition != Vector2.Zero)
             {
-                Main.Context.Camera.Position += new Vector2((float)Math.Round(targetPosition.X), (float)Math.Round(targetPosition.Y));
+                Main.Instance.Camera.Position += new Vector2((float)Math.Round(targetPosition.X), (float)Math.Round(targetPosition.Y));
             }
 
             targetPosition = Vector2.Zero;
@@ -24,22 +24,22 @@ namespace ISU_Medieval_Odyssey
 
         private void HandleInput(float deltaTime)
         {
-            if (Main.Context.NewKeyboard.IsKeyDown(Keys.A))
+            if (Main.Instance.NewKeyboard.IsKeyDown(Keys.A))
             {
                 targetPosition += new Vector2(-Speed * deltaTime, 0);
             }
 
-            if (Main.Context.NewKeyboard.IsKeyDown(Keys.D))
+            if (Main.Instance.NewKeyboard.IsKeyDown(Keys.D))
             {
                 targetPosition += new Vector2(Speed * deltaTime, 0);
             }
 
-            if (Main.Context.NewKeyboard.IsKeyDown(Keys.W))
+            if (Main.Instance.NewKeyboard.IsKeyDown(Keys.W))
             {
                 targetPosition += new Vector2(0, -Speed * deltaTime);
             }
 
-            if (Main.Context.NewKeyboard.IsKeyDown(Keys.S))
+            if (Main.Instance.NewKeyboard.IsKeyDown(Keys.S))
             {
                 targetPosition += new Vector2(0, Speed * deltaTime);
             }

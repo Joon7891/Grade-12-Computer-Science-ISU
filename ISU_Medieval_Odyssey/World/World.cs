@@ -67,9 +67,9 @@ namespace ISU_Medieval_Odyssey
 
         private void OnChunkLoaded(object sender, ChunkEventArgs args)
         {
-            for (int x = 0; x < Chunk.Size; x++)
+            for (int x = 0; x < Chunk.SIZE; x++)
             {
-                for (int y = 0; y < Chunk.Size; y++)
+                for (int y = 0; y < Chunk.SIZE; y++)
                 {
                     Tile tile = args.Chunk[x, y];
                     if (tile == null) continue;
@@ -82,9 +82,9 @@ namespace ISU_Medieval_Odyssey
 
         private void OnChunkUnloaded(object sender, ChunkEventArgs args)
         {
-            for (int x = 0; x < Chunk.Size; x++)
+            for (int x = 0; x < Chunk.SIZE; x++)
             {
-                for (int y = 0; y < Chunk.Size; y++)
+                for (int y = 0; y < Chunk.SIZE; y++)
                 {
                     Tile tile = args.Chunk[x, y];
                     if (tile == null || !tiles.ContainsKey(tile)) continue;
@@ -113,8 +113,8 @@ namespace ISU_Medieval_Odyssey
             Width = width;
             Height = height;
 
-            WidthInTiles = width * Chunk.Size;
-            HeightInTiles = height * Chunk.Size;
+            WidthInTiles = width * Chunk.SIZE;
+            HeightInTiles = height * Chunk.SIZE;
 
             chunks = new Chunk[Width, Height];
             worldData = new WorldData(WidthInTiles, HeightInTiles);
@@ -163,7 +163,7 @@ namespace ISU_Medieval_Odyssey
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    chunks[x, y] = new Chunk(new Vector2Int(x, y), new Vector2Int(x, y) * Chunk.Size);
+                    chunks[x, y] = new Chunk(new Vector2Int(x, y), new Vector2Int(x, y) * Chunk.SIZE);
                 }
             }
         }
@@ -177,8 +177,8 @@ namespace ISU_Medieval_Odyssey
         {
             if (x < 0 || x >= WidthInTiles || y < 0 || y >= HeightInTiles) return null;
 
-            int chunkX = (int)Math.Floor(x / (double)Chunk.Size);
-            int chunkY = (int)Math.Floor(y / (double)Chunk.Size);
+            int chunkX = (int)Math.Floor(x / (double)Chunk.SIZE);
+            int chunkY = (int)Math.Floor(y / (double)Chunk.SIZE);
             if (chunkX < 0 || chunkX >= Width || chunkY < 0 || chunkY >= Height) return null;
 
             return chunks[chunkX, chunkY];
@@ -190,11 +190,11 @@ namespace ISU_Medieval_Odyssey
             Chunk chunk = GetChunkContaining(x, y);
 
             // Tile (x) position relative to the chunk
-            int tileX = x % Chunk.Size;
+            int tileX = x % Chunk.SIZE;
             // Tile (y) position relative to the chunk
-            int tileY = y % Chunk.Size;
+            int tileY = y % Chunk.SIZE;
 
-            if (tileX < 0 || tileX >= Chunk.Size || tileY < 0 || tileY >= Chunk.Size) return null;
+            if (tileX < 0 || tileX >= Chunk.SIZE || tileY < 0 || tileY >= Chunk.SIZE) return null;
             return chunk.GetTileAt(tileX, tileY);
         }
 
@@ -217,8 +217,8 @@ namespace ISU_Medieval_Odyssey
             int screenHeight = Main.Instance.GraphicsDevice.Viewport.Height;
 
             float zoom = Main.Instance.Camera.OrthographicSize;
-            int viewportWidth = (int)Math.Ceiling((double)screenWidth / (Chunk.Size * Tile.Size * 2 * zoom)) + 2;
-            int viewportHeight = (int)Math.Ceiling((double)screenHeight / (Chunk.Size * Tile.Size * 2 * zoom)) + 2;
+            int viewportWidth = (int)Math.Ceiling((double)screenWidth / (Chunk.SIZE * Tile.Size * 2 * zoom)) + 2;
+            int viewportHeight = (int)Math.Ceiling((double)screenHeight / (Chunk.SIZE * Tile.Size * 2 * zoom)) + 2;
 
             Vector2 cameraPosition = Main.Instance.Camera.Position;
             Vector2 tileAtCameraPosition = new Vector2(cameraPosition.X / Tile.Size, cameraPosition.Y / Tile.Size);
