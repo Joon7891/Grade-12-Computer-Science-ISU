@@ -131,6 +131,7 @@ namespace ISU_Medieval_Odyssey
                 float sx = Tile.Size / (float)pair.Value.Width;
                 float sy = Tile.Size / (float)pair.Value.Height;
 
+                //Vector2Int isometricCoordinate = GetIsometricProjection(pair.Key.WorldPosition);
                 spriteBatch.Draw(pair.Value, pair.Key.WorldPosition.ToVector2() * Tile.Size, null, Color.White, 0,
                     new Vector2(pair.Value.Width / 2.0f, pair.Value.Height / 2.0f), new Vector2(sx, sy), SpriteEffects.None, 0);
             }
@@ -275,6 +276,13 @@ namespace ISU_Medieval_Odyssey
 
                 loadedChunks.Add(chunk);
             }
+        }
+
+        private Vector2Int GetIsometricProjection(Vector2Int coordinate)
+        {
+            int px = (coordinate.X - coordinate.Y) * (Tile.Size / 2);
+            int py = (coordinate.X + coordinate.Y) * (Tile.Size / 2);
+            return new Vector2Int(px, py);
         }
     }
 }
