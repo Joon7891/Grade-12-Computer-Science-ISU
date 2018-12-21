@@ -88,6 +88,7 @@
     <Compile Include="World\TileType.cs" />
     <Compile Include="World\World.cs" />
     <Compile Include="World\WorldData.cs" />
+    <Compile Include="World\WorldTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

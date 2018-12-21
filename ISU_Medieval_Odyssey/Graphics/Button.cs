@@ -13,8 +13,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using ISU_Medieval_Odyssey.Utility;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.Graphics
 {
     public sealed class Button
     {
@@ -30,14 +31,14 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Whether the mouse is hovering above the button
         /// </summary>
-        public bool IsMouseHovering => CollisionHelper.PointToRect(Main.Context.NewMouse.Position.ToVector2(), rect);
+        public bool IsMouseHovering => CollisionHelper.PointToRect(Main.Instance.NewMouse.Position.ToVector2(), rect);
 
         /// <summary>
         /// Static constructor to setup Button components
         /// </summary>
         static Button()
         {
-            clickSoundEffect = Main.Context.Content.Load<SoundEffect>("Audio/SoundEffects/buttonClick");
+            clickSoundEffect = Main.Instance.Content.Load<SoundEffect>("Audio/SoundEffects/buttonClick");
         }
 
         /// <summary>

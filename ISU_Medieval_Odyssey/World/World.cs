@@ -9,11 +9,24 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class World
     {
+        /// <summary>
+        /// Static instance of World representing the current World
+        /// </summary>
         public static World Current { get; private set; }
 
+        /// <summary>
+        /// The width of the world
+        /// </summary>
         public int Width { get; private set; }
+
+        /// <summary>
+        /// The height of the world
+        /// </summary>
         public int Height { get; private set; }
 
+        /// <summary>
+        /// The width of the world in tiles
+        /// </summary>
         public int WidthInTiles { get; private set; }
         public int HeightInTiles { get; private set; }
 
@@ -90,7 +103,7 @@ namespace ISU_Medieval_Odyssey
                     break;
                 default:
                     string tileTypeName = Enum.GetName(args.Tile.Type.GetType(), args.Tile.Type);
-                    tiles[args.Tile] = Main.Context.Content.Load<Texture2D>($"Images/Sprites/Tiles/Tile_{tileTypeName}");
+                    tiles[args.Tile] = Main.Instance.Content.Load<Texture2D>($"Images/Sprites/Tiles/Tile_{tileTypeName}");
                     break;
             }
         }
@@ -109,7 +122,7 @@ namespace ISU_Medieval_Odyssey
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(transformMatrix: Main.Context.Camera.ViewMatrix, samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(transformMatrix: Main.Instance.Camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
             foreach (KeyValuePair<Tile, Texture2D> pair in tiles)
             {
@@ -200,14 +213,14 @@ namespace ISU_Medieval_Odyssey
 
         public void Update()
         {
-            int screenWidth = Main.Context.GraphicsDevice.Viewport.Width;
-            int screenHeight = Main.Context.GraphicsDevice.Viewport.Height;
+            int screenWidth = Main.Instance.GraphicsDevice.Viewport.Width;
+            int screenHeight = Main.Instance.GraphicsDevice.Viewport.Height;
 
-            float zoom = Main.Context.Camera.OrthographicSize;
+            float zoom = Main.Instance.Camera.OrthographicSize;
             int viewportWidth = (int)Math.Ceiling((double)screenWidth / (Chunk.Size * Tile.Size * 2 * zoom)) + 2;
             int viewportHeight = (int)Math.Ceiling((double)screenHeight / (Chunk.Size * Tile.Size * 2 * zoom)) + 2;
 
-            Vector2 cameraPosition = Main.Context.Camera.Position;
+            Vector2 cameraPosition = Main.Instance.Camera.Position;
             Vector2 tileAtCameraPosition = new Vector2(cameraPosition.X / Tile.Size, cameraPosition.Y / Tile.Size);
             Chunk chunkContaining = GetChunkContaining((int)Math.Round(tileAtCameraPosition.X), (int)Math.Round(tileAtCameraPosition.Y));
 

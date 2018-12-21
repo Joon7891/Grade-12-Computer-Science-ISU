@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.Utility
 {
     public static class EntityHelper
     {
@@ -55,7 +55,7 @@ namespace ISU_Medieval_Odyssey
             {
                 for (byte i = 0; i < numFrames; ++i)
                 {
-                    loadedImages[(byte)direction, i] = Main.Context.Content.Load<Texture2D>
+                    loadedImages[(byte)direction, i] = Main.Instance.Content.Load<Texture2D>
                         (basePath + $"{movementType.ToString()}/{direction.ToString()}/{entityTypeName}{movementType.ToString()}{direction.ToString()}{i}");
                 }
             }

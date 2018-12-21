@@ -11,21 +11,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.World
+namespace ISU_Medieval_Odyssey
 {
     class WorldTree
     {
-        const int RENDERDIST = 2; //TODO: MOVE TO SHARED CONSTANTS
+        /// <summary>
+        /// How many chunks away from the player to render
+        /// </summary>
+        public const int RENDERDIST = 2; //TODO: move to settings?
 
         Dictionary<Vector2, HashSet<Vector2>> adjList;
 
-        public void RenderWorld(Vector2 playerLoc)
+        public void LoadWorld(Vector2 playerLoc)
         {
-            Queue<Tuple<Vector2,int> > BFSQ = new Queue<Tuple<Vector2, int>>();
-            while (BFSQ.Count > 1)
+            Queue<Tuple<Vector2, int>> queue = new Queue<Tuple<Vector2, int>>();
+            while (queue.Count > 1)
             {
-                Vector2 cur = BFSQ.Peek().Item1;
-                int dist = BFSQ.Peek().Item2;
+                Vector2 cur = queue.Peek().Item1;
+                int dist = queue.Peek().Item2;
+
                 if (dist <= RENDERDIST)
                 {
                     //draw and load chunk
@@ -39,8 +43,22 @@ namespace ISU_Medieval_Odyssey.World
 
         private void UpdateAdj(Vector2 playerLoc)
         {
-            
-            // TODO: create connections 
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (i == 0 && j == 0)
+                    {
+                        continue;
+                    }
+
+                    Vector2 nextChunk = new Vector2(playerLoc.X + i, playerLoc.Y + j);
+                    if (!adjList[playerLoc].Contains(nextChunk))
+                    {
+                        adjList[playerLoc].Add(nextChunk);
+                    }
+                }
+            }
         }
 
         public void Update(Vector2 playerLoc) // *note: call only when player moves boundaries

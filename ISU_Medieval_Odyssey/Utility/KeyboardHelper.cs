@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.Utility
 {
     public static class KeyboardHelper
     {
@@ -23,6 +23,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="key">The key to check for new keystroke</param>
         /// <returns>Whether the keystroke was a new one</returns>
-        public static bool NewKeyStroke(Keys key) => Main.Context.NewKeyboard.IsKeyDown(key) && !Main.Context.OldKeyboard.IsKeyDown(key);
+        public static bool NewKeyStroke(Keys key) => Main.Instance.NewKeyboard.IsKeyDown(key) && !Main.Instance.OldKeyboard.IsKeyDown(key);
     }
 }

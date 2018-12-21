@@ -24,16 +24,16 @@ namespace ISU_Medieval_Odyssey
     public sealed class Chunk
     {
         /// <summary>
-        /// The amount of tiles that a signal chunk contains.
+        /// The amount of tiles that a signal chunk contains
         /// </summary>
-        public const int Size = 32;
+        public const int SIZE = 32;
 
         /// <summary>
-        /// Gets or sets a tile.
+        /// Gets or sets a tile
         /// </summary>
-        /// <param name="x">The x-coordinate of the tile.</param>
-        /// <param name="y">The y-coordinate of the tile.</param>
-        /// <returns></returns>
+        /// <param name="x">The x-coordinate of the tile</param>
+        /// <param name="y">The y-coordinate of the tile</param>
+        /// <returns>The tile at a given cartesian coordinate</returns>
         public Tile this[int x, int y]
         {
             get => GetTileAt(x, y);
@@ -57,6 +57,11 @@ namespace ISU_Medieval_Odyssey
 
         private Tile[,] tiles;
 
+        /// <summary>
+        /// Constructor for Chunk object
+        /// </summary>
+        /// <param name="position">The position of the chunk</param>
+        /// <param name="worldPosition">The position of the chunk relative to the world</param>
         public Chunk(Vector2Int position, Vector2Int worldPosition)
         {
             Position = position;
@@ -79,16 +84,23 @@ namespace ISU_Medieval_Odyssey
 
         public Tile GetTileAt(int x, int y)
         {
-            if (x < 0 || x >= Size || y < 0 || y >= Size) return null;
+            if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return null;
             return tiles?[x, y];
         }
 
+        /// <summary>
+        /// Setter for Tile
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile</param>
+        /// <param name="y">The y-coordinate of the tile</param>
+        /// <param name="value">The value of the assignment</param>
         public void SetTileAt(int x, int y, Tile value)
         {
-            if (x < 0 || x >= Size || y < 0 || y >= Size) return;
-            if (value == null) return;
-
-            tiles[x, y] = value;
+            // Assigning value of coordinatesa are in range and assignment is not null
+            if (0 <= x && x < SIZE && 0 <= y && y < SIZE && value != null)
+            {
+                tiles[x, y] = value;
+            }
         }
 
         public void Load(WorldData worldData)

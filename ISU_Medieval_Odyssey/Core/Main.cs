@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ISU_Medieval_Odyssey.Graphics;
+using ISU_Medieval_Odyssey.Utility;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -23,7 +25,10 @@ namespace ISU_Medieval_Odyssey
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        public static Main Context { get; private set; }
+        /// <summary>
+        /// Static instance of Main class - used to access Main class properties
+        /// </summary>
+        public static Main Instance { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse 1 frame back
@@ -61,7 +66,7 @@ namespace ISU_Medieval_Odyssey
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Context = this;
+            Instance = this;
         }
 
         /// <summary>

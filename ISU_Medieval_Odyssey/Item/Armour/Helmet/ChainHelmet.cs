@@ -11,8 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using ISU_Medieval_Odyssey.Utility;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.Item.Armour.Helmet
 {
     public sealed class ChainHelmet : Helmet
     {
