@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.Item.Armour
 {
     public abstract class Armour : Item
     {
