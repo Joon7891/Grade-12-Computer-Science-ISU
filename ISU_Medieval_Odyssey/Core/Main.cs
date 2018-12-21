@@ -142,7 +142,7 @@ namespace ISU_Medieval_Odyssey
             // print current tile under mouse
             if (MouseHelper.NewClick())
             {
-                Vector2 worldPosition = Camera.ScreenToWorldPoint(NewMouse.Position.ToVector2());
+                Vector2 worldPosition = Camera.ScreenPointToWorldPoint(NewMouse.Position.ToVector2());
                 Tile tile = world.GetTileFromWorldCoordinate(worldPosition);
                 if (tile != null)
                 {
