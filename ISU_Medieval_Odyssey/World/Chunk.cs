@@ -6,6 +6,7 @@
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
 using System;
+using System.Collections.Specialized;
 using ISU_Medieval_Odyssey.Utility;
 using Microsoft.Xna.Framework;
 
@@ -43,12 +44,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The position of this <see cref="Chunk"/> in chunk-space.
         /// </summary>
-        public Vector2Int Position { get; }
+        public Vector2Int Position { get; private set; }
 
         /// <summary>
         /// The position of this <see cref="Chunk"/> in world-space.
         /// </summary>
-        public Vector2Int WorldPosition { get; }
+        public Vector2Int WorldPosition => Position * SIZE;
 
         /// <summary>
         /// Indicates whether the chunk is loaded.
@@ -57,15 +58,8 @@ namespace ISU_Medieval_Odyssey
 
         private Tile[,] tiles;
 
-        /// <summary>
-        /// Constructor for Chunk object
-        /// </summary>
-        /// <param name="position">The position of the chunk</param>
-        /// <param name="worldPosition">The position of the chunk relative to the world</param>
-        public Chunk(Vector2Int position, Vector2Int worldPosition)
+        public Chunk()
         {
-            Position = position;
-            WorldPosition = worldPosition;
             Generate();
         }
 
@@ -76,8 +70,7 @@ namespace ISU_Medieval_Odyssey
             {
                 for (int y = 0; y < SIZE; y++)
                 {
-                    Vector2Int relativePosition = new Vector2Int(x, y);
-                    tiles[x, y] = new Tile(TileType.Empty, relativePosition, WorldPosition + relativePosition, this);
+                    tiles[x, y] = new Tile(TileType.Empty, Vector2Int.Zero, this);
                 }
             }
         }
@@ -117,6 +110,8 @@ namespace ISU_Medieval_Odyssey
             {
                 for (int y = 0; y < SIZE; y++)
                 {
+                    tiles[x, y].Position.X = x;
+                    tiles[x, y].Position.Y = y;
                     tiles[x, y].Type = worldData.Tiles[startX + x, startY + y];
                 }
             }
@@ -124,14 +119,16 @@ namespace ISU_Medieval_Odyssey
             World.Current.OnChunkLoaded(new ChunkEventArgs(this));
         }
 
+        public void SetPosition(Vector2Int position)
+        {
+            Position = position;
+        }
+
         public void Unload()
         {
             if (!Loaded) return;
-
             Loaded = false;
             World.Current.OnChunkUnloaded(new ChunkEventArgs(this));
-
-            tiles = null;
         }
     }
 }

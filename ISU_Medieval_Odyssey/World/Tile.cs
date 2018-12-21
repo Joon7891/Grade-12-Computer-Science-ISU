@@ -27,12 +27,9 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The position of this <see cref="Tile"/> in the <see cref="Chunk"/>.
         /// </summary>
-        public Vector2Int Position { get; }
+        public Vector2Int Position { get; set; }
 
-        /// <summary>
-        /// The position of this <see cref="Tile"/> in world-space.
-        /// </summary>
-        public Vector2Int WorldPosition { get; }
+        public Vector2Int WorldPosition => Position + Chunk.WorldPosition;
 
         /// <summary>
         /// The <see cref="Chunk"/> that this tile belongs to.
@@ -53,10 +50,9 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public Tile(TileType type, Vector2Int position, Vector2Int worldPosition, Chunk chunk)
+        public Tile(TileType type, Vector2Int position, Chunk chunk)
         {
             Type = type;
-            WorldPosition = worldPosition;
             Position = position;
             Chunk = chunk;
         }

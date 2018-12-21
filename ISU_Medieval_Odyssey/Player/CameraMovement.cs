@@ -6,7 +6,7 @@ namespace ISU_Medieval_Odyssey
 {
     public class CameraMovement
     {
-        private const float Speed = 1000;
+        private const float Speed = 100;
         private Vector2 targetPosition = Vector2.Zero;
 
         public void Update(GameTime gameTime)

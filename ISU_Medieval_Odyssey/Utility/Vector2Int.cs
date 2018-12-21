@@ -12,17 +12,19 @@ namespace ISU_Medieval_Odyssey.Utility
     /// <summary>
     /// Descrtibes a 2D vector with integer coordinates
     /// </summary>
-    public struct Vector2Int
+    public class Vector2Int
     {
+        public static Vector2Int Zero => new Vector2Int(0, 0);
+
         /// <summary>
         /// The x-coordainte of the <see cref="Vector2Int"/>
         /// </summary>
-        public int X { get; }
+        public int X { get; set; }
 
         /// <summary>
         /// The y-coordainte of the <see cref="Vector2Int"/>
         /// </summary>
-        public int Y { get; }
+        public int Y { get; set; }
 
         /// <summary>
         /// Constuctor for <see cref="Vector2Int"/> object

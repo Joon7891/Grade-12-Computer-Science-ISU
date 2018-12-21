@@ -87,15 +87,15 @@ namespace ISU_Medieval_Odyssey
             base.Initialize();
 
             // The smaller the orthographic size is, the more zoomed out the camera renders the world at
-            Camera = new Camera {OrthographicSize = 0.1f};
+            Camera = new Camera {OrthographicSize = 1f};
             cameraMovement = new CameraMovement();
 
             world = new World();
 
             world.AddGenerator(new TerrainWorldGenerator());
             world.Initialize(100, 100);
-            //Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.SIZE * Tile.Size,
-            //    (world.Height - 1) / 2 * Chunk.SIZE * Tile.Size);
+            Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.SIZE * Tile.Size,
+                (world.Height - 1) / 2 * Chunk.SIZE * Tile.Size);
 
             world.Generate();
         }
@@ -146,7 +146,7 @@ namespace ISU_Medieval_Odyssey
                 Tile tile = world.GetTileFromWorldCoordinate(worldPosition);
                 if (tile != null)
                 {
-                    Console.WriteLine($"Tile Type: {tile.Type} ({tile.WorldPosition.X}, {tile.WorldPosition.Y})");
+                    Console.WriteLine($"Tile Type: {tile.Type} ({tile.WorldPosition.X}, " + $"{tile.WorldPosition.Y})");
                 }
             }
 
