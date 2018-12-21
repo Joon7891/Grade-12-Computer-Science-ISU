@@ -7,9 +7,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ISU_Medieval_Odyssey.Utility;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -18,30 +16,45 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// How many chunks away from the player to render
         /// </summary>
-        public const int RENDERDIST = 2; //TODO: move to settings?
+        public const int RENDERDIST = 20; //TODO: move to settings?
 
-        Dictionary<Vector2, HashSet<Vector2>> adjList;
+        Dictionary<Vector2Int, HashSet<Vector2Int>> adjList = new Dictionary<Vector2Int, HashSet<Vector2Int>>();
 
-        public void LoadWorld(Vector2 playerLoc)
+        public HashSet<Vector2Int> GetLoadedChunks(Vector2Int playerLoc)
         {
-            Queue<Tuple<Vector2, int>> queue = new Queue<Tuple<Vector2, int>>();
-            while (queue.Count > 1)
+            HashSet<Vector2Int> chunksToLoad = new HashSet<Vector2Int>();
+
+            Queue<Vector2Int> posQueue = new Queue<Vector2Int>();
+            Queue<int> distQueue = new Queue<int>();
+            posQueue.Enqueue(playerLoc);
+            distQueue.Enqueue(1);
+
+            while (posQueue.Count > 0)
             {
-                Vector2 cur = queue.Peek().Item1;
-                int dist = queue.Peek().Item2;
+                Vector2Int cur = posQueue.Dequeue();
+                int dist = distQueue.Dequeue();
 
                 if (dist <= RENDERDIST)
                 {
-                    //draw and load chunk
+                    chunksToLoad.Add(cur);
+                    foreach (Vector2Int next in adjList[cur])
+                    {
+                        if (!chunksToLoad.Contains(next) && !posQueue.Contains(next))
+                        {
+                            posQueue.Enqueue(next);
+                            distQueue.Enqueue(dist + 1);
+                        }
+                    }
                 }
                 else
                 {
                     continue;
                 }
             }
+            return chunksToLoad;
         }
 
-        private void UpdateAdj(Vector2 playerLoc)
+        private void UpdateAdj(Vector2Int playerLoc)
         {
             for (int i = -1; i <= 1; i++)
             {
@@ -52,7 +65,13 @@ namespace ISU_Medieval_Odyssey
                         continue;
                     }
 
-                    Vector2 nextChunk = new Vector2(playerLoc.X + i, playerLoc.Y + j);
+                    Vector2Int nextChunk = new Vector2Int(playerLoc.X + i, playerLoc.Y + j);
+
+                    if (!adjList.ContainsKey(playerLoc))
+                    {
+                        adjList[playerLoc] = new HashSet<Vector2Int>();
+                    }
+
                     if (!adjList[playerLoc].Contains(nextChunk))
                     {
                         adjList[playerLoc].Add(nextChunk);
@@ -61,13 +80,13 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public void Update(Vector2 playerLoc) // *note: call only when player moves boundaries
+        public void Update(Vector2Int playerLoc) // *note: call only when player moves boundaries
         {
             for(int i = -RENDERDIST; i < RENDERDIST; i++)
             {
                 for(int j = -RENDERDIST; j < RENDERDIST; j++)
                 {
-                    UpdateAdj(new Vector2(playerLoc.X + i, playerLoc.Y + j));
+                    UpdateAdj(new Vector2Int(playerLoc.X + i, playerLoc.Y + j));
                 }
             }
         }
