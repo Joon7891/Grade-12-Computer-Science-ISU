@@ -124,11 +124,34 @@ namespace ISU_Medieval_Odyssey.Utility
         public static Vector2Int operator -(Vector2Int vector) => new Vector2Int(-vector.X, -vector.Y);
 
         /// <summary>
-        /// Eequals operator
+        /// Equals operator
         /// </summary>
         /// <param name="other">The vector to be compared to</param>
         /// <returns>If two vectors are equal</returns>
         public bool Equals(Vector2Int other) => X == other.X && Y == other.Y;
+
+        /// <summary>
+        /// Overriden Equals operator
+        /// </summary>
+        /// <param name="obj">The object to determine equality with</param>
+        /// <returns>If a given object equals the <see cref="Vector2Int"/></returns>
+        public override bool Equals(object obj)
+        {
+            // Returning false if object reference is null
+            if (ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            // Otherwise returning if obj is a Vector2Int with the same values
+            return obj is Vector2Int instance && Equals(instance);
+        }
+
+        /// <summary>
+        /// Retrieves the HashCode of <see cref="Vector2Int"/>
+        /// </summary>
+        /// <returns>The HashCode of the <see cref="Vector2Int"/></returns>
+        public override int GetHashCode() => unchecked((X * 397) ^ 7);
 
         /// <summary>
         /// Converts a <see cref="Vector2Int"/> to a <see cref="string"/>
