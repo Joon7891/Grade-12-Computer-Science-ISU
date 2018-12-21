@@ -1,0 +1,48 @@
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+
+namespace ISU_Medieval_Odyssey
+{
+    public class CameraMovement
+    {
+        private const float Speed = 1000;
+        private Vector2 targetPosition = Vector2.Zero;
+
+        public void Update(GameTime gameTime)
+        {
+            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            HandleInput(deltaTime);
+
+            if (targetPosition != Vector2.Zero)
+            {
+                Main.Context.Camera.Position += new Vector2((float)Math.Round(targetPosition.X), (float)Math.Round(targetPosition.Y));
+            }
+
+            targetPosition = Vector2.Zero;
+        }
+
+        private void HandleInput(float deltaTime)
+        {
+            if (Main.Context.NewKeyboard.IsKeyDown(Keys.A))
+            {
+                targetPosition += new Vector2(-Speed * deltaTime, 0);
+            }
+
+            if (Main.Context.NewKeyboard.IsKeyDown(Keys.D))
+            {
+                targetPosition += new Vector2(Speed * deltaTime, 0);
+            }
+
+            if (Main.Context.NewKeyboard.IsKeyDown(Keys.W))
+            {
+                targetPosition += new Vector2(0, -Speed * deltaTime);
+            }
+
+            if (Main.Context.NewKeyboard.IsKeyDown(Keys.S))
+            {
+                targetPosition += new Vector2(0, Speed * deltaTime);
+            }
+        }
+    }
+}

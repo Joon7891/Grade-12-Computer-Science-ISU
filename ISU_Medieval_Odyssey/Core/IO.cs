@@ -5,13 +5,6 @@
 // Modified Date: 12/17/2018
 // Desription: Class to various subprograms to hold in various data
 
-using System;
-using System.IO;
-using System.Net;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Simplex;
 
 namespace ISU_Medieval_Odyssey
 {

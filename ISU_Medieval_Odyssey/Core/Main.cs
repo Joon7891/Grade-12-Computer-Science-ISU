@@ -47,6 +47,7 @@ namespace ISU_Medieval_Odyssey
 
         private Player player;
         public Camera Camera { get; private set; }
+        private CameraMovement cameraMovement;
         private World world;
 
         // Screen related variables to map current ScreenMode to appropriate subprograms 
@@ -80,12 +81,18 @@ namespace ISU_Medieval_Odyssey
             // Initializing base game
             base.Initialize();
 
-            Camera = new Camera();
+            // The smaller the orthographic size is, the more zoomed out the camera renders the world at
+            Camera = new Camera {OrthographicSize = 0.1f};
+            cameraMovement = new CameraMovement();
+
             world = new World();
 
             world.AddGenerator(new TerrainWorldGenerator());
-            world.Initialize(1, 1);
-            world.Generate("some_random_seed".GetHashCode());
+            world.Initialize(100, 100);
+            Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.Size * Tile.Size,
+                (world.Height - 1) / 2 * Chunk.Size * Tile.Size);
+
+            world.Generate();
         }
 
         /// <summary>
@@ -139,6 +146,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             world.Update();
+            cameraMovement.Update(gameTime);
             // Updating appropriate screen
             //updateMethodDictionary[screenMode](gameTime);
 

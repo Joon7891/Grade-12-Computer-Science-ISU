@@ -13,8 +13,12 @@ namespace ISU_Medieval_Odyssey
     public enum TileType : byte
     {
         Empty,
-        Grass,
+        Water,
+        WetSand,
         Sand,
-        Rock
+        Grass,
+        ForestGrass,
+        Stone,
+        Snow
     }
 }
