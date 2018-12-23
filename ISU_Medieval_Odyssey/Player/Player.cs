@@ -47,8 +47,8 @@ namespace ISU_Medieval_Odyssey
 
         public Player()
         {
-            shoes = new LeatherShoes();
-            helmet = new LeatherHat();
+            // shoes = new LeatherShoes();
+            // helmet = new MetalHelmet();
         }
 
         public void Update(GameTime gameTime)
@@ -66,7 +66,7 @@ namespace ISU_Medieval_Odyssey
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, currentFrame], rectangle, Color.White);
             shoes?.Draw(spriteBatch, rectangle, movementType, direction, currentFrame);
-            helmet.Draw(spriteBatch, rectangle, movementType, direction, currentFrame);
+            helmet?.Draw(spriteBatch, rectangle, movementType, direction, currentFrame);
         }
     }
 }

@@ -94,8 +94,8 @@ namespace ISU_Medieval_Odyssey
 
             world.AddGenerator(new TerrainWorldGenerator());
             world.Initialize(100, 100);
-            //Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.SIZE * Tile.Size,
-            //    (world.Height - 1) / 2 * Chunk.SIZE * Tile.Size);
+            Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.SIZE * Tile.Size,
+                (world.Height - 1) / 2 * Chunk.SIZE * Tile.Size);
 
             world.Generate();
         }
@@ -107,6 +107,8 @@ namespace ISU_Medieval_Odyssey
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            player = new Player();
 
             // Setting up screen method dictionary
             //updateMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Update);
@@ -139,6 +141,8 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
+            player.Update(gameTime);
+
             // print current tile under mouse
             if (MouseHelper.NewClick())
             {
@@ -167,12 +171,15 @@ namespace ISU_Medieval_Odyssey
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
-            // Drawing appropriate screen
-            //drawMethodDictionary[screenMode](spriteBatch);
-
             //player.Draw(spriteBatch);
             world.Draw(spriteBatch, gameTime);
+
+            spriteBatch.Begin();
+
+            player.Draw(spriteBatch);
+            // Drawing appropriate screen
+            // drawMethodDictionary[screenMode](spriteBatch);
+            spriteBatch.End();
 
             // Drawing base game
             base.Draw(gameTime);

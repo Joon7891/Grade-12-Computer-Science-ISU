@@ -132,7 +132,7 @@ namespace ISU_Medieval_Odyssey
                 float sy = Tile.Size / (float)pair.Value.Height;
 
                 //Vector2Int isometricCoordinate = GetIsometricProjection(pair.Key.WorldPosition);
-                spriteBatch.Draw(pair.Value, pair.Key.WorldPosition.ToVector2() * Tile.Size, null, Color.White, 0,
+                spriteBatch.Draw(pair.Value, pair.Key.WorldPosition.ToVector2() * Tile.Size, null, Color.White, 0, 
                     new Vector2(pair.Value.Width / 2.0f, pair.Value.Height / 2.0f), new Vector2(sx, sy), SpriteEffects.None, 0);
             }
 

@@ -30,5 +30,10 @@ namespace ISU_Medieval_Odyssey.Item.Armour.Helmet
             string armourTypeName = "metalHelmet";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
+
+        public MetalHelmet()
+        {
+            base.movementImages = movementImages;
+        }
     }
 }
