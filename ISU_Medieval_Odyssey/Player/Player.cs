@@ -39,7 +39,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Player()
         {
-            // Temporary strings to help with file paths
+            // Loading in player movement images
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);

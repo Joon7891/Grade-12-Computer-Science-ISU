@@ -15,5 +15,9 @@ namespace ISU_Medieval_Odyssey.Item
 {
     public abstract class Item
     {
+        /// <summary>
+        /// The value of the item - the price at which it will be purchased at
+        /// </summary>
+        public short Value { get; protected set; }
     }
 }

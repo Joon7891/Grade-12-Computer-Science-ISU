@@ -13,6 +13,14 @@ namespace ISU_Medieval_Odyssey.Screen
     public sealed class GameScreen : IScreen
     {
         /// <summary>
+        /// Subprogram to load GameScreen content
+        /// </summary>
+        public void LoadContent()
+        {
+
+        }
+        
+        /// <summary>
         /// Update subprogram for GameScreen
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>

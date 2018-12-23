@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ISU_Medieval_Odyssey.Graphics;
 using ISU_Medieval_Odyssey.Utility;
+using ISU_Medieval_Odyssey.Screen;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -55,12 +56,9 @@ namespace ISU_Medieval_Odyssey
         private CameraMovement cameraMovement;
         private World world;
 
-        // Screen related variables to map current ScreenMode to appropriate subprograms 
-        private readonly ScreenMode screenMode = ScreenMode.MainMenu;
-        private delegate void UpdateMethod(GameTime gameTime);
-        private delegate void DrawMethod(SpriteBatch spriteBatch);
-        private readonly Dictionary<ScreenMode, UpdateMethod> updateMethodDictionary = new Dictionary<ScreenMode, UpdateMethod>();
-        private readonly Dictionary<ScreenMode, DrawMethod> drawMethodDictionary = new Dictionary<ScreenMode, DrawMethod>();
+        // Current screen mode and dictionary to map screen mode to a IScreen
+        private ScreenMode currentScreen;
+        private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
 
         public Main()
         {
@@ -108,15 +106,15 @@ namespace ISU_Medieval_Odyssey
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new Player();
-
-            // Setting up screen method dictionary
-            //updateMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Update);
-            //updateMethodDictionary.Add(ScreenMode.Game, GameScreen.Update);
-            //updateMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Update);
-            //drawMethodDictionary.Add(ScreenMode.MainMenu, MainMenuScreen.Draw);
-            //drawMethodDictionary.Add(ScreenMode.Game, GameScreen.Draw);
-            //drawMethodDictionary.Add(ScreenMode.Settings, SettingsScreen.Draw);
+            // Setting up screen-related components
+            currentScreen = ScreenMode.MainMenu;
+            screenDictionary.Add(ScreenMode.MainMenu, new MainMenuScreen());
+            screenDictionary.Add(ScreenMode.Game, new GameScreen());
+            screenDictionary.Add(ScreenMode.Settings, new SettingsScreen());
+            foreach (ScreenMode screenMode in Enum.GetValues(typeof(ScreenMode)))
+            {
+                screenDictionary[screenMode].LoadContent();
+            }
         }
 
         /// <summary>

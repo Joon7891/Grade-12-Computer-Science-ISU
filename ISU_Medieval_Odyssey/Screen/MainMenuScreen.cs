@@ -13,6 +13,14 @@ namespace ISU_Medieval_Odyssey.Screen
     public sealed class MainMenuScreen : IScreen
     {
         /// <summary>
+        /// Subprogram to load main menu screen content
+        /// </summary>
+        public void LoadContent()
+        {
+
+        }
+        
+        /// <summary>
         /// Update subprogram for MainMenuScreen
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>

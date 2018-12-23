@@ -80,7 +80,6 @@
     <Compile Include="Utility\CollissionHelper.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\EntityHelper.cs" />
-    <Compile Include="Utility\FastNoise.cs" />
     <Compile Include="Utility\KeyboardHelper.cs" />
     <Compile Include="Utility\MouseHelper.cs" />
     <Compile Include="Utility\MovementType.cs" />
@@ -96,6 +95,9 @@
     <Compile Include="World\WorldTree.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FastNoise">
+      <HintPath>.\FastNoise.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>

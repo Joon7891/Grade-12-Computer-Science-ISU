@@ -13,6 +13,14 @@ namespace ISU_Medieval_Odyssey.Screen
     public sealed class SettingsScreen : IScreen
     {
         /// <summary>
+        /// Subprogram to load settings screen content
+        /// </summary>
+        public void LoadContent()
+        {
+
+        }
+        
+        /// <summary>
         /// Update subprogram for SettingsScreen
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>

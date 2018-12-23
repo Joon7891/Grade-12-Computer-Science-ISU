@@ -18,8 +18,8 @@ namespace ISU_Medieval_Odyssey
     /// </summary>
     public enum ScreenMode : byte
     {
-        MainMenu,
-        Game,
-        Settings
+        MainMenu = 0,
+        Game = 1,
+        Settings = 2
     };
 }

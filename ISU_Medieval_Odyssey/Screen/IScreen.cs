@@ -13,6 +13,11 @@ namespace ISU_Medieval_Odyssey.Screen
     public interface IScreen
     {
         /// <summary>
+        /// Subprogram to load various screen components
+        /// </summary>
+        void LoadContent();
+        
+        /// <summary>
         /// Update subprogram for screen
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
