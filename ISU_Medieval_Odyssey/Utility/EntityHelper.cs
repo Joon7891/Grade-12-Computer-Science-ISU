@@ -28,7 +28,7 @@ namespace ISU_Medieval_Odyssey.Utility
             Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
             // Loading directionary images for each movement type
-            for (MovementType movementType = MovementType.Walk; movementType <= MovementType.Thrust; ++movementType)
+            foreach (MovementType movementType in Enum.GetValues(typeof(MovementType)))
             {
                 movementImages.Add(movementType, LoadDirectionalImages(basePath, entityTypeName, movementType));
             }
@@ -51,7 +51,7 @@ namespace ISU_Medieval_Odyssey.Utility
             Texture2D[,] loadedImages = new Texture2D[Enum.GetValues(typeof(Direction)).Length, numFrames];
 
             // Loading in images for each direction and frame
-            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 for (byte i = 0; i < numFrames; ++i)
                 {
