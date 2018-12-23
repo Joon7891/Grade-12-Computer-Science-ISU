@@ -57,7 +57,7 @@ namespace ISU_Medieval_Odyssey
         private World world;
 
         // Current screen mode and dictionary to map screen mode to a IScreen
-        private ScreenMode currentScreen;
+        private ScreenMode currentScreen = ScreenMode.MainMenu;
         private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
 
         public Main()
@@ -107,7 +107,6 @@ namespace ISU_Medieval_Odyssey
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Setting up screen-related components
-            currentScreen = ScreenMode.MainMenu;
             screenDictionary.Add(ScreenMode.MainMenu, new MainMenuScreen());
             screenDictionary.Add(ScreenMode.Game, new GameScreen());
             screenDictionary.Add(ScreenMode.Settings, new SettingsScreen());
@@ -139,23 +138,8 @@ namespace ISU_Medieval_Odyssey
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
 
-            player.Update(gameTime);
-
-            // print current tile under mouse
-            if (MouseHelper.NewClick())
-            {
-                Vector2 worldPosition = Camera.ScreenPointToWorldPoint(NewMouse.Position.ToVector2());
-                Tile tile = world.GetTileFromWorldCoordinate(worldPosition);
-                if (tile != null)
-                {
-                    Console.WriteLine($"Tile Type: {tile.Type} ({tile.WorldPosition.X}, " + $"{tile.WorldPosition.Y})");
-                }
-            }
-
-            world.Update();
-            cameraMovement.Update(gameTime);
-            // Updating appropriate screen
-            //updateMethodDictionary[screenMode](gameTime);
+            // Updating current screen
+            screenDictionary[currentScreen].Update(gameTime);
 
             // Updating base game
             base.Update(gameTime);
@@ -167,17 +151,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            //player.Draw(spriteBatch);
-            world.Draw(spriteBatch, gameTime);
-
-            spriteBatch.Begin();
-
-            player.Draw(spriteBatch);
-            // Drawing appropriate screen
-            // drawMethodDictionary[screenMode](spriteBatch);
-            spriteBatch.End();
+            // Drawing current screen
+            screenDictionary[currentScreen].Draw(spriteBatch);
 
             // Drawing base game
             base.Draw(gameTime);
