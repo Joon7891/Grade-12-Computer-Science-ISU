@@ -12,10 +12,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ISU_Medieval_Odyssey.Utility;
-using ISU_Medieval_Odyssey.Item.Armour.Shoes;
-using ISU_Medieval_Odyssey.Item.Armour.Helmet;
-using ISU_Medieval_Odyssey.Item.Armour.Belt;
+using ISU_Medieval_Odyssey.Helpers;
+using ISU_Medieval_Odyssey.Data_Structures;
+using ISU_Medieval_Odyssey.Items.Armour.Shoes;
+using ISU_Medieval_Odyssey.Items.Armour.Helmet;
+using ISU_Medieval_Odyssey.Items.Armour.Belt;
 
 namespace ISU_Medieval_Odyssey
 {

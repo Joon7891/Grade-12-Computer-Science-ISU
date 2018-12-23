@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Specialized;
-using ISU_Medieval_Odyssey.Utility;
+using ISU_Medieval_Odyssey.Data_Structures;
 using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey

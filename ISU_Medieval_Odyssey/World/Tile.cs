@@ -6,7 +6,7 @@
 // Description: Class to hold Tile object
 
 using System;
-using ISU_Medieval_Odyssey.Utility;
+using ISU_Medieval_Odyssey.Data_Structures;
 
 namespace ISU_Medieval_Odyssey
 {

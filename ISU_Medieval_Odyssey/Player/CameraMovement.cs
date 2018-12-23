@@ -11,7 +11,7 @@ namespace ISU_Medieval_Odyssey
 
         public void Update(GameTime gameTime)
         {
-            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             HandleInput(deltaTime);
 
             if (targetPosition != Vector2.Zero)

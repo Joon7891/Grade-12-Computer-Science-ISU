@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ISU_Medieval_Odyssey.Graphics;
-using ISU_Medieval_Odyssey.Utility;
+using ISU_Medieval_Odyssey.Helpers;
 using ISU_Medieval_Odyssey.Screen;
 
 namespace ISU_Medieval_Odyssey
