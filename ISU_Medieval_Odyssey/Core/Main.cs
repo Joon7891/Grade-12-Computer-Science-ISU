@@ -87,7 +87,7 @@ namespace ISU_Medieval_Odyssey
             base.Initialize();
 
             // The smaller the orthographic size is, the more zoomed out the camera renders the world at
-            Camera = new Camera {OrthographicSize = 0.1f};
+            Camera = new Camera {OrthographicSize = 1f};
             cameraMovement = new CameraMovement();
 
             world = new World();
@@ -150,7 +150,7 @@ namespace ISU_Medieval_Odyssey
                 Tile tile = world.GetTileFromWorldCoordinate(worldPosition);
                 if (tile != null)
                 {
-                    Console.WriteLine($"Tile Type: {tile.Type} ({tile.WorldPosition.X}, {tile.WorldPosition.Y})");
+                    Console.WriteLine($"Tile Type: {tile.Type} ({tile.WorldPosition.X}, " + $"{tile.WorldPosition.Y})");
                 }
             }
 

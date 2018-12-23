@@ -9,6 +9,18 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class World
     {
+        private struct SpatialChunk
+        {
+            public Vector2Int Position { get; }
+            public Chunk Data { get; }
+
+            public SpatialChunk(Vector2Int position, Chunk data)
+            {
+                Position = position;
+                Data = data;
+            }
+        }
+
         /// <summary>
         /// Static instance of World representing the current World
         /// </summary>
@@ -40,9 +52,10 @@ namespace ISU_Medieval_Odyssey
         public void OnChunkUnloaded(ChunkEventArgs args) { ChunkUnloaded?.Invoke(this, args); }
 
         private Chunk[,] chunks;
-        private readonly HashSet<Chunk> loadedChunks;
-        private readonly Queue<Chunk> loadChunkQueue;
-        private readonly Queue<Chunk> unloadChunkQueue;
+        private readonly HashSet<SpatialChunk> loadedChunks;
+        private readonly Queue<SpatialChunk> loadChunkQueue;
+        private readonly Queue<SpatialChunk> unloadChunkQueue;
+        private readonly ObjectPool<Chunk> chunkPool;
 
         private readonly List<IWorldGenerator> worldGeneratorPasses;
         private WorldData worldData;
@@ -53,13 +66,14 @@ namespace ISU_Medieval_Odyssey
         {
             Current = this;
 
-            loadedChunks = new HashSet<Chunk>();
-            loadChunkQueue = new Queue<Chunk>();
-            unloadChunkQueue = new Queue<Chunk>();
+            loadedChunks = new HashSet<SpatialChunk>();
+            loadChunkQueue = new Queue<SpatialChunk>();
+            unloadChunkQueue = new Queue<SpatialChunk>();
 
             worldGeneratorPasses = new List<IWorldGenerator>();
             tiles = new Dictionary<Tile, Texture2D>();
 
+            chunkPool = new ObjectPool<Chunk>();
             ChunkLoaded += OnChunkLoaded;
             ChunkUnloaded += OnChunkUnloaded;
             TileChanged += OnTileChanged;
@@ -141,7 +155,7 @@ namespace ISU_Medieval_Odyssey
 
         public void Generate()
         {
-            CreateChunks();
+            //CreateChunks();
             foreach (IWorldGenerator pass in worldGeneratorPasses)
             {
                 pass.Generate(worldData);
@@ -158,17 +172,6 @@ namespace ISU_Medieval_Odyssey
             Generate();
         }
 
-        public void CreateChunks()
-        {
-            for (int x = 0; x < Width; x++)
-            {
-                for (int y = 0; y < Height; y++)
-                {
-                    chunks[x, y] = new Chunk(new Vector2Int(x, y), new Vector2Int(x, y) * Chunk.SIZE);
-                }
-            }
-        }
-
         public void AddGenerator(IWorldGenerator worldGenerator)
         {
             worldGeneratorPasses.Add(worldGenerator);
@@ -182,7 +185,7 @@ namespace ISU_Medieval_Odyssey
             int chunkY = (int)Math.Floor(y / (double)Chunk.SIZE);
             if (chunkX < 0 || chunkX >= Width || chunkY < 0 || chunkY >= Height) return null;
 
-            return chunks[chunkX, chunkY];
+            return GetChunkAt(chunkX, chunkY);
         }
 
         public Tile GetTileAt(int x, int y)
@@ -202,6 +205,12 @@ namespace ISU_Medieval_Odyssey
         public Chunk GetChunkAt(int x, int y)
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height) return null;
+            if (chunks[x, y] != null) return chunks[x, y];
+
+            Chunk chunk = chunkPool.Get();
+            chunk.SetPosition(new Vector2Int(x, y));
+            chunks[x, y] = chunk;
+
             return chunks[x, y];
         }
 
@@ -226,11 +235,10 @@ namespace ISU_Medieval_Odyssey
             Chunk chunkContaining = GetChunkContaining((int)Math.Round(tileAtCameraPosition.X), (int)Math.Round(tileAtCameraPosition.Y));
 
             if (chunkContaining == null) return;
-            int viewpointX = (int)chunkContaining.Position.X;
-            int viewpointY = (int)chunkContaining.Position.Y;
+            int viewpointX = chunkContaining.Position.X;
+            int viewpointY = chunkContaining.Position.Y;
 
-            HashSet<Chunk> chunksToLoad = new HashSet<Chunk>();
-
+            HashSet<SpatialChunk> chunksToLoad = new HashSet<SpatialChunk>();
             for (int x = -viewportWidth; x <= viewportWidth; x++)
             {
                 for (int y = -viewportHeight; y <= viewportHeight; y++)
@@ -239,41 +247,41 @@ namespace ISU_Medieval_Odyssey
                     int chunkY = viewpointY + y;
                     if (chunkX >= 0 && chunkX < Width && chunkY >= 0 && chunkY < Height)
                     {
-                        chunksToLoad.Add(chunks[chunkX, chunkY]);
+                        chunksToLoad.Add(new SpatialChunk(new Vector2Int(chunkX, chunkY), GetChunkAt(chunkX, chunkY)));
                     }
                 }
             }
 
-            IEnumerable<Chunk> chunksToUnload = loadedChunks.Except(chunksToLoad);
-            foreach (Chunk chunk in chunksToUnload.ToList())
+            IEnumerable<SpatialChunk> chunksToUnload = loadedChunks.Except(chunksToLoad);
+            foreach (SpatialChunk loadChunk in chunksToUnload.ToList())
             {
-                if (!unloadChunkQueue.Contains(chunk) && chunk.Loaded)
+                if (!unloadChunkQueue.Contains(loadChunk) && loadChunk.Data.Loaded)
                 {
-                    unloadChunkQueue.Enqueue(chunk);
+                    unloadChunkQueue.Enqueue(loadChunk);
                 }
             }
 
-            foreach (Chunk chunk in chunksToLoad)
+            foreach (SpatialChunk loadChunk in chunksToLoad)
             {
-                if (!loadChunkQueue.Contains(chunk) && !chunk.Loaded)
+                if (!loadChunkQueue.Contains(loadChunk) && !loadChunk.Data.Loaded)
                 {
-                    loadChunkQueue.Enqueue(chunk);
+                    loadChunkQueue.Enqueue(loadChunk);
                 }
             }
 
             if (unloadChunkQueue.Count > 0)
             {
-                Chunk chunk = unloadChunkQueue.Dequeue();
-                chunk.Unload();
-
+                SpatialChunk chunk = unloadChunkQueue.Dequeue();
+                chunk.Data.Unload();
+                chunkPool.Add(chunk.Data);
                 loadedChunks.Remove(chunk);
             }
 
             if (loadChunkQueue.Count > 0)
             {
-                Chunk chunk = loadChunkQueue.Dequeue();
-                chunk.Load(worldData);
-
+                SpatialChunk chunk = loadChunkQueue.Dequeue();
+                chunk.Data.SetPosition(chunk.Position);
+                chunk.Data.Load(worldData);
                 loadedChunks.Add(chunk);
             }
         }

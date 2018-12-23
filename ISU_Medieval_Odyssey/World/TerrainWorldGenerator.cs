@@ -13,8 +13,8 @@ namespace ISU_Medieval_Odyssey
             new Tuple<float, TileType>(0.055f, TileType.WetSand),
             new Tuple<float, TileType>(0.1f, TileType.Sand),
             new Tuple<float, TileType>(0.25f, TileType.Grass),
-            new Tuple<float, TileType>(0.6f, TileType.ForestGrass),
-            new Tuple<float, TileType>(0.7f, TileType.Stone),
+            new Tuple<float, TileType>(0.4f, TileType.ForestGrass),
+            new Tuple<float, TileType>(0.5f, TileType.Stone),
             new Tuple<float, TileType>(1, TileType.Snow)
         };
 

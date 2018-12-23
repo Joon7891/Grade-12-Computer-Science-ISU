@@ -84,6 +84,7 @@
     <Compile Include="Utility\KeyboardHelper.cs" />
     <Compile Include="Utility\MouseHelper.cs" />
     <Compile Include="Utility\MovementType.cs" />
+    <Compile Include="Utility\ObjectPool.cs" />
     <Compile Include="Utility\Vector2Int.cs" />
     <Compile Include="World\Chunk.cs" />
     <Compile Include="World\IWorldGenerator.cs" />
