@@ -53,6 +53,9 @@ namespace ISU_Medieval_Odyssey
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="Player"/> object
+        /// </summary>
         public Player()
         {
             // Setting up player rectangle
@@ -62,15 +65,12 @@ namespace ISU_Medieval_Odyssey
             nonRoundedLocation.Y = rectangle.Y;
         }
 
+        /// <summary>
+        /// Update subprogram for <see cref="Player"/> object
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
-            if (counter == 5)
-            {
-                currentFrame = (currentFrame + 1) % SharedData.MovementNumFrames[movementType];
-                counter = 0;
-            }
-            ++counter;
-
             // Calling subprograms to update movement and direction
             UpdateMovement(gameTime);
             UpdateDirection(gameTime);
@@ -113,8 +113,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         private void UpdateDirection(GameTime gameTime)
         {
-            playerMouseRotation = (135 + 360 + Math.Atan2(MouseHelper.Location.Y - playerCenter.Y, MouseHelper.Location.X - playerCenter.X) * 180 / Math.PI) % 360;
-            direction = (Direction)(playerMouseRotation / 90);
+            playerMouseRotation = (Math.Atan2(MouseHelper.Location.Y - playerCenter.Y, MouseHelper.Location.X - playerCenter.X) + 2.75 * Math.PI) % (2 * Math.PI);
+            direction = (Direction)(2 * playerMouseRotation / Math.PI);
         }
 
         public void Draw(SpriteBatch spriteBatch)
