@@ -13,11 +13,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-using ISU_Medieval_Odyssey.Helpers;
-using ISU_Medieval_Odyssey.Data_Structures;
-using ISU_Medieval_Odyssey.Items.Armour.Shoes;
-using ISU_Medieval_Odyssey.Items.Armour.Helmet;
-using ISU_Medieval_Odyssey.Items.Armour.Belt;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -26,6 +21,8 @@ namespace ISU_Medieval_Odyssey
         public int X => playerCenter.X;
 
         public int Y => playerCenter.Y;
+
+        public Vector2 CameraClamp => new Vector2(X - SharedData.SCREEN_WIDTH / 2, Y - SharedData.SCREEN_HEIGHT / 2);
         
         // Graphics-related data
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
@@ -62,8 +59,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Player()
         {
-            // Setting up player rectangle
-            rectangle = new Rectangle(0, 0, 128, 128);
+            // Setting up player rectangle and camera components
+            rectangle = new Rectangle(0, 0, 100, 100);
+            playerCenter = Vector2Int.Zero;
             nonRoundedLocation = new Vector2();
             nonRoundedLocation.X = rectangle.X;
             nonRoundedLocation.Y = rectangle.Y;
@@ -104,7 +102,7 @@ namespace ISU_Medieval_Odyssey
                 nonRoundedLocation.X += SPEED * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             }
 
-            // Updating player rectangle and player center
+            // Updating player coordinate-related variable
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
             playerCenter.X = rectangle.X + rectangle.Width / 2;
@@ -118,7 +116,7 @@ namespace ISU_Medieval_Odyssey
         private void UpdateDirection(GameTime gameTime)
         {
             // Updating player mouse rotation and direction
-            playerMouseRotation = (Math.Atan2(MouseHelper.Location.Y - playerCenter.Y, MouseHelper.Location.X - playerCenter.X) + 2.75 * Math.PI) % (2 * Math.PI);
+            playerMouseRotation = (Math.Atan2(MouseHelper.Location.Y - SharedData.SCREEN_HEIGHT / 2, MouseHelper.Location.X - SharedData.SCREEN_WIDTH / 2) + 2.75 * Math.PI) % (2 * Math.PI);
             direction = (Direction)(2 * playerMouseRotation / Math.PI);
         }
 

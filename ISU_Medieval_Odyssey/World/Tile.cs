@@ -6,54 +6,61 @@
 // Description: Class to hold Tile object
 
 using System;
-using ISU_Medieval_Odyssey.Data_Structures;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Tile
     {
-        /// <summary>
-        /// The height of the <see cref="Tile"/>, in pixels
-        /// </summary>
-        public const int HEIGHT = 16;
-
-        /// <summary>
-        /// The width of the <see cref="Tile"/>, in pixels
-        /// </summary>
-        public const int WIDTH = 2 * HEIGHT;
-
-        /// <summary>
-        /// The <see cref="Chunk"/> that this tile belongs to
-        /// </summary>
-        public Chunk Chunk { get; }
-
-        /// <summary>
-        /// The position of the <see cref="Tile"/> relative to its <see cref="Chunk"/>
-        /// </summary>
-        public Vector2Int RelativePosition { get; set; }
-
-        /// <summary>
-        /// The world position of this <see cref="Tile"/>
-        /// </summary>
-        public Vector2Int WorldPosition => RelativePosition + Chunk.WorldPosition;
+        // Various constants required to draw tile at appropraite location
+        private const int PIXEL_SIZE = 150;
+        private const int VERTICAL_SPACING = 36;
+        private const int HORIZONTAL_SPACING = 63;
 
         /// <summary>
         /// The type of the <see cref="Tile"/>
         /// </summary>
-        public TileType Type { get; set; }
+        public TileType Type { get; set;  }
 
         /// <summary>
-        /// Constructor for <see cref="Tile"/> object
+        /// The position of the tile in the world
         /// </summary>
-        /// <param name="type">The type of the tile</param>
-        /// <param name="chunk">The chunk containing the tile</param>
-        /// <param name="relativePosition">The position of the tile, relative to its chunk</param>
-        public Tile(TileType type, Chunk chunk, Vector2Int relativePosition)
+        public Vector2Int WorldPosition { get; }
+        
+        // Variables required for drawing tile at appropraite location
+        private static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
+        private Rectangle rectangle;
+
+        /// <summary>
+        /// Static constructor to load various <see cref="Tile"/> components
+        /// </summary>
+        static Tile()
         {
-            // Setting constructor parameters to object properties
+            // Loading images for each tile type
+            foreach (TileType tileType in Enum.GetValues(typeof(TileType)))
+            {
+                tileImageDictionary.Add(tileType, Main.Instance.Content.Load<Texture2D>($"Images/Sprites/Tiles/tile{tileType.ToString()}"));
+            }
+        }
+
+        public Tile(TileType type, Vector2Int worldPosition)
+        {
             Type = type;
-            Chunk = chunk;
-            RelativePosition = relativePosition;
+            WorldPosition = worldPosition;
+            rectangle = new Rectangle(HORIZONTAL_SPACING * (worldPosition.X - worldPosition.Y), 
+                VERTICAL_SPACING * (worldPosition.X + worldPosition.Y), PIXEL_SIZE, PIXEL_SIZE);
+        }
+
+        /// <summary>
+        /// Subprogram to draw <see cref="Tile"/> object
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            // Drawing tile
+            spriteBatch.Draw(tileImageDictionary[Type], rectangle, Color.White);
         }
     }
 }

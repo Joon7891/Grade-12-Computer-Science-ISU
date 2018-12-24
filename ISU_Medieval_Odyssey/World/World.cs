@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -13,6 +14,12 @@ namespace ISU_Medieval_Odyssey
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            for (int i = 0; i < 100; ++i)
+            {
+                for (int j = 0; j < 100; ++j)
+                {
+                }
+            }
 
         }
     }

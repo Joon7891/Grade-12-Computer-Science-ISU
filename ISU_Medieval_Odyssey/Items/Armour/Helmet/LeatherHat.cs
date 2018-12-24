@@ -11,8 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
-using ISU_Medieval_Odyssey.Helpers;
-using ISU_Medieval_Odyssey.Data_Structures;
 
 namespace ISU_Medieval_Odyssey
 {

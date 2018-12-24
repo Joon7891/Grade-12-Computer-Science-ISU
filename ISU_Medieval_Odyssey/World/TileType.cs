@@ -17,7 +17,7 @@ namespace ISU_Medieval_Odyssey
         Water,
         WetSand,
         Sand,
-        Mud,
+        Dirt,
         DryGrass,
         Grass,
         ForestGrass,

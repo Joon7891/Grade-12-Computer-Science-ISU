@@ -19,7 +19,7 @@ namespace ISU_Medieval_Odyssey
             new TileHeightMap(0.05f, TileType.Water),
             new TileHeightMap(0.10f, TileType.WetSand),
             new TileHeightMap(0.15f, TileType.Sand),
-            new TileHeightMap(0.25f, TileType.Mud),
+            new TileHeightMap(0.25f, TileType.Dirt),
             new TileHeightMap(0.30f, TileType.DryGrass),
             new TileHeightMap(0.35f, TileType.Grass),
             new TileHeightMap(0.40f, TileType.ForestGrass),

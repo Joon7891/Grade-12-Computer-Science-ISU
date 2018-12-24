@@ -49,7 +49,7 @@ namespace ISU_Medieval_Odyssey
         public KeyboardState NewKeyboard { get; private set; }
 
         // Current screen mode and dictionary to map screen mode to a IScreen
-        private ScreenMode currentScreen = ScreenMode.MainMenu;
+        private ScreenMode currentScreen = ScreenMode.Game;
         private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
 
         private Player test;
@@ -126,6 +126,7 @@ namespace ISU_Medieval_Odyssey
 
             test.Update(gameTime);
 
+
             // Updating base game
             base.Update(gameTime);
         }
@@ -141,11 +142,10 @@ namespace ISU_Medieval_Odyssey
             // Drawing current screen
             screenDictionary[currentScreen].Draw(spriteBatch);
 
-            spriteBatch.Begin();
+            //spriteBatch.Begin();
 
-            test.Draw(spriteBatch);
-
-            spriteBatch.End();
+            ////spriteBatch.Draw(Tile.tileImageDictionary[TileType.Dirt], new Rectangle(0, 0, 100, 100), Color.White);
+            ////spriteBatch.Draw(Tile.tileImageDictionary[TileType.DryGrass], new Rectangle(42, 24, 100, 100), Color.White);
 
 
             // Drawing base game

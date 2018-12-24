@@ -5,14 +5,17 @@
 // Modified Date: 12/29/2018
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Chunk
     {
         /// <summary>
-        /// The horizontal/vertical size of the chunk - a chunk will contain 32 x 32 tiles
+        /// The horizontal/vertical size of the chunk - a chunk will contain 16 x 16 tiles
         /// </summary>
-        public const byte SIZE = 32;
+        public const byte SIZE = 16;
 
         /// <summary>
         /// A 2D array containing the tiles in the chunk
@@ -50,13 +53,21 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Chunk()
         {
-            // Initializing all tiles to a blank tile 
             tiles = new Tile[SIZE, SIZE];
+        }
+
+        public void Update(GameTime gameTime)
+        {
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
             for (int i = 0; i < SIZE; ++i)
             {
                 for (int j = 0; j < SIZE; ++j)
                 {
-                    tiles[i, j] = new Tile(TileType.Empty, this, Vector2Int.Zero);
+                    tiles[i, j].Draw(spriteBatch);
                 }
             }
         }
