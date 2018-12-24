@@ -61,28 +61,28 @@ namespace ISU_Medieval_Odyssey.World
             noiseEngine.SetSeed(seed);
         }
 
-        public void Generate(WorldData worldData)
-        {
-            // Float to temporarily hold the noise value
-            float noiseValue;
+        //public void Generate(WorldData worldData)
+        //{
+        //    // Float to temporarily hold the noise value
+        //    float noiseValue;
 
-            for (int i = 0; i < worldData.Width; ++i)
-            {
-                for (int j = 0; j < worldData.Height; ++j)
-                {
-                    noiseValue = noiseEngine.GetPerlinFractal(i, j);
+        //    for (int i = 0; i < worldData.Width; ++i)
+        //    {
+        //        for (int j = 0; j < worldData.Height; ++j)
+        //        {
+        //            noiseValue = noiseEngine.GetPerlinFractal(i, j);
 
-                    foreach (TileHeightMap tileHeightMap in tileHeightMaps)
-                    {
-                        if (tileHeightMap.MaxHeight < noiseValue)
-                        {
-                            worldData.Tiles[i, j] = tileHeightMap.Type;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        //            foreach (TileHeightMap tileHeightMap in tileHeightMaps)
+        //            {
+        //                if (tileHeightMap.MaxHeight < noiseValue)
+        //                {
+        //                    worldData.Tiles[i, j] = tileHeightMap.Type;
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
     }
 }

@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey
 
             if (targetPosition != Vector2.Zero)
             {
-                Main.Instance.Camera.Position += new Vector2((float)Math.Round(targetPosition.X), (float)Math.Round(targetPosition.Y));
+                //Main.Instance.Camera.Position += new Vector2((float)Math.Round(targetPosition.X), (float)Math.Round(targetPosition.Y));
             }
 
             targetPosition = Vector2.Zero;

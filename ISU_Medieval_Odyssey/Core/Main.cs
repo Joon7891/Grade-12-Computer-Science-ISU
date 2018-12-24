@@ -51,14 +51,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public KeyboardState NewKeyboard { get; private set; }
 
-        private Player player;
-        public Camera Camera { get; private set; }
-        private CameraMovement cameraMovement;
-        private World world;
-
         // Current screen mode and dictionary to map screen mode to a IScreen
         private ScreenMode currentScreen = ScreenMode.MainMenu;
         private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
+
+        private Player test;
 
         public Main()
         {
@@ -83,19 +80,6 @@ namespace ISU_Medieval_Odyssey
 
             // Initializing base game
             base.Initialize();
-
-            // The smaller the orthographic size is, the more zoomed out the camera renders the world at
-            Camera = new Camera {OrthographicSize = 1f};
-            cameraMovement = new CameraMovement();
-
-            world = new World();
-
-            world.AddGenerator(new TerrainWorldGenerator());
-            world.Initialize(100, 100);
-            Camera.Position = new Vector2((world.Width - 1) / 2 * Chunk.SIZE * Tile.Size,
-                (world.Height - 1) / 2 * Chunk.SIZE * Tile.Size);
-
-            world.Generate();
         }
 
         /// <summary>
@@ -114,6 +98,8 @@ namespace ISU_Medieval_Odyssey
             {
                 screenDictionary[screenMode].LoadContent();
             }
+
+            test = new Player();
         }
 
         /// <summary>
@@ -141,6 +127,8 @@ namespace ISU_Medieval_Odyssey
             // Updating current screen
             screenDictionary[currentScreen].Update(gameTime);
 
+            test.Update(gameTime);
+
             // Updating base game
             base.Update(gameTime);
         }
@@ -153,6 +141,13 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing current screen
             screenDictionary[currentScreen].Draw(spriteBatch);
+
+            spriteBatch.Begin();
+
+            test.Draw(spriteBatch);
+
+            spriteBatch.End();
+
 
             // Drawing base game
             base.Draw(gameTime);

@@ -86,6 +86,7 @@
     <Compile Include="Data Structures\ObjectPool.cs" />
     <Compile Include="Data Structures\Vector2Int.cs" />
     <Compile Include="World\Chunk.cs" />
+    <Compile Include="World\TerrainGenerator.cs" />
     <Compile Include="World\Tile.cs" />
     <Compile Include="World\TileHeightMap.cs" />
     <Compile Include="World\TileType.cs" />

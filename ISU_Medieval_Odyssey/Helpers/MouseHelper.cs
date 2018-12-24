@@ -23,5 +23,10 @@ namespace ISU_Medieval_Odyssey.Helpers
         /// </summary>
         /// <returns>Whether or whether not a mouse click was a new one</returns>
         public static bool NewClick() => Main.Instance.NewMouse.LeftButton == ButtonState.Pressed && Main.Instance.OldMouse.LeftButton != ButtonState.Pressed;
+
+        /// <summary>
+        /// The location of the mouse on the screen
+        /// </summary>
+        public static Vector2 Location => Main.Instance.NewMouse.Position.ToVector2();
     }
 }
