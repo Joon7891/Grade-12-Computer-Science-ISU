@@ -2,133 +2,66 @@
 // File Name: Chunk.cs
 // Project Name: ISU_Medieval_Odyseey
 // Creation Date: 12/17/2018
-// Modified Date: 12/17/2018
+// Modified Date: 12/29/2018
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
-using System;
-using System.Collections.Specialized;
 using ISU_Medieval_Odyssey.Data_Structures;
-using Microsoft.Xna.Framework;
 
-namespace ISU_Medieval_Odyssey
+namespace ISU_Medieval_Odyssey.World
 {
-    public delegate void ChunkLoadedEventHandler(object sender, ChunkEventArgs args);
-    public class ChunkEventArgs : EventArgs
-    {
-        public Chunk Chunk { get; }
-        public ChunkEventArgs(Chunk chunk)
-        {
-            Chunk = chunk;
-        }
-    }
-
     public sealed class Chunk
     {
         /// <summary>
-        /// The amount of tiles that a signal chunk contains
+        /// The horizontal/vertical size of the chunk - a chunk will contain 32 x 32 tiles
         /// </summary>
-        public const int SIZE = 32;
+        public const byte SIZE = 32;
 
         /// <summary>
-        /// Gets or sets a tile
+        /// A 2D array containing the tiles in the chunk
         /// </summary>
-        /// <param name="x">The x-coordinate of the tile</param>
-        /// <param name="y">The y-coordinate of the tile</param>
-        /// <returns>The tile at a given cartesian coordinate</returns>
+        /// <param name="x">The x-coordinate of the tile (relative to the chunk)</param>
+        /// <param name="y">The y-coordinate of the tile (relative to the chunk)</param>
+        /// <returns>The tile at the given cartesian coordinate</returns>
         public Tile this[int x, int y]
         {
-            get => GetTileAt(x, y);
-            set => SetTileAt(x, y, value);
+            // Getter for tile
+            get => tiles[x, y];
+
+            // Setter for tile
+            set => tiles[x, y] = value;
         }
+        private Tile[,] tiles;
 
         /// <summary>
-        /// The position of this <see cref="Chunk"/> in chunk-space.
+        /// The position of this <see cref="Chunk"/> in chunk-space
         /// </summary>
         public Vector2Int Position { get; private set; }
 
         /// <summary>
-        /// The position of this <see cref="Chunk"/> in world-space.
+        /// The position of this <see cref="Chunk"/> in world/tile-space
         /// </summary>
-        public Vector2Int WorldPosition => Position * SIZE;
+        public Vector2Int WorldPosition { get; private set; }
 
         /// <summary>
-        /// Indicates whether the chunk is loaded.
+        /// Whether the chunk is loaded or not
         /// </summary>
         public bool Loaded { get; set; }
 
-        private Tile[,] tiles;
-
+        /// <summary>
+        /// Constructor for <see cref="Chunk"/> object
+        /// </summary>
         public Chunk()
         {
-            Generate();
-        }
-
-        private void Generate()
-        {
+            // Initializing all tiles to a blank tile 
             tiles = new Tile[SIZE, SIZE];
-            for (int x = 0; x < SIZE; x++)
+            for (int i = 0; i < SIZE; ++i)
             {
-                for (int y = 0; y < SIZE; y++)
+                for (int j = 0; j < SIZE; ++j)
                 {
-                    tiles[x, y] = new Tile(TileType.Empty, Vector2Int.Zero, this);
+                    tiles[i, j] = new Tile(TileType.Empty, this, Vector2Int.Zero);
                 }
             }
         }
 
-        public Tile GetTileAt(int x, int y)
-        {
-            if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return null;
-            return tiles?[x, y];
-        }
-
-        /// <summary>
-        /// Setter for Tile
-        /// </summary>
-        /// <param name="x">The x-coordinate of the tile</param>
-        /// <param name="y">The y-coordinate of the tile</param>
-        /// <param name="value">The value of the assignment</param>
-        public void SetTileAt(int x, int y, Tile value)
-        {
-            // Assigning value of coordinatesa are in range and assignment is not null
-            if (0 <= x && x < SIZE && 0 <= y && y < SIZE && value != null)
-            {
-                tiles[x, y] = value;
-            }
-        }
-
-        public void Load(WorldData worldData)
-        {
-            if (Loaded) return;
-
-            Loaded = true;
-
-            Generate();
-            int startX = Position.X * SIZE;
-            int startY = Position.Y * SIZE;
-
-            for (int x = 0; x < SIZE; x++)
-            {
-                for (int y = 0; y < SIZE; y++)
-                {
-                    tiles[x, y].Position.X = x;
-                    tiles[x, y].Position.Y = y;
-                    tiles[x, y].Type = worldData.Tiles[startX + x, startY + y];
-                }
-            }
-
-            World.Current.OnChunkLoaded(new ChunkEventArgs(this));
-        }
-
-        public void SetPosition(Vector2Int position)
-        {
-            Position = position;
-        }
-
-        public void Unload()
-        {
-            if (!Loaded) return;
-            Loaded = false;
-            World.Current.OnChunkUnloaded(new ChunkEventArgs(this));
-        }
     }
 }
