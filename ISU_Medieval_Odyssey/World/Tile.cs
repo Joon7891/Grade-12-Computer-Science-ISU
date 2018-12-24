@@ -8,7 +8,7 @@
 using System;
 using ISU_Medieval_Odyssey.Data_Structures;
 
-namespace ISU_Medieval_Odyssey.World
+namespace ISU_Medieval_Odyssey
 {
     public sealed class Tile
     {

@@ -13,9 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using ISU_Medieval_Odyssey.Helpers;
 
-namespace ISU_Medieval_Odyssey.Graphics
+namespace ISU_Medieval_Odyssey
 {
     public sealed class Button
     {

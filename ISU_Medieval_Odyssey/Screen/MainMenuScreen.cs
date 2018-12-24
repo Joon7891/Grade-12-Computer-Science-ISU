@@ -8,7 +8,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey.Screen
+namespace ISU_Medieval_Odyssey
 {
     public sealed class MainMenuScreen : IScreen
     {

@@ -14,7 +14,7 @@ using ISU_Medieval_Odyssey.Helpers;
 using Microsoft.Xna.Framework.Graphics;
 using ISU_Medieval_Odyssey.Data_Structures;
 
-namespace ISU_Medieval_Odyssey.Items.Armour.Helmet
+namespace ISU_Medieval_Odyssey
 {
     public sealed class MetalHelmet : Helmet
     {

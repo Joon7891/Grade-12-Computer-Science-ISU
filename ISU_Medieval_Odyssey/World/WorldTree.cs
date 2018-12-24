@@ -8,7 +8,6 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using ISU_Medieval_Odyssey.Data_Structures;
 
 namespace ISU_Medieval_Odyssey
 {

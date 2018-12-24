@@ -8,10 +8,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey.Screen
+namespace ISU_Medieval_Odyssey
 {
     public sealed class GameScreen : IScreen
     {
+        // Instance of player and world
+        private Player player;
+        private World world;
+
+        private Camera camera;
+        
         /// <summary>
         /// Subprogram to load GameScreen content
         /// </summary>
@@ -26,7 +32,9 @@ namespace ISU_Medieval_Odyssey.Screen
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
-
+            // Updating player and world
+            player.Update(gameTime);
+            world.Update(gameTime);
         }
 
         /// <summary>
@@ -35,6 +43,7 @@ namespace ISU_Medieval_Odyssey.Screen
         /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            // Drawing player and world - in adjusted camera
 
         }
     }

@@ -5,9 +5,7 @@
 // Modified Date: 12/29/2018
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
-using ISU_Medieval_Odyssey.Data_Structures;
-
-namespace ISU_Medieval_Odyssey.World
+namespace ISU_Medieval_Odyssey
 {
     public sealed class Chunk
     {

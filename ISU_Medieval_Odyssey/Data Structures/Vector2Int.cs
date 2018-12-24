@@ -7,10 +7,10 @@
 
 using Microsoft.Xna.Framework;
 
-namespace ISU_Medieval_Odyssey.Data_Structures
+namespace ISU_Medieval_Odyssey
 {
     /// <summary>
-    /// Descrtibes a 2D vector with integer coordinates
+    /// Describes a 2D vector with integer coordinates
     /// </summary>
     public class Vector2Int
     {

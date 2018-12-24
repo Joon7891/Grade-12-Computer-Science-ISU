@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using ISU_Medieval_Odyssey.Data_Structures;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey.Helpers
+namespace ISU_Medieval_Odyssey
 {
     public static class EntityHelper
     {

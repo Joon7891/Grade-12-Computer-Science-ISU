@@ -23,12 +23,16 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Player
     {
+        public int X => playerCenter.X;
+
+        public int Y => playerCenter.Y;
+        
         // Graphics-related data
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
         private MovementType movementType = MovementType.Walk;
 
         // Movement-related data
-        private Vector2 playerCenter;
+        private Vector2Int playerCenter;
         private double playerMouseRotation;
         private Rectangle rectangle;
         private Vector2 nonRoundedLocation;
@@ -113,6 +117,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         private void UpdateDirection(GameTime gameTime)
         {
+            // Updating player mouse rotation and direction
             playerMouseRotation = (Math.Atan2(MouseHelper.Location.Y - playerCenter.Y, MouseHelper.Location.X - playerCenter.X) + 2.75 * Math.PI) % (2 * Math.PI);
             direction = (Direction)(2 * playerMouseRotation / Math.PI);
         }

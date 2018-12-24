@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace ISU_Medieval_Odyssey.Data_Structures
+namespace ISU_Medieval_Odyssey
 {
     public class ObjectPool<T>
     {

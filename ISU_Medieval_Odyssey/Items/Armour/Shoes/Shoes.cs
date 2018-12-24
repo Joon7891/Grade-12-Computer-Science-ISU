@@ -11,8 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.Items.Armour.Shoes
-{
+namespace ISU_Medieval_Odyssey
+{ 
     public abstract class Shoes : Armour
     {
     }

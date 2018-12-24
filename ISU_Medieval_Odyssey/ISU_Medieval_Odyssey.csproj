@@ -46,7 +46,7 @@
     <Compile Include="Core\Program.cs" />
     <Compile Include="Core\SharedData.cs" />
     <Compile Include="Graphics\Button.cs" />
-    <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Player\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
     <Compile Include="Items\Armour\Belt\Belt.cs" />
     <Compile Include="Items\Armour\Belt\LeatherBelt.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="World\Tile.cs" />
     <Compile Include="World\TileHeightMap.cs" />
     <Compile Include="World\TileType.cs" />
+    <Compile Include="World\World.cs" />
     <Compile Include="World\WorldTree.cs" />
   </ItemGroup>
   <ItemGroup>

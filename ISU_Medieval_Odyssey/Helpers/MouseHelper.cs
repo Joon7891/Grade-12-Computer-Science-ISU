@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ISU_Medieval_Odyssey.Helpers
+namespace ISU_Medieval_Odyssey
 {
     public static class MouseHelper
     {

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.Items.Armour.Belt
+namespace ISU_Medieval_Odyssey
 {
     public abstract class Belt : Armour
     {
