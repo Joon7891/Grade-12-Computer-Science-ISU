@@ -153,7 +153,7 @@ namespace ISU_Medieval_Odyssey
         /// Retrieves the HashCode of <see cref="Vector2Int"/>
         /// </summary>
         /// <returns>The HashCode of the <see cref="Vector2Int"/></returns>
-        public override int GetHashCode() => unchecked((X * 397) ^ 7);
+        public override int GetHashCode() => unchecked((X * 397) ^ Y);
 
         /// <summary>
         /// Converts a <see cref="Vector2Int"/> to a <see cref="string"/>
