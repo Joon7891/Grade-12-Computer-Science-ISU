@@ -45,6 +45,8 @@
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Core\SharedData.cs" />
+    <Compile Include="Data Structures\Interval.cs" />
+    <Compile Include="Data Structures\IntervalType.cs" />
     <Compile Include="Graphics\Button.cs" />
     <Compile Include="Player\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
@@ -83,7 +85,6 @@
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="Helpers\MouseHelper.cs" />
     <Compile Include="Data Structures\MovementType.cs" />
-    <Compile Include="Data Structures\ObjectPool.cs" />
     <Compile Include="Data Structures\Vector2Int.cs" />
     <Compile Include="World\Chunk.cs" />
     <Compile Include="World\TerrainGenerator.cs" />
