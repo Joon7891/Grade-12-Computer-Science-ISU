@@ -14,10 +14,25 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Tile
     {
-        // Various constants required to draw tile at appropraite location
-        private const int PIXEL_SIZE = 113;
-        private const int VERTICAL_SPACING = 27;
-        private const int HORIZONTAL_SPACING = 48;
+        /// <summary>
+        /// The horizontal size of the <see cref="Tile"/>, in pixels
+        /// </summary>
+        public const int HORIZONTAL_SIZE = 72;
+
+        /// <summary>
+        /// The vertical size of the <see cref="Tile"/>, in pixels
+        /// </summary>
+        public const int VERTICAL_SIZE = 100;
+
+        /// <summary>
+        /// The horizontal spacing between adjacent <see cref="Tile"/>s
+        /// </summary>
+        public const int HORIZONTAL_SPACING = HORIZONTAL_SIZE;
+
+        /// <summary>
+        /// The vertical spacing between adjacent <see cref="Tile"/>s
+        /// </summary>
+        public const int VERTICAL_SPACING = VERTICAL_SIZE / 2;
 
         /// <summary>
         /// The type of the <see cref="Tile"/>
@@ -45,12 +60,16 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        /// <summary>
+        /// Constructor for <see cref="Tile"/> objec
+        /// </summary>
+        /// <param name="type">The type of the tile</param>
+        /// <param name="worldPosition">The world position of the tile</param>
         public Tile(TileType type, Vector2Int worldPosition)
         {
             Type = type;
             WorldPosition = worldPosition;
-            rectangle = new Rectangle(HORIZONTAL_SPACING * (worldPosition.X - worldPosition.Y), 
-                VERTICAL_SPACING * (worldPosition.X + worldPosition.Y), PIXEL_SIZE, PIXEL_SIZE);
+            rectangle = new Rectangle(HORIZONTAL_SPACING * worldPosition.X, VERTICAL_SPACING * worldPosition.Y, HORIZONTAL_SIZE, VERTICAL_SIZE);
         }
 
         /// <summary>

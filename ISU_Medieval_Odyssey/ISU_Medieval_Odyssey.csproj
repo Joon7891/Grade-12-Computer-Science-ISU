@@ -71,7 +71,6 @@
     <Compile Include="Items\Weapon\ThrustWeapon\Staff.cs" />
     <Compile Include="Items\Weapon\ThrustWeapon\ThrustWeapon.cs" />
     <Compile Include="Items\Weapon\Weapon.cs" />
-    <Compile Include="Player\CameraMovement.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\GameScreen.cs" />
