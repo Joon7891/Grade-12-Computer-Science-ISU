@@ -124,9 +124,6 @@ namespace ISU_Medieval_Odyssey
             // Updating current screen
             screenDictionary[currentScreen].Update(gameTime);
 
-            test.Update(gameTime);
-
-
             // Updating base game
             base.Update(gameTime);
         }

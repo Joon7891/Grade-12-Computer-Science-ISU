@@ -19,35 +19,26 @@ namespace ISU_Medieval_Odyssey
     public sealed class Player
     {
         /// <summary>
-        /// The x-coordinate of the player
+        /// The center of the player
         /// </summary>
-        public int X => playerCenter.X;
+        public Vector2 Center { get; private set; }
 
-        /// <summary>
-        /// The y-coordinate of the player
-        /// </summary>
-        public int Y => playerCenter.Y;
-
-        public Vector2 CameraClamp => new Vector2(X - SharedData.SCREEN_WIDTH / 2, Y - SharedData.SCREEN_HEIGHT / 2);
-        
         // Graphics-related data
-        private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private Rectangle rectangle;
+        private const byte PIXEL_SIZE = 100;
         private MovementType movementType = MovementType.Walk;
+        private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         // Movement-related data
-        private Vector2Int playerCenter;
-        private double playerMouseRotation;
-        private Rectangle rectangle;
-        private Vector2 nonRoundedLocation;
-
-        private Direction direction = Direction.Down;
+        private double rotation;
+        private Direction direction;
         private const int SPEED = 120;
+        private Vector2 nonRoundedLocation;
+        private readonly Vector2 dimensionVector = new Vector2(PIXEL_SIZE, PIXEL_SIZE);        
 
-
+        // TO DO: Animation-related data
         private int currentFrame = 0;
         private int counter = 0;
-
-
 
         /// <summary>
         /// Static constructor to setup various Player components
@@ -66,8 +57,8 @@ namespace ISU_Medieval_Odyssey
         public Player()
         {
             // Setting up player rectangle and camera components
-            rectangle = new Rectangle(0, 0, 100, 100);
-            playerCenter = Vector2Int.Zero;
+            rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
+            Center = Vector2.Zero;
             nonRoundedLocation = new Vector2();
             nonRoundedLocation.X = rectangle.X;
             nonRoundedLocation.Y = rectangle.Y;
@@ -77,11 +68,12 @@ namespace ISU_Medieval_Odyssey
         /// Update subprogram for <see cref="Player"/> object
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
-        public void Update(GameTime gameTime)
+        /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
+        public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
             // Calling subprograms to update movement and direction
             UpdateMovement(gameTime);
-            UpdateDirection(gameTime);
+            UpdateDirection(gameTime, cameraCenter);
         }
 
         /// <summary>
@@ -111,19 +103,19 @@ namespace ISU_Medieval_Odyssey
             // Updating player coordinate-related variable
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
-            playerCenter.X = rectangle.X + rectangle.Width / 2;
-            playerCenter.Y = rectangle.Y + rectangle.Height / 2;
+            Center = rectangle.Location.ToVector2() + dimensionVector;
         }
 
         /// <summary>
         /// Subprogram to update the player's direction
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
-        private void UpdateDirection(GameTime gameTime)
+        /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
+        private void UpdateDirection(GameTime gameTime, Vector2 cameraCenter)
         {
             // Updating player mouse rotation and direction
-            playerMouseRotation = (Math.Atan2(MouseHelper.Location.Y - SharedData.SCREEN_HEIGHT / 2, MouseHelper.Location.X - SharedData.SCREEN_WIDTH / 2) + 2.75 * Math.PI) % (2 * Math.PI);
-            direction = (Direction)(2 * playerMouseRotation / Math.PI);
+            rotation = (Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI);
+            direction = (Direction)(2 * rotation / Math.PI);
         }
 
         public void Draw(SpriteBatch spriteBatch)

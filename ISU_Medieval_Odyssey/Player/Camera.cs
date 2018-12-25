@@ -21,12 +21,10 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2 Position { get; set; }
 
-        public Vector2 Center => Position + new Vector2(SharedData.SCREEN_WIDTH / 2, SharedData.SCREEN_HEIGHT / 2);
-
         /// <summary>
-        /// The rotation of the camera
+        /// The center of the camera
         /// </summary>
-        //public float Rotation { get; private set; }
+        public Vector2 Center => Position + SharedData.ScreenCenter;
 
         /// <summary>
         /// The origin of the camera - defualt center of screen

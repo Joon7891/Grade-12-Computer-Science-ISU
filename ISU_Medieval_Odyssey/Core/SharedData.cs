@@ -5,6 +5,7 @@
 // Modified Date: 01/01/2019
 // Description: Static class to hold shared data
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,11 @@ namespace ISU_Medieval_Odyssey
         public const int SCREEN_HEIGHT = 800;
 
         /// <summary>
+        /// A vector representing the center of the screen
+        /// </summary>
+        public static Vector2 ScreenCenter { get; private set; }
+
+        /// <summary>
         /// Dictionary to map movement types to its number of frames
         /// </summary>
         public static Dictionary<MovementType, byte> MovementNumFrames { get; private set; }
@@ -43,6 +49,9 @@ namespace ISU_Medieval_Odyssey
         {
             // Constructing Random Number Generator
             RNG = new Random();
+
+            // Constructing screen center vector
+            ScreenCenter = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
             // Setting up movement type num frames dictionary
             MovementNumFrames = new Dictionary<MovementType, byte>();

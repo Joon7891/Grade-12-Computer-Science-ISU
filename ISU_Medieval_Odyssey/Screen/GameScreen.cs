@@ -17,8 +17,10 @@ namespace ISU_Medieval_Odyssey
         private Player player = new Player();
         private World world = new World();
 
+        // Camera-realted variables
         private Camera camera = new Camera();
-        
+        private Vector2 cameraOffset;
+
         /// <summary>
         /// Subprogram to load GameScreen content
         /// </summary>
@@ -34,22 +36,18 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating player and world
-            player.Update(gameTime);
+            player.Update(gameTime, camera.Position);
             world.Update(gameTime);
 
-            // Updating camera if player is too far from center of screen
-            camera.Position = player.CameraClamp;
-
-
-
-            if (Math.Abs(camera.Position.X - player.CameraClamp.X) > SharedData.SCREEN_WIDTH / 4 ||
-                Math.Abs(camera.Position.Y - player.CameraClamp.Y) > SharedData.SCREEN_HEIGHT / 4)
+            // Updating the offset of the camera and moving camera if appropraite
+            cameraOffset = player.Center - camera.Center;
+            if (Math.Abs(cameraOffset.X) > SharedData.SCREEN_WIDTH / 5)
             {
-                // camera.Position += 
-                    
-                    
-                    //new Vector2(player.CameraClamp.X + SharedData.SCREEN_WIDTH / 2 -  player.X,
-                   // player.CameraClamp.Y + SharedData.SCREEN_HEIGHT / 2 - player.Y);
+                camera.Position += (cameraOffset.X > 0 ? 1 : -1) * new Vector2(Math.Abs(cameraOffset.X) - SharedData.SCREEN_WIDTH / 5, 0);
+            }
+            if (Math.Abs(cameraOffset.Y) > SharedData.SCREEN_HEIGHT / 5)
+            {
+                camera.Position += (cameraOffset.Y > 0 ? 1 : -1) * new Vector2(0, Math.Abs(cameraOffset.Y) - SharedData.SCREEN_HEIGHT / 5);
             }
         }
 
@@ -64,8 +62,6 @@ namespace ISU_Medieval_Odyssey
             world.Draw(spriteBatch);
             player.Draw(spriteBatch);
             spriteBatch.End();
-
-
         }
     }
 }
