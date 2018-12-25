@@ -15,74 +15,88 @@ namespace ISU_Medieval_Odyssey
         // HashSet to hold tile height maps for all tile types
         private static readonly HashSet<TileHeightMap> tileHeightMaps = new HashSet<TileHeightMap>()
         {
-            new TileHeightMap(0.01f, TileType.DeepWater),
-            new TileHeightMap(0.05f, TileType.Water),
-            new TileHeightMap(0.10f, TileType.WetSand),
-            new TileHeightMap(0.15f, TileType.Sand),
-            new TileHeightMap(0.25f, TileType.Dirt),
-            new TileHeightMap(0.30f, TileType.DryGrass),
-            new TileHeightMap(0.35f, TileType.Grass),
-            new TileHeightMap(0.40f, TileType.ForestGrass),
-            new TileHeightMap(0.45f, TileType.Stone),
-            new TileHeightMap(0.50f, TileType.Snow),
-            new TileHeightMap(0.55f, TileType.IcySnow),
-            new TileHeightMap(0.60f, TileType.Ice),
-        }; // TO DO: Adjust values - note: must be ordered
-
+            new TileHeightMap(0.00f, TileType.DeepWater),
+            new TileHeightMap(0.10f, TileType.Water),
+            new TileHeightMap(0.20f, TileType.WetSand),
+            new TileHeightMap(0.40f, TileType.Sand),
+            new TileHeightMap(0.50f, TileType.Dirt),
+            new TileHeightMap(0.60f, TileType.DryGrass),
+            new TileHeightMap(0.70f, TileType.Grass),
+            new TileHeightMap(0.80f, TileType.ForestGrass),
+            new TileHeightMap(0.90f, TileType.Stone),
+            new TileHeightMap(1.00f, TileType.Snow),
+            new TileHeightMap(1.25f, TileType.IcySnow),
+            new TileHeightMap(1.50f, TileType.Ice),
+        };
 
         /// <summary>
         /// Constructor for <see cref="TerrainGenerator"/> object
         /// </summary>
-        public TerrainGenerator()
+        public TerrainGenerator() : this((int)(DateTime.UtcNow.Ticks * PRIME_SEED) % int.MaxValue)
         {
-            // Setting up noise engine and reseeding
+            // Nothing to add as it calls other constructor
+        }
+
+        /// <summary>
+        /// Constructor for <see cref="TerrainGenerator"/> object
+        /// </summary>
+        /// <param name="seed">The seed of the <see cref="TerrainGenerator"/></param>
+        public TerrainGenerator(int seed)
+        {
+            // Setting up noise engine and setting seed
             noiseEngine = new FastNoise();
             noiseEngine.SetFractalOctaves(6);
             noiseEngine.SetFractalLacunarity(2);
-            Reseed();
-        }
-
-        /// <summary>
-        /// Subprogram to reseed the <see cref="TerrainGenerator"/> "randomly"
-        /// </summary>
-        public void Reseed() 
-        {
-            // Reseeding the noise engine with an arbitrary number
-            noiseEngine.SetSeed((int)(DateTime.UtcNow.Ticks * PRIME_SEED) & int.MaxValue);
-        }
-
-        /// <summary>
-        /// Subprogram to reseed the <see cref="TerrainGenerator"/>
-        /// </summary>
-        /// <param name="seed">The new seed</param>
-        public void Reseed(int seed)
-        {
-            // Reseeding the noise engine
             noiseEngine.SetSeed(seed);
         }
 
-        //public void Generate(WorldData worldData)
-        //{
-        //    // Float to temporarily hold the noise value
-        //    float noiseValue;
+        /// <summary>
+        /// Subprogram to generate a <see cref="Chunk"/>'s <see cref="Tile"/>s
+        /// </summary>
+        /// <param name="chunkPosition">The position of the <see cref="Chunk"/></param>
+        /// <returns>The <see cref="Chunk"/>'s <see cref="Tile"/>s</returns>
+        public Tile[,] GenerateChunkTiles(Vector2Int chunkPosition)
+        {
+            // 2D array of tiles and the world position of the tile
+            Tile[,] tiles = new Tile[Chunk.SIZE, Chunk.SIZE];
+            Vector2Int worldPosition = Vector2Int.Zero;
 
-        //    for (int i = 0; i < worldData.Width; ++i)
-        //    {
-        //        for (int j = 0; j < worldData.Height; ++j)
-        //        {
-        //            noiseValue = noiseEngine.GetPerlinFractal(i, j);
+            // Loop through each tile in the chunk and constructing tile
+            for (int i = 0; i < Chunk.SIZE; ++i)
+            {
+                for (int j = 0; j < Chunk.SIZE; ++j)
+                {
+                    worldPosition.X = chunkPosition.X * Chunk.SIZE + i;
+                    worldPosition.Y = chunkPosition.Y * Chunk.SIZE + j;
+                    tiles[i, j] = new Tile(FloatToTileType(1.0f + noiseEngine.GetPerlinFractal(worldPosition.X, worldPosition.Y)), worldPosition);
+                }
+            }
 
-        //            foreach (TileHeightMap tileHeightMap in tileHeightMaps)
-        //            {
-        //                if (tileHeightMap.MaxHeight < noiseValue)
-        //                {
-        //                    worldData.Tiles[i, j] = tileHeightMap.Type;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+            // Returning chunk tiles
+            return tiles;
+        }
 
+        /// <summary>
+        /// Subprogram to map a given noise height to the appropraite tile type
+        /// </summary>
+        /// <param name="noiseHeight">The height of the noise</param>
+        /// <returns>The corresponding TileType</returns>
+        private TileType FloatToTileType(float noiseHeight)
+        {
+            // Initially setting tile type as empty
+            TileType tileType = TileType.Empty;
+
+            // Looping through height maps to determine approprate tile type
+            foreach (TileHeightMap heightMap in tileHeightMaps)
+            {
+                if (heightMap.MinHeight <= noiseHeight)
+                {
+                    tileType = heightMap.Type;
+                }
+            }
+
+            // Returning tile type
+            return tileType;
+        }
     }
 }

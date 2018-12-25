@@ -16,9 +16,9 @@ namespace ISU_Medieval_Odyssey
     public struct TileHeightMap
     {
         /// <summary>
-        /// The max-height the corresponding tile type can have
+        /// The min-height the corresponding tile type can have
         /// </summary>
-        public float MaxHeight { get; }
+        public float MinHeight { get; }
 
         /// <summary>
         /// The tile type that the height maps to
@@ -28,12 +28,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Constructor for <see cref="TileHeightMap"/> structure
         /// </summary>
-        /// <param name="maxHeight">The max height that the corresponding tile type can have</param>
+        /// <param name="minHeight">The min height that the corresponding tile type can have</param>
         /// <param name="type">The tile type that the height maps to</param>
-        public TileHeightMap(float maxHeight, TileType type)
+        public TileHeightMap(float minHeight, TileType type)
         {
             // Assigning structure properties
-            MaxHeight = maxHeight;
+            MinHeight = minHeight;
             Type = type;
         }
 

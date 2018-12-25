@@ -30,7 +30,7 @@ namespace ISU_Medieval_Odyssey
         public Vector2Int WorldPosition { get; }
         
         // Variables required for drawing tile at appropraite location
-        private static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
+        public static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
         private Rectangle rectangle;
 
         /// <summary>
