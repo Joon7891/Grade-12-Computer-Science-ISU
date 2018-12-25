@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -62,6 +63,16 @@ namespace ISU_Medieval_Odyssey
 
             // Returning loaded images
             return loadedImages;
+        }
+
+        /// <summary>
+        /// Subprogram to convert a cartesian coordinate to a isometric tile coordinate
+        /// </summary>
+        /// <param name="cartesianCoordinate">The cartesian coordinate to be converted</param>
+        /// <returns>The isometric tile coordinate</returns>
+        public static Vector2Int CartesianToIsometricCoordinate(Vector2 cartesianCoordinate)
+        {
+            return Vector2Int.Zero;
         }
     }
 }

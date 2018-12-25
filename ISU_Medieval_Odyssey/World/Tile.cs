@@ -15,9 +15,9 @@ namespace ISU_Medieval_Odyssey
     public sealed class Tile
     {
         // Various constants required to draw tile at appropraite location
-        private const int PIXEL_SIZE = 15;
-        private const int VERTICAL_SPACING = 4;
-        private const int HORIZONTAL_SPACING = 6;
+        private const int PIXEL_SIZE = 113;
+        private const int VERTICAL_SPACING = 27;
+        private const int HORIZONTAL_SPACING = 48;
 
         /// <summary>
         /// The type of the <see cref="Tile"/>

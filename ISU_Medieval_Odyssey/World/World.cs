@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Author: Joon Song
+// File Name: World.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 12/20/2018
+// Modified Date: 12/24/2018
+// Description: Class to hold World object
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

@@ -21,13 +21,15 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2 Position { get; set; }
 
+        public Vector2 Center => Position + new Vector2(SharedData.SCREEN_WIDTH / 2, SharedData.SCREEN_HEIGHT / 2);
+
         /// <summary>
         /// The rotation of the camera
         /// </summary>
-        public float Rotation { get; private set; }
+        //public float Rotation { get; private set; }
 
         /// <summary>
-        /// The origin/center of the screen
+        /// The origin of the camera - defualt center of screen
         /// </summary>
         public Vector2 Origin { get; set; }
 
@@ -36,7 +38,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Matrix ViewMatrix => Matrix.CreateTranslation(new Vector3(-Position, 0.0f)) *
                                     Matrix.CreateTranslation(new Vector3(-Origin, 0.0f)) *
-                                    Matrix.CreateRotationZ(Rotation) *
                                     Matrix.CreateScale(OrthographicSize, OrthographicSize, 1) *
                                     Matrix.CreateTranslation(new Vector3(Origin, 1));
 

@@ -36,7 +36,21 @@ namespace ISU_Medieval_Odyssey
             // Updating player and world
             player.Update(gameTime);
             world.Update(gameTime);
+
+            // Updating camera if player is too far from center of screen
             camera.Position = player.CameraClamp;
+
+
+
+            if (Math.Abs(camera.Position.X - player.CameraClamp.X) > SharedData.SCREEN_WIDTH / 4 ||
+                Math.Abs(camera.Position.Y - player.CameraClamp.Y) > SharedData.SCREEN_HEIGHT / 4)
+            {
+                // camera.Position += 
+                    
+                    
+                    //new Vector2(player.CameraClamp.X + SharedData.SCREEN_WIDTH / 2 -  player.X,
+                   // player.CameraClamp.Y + SharedData.SCREEN_HEIGHT / 2 - player.Y);
+            }
         }
 
         /// <summary>
@@ -49,7 +63,6 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin(transformMatrix : camera.ViewMatrix, samplerState : SamplerState.PointClamp);
             world.Draw(spriteBatch);
             player.Draw(spriteBatch);
-
             spriteBatch.End();
 
 

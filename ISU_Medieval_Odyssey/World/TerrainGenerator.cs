@@ -16,17 +16,19 @@ namespace ISU_Medieval_Odyssey
         private static readonly HashSet<TileNoiseMap> tileNoiseMaps = new HashSet<TileNoiseMap>()
         {
             new TileNoiseMap(0.00f, 0.10f, TileType.DeepWater),
-            new TileNoiseMap(0.10f, 0.20f, TileType.Water),
-            new TileNoiseMap(0.20f, 0.40f, TileType.WetSand),
-            new TileNoiseMap(0.40f, 0.50f, TileType.Sand),
-            new TileNoiseMap(0.50f, 0.60f, TileType.Dirt),
-            new TileNoiseMap(0.60f, 0.70f, TileType.DryGrass),
-            new TileNoiseMap(0.70f, 0.80f, TileType.Grass),
-            new TileNoiseMap(0.80f, 0.90f, TileType.ForestGrass),
-            new TileNoiseMap(0.90f, 1.00f, TileType.Stone),
-            new TileNoiseMap(1.00f, 1.25f, TileType.Snow),
-            new TileNoiseMap(1.25f, 1.50f, TileType.IcySnow),
-            new TileNoiseMap(1.50f, 2.00f, TileType.Ice),
+            new TileNoiseMap(0.10f, 0.50f, TileType.Water),
+
+            new TileNoiseMap(0.50f, 0.65f, TileType.WetSand),
+            new TileNoiseMap(0.65f, 0.75f, TileType.Sand),
+            new TileNoiseMap(0.75f, 0.85f, TileType.Dirt),
+            new TileNoiseMap(0.85f, 0.95f, TileType.DryGrass),
+
+            new TileNoiseMap(0.95f, 1.10f, TileType.Grass),
+            new TileNoiseMap(1.10f, 1.25f, TileType.ForestGrass),
+            new TileNoiseMap(1.25f, 1.40f, TileType.Stone),
+            new TileNoiseMap(1.40f, 1.60f, TileType.Snow),
+            new TileNoiseMap(1.60f, 1.80f, TileType.IcySnow),
+            new TileNoiseMap(1.80f, 2.00f, TileType.Ice),
         };
 
         /// <summary>
@@ -45,7 +47,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up noise engine and setting seed
             noiseEngine = new FastNoise();
-            noiseEngine.SetFractalOctaves(6);
+            noiseEngine.SetFractalOctaves(8);
             noiseEngine.SetFractalLacunarity(2);
             noiseEngine.SetSeed(seed);
         }

@@ -18,8 +18,14 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Player
     {
+        /// <summary>
+        /// The x-coordinate of the player
+        /// </summary>
         public int X => playerCenter.X;
 
+        /// <summary>
+        /// The y-coordinate of the player
+        /// </summary>
         public int Y => playerCenter.Y;
 
         public Vector2 CameraClamp => new Vector2(X - SharedData.SCREEN_WIDTH / 2, Y - SharedData.SCREEN_HEIGHT / 2);
