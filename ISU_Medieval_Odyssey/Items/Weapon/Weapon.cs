@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey.Items.Weapon
+namespace ISU_Medieval_Odyssey
 {
     public abstract class Weapon : Item
     {

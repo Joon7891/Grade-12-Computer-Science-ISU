@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ISU_Medieval_Odyssey.Items.Weapon.Bow
+namespace ISU_Medieval_Odyssey
 {
     public sealed class Bow : Weapon
     {

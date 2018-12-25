@@ -17,12 +17,10 @@ namespace ISU_Medieval_Odyssey
         {
             new TileNoiseMap(0.00f, 0.10f, TileType.DeepWater),
             new TileNoiseMap(0.10f, 0.50f, TileType.Water),
-
             new TileNoiseMap(0.50f, 0.65f, TileType.WetSand),
             new TileNoiseMap(0.65f, 0.75f, TileType.Sand),
             new TileNoiseMap(0.75f, 0.85f, TileType.Dirt),
             new TileNoiseMap(0.85f, 0.95f, TileType.DryGrass),
-
             new TileNoiseMap(0.95f, 1.10f, TileType.Grass),
             new TileNoiseMap(1.10f, 1.25f, TileType.ForestGrass),
             new TileNoiseMap(1.25f, 1.40f, TileType.Stone),
