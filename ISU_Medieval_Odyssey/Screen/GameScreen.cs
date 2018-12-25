@@ -37,10 +37,10 @@ namespace ISU_Medieval_Odyssey
         {
             // Updating player and world
             player.Update(gameTime, camera.Position);
-            world.Update(gameTime);
+            world.Update(gameTime, player.CurrentChunk);
 
             // Updating the offset of the camera and moving camera if appropraite
-            cameraOffset = player.Center - camera.Center;
+            cameraOffset = player.Center.ToVector2() - camera.Center;
             if (Math.Abs(cameraOffset.X) > SharedData.SCREEN_WIDTH / 5)
             {
                 camera.Position += (cameraOffset.X > 0 ? 1 : -1) * new Vector2(Math.Abs(cameraOffset.X) - SharedData.SCREEN_WIDTH / 5, 0);

@@ -21,7 +21,17 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The center of the player
         /// </summary>
-        public Vector2 Center { get; private set; }
+        public Vector2Int Center { get; private set; }
+
+        /// <summary>
+        /// A cartesian intergral vector representing the player's current tile coordinates
+        /// </summary>
+        public Vector2Int CurrentTile { get; private set; }
+
+        /// <summary>
+        /// A cartesian intergral vector representing the player's current chunk coordinates
+        /// </summary>
+        public Vector2Int CurrentChunk { get; private set; }
 
         // Graphics-related data
         private Rectangle rectangle;
@@ -32,9 +42,8 @@ namespace ISU_Medieval_Odyssey
         // Movement-related data
         private double rotation;
         private Direction direction;
-        private const int SPEED = 120;
+        private const int SPEED = 500;
         private Vector2 nonRoundedLocation;
-        private readonly Vector2 dimensionVector = new Vector2(PIXEL_SIZE, PIXEL_SIZE);        
 
         // TO DO: Animation-related data
         private int currentFrame = 0;
@@ -58,10 +67,14 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            Center = Vector2.Zero;
             nonRoundedLocation = new Vector2();
             nonRoundedLocation.X = rectangle.X;
             nonRoundedLocation.Y = rectangle.Y;
+
+            // Constructing world coordinate variables
+            Center = Vector2Int.Zero;
+            CurrentTile = Vector2Int.Zero;
+            CurrentChunk = Vector2Int.Zero;
         }
 
         /// <summary>
@@ -74,6 +87,12 @@ namespace ISU_Medieval_Odyssey
             // Calling subprograms to update movement and direction
             UpdateMovement(gameTime);
             UpdateDirection(gameTime, cameraCenter);
+
+            // Updating current tile and chunk coordinates
+            CurrentTile.X = Center.X / Tile.HORIZONTAL_SPACING;
+            CurrentTile.Y = Center.Y / Tile.VERTICAL_SPACING;
+            CurrentChunk.X = CurrentTile.X / Chunk.SIZE;
+            CurrentChunk.Y = CurrentTile.Y / Chunk.SIZE;
         }
 
         /// <summary>
@@ -103,7 +122,8 @@ namespace ISU_Medieval_Odyssey
             // Updating player coordinate-related variable
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
-            Center = rectangle.Location.ToVector2() + dimensionVector;
+            Center.X = rectangle.X + PIXEL_SIZE / 2;
+            Center.Y = rectangle.Y + PIXEL_SIZE / 2;
         }
 
         /// <summary>
