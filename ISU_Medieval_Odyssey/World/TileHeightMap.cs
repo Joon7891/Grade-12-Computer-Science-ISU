@@ -1,9 +1,9 @@
 ﻿// Author: Joon Song
-// File Name: TileHeightMap.cs
+// File Name: TileNoiseMap.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/24/2018
 // Modified Date: 12/24/2018
-// Description: TileHeightMap structure - maps a height to a tile type
+// Description: TileNoiseMap structure - maps a noise to a tile type
 
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    public struct TileHeightMap
+    public struct TileNoiseMap
     {
         /// <summary>
-        /// The min-height the corresponding tile type can have
+        /// The interval that the noise value must fall within - [a, b)
         /// </summary>
-        public float MinHeight { get; }
+        public Interval<float> NoiseInterval { get; }
 
         /// <summary>
         /// The tile type that the height maps to
@@ -26,16 +26,16 @@ namespace ISU_Medieval_Odyssey
         public TileType Type { get; }
 
         /// <summary>
-        /// Constructor for <see cref="TileHeightMap"/> structure
+        /// Constructor for <see cref="TileNoiseMap"/> structure
         /// </summary>
-        /// <param name="minHeight">The min height that the corresponding tile type can have</param>
-        /// <param name="type">The tile type that the height maps to</param>
-        public TileHeightMap(float minHeight, TileType type)
+        /// <param name="lowerBound">The closed lower bound of the noise interval</param>
+        /// <param name="upperBound">The open uppper bound of the noise interval</param>
+        /// <param name="type">The corresponding tile type</param>
+        public TileNoiseMap(float lowerBound, float upperBound, TileType type)
         {
-            // Assigning structure properties
-            MinHeight = minHeight;
+            // Assigning bounds to interval, and tile type
+            NoiseInterval = new Interval<float>(lowerBound, IntervalType.Closed, upperBound, IntervalType.Open);
             Type = type;
         }
-
     }
 }

@@ -12,21 +12,21 @@ namespace ISU_Medieval_Odyssey
         private readonly FastNoise noiseEngine;
         private const long PRIME_SEED = 4294967295;
 
-        // HashSet to hold tile height maps for all tile types
-        private static readonly HashSet<TileHeightMap> tileHeightMaps = new HashSet<TileHeightMap>()
+        // HashSet to hold tile noise maps for all tile types
+        private static readonly HashSet<TileNoiseMap> tileNoiseMaps = new HashSet<TileNoiseMap>()
         {
-            new TileHeightMap(0.00f, TileType.DeepWater),
-            new TileHeightMap(0.10f, TileType.Water),
-            new TileHeightMap(0.20f, TileType.WetSand),
-            new TileHeightMap(0.40f, TileType.Sand),
-            new TileHeightMap(0.50f, TileType.Dirt),
-            new TileHeightMap(0.60f, TileType.DryGrass),
-            new TileHeightMap(0.70f, TileType.Grass),
-            new TileHeightMap(0.80f, TileType.ForestGrass),
-            new TileHeightMap(0.90f, TileType.Stone),
-            new TileHeightMap(1.00f, TileType.Snow),
-            new TileHeightMap(1.25f, TileType.IcySnow),
-            new TileHeightMap(1.50f, TileType.Ice),
+            new TileNoiseMap(0.00f, 0.10f, TileType.DeepWater),
+            new TileNoiseMap(0.10f, 0.20f, TileType.Water),
+            new TileNoiseMap(0.20f, 0.40f, TileType.WetSand),
+            new TileNoiseMap(0.40f, 0.50f, TileType.Sand),
+            new TileNoiseMap(0.50f, 0.60f, TileType.Dirt),
+            new TileNoiseMap(0.60f, 0.70f, TileType.DryGrass),
+            new TileNoiseMap(0.70f, 0.80f, TileType.Grass),
+            new TileNoiseMap(0.80f, 0.90f, TileType.ForestGrass),
+            new TileNoiseMap(0.90f, 1.00f, TileType.Stone),
+            new TileNoiseMap(1.00f, 1.25f, TileType.Snow),
+            new TileNoiseMap(1.25f, 1.50f, TileType.IcySnow),
+            new TileNoiseMap(1.50f, 2.00f, TileType.Ice),
         };
 
         /// <summary>
@@ -83,20 +83,17 @@ namespace ISU_Medieval_Odyssey
         /// <returns>The corresponding TileType</returns>
         private TileType FloatToTileType(float noiseHeight)
         {
-            // Initially setting tile type as empty
-            TileType tileType = TileType.Empty;
-
-            // Looping through height maps to determine approprate tile type
-            foreach (TileHeightMap heightMap in tileHeightMaps)
+            // Returning appropraite tile type
+            foreach (TileNoiseMap tileNoiseMap in tileNoiseMaps)
             {
-                if (heightMap.MinHeight <= noiseHeight)
+                if (tileNoiseMap.NoiseInterval.Contains(noiseHeight))
                 {
-                    tileType = heightMap.Type;
+                    return tileNoiseMap.Type;
                 }
             }
 
-            // Returning tile type
-            return tileType;
+            // Returning empty tile type; never actually reaches here but C# doesn't know that
+            return TileType.Empty;
         }
     }
 }
