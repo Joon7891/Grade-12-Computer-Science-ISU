@@ -48,6 +48,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public KeyboardState NewKeyboard { get; private set; }
 
+        /// <summary>
+        /// The number of frames per second
+        /// </summary>
+        public static float FPS { get; private set; }
+
         // Current screen mode and dictionary to map screen mode to a IScreen
         private ScreenMode currentScreen = ScreenMode.Game;
         private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
@@ -116,6 +121,9 @@ namespace ISU_Medieval_Odyssey
             OldMouse = NewMouse;
             NewKeyboard = Keyboard.GetState();
             NewMouse = Mouse.GetState();
+
+            // Updating frames per second
+            FPS = (float) Math.Round(1000.0f / gameTime.ElapsedGameTime.TotalMilliseconds, 2);
 
             // Updating current screen
             screenDictionary[currentScreen].Update(gameTime);

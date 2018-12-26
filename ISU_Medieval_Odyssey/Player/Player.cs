@@ -56,7 +56,7 @@ namespace ISU_Medieval_Odyssey
         private Vector2 nonRoundedLocation;
 
         // Heads up display related variables
-        public static Sprite woodenBorderSprite;
+        public static Sprite woodSprite;
 
         /// <summary>
         /// Static constructor to setup various Player components
@@ -67,7 +67,7 @@ namespace ISU_Medieval_Odyssey
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
-            woodenBorderSprite = new Sprite(Main.Instance.Content.Load<Texture2D>("Images/Sprites/woodenBorder"), new Rectangle(0, 0, 200, 200));
+            woodSprite = new Sprite(Main.Instance.Content.Load<Texture2D>("Images/Sprites/woodImage"), new Rectangle(0, 0, 200, 200));
         }
 
         /// <summary>
@@ -169,8 +169,7 @@ namespace ISU_Medieval_Odyssey
         public void DrawHUD(SpriteBatch spriteBatch)
         {
             // Drawing primitive player properties
-            woodenBorderSprite.Draw(spriteBatch);
-            spriteBatch.DrawString(Main.Instance.Content.Load<SpriteFont>("Fonts/InformationFontMedium"), $"{Name} - Level {Level}", new Vector2(20, 20), Color.Black);
+            spriteBatch.DrawString(SharedData.InformationFonts[1], $"{Name} - Level {Level}", new Vector2(20, 15), Color.White);
         }
     }
 }

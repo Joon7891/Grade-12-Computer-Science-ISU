@@ -14005,14 +14005,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/whiteImage.png
 
-#begin Fonts/InformationFontMedium.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/InformationFontMedium.spritefont
-
-#begin Images/Sprites/woodenBorder.png
+#begin Images/Sprites/woodImage.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -14022,5 +14015,33 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Sprites/woodenBorder.png
+/build:Images/Sprites/woodImage.jpg
+
+#begin Fonts/InformationFont0.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/InformationFont0.spritefont
+
+#begin Fonts/InformationFont1.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/InformationFont1.spritefont
+
+#begin Fonts/InformationFont2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/InformationFont2.spritefont
+
+#begin Fonts/InformationFont3.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/InformationFont3.spritefont
 

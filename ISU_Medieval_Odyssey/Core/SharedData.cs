@@ -9,8 +9,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
@@ -48,6 +46,11 @@ namespace ISU_Medieval_Odyssey
         public static Random RNG { get; private set; }
 
         /// <summary>
+        /// Array of information fonts 0-index is smallest, 3-index is largest
+        /// </summary>
+        public static SpriteFont[] InformationFonts { get; private set; }
+
+        /// <summary>
         /// A texture of a white image - used for drawing blank rectangles
         /// </summary>
         public static Texture2D WhiteImage { get; private set; }
@@ -57,10 +60,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static SharedData()
         {
-            // Constructing Random Number Generator
+            // Constructing various shared objects
             RNG = new Random();
-
-            // Constructing screen center vector
             ScreenCenter = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
             // Setting up movement type num frames dictionary
@@ -70,8 +71,13 @@ namespace ISU_Medieval_Odyssey
             MovementNumFrames.Add(MovementType.Shoot, 13);
             MovementNumFrames.Add(MovementType.Thrust, 8);
 
-            // Importing white image
+            // Importing images and fonts
             WhiteImage = Main.Instance.Content.Load<Texture2D>("Images/Sprites/whiteImage");
+            InformationFonts = new SpriteFont[4];
+            for (byte i = 0; i < InformationFonts.Length; ++i)
+            {
+                InformationFonts[i] = Main.Instance.Content.Load<SpriteFont>($"Fonts/InformationFont{i}");
+            }
         }
     }
 }
