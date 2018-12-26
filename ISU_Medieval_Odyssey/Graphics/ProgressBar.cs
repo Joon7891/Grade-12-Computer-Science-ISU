@@ -12,7 +12,7 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class ProgressBar
     {
-        public int CurrentValue { get; set => UpdateData(value, MaxValue, Location); }
+        //public int CurrentValue { get; set => UpdateData(value, MaxValue, Location); }
 
         public int MaxValue { get; set; }
 
@@ -39,7 +39,7 @@ namespace ISU_Medieval_Odyssey
 
         public void UpdateData(int currentValue, int maxValue, Vector2 location)
         {
-            progressRectangle.Width = (int)(backRectangle.Width * ((double)CurrentValue / MaxValue) + 0.5);
+            //progressRectangle.Width = (int)(backRectangle.Width * ((double)CurrentValue / MaxValue) + 0.5);
         }
 
         /// <summary>

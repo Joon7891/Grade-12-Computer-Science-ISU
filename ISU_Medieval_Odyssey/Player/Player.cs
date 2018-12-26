@@ -33,6 +33,16 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int CurrentChunk { get; private set; }
 
+        /// <summary>
+        /// The name of the <see cref="Player"/>
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// The current level of the <see cref="Player"/>
+        /// </summary>
+        public byte Level { get; private set; }
+
         // Graphics-related data
         private Rectangle rectangle;
         private const byte PIXEL_SIZE = 100;
@@ -45,25 +55,25 @@ namespace ISU_Medieval_Odyssey
         private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
 
-        // TO DO: Animation-related data
-        private int currentFrame = 0;
-        private int counter = 0;
+        // Heads up display related variables
+        public static Sprite woodenBorderSprite;
 
         /// <summary>
         /// Static constructor to setup various Player components
         /// </summary>
         static Player()
         {
-            // Loading in player movement images
+            // Loading in various graphics
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
+            woodenBorderSprite = new Sprite(Main.Instance.Content.Load<Texture2D>("Images/Sprites/woodenBorder"), new Rectangle(0, 0, 200, 200));
         }
 
         /// <summary>
         /// Constructor for <see cref="Player"/> object
         /// </summary>
-        public Player()
+        public Player(string name)
         {
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
@@ -75,6 +85,10 @@ namespace ISU_Medieval_Odyssey
             Center = Vector2Int.Zero;
             CurrentTile = Vector2Int.Zero;
             CurrentChunk = Vector2Int.Zero;
+
+            // Setting up name and other attributes
+            Name = name;
+            Level = 1;
         }
 
         /// <summary>
@@ -145,7 +159,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and its corresponding armour
-            spriteBatch.Draw(movementImages[movementType][(byte)direction, currentFrame], rectangle, Color.White);
+            spriteBatch.Draw(movementImages[movementType][(byte)direction, 0], rectangle, Color.White);
         }
 
         /// <summary>
@@ -154,7 +168,9 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void DrawHUD(SpriteBatch spriteBatch)
         {
-
+            // Drawing primitive player properties
+            woodenBorderSprite.Draw(spriteBatch);
+            spriteBatch.DrawString(Main.Instance.Content.Load<SpriteFont>("Fonts/InformationFontMedium"), $"{Name} - Level {Level}", new Vector2(20, 20), Color.Black);
         }
     }
 }

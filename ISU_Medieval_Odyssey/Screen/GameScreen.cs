@@ -14,7 +14,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class GameScreen : IScreen
     {
         // Instance of player and world
-        private Player player = new Player();
+        private Player player = new Player("Joon7891");
         private World world = new World();
 
         // Camera-realted variables
@@ -61,6 +61,11 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin(transformMatrix : camera.ViewMatrix, samplerState : SamplerState.PointClamp);
             world.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            spriteBatch.End();
+
+            // Drawing player HUD and other fixed graphics in regular camera
+            spriteBatch.Begin();
+            player.DrawHUD(spriteBatch);
             spriteBatch.End();
         }
     }
