@@ -166,5 +166,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <returns>The <see cref="Vector2"/> representation of a <see cref="Vector2Int"/></returns>
         public Vector2 ToVector2() => new Vector2(X, Y);
+
+        /// <summary>
+        /// Converts a <see cref="Vector2Int"/> to a <see cref="Point"/>
+        /// </summary>
+        /// <returns>The <see cref="Point"/> representation of a <see cref="Vector2Int"/></returns>
+        public Point ToPoint() => new Point(X, Y);
     }
 }

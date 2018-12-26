@@ -43,6 +43,12 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public byte Level { get; private set; }
 
+        public short Experience { get; set; }
+        private ProgressBar experienceBar;
+
+        public short Health { get; set; }
+        private ProgressBar healthBar;
+
         // Graphics-related data
         private Rectangle rectangle;
         private const byte PIXEL_SIZE = 100;
@@ -55,9 +61,6 @@ namespace ISU_Medieval_Odyssey
         private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
 
-        // Heads up display related variables
-        public static Sprite woodSprite;
-
         /// <summary>
         /// Static constructor to setup various Player components
         /// </summary>
@@ -67,7 +70,6 @@ namespace ISU_Medieval_Odyssey
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
-            woodSprite = new Sprite(Main.Instance.Content.Load<Texture2D>("Images/Sprites/woodImage"), new Rectangle(0, 0, 200, 200));
         }
 
         /// <summary>
@@ -89,6 +91,10 @@ namespace ISU_Medieval_Odyssey
             // Setting up name and other attributes
             Name = name;
             Level = 1;
+            experienceBar = new ProgressBar(new Rectangle(20, 45, 200, 30), 200, 40, Color.White * 0.5f, 
+                Color.Blue * 0.6f, SharedData.InformationFonts[0], Color.Black);
+            healthBar = new ProgressBar(new Rectangle(20, 100, 200, 30), 200, 100, Color.White * 0.5f,
+                Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
         }
 
         /// <summary>
@@ -107,6 +113,10 @@ namespace ISU_Medieval_Odyssey
             CurrentTile.Y = Center.Y / Tile.VERTICAL_SPACING;
             CurrentChunk.X = CurrentTile.X / Chunk.SIZE;
             CurrentChunk.Y = CurrentTile.Y / Chunk.SIZE;
+
+            // Updating status bars
+            experienceBar.Update(gameTime);
+            healthBar.Update(gameTime);
         }
 
         /// <summary>
@@ -170,6 +180,8 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing primitive player properties
             spriteBatch.DrawString(SharedData.InformationFonts[1], $"{Name} - Level {Level}", new Vector2(20, 15), Color.White);
+            experienceBar.Draw(spriteBatch);
+            healthBar.Draw(spriteBatch);
         }
     }
 }
