@@ -8,7 +8,7 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class TerrainGenerator
     {
-        // Noise engine and arbitrary large prime for reseeding
+        // Noise engine and large prime for reseeding
         private readonly FastNoise noiseEngine;
         private const long PRIME_SEED = 4294967295;
 
@@ -45,7 +45,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up noise engine and setting seed
             noiseEngine = new FastNoise();
-            noiseEngine.SetFractalOctaves(8);
+            noiseEngine.SetFractalOctaves(12);
             noiseEngine.SetFractalLacunarity(2);
             noiseEngine.SetSeed(seed);
         }

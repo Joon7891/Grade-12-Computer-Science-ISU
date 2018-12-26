@@ -15,7 +15,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The horizontal/vertical size of the chunk - a chunk will contain 16 x 16 tiles
         /// </summary>
-        public const byte SIZE = 32;
+        public const byte SIZE = 16;
 
         /// <summary>
         /// A 2D array containing the tiles in the chunk

@@ -42,7 +42,7 @@ namespace ISU_Medieval_Odyssey
         // Movement-related data
         private double rotation;
         private Direction direction;
-        private const int SPEED = 500;
+        private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
 
         // TO DO: Animation-related data
@@ -138,10 +138,23 @@ namespace ISU_Medieval_Odyssey
             direction = (Direction)(2 * rotation / Math.PI);
         }
 
+        /// <summary>
+        /// Draw subprogram for <see cref="Player"/> object - draw's the player and his armour only
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, currentFrame], rectangle, Color.White);
+        }
+
+        /// <summary>
+        /// Draw subprogram for the <see cref="Player"/>'s heads up display
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        public void DrawHUD(SpriteBatch spriteBatch)
+        {
+
         }
     }
 }

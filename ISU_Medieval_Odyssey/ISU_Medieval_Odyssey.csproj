@@ -48,6 +48,7 @@
     <Compile Include="Data Structures\Interval.cs" />
     <Compile Include="Data Structures\IntervalType.cs" />
     <Compile Include="Graphics\Button.cs" />
+    <Compile Include="Graphics\ProgressBar.cs" />
     <Compile Include="Player\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
     <Compile Include="Items\Armour\Belt\Belt.cs" />

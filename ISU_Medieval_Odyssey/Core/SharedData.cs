@@ -33,6 +33,11 @@ namespace ISU_Medieval_Odyssey
         public static Vector2 ScreenCenter { get; private set; }
 
         /// <summary>
+        /// The hexadecimal representation of "infinity" 
+        /// </summary>
+        public const int INFINITY = 0x3f3f3f3f;
+
+        /// <summary>
         /// Dictionary to map movement types to its number of frames
         /// </summary>
         public static Dictionary<MovementType, byte> MovementNumFrames { get; private set; }
@@ -41,6 +46,11 @@ namespace ISU_Medieval_Odyssey
         /// Random number generator
         /// </summary>
         public static Random RNG { get; private set; }
+
+        /// <summary>
+        /// A texture of a white image - used for drawing blank rectangles
+        /// </summary>
+        public static Texture2D WhiteImage { get; private set; }
 
         /// <summary>
         /// Static constructor to setup various SharedData components
@@ -59,6 +69,9 @@ namespace ISU_Medieval_Odyssey
             MovementNumFrames.Add(MovementType.Slash, 6);
             MovementNumFrames.Add(MovementType.Shoot, 13);
             MovementNumFrames.Add(MovementType.Thrust, 8);
+
+            // Importing white image
+            WhiteImage = Main.Instance.Content.Load<Texture2D>("Images/Sprites/whiteImage");
         }
     }
 }
