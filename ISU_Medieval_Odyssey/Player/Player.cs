@@ -46,13 +46,21 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The amount of experience that the <see cref="Player"/> has
         /// </summary>
-        public short Experience { get; set; }
+        public int Experience
+        {
+            get => experienceBar.CurrentValue;
+            set => Math.Min(experienceBar.MaxValue, value);
+        }
         private ProgressBar experienceBar;
 
         /// <summary>
         /// The health of the <see cref="Player"/>
         /// </summary>
-        public short Health { get; set; }
+        public int Health
+        {
+            get => healthBar.CurrentValue;
+            set => Math.Min(healthBar.MaxValue, value);
+        }
         private ProgressBar healthBar;
 
         /// <summary>
@@ -71,6 +79,9 @@ namespace ISU_Medieval_Odyssey
         private Direction direction;
         private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
+
+        int counter;
+        int frameNo;
 
         // Statistics-related variables
         private Vector2[] statisticsLocs =
@@ -101,9 +112,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            nonRoundedLocation = new Vector2();
-            nonRoundedLocation.X = rectangle.X;
-            nonRoundedLocation.Y = rectangle.Y;
+            nonRoundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
             Center = Vector2Int.Zero;
@@ -127,6 +136,13 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
+            //++counter;
+            if (counter == 5)
+            {
+                counter = 0;
+                frameNo = (frameNo + 1) % SharedData.MovementNumFrames[movementType];
+            }
+
             // Calling subprograms to update movement and direction
             UpdateMovement(gameTime);
             UpdateDirection(gameTime, cameraCenter);
@@ -194,7 +210,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and its corresponding armour
-            spriteBatch.Draw(movementImages[movementType][(byte)direction, 0], rectangle, Color.White);
+            spriteBatch.Draw(movementImages[movementType][(byte)direction, frameNo], rectangle, Color.White);
         }
 
         /// <summary>
