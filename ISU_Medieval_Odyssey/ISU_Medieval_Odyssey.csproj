@@ -41,6 +41,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Building\Building.cs" />
+    <Compile Include="Building\Shop.cs" />
     <Compile Include="Core\IO.cs" />
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Graphics\Graphic.cs" />
     <Compile Include="Graphics\ProgressBar.cs" />
     <Compile Include="Graphics\Sprite.cs" />
+    <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="Helpers\VectorHelper.cs" />
     <Compile Include="Player\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
@@ -85,7 +88,6 @@
     <Compile Include="Screen\SettingsScreen.cs" />
     <Compile Include="Helpers\CollissionHelper.cs" />
     <Compile Include="Data Structures\Direction.cs" />
-    <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="Helpers\MouseHelper.cs" />
     <Compile Include="Data Structures\MovementType.cs" />

@@ -44,6 +44,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int WorldPosition { get; }
         
+        /// <summary>
+        /// Bool flag to hold if the player can visit the particular tile
+        /// </summary>
+        public bool CanVisit { get; }
+
         // Variables required for drawing tile at appropraite location
         public static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
         private Rectangle rectangle;
@@ -65,10 +70,12 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="type">The type of the tile</param>
         /// <param name="worldPosition">The world position of the tile</param>
-        public Tile(TileType type, Vector2Int worldPosition)
+        /// <param name="canVisit">If the player can visit this particular tile</param>
+        public Tile(TileType type, Vector2Int worldPosition, bool canVisit = true)
         {
             Type = type;
             WorldPosition = worldPosition;
+            CanVisit = canVisit;
             rectangle = new Rectangle(HORIZONTAL_SPACING * worldPosition.X, VERTICAL_SPACING * worldPosition.Y, HORIZONTAL_SIZE, VERTICAL_SIZE);
         }
 

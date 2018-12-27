@@ -138,7 +138,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            // Clearing graphical background to black
+            GraphicsDevice.Clear(Color.Black);
             
             // Drawing current screen
             screenDictionary[currentScreen].Draw(spriteBatch);

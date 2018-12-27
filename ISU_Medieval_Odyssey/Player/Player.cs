@@ -75,10 +75,14 @@ namespace ISU_Medieval_Odyssey
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         // Movement-related data
-        private double rotation;
+        private float rotation;
         private Direction direction;
         private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
+
+        private Vector2 origin;
+        private Rectangle rotationRectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
+
 
         int counter;
         int frameNo;
@@ -124,7 +128,7 @@ namespace ISU_Medieval_Odyssey
             Level = 1;
             statisticsLocs[0].X = 100 - SharedData.InformationFonts[0].MeasureString(name).X / 2;
             experienceBar = new ProgressBar(new Rectangle(10, 80, 200, 28), 200, 40, Color.White * 0.5f, 
-                Color.Blue * 0.6f, SharedData.InformationFonts[0], Color.Black);
+                Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
             healthBar = new ProgressBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
         }
@@ -134,7 +138,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
-        public void Update(GameTime gameTime, Vector2 cameraCenter)
+        /// <param name="currentWorld">The current world that the player is in</param>
+        public void Update(GameTime gameTime, Vector2 cameraCenter, World currentWorld)
         {
             //++counter;
             if (counter == 5)
@@ -199,8 +204,11 @@ namespace ISU_Medieval_Odyssey
         private void UpdateDirection(GameTime gameTime, Vector2 cameraCenter)
         {
             // Updating player mouse rotation and direction
-            rotation = (Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI);
-            direction = (Direction)(2 * rotation / Math.PI);
+            rotation = (float)((Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI));
+            direction = (Direction)((2 * rotation / Math.PI) % 4);
+
+            rotationRectangle.Location = rectangle.Location + new Point(50, 50);
+            origin = new Vector2(250, 250);
         }
 
         /// <summary>
@@ -211,6 +219,11 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, frameNo], rectangle, Color.White);
+            //riteBatch.Draw(SharedData.WhiteImage, rotationRectangle, null, Color.White, rotation, origin, SpriteEffects.None, 0);
+
+            //Texture2D cache = movementImages[movementType][(byte)direction, frameNo];
+            //spriteBatch.Draw(cache, rotationRectangle, null, Color.White, rotation, origin, SpriteEffects.None, 0);
+
         }
 
         /// <summary>
@@ -220,10 +233,10 @@ namespace ISU_Medieval_Odyssey
         public void DrawHUD(SpriteBatch spriteBatch)
         {
             // Drawing primitive player properties
-            spriteBatch.DrawString(SharedData.InformationFonts[1], Name, statisticsLocs[0], Color.Black);
+            spriteBatch.DrawString(SharedData.InformationFonts[1], Name, statisticsLocs[0], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Level {Level}", statisticsLocs[1], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"{Gold} Gold", statisticsLocs[2], Color.White);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], "Experience", statisticsLocs[3], Color.Blue);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], "Experience", statisticsLocs[3], Color.SkyBlue);
             experienceBar.Draw(spriteBatch);
             spriteBatch.DrawString(SharedData.InformationFonts[0], "Health", statisticsLocs[4], Color.Red);
             healthBar.Draw(spriteBatch);

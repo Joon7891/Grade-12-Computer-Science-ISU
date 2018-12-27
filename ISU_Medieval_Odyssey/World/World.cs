@@ -56,5 +56,12 @@ namespace ISU_Medieval_Odyssey
                 }
             }
         }
+
+        public Tile GetTileAt(Vector2Int tilePosition)
+        {
+            Vector2Int relativeTilePosition = tilePosition - loadedChunks[0, 0].Position * Chunk.SIZE;
+            Vector2Int chunkPosition = relativeTilePosition / Chunk.SIZE;
+            return loadedChunks[chunkPosition.X, chunkPosition.Y][relativeTilePosition.X % Chunk.SIZE, relativeTilePosition.Y % Chunk.SIZE];
+        }
     }
 }

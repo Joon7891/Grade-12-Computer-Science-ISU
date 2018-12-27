@@ -37,7 +37,7 @@ namespace ISU_Medieval_Odyssey
             // Returning movement images
             return movementImages;
         }
-        
+
         /// <summary>
         /// Subprogram to load a 2D array of directional images
         /// </summary>
@@ -63,16 +63,6 @@ namespace ISU_Medieval_Odyssey
 
             // Returning loaded images
             return loadedImages;
-        }
-
-        /// <summary>
-        /// Subprogram to convert a cartesian coordinate to a isometric tile coordinate
-        /// </summary>
-        /// <param name="cartesianCoordinate">The cartesian coordinate to be converted</param>
-        /// <returns>The isometric tile coordinate</returns>
-        public static Vector2Int CartesianToIsometricCoordinate(Vector2 cartesianCoordinate)
-        {
-            return Vector2Int.Zero;
         }
     }
 }

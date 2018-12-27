@@ -18,6 +18,7 @@ namespace ISU_Medieval_Odyssey
         // Instance of player and world
         private Player player = new Player("Joon7891");
         private World world = new World();
+        private Shop test = new Shop(new Vector2Int(0, 0));
 
         // Camera-realted variables
         private Camera camera = new Camera();
@@ -46,7 +47,7 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating player and world
-            player.Update(gameTime, camera.Position);
+            player.Update(gameTime, camera.Position, world);
             world.Update(gameTime, player.CurrentChunk);
 
             // Updating the offset of the camera and moving camera if appropraite
@@ -75,7 +76,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and world - in adjusted camera
             spriteBatch.Begin(transformMatrix : camera.ViewMatrix, samplerState : SamplerState.PointClamp);
-            world.Draw(spriteBatch);
+            test.Draw(spriteBatch);
             player.Draw(spriteBatch);
             spriteBatch.End();
 
