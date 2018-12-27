@@ -16,65 +16,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Player
+    public sealed class Player : Entity
     {
-        /// <summary>
-        /// The center of the player
-        /// </summary>
-        public Vector2Int Center { get; private set; }
-
-        /// <summary>
-        /// A cartesian intergral vector representing the player's current tile coordinates
-        /// </summary>
-        public Vector2Int CurrentTile { get; private set; }
-
-        /// <summary>
-        /// A cartesian intergral vector representing the player's current chunk coordinates
-        /// </summary>
-        public Vector2Int CurrentChunk { get; private set; }
-
-        public Rectangle colissionRectangle;
-
-        /// <summary>
-        /// The name of the <see cref="Player"/>
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// The current level of the <see cref="Player"/>
-        /// </summary>
-        public byte Level { get; private set; }
-
-        /// <summary>
-        /// The amount of experience that the <see cref="Player"/> has
-        /// </summary>
-        public int Experience
-        {
-            get => experienceBar.CurrentValue;
-            set => Math.Min(experienceBar.MaxValue, value);
-        }
-        private ProgressBar experienceBar;
-
-        /// <summary>
-        /// The health of the <see cref="Player"/>
-        /// </summary>
-        public int Health
-        {
-            get => healthBar.CurrentValue;
-            set => Math.Min(healthBar.MaxValue, value);
-        }
-        private ProgressBar healthBar;
-
-        /// <summary>
-        /// The amount of gold (currency) that the <see cref="Player"/> has
-        /// </summary>
-        public short Gold { get; set; }
-
-        /// <summary>
-        /// The current direction of the player
-        /// </summary>
-        public Direction Direction { get; private set; }
-
         // Graphics-related data
         private Rectangle rectangle;
         private const byte PIXEL_SIZE = 100;
@@ -83,14 +26,13 @@ namespace ISU_Medieval_Odyssey
 
         // Movement-related data
         private float rotation;
-        private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
 
         int counter;
         int frameNo;
 
         // Statistics-related variables
-        private Vector2[] statisticsLocs =
+        private readonly Vector2[] statisticsLocs =
         {
             new Vector2(15, 15),
             new Vector2(10, 40),
@@ -109,6 +51,7 @@ namespace ISU_Medieval_Odyssey
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
+            //Speed = 200;
         }
 
         /// <summary>
@@ -118,7 +61,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            colissionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
+            colisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             nonRoundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
@@ -174,26 +117,26 @@ namespace ISU_Medieval_Odyssey
             // Updating player location (non-rounded) given appropraite keystroke
             if (KeyboardHelper.IsKeyDown(Keys.W))
             {
-                nonRoundedLocation.Y -= SPEED * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             }
             if (KeyboardHelper.IsKeyDown(Keys.S))
             {
-                nonRoundedLocation.Y += SPEED * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                nonRoundedLocation.Y += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             }
             if (KeyboardHelper.IsKeyDown(Keys.A))
             {
-                nonRoundedLocation.X -= SPEED * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                nonRoundedLocation.X -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             }
             if (KeyboardHelper.IsKeyDown(Keys.D))
             {
-                nonRoundedLocation.X += SPEED * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             }
 
             // Updating player coordinate-related variable
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
-            colissionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
-            colissionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
+            colisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
+            colisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
             Center = rectangle.Location.ToVector2Int() + (PIXEL_SIZE >> 1);
         }
 
