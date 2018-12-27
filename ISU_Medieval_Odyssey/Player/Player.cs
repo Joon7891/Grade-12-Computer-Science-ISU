@@ -24,6 +24,9 @@ namespace ISU_Medieval_Odyssey
         private MovementType movementType = MovementType.Walk;
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
+        // TEST
+        Armour test;
+
         // Movement-related data
         private float rotation;
         private Vector2 nonRoundedLocation;
@@ -77,6 +80,9 @@ namespace ISU_Medieval_Odyssey
                 Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
             healthBar = new ProgressBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
+
+
+            test = new RobeSkirt();
         }
 
         /// <summary>
@@ -86,7 +92,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
-            //++counter;
+            ++counter;
             if (counter == 5)
             {
                 counter = 0;
@@ -149,7 +155,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Updating player mouse rotation and direction
             rotation = (float)((Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI));
-            Direction = (Direction)((2 * rotation / Math.PI) % 4);
+            Direction = (Direction)(2 * rotation / Math.PI % 4);
         }
 
         /// <summary>
@@ -160,6 +166,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
+            test.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
         }
 
         /// <summary>
