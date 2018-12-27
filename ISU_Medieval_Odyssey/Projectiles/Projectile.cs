@@ -8,6 +8,12 @@ namespace ISU_Medieval_Odyssey
 {
     class Projectile
     {
+        readonly double maxDist;
+
+        protected double distanceTraveled;
+        protected double speed;
+        protected double velocity;
+
 
     }
 }
