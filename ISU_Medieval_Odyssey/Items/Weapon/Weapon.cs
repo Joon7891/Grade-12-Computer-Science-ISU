@@ -16,5 +16,10 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Weapon : Item
     {
+        // Base attack damage of the weapon, before modifiers
+        public int BaseDamage { get; protected set; }
+
+        // Base attack speed of the weapon, measured in attacks per second
+        public double AttackSpeed { get; protected set; }
     }
 }
