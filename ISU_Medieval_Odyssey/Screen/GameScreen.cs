@@ -47,7 +47,7 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating player and world
-            player.Update(gameTime, camera.Position, world);
+            player.Update(gameTime, camera.Position);
             world.Update(gameTime, player.CurrentChunk);
 
             // Updating the offset of the camera and moving camera if appropraite
@@ -68,6 +68,8 @@ namespace ISU_Medieval_Odyssey
             }            
         }
 
+        bool status = false;
+
         /// <summary>
         /// Draw subprogram for GameScreen
         /// </summary>
@@ -76,7 +78,21 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and world - in adjusted camera
             spriteBatch.Begin(transformMatrix : camera.ViewMatrix, samplerState : SamplerState.PointClamp);
-            test.Draw(spriteBatch);
+
+            if (status)
+            {
+                world.Draw(spriteBatch);
+            }
+            else
+            {
+                test.Draw(spriteBatch);
+            }
+
+            if (KeyboardHelper.NewKeyStroke(Keys.E))
+            {
+                status = !status;
+            }
+
             player.Draw(spriteBatch);
             spriteBatch.End();
 

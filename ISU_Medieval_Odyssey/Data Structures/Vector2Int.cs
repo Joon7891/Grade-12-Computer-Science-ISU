@@ -12,9 +12,22 @@ namespace ISU_Medieval_Odyssey
     /// <summary>
     /// Describes a 2D vector with integer coordinates
     /// </summary>
-    public class Vector2Int
+    public struct Vector2Int
     {
+        /// <summary>
+        /// Returns a zero <see cref="Vector2Int"/>
+        /// </summary>
         public static Vector2Int Zero => new Vector2Int(0, 0);
+
+        /// <summary>
+        /// Returns a unit <see cref="Vector2Int"/> wiht components (1, 0)
+        /// </summary>
+        public static Vector2Int UnitX => new Vector2Int(1, 0);
+
+        /// <summary>
+        /// Returns a unit <see cref="Vector2Int"/> with components (0, 1)
+        /// </summary>
+        public static Vector2Int UnitY => new Vector2Int(0, 1);
 
         /// <summary>
         /// The x-coordainte of the <see cref="Vector2Int"/>

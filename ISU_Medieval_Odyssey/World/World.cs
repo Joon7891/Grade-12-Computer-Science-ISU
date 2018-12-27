@@ -16,6 +16,16 @@ namespace ISU_Medieval_Odyssey
         private const int LOADED_CHUNK_COUNT = 5;
         private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
 
+        public Tile this[int x, int y]
+        {
+            get
+            {
+                int tileX = x - loadedChunks[0, 0].Position.X * Chunk.SIZE;
+                int tileY = y - loadedChunks[0, 0].Position.Y * Chunk.SIZE;
+                return loadedChunks[tileX / Chunk.SIZE, tileY / Chunk.SIZE][tileX % Chunk.SIZE, tileY % Chunk.SIZE];
+            }
+        }
+
         public World()
         {
             Vector2Int chunkPosition;
@@ -55,13 +65,6 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[i, j].Draw(spriteBatch);
                 }
             }
-        }
-
-        public Tile GetTileAt(Vector2Int tilePosition)
-        {
-            Vector2Int relativeTilePosition = tilePosition - loadedChunks[0, 0].Position * Chunk.SIZE;
-            Vector2Int chunkPosition = relativeTilePosition / Chunk.SIZE;
-            return loadedChunks[chunkPosition.X, chunkPosition.Y][relativeTilePosition.X % Chunk.SIZE, relativeTilePosition.Y % Chunk.SIZE];
         }
     }
 }

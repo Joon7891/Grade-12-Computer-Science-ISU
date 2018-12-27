@@ -33,6 +33,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int CurrentChunk { get; private set; }
 
+        public Rectangle colissionRectangle;
+
         /// <summary>
         /// The name of the <see cref="Player"/>
         /// </summary>
@@ -116,6 +118,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
+            colissionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             nonRoundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
@@ -138,8 +141,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
-        /// <param name="currentWorld">The current world that the player is in</param>
-        public void Update(GameTime gameTime, Vector2 cameraCenter, World currentWorld)
+        public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
             //++counter;
             if (counter == 5)
@@ -153,10 +155,8 @@ namespace ISU_Medieval_Odyssey
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating current tile and chunk coordinates
-            CurrentTile.X = Center.X / Tile.HORIZONTAL_SPACING;
-            CurrentTile.Y = Center.Y / Tile.VERTICAL_SPACING;
-            CurrentChunk.X = CurrentTile.X / Chunk.SIZE;
-            CurrentChunk.Y = CurrentTile.Y / Chunk.SIZE;
+            CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
+            CurrentChunk = CurrentTile / Chunk.SIZE;
 
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
@@ -192,8 +192,9 @@ namespace ISU_Medieval_Odyssey
             // Updating player coordinate-related variable
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
-            Center.X = rectangle.X + PIXEL_SIZE / 2;
-            Center.Y = rectangle.Y + PIXEL_SIZE / 2;
+            colissionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
+            colissionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
+            Center = rectangle.Location.ToVector2Int() + (PIXEL_SIZE >> 1);
         }
 
         /// <summary>
@@ -219,11 +220,6 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)direction, frameNo], rectangle, Color.White);
-            //riteBatch.Draw(SharedData.WhiteImage, rotationRectangle, null, Color.White, rotation, origin, SpriteEffects.None, 0);
-
-            //Texture2D cache = movementImages[movementType][(byte)direction, frameNo];
-            //spriteBatch.Draw(cache, rotationRectangle, null, Color.White, rotation, origin, SpriteEffects.None, 0);
-
         }
 
         /// <summary>

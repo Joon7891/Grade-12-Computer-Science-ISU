@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -19,6 +20,18 @@ namespace ISU_Medieval_Odyssey
     {
         // Dictionary to map MovementTypes to the appropriate images
         protected Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+
+        // Various sound effects
+        private static SoundEffect breakSoundEffect;
+
+        /// <summary>
+        /// Static constructor for <see cref="Armour"/> object
+        /// </summary>
+        static Armour()
+        {
+            // breakSoundEffect = Main.Instance.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
+            // To Do
+        }
 
         /// <summary>
         /// Draw subprogram for Armour object

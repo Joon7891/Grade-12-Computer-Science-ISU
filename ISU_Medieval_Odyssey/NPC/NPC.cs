@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    public abstract class Building
+    public abstract class NPC
     {
     }
 }
