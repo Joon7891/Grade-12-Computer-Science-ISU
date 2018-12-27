@@ -41,7 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Building\Building.cs" />
+    <Compile Include="Building\IBuilding.cs" />
     <Compile Include="Building\Shop.cs" />
     <Compile Include="Core\IO.cs" />
     <Compile Include="Core\Main.cs" />

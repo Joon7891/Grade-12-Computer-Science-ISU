@@ -43,9 +43,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int WorldPosition { get; private set; }
 
-
-        public Building chunkBuilding;
-
         /// <summary>
         /// Constructor for <see cref="Chunk"/> object
         /// </summary>

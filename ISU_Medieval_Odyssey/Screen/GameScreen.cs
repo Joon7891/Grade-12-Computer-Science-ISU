@@ -85,7 +85,7 @@ namespace ISU_Medieval_Odyssey
             }
             else
             {
-                test.Draw(spriteBatch);
+                test.DrawInside(spriteBatch);
             }
 
             if (KeyboardHelper.NewKeyStroke(Keys.E))

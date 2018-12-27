@@ -70,6 +70,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public short Gold { get; set; }
 
+        /// <summary>
+        /// The current direction of the player
+        /// </summary>
+        public Direction Direction { get; private set; }
+
         // Graphics-related data
         private Rectangle rectangle;
         private const byte PIXEL_SIZE = 100;
@@ -78,13 +83,8 @@ namespace ISU_Medieval_Odyssey
 
         // Movement-related data
         private float rotation;
-        private Direction direction;
         private const int SPEED = 200;
         private Vector2 nonRoundedLocation;
-
-        private Vector2 origin;
-        private Rectangle rotationRectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-
 
         int counter;
         int frameNo;
@@ -206,10 +206,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Updating player mouse rotation and direction
             rotation = (float)((Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI));
-            direction = (Direction)((2 * rotation / Math.PI) % 4);
-
-            rotationRectangle.Location = rectangle.Location + new Point(50, 50);
-            origin = new Vector2(250, 250);
+            Direction = (Direction)((2 * rotation / Math.PI) % 4);
         }
 
         /// <summary>
@@ -219,7 +216,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and its corresponding armour
-            spriteBatch.Draw(movementImages[movementType][(byte)direction, frameNo], rectangle, Color.White);
+            spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
         }
 
         /// <summary>
