@@ -57,6 +57,7 @@
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="Helpers\VectorHelper.cs" />
+    <Compile Include="Items\Armour\Helmet\Hair.cs" />
     <Compile Include="NPC\Enemies\Enemy.cs" />
     <Compile Include="NPC\NPC.cs" />
     <Compile Include="Player\Camera.cs" />
