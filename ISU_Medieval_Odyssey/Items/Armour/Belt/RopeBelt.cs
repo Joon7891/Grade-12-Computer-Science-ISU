@@ -29,5 +29,10 @@ namespace ISU_Medieval_Odyssey
             string armourTypeName = "ropeBelt";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
+
+        public RopeBelt()
+        {
+            base.movementImages = movementImages;
+        }
     }
 }

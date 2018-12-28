@@ -63,6 +63,17 @@
     <Compile Include="Items\Armour\Pants\MetalPants.cs" />
     <Compile Include="Items\Armour\Pants\Pants.cs" />
     <Compile Include="Items\Armour\Pants\RobeSkirt.cs" />
+    <Compile Include="Items\Armour\Shoulders\LeatherShoulders.cs" />
+    <Compile Include="Items\Armour\Shoulders\MetalShoulders.cs" />
+    <Compile Include="Items\Armour\Shoulders\Shoulders.cs" />
+    <Compile Include="Items\Armour\Torso\ChainJacket.cs" />
+    <Compile Include="Items\Armour\Torso\ChainTorso.cs" />
+    <Compile Include="Items\Armour\Torso\LeatherShirt.cs" />
+    <Compile Include="Items\Armour\Torso\LeatherTorso.cs" />
+    <Compile Include="Items\Armour\Torso\MetalTorso.cs" />
+    <Compile Include="Items\Armour\Torso\RobeShirt.cs" />
+    <Compile Include="Items\Armour\Torso\Torso.cs" />
+    <Compile Include="Items\Weapon\ThrustWeapon\LongSpear.cs" />
     <Compile Include="NPC\Enemies\Enemy.cs" />
     <Compile Include="NPC\NPC.cs" />
     <Compile Include="Player\Camera.cs" />

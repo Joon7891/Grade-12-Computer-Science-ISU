@@ -24,8 +24,13 @@ namespace ISU_Medieval_Odyssey
         private MovementType movementType = MovementType.Walk;
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
-        // TEST
-        Armour test;
+        // Player armour
+        private Belt belt;
+        private Head head;
+        private Pants pants;
+        private Shoes shoes;
+        private Shoulders shoulders;
+        private Torso torso;
 
         // Movement-related data
         private float rotation;
@@ -54,7 +59,6 @@ namespace ISU_Medieval_Odyssey
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
-            //Speed = 200;
         }
 
         /// <summary>
@@ -82,7 +86,12 @@ namespace ISU_Medieval_Odyssey
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
 
 
-            test = new RobeSkirt();
+            belt = new RopeBelt();
+            head = new RobeHood();
+            pants = new RobeSkirt();
+            shoes = new LeatherShoes();
+            shoulders = new MetalShoulders();
+            torso = new ChainJacket();
         }
 
         /// <summary>
@@ -166,7 +175,12 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
-            test.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            belt?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            head?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            torso?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            pants?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            shoes?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            shoulders?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
         }
 
         /// <summary>

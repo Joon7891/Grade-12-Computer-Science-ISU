@@ -119,10 +119,10 @@ namespace ISU_Medieval_Odyssey
         public void DrawStatistics(SpriteBatch spriteBatch)
         {
             // Drawing various statistics
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Tile Coordinate: {player.CurrentTile}", statisticsLoc[0], Color.Black);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Chunk Coordinate: {player.CurrentChunk}", statisticsLoc[1], Color.Black);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Frames Per Second: {Main.FPS}", statisticsLoc[2], Color.Black);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Total Memory Used: {Math.Round(GC.GetTotalMemory(true) / 1000000.0, 3)} MB", statisticsLoc[3], Color.Black);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Tile Coordinate: {player.CurrentTile}", statisticsLoc[0], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Chunk Coordinate: {player.CurrentChunk}", statisticsLoc[1], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Frames Per Second: {Main.FPS}", statisticsLoc[2], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Total Memory Used: {Math.Round(GC.GetTotalMemory(true) / 1000000.0, 3)} MB", statisticsLoc[3], Color.White);
         }
     }
 }

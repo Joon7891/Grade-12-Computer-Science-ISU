@@ -29,5 +29,10 @@ namespace ISU_Medieval_Odyssey
             string armourTypeName = "chainHood";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
+
+        public ChainHood()
+        {
+            base.movementImages = movementImages;
+        }
     }
 }
