@@ -18,6 +18,16 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Armour : Item
     {
+        /// <summary>
+        /// Whether the <see cref="Armour"/> is broken
+        /// </summary>
+        public bool IsBroken { get; private set; }
+
+        // Armour functionality related data
+        private int defenseModifier;
+        private int hitsLeft;
+
+
         // Dictionary to map MovementTypes to the appropriate images
         protected Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
