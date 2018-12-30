@@ -35,6 +35,12 @@ namespace ISU_Medieval_Odyssey
         int counter;
         int frameNo;
 
+        // Inventory related variables
+        public bool isInventoryOpen = false;
+        private byte hotbarSelectionIndex = 0;
+        private ItemSlot[] hotbarItems = new ItemSlot[8];
+        private ItemSlot[,] inventory = new ItemSlot[2, 8];
+
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
         {
@@ -88,6 +94,12 @@ namespace ISU_Medieval_Odyssey
                 Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
             healthBar = new ProgressBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
+
+            // Constructing player inventory
+            for (int i = 0; i < hotbarItems.Length; ++i)
+            {
+                hotbarItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH / 2 - 5 + (i - 4) * 70, 700);
+            }
         }
 
         /// <summary>
@@ -96,6 +108,56 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
+        {
+            // Switching between inventory or player, depending on keystroke
+            if (KeyboardHelper.NewKeyStroke(Keys.T))
+            {
+                isInventoryOpen = !isInventoryOpen;
+            }
+            UpdateHotbar(gameTime);
+
+            // Updating inventory or player, whatever is appropraite
+            if (isInventoryOpen)
+            {
+
+            }
+            else
+            {
+                UpdatePlayer(gameTime, cameraCenter);
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to update the hotbar
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        private void UpdateHotbar(GameTime gameTime)
+        {
+            // Updating selected item if user clicks it
+            for (byte i = 0; i < hotbarItems.Length; ++i)
+            {
+                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle))
+                {
+                    hotbarSelectionIndex = i;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to update the inventory
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        private void UpdateInventory(GameTime gameTime)
+        {
+
+        }
+
+        /// <summary>
+        /// Subprogram to upddate the just the player
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
+        private void UpdatePlayer(GameTime gameTime, Vector2 cameraCenter)
         {
             ++counter;
             if (counter == 5)
@@ -188,24 +250,65 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Draw subprogram for <see cref="Player"/> object - draw's the player and his armour only
+        /// Draw subprogram for <see cref="Player"/> object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        public void Draw(SpriteBatch spriteBatch)
+        /// <param name="camera">The camera currently pointed at the player</param>
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            // Drawing player and its corresponding armour
+            // Drawing player and its corresponding armour in appropraite sprite batch
+            spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
             foreach (Armour armour in armours)
             {
                 armour?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
             }
+            spriteBatch.End();
+
+            // Beginning regular sprite bathc
+            spriteBatch.Begin();
+
+            // Drawing HUD and hobar
+            DrawHUD(spriteBatch);
+            DrawHotbar(spriteBatch);
+
+            // Drawing inventory if appropraite
+            if (isInventoryOpen)
+            {
+                DrawInventory(spriteBatch);
+            }
+
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Subprogram to draw the hotbar
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        private void DrawHotbar(SpriteBatch spriteBatch)
+        {
+            // Drawing the hot bar
+            for (int i = 0; i < hotbarItems.Length; ++i)
+            {
+                hotbarItems[i].Draw(spriteBatch, i == hotbarSelectionIndex);
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to draw the inventory
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        private void DrawInventory(SpriteBatch spriteBatch)
+        {
+            // Drawing inventory
+
         }
 
         /// <summary>
         /// Draw subprogram for the <see cref="Player"/>'s heads up display
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        public void DrawHUD(SpriteBatch spriteBatch)
+        private void DrawHUD(SpriteBatch spriteBatch)
         {
             // Drawing primitive player properties
             spriteBatch.DrawString(SharedData.InformationFonts[1], Name, statisticsLocs[0], Color.White);

@@ -73,6 +73,7 @@
     <Compile Include="Items\Armour\Torso\MetalTorso.cs" />
     <Compile Include="Items\Armour\Torso\RobeShirt.cs" />
     <Compile Include="Items\Armour\Torso\Torso.cs" />
+    <Compile Include="Items\ItemSlot.cs" />
     <Compile Include="Items\Weapon\ThrustWeapon\LongSpear.cs" />
     <Compile Include="NPC\Enemies\Enemy.cs" />
     <Compile Include="NPC\NPC.cs" />

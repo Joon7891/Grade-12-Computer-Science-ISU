@@ -56,8 +56,10 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
+            spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
+
             for (byte i = 0; i < 5; ++i)
             {
                 for (byte j = 0; j < 5; ++j)
@@ -65,6 +67,7 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[i, j].Draw(spriteBatch);
                 }
             }
+            spriteBatch.End();
         }
     }
 }

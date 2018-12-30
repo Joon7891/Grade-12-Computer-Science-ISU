@@ -5,11 +5,8 @@
 // Modified Date: 12/18/2018
 // Description: Class to hold Item object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -19,5 +16,18 @@ namespace ISU_Medieval_Odyssey
         /// The value of the item - the price at which it will be purchased at
         /// </summary>
         public virtual int Value { get; }
+        
+        private Texture2D iconImage;
+
+        /// <summary>
+        /// Subprogram to draw the <see cref="Item"/>'s icon
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        /// <param name="rectangle">The rectangle to draw the item's icon in</param>
+        public virtual void DrawIcon(SpriteBatch spriteBatch, Rectangle rectangle)
+        {
+            // Drawing icon
+            spriteBatch.Draw(iconImage, rectangle, Color.White);
+        }
     }
 }

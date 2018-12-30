@@ -18,7 +18,6 @@ namespace ISU_Medieval_Odyssey
         // Instance of player and world
         private Player player = new Player("Joon7891");
         private World world = new World();
-        private Shop test = new Shop(new Vector2Int(0, 0));
 
         // Camera-realted variables
         private Camera camera = new Camera();
@@ -68,47 +67,25 @@ namespace ISU_Medieval_Odyssey
             }            
         }
 
-        bool status = false;
-
         /// <summary>
         /// Draw subprogram for GameScreen
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Drawing player and world - in adjusted camera
-            spriteBatch.Begin(transformMatrix : camera.ViewMatrix, samplerState : SamplerState.PointClamp);
+            // Drawing player and world
+            world.Draw(spriteBatch, camera);
+            player.Draw(spriteBatch, camera);
 
-            if (status)
-            {
-                world.Draw(spriteBatch);
-            }
-            else
-            {
-                test.DrawInside(spriteBatch);
-            }
-
-            if (KeyboardHelper.NewKeyStroke(Keys.E))
-            {
-                status = !status;
-            }
-
-            player.Draw(spriteBatch);
-            spriteBatch.End();
-
-            // Beginning regular spriteBatch
+            // Beginning regular sprite batch
             spriteBatch.Begin();
-            
-            // Drawing player HUD and other related components
-            player.DrawHUD(spriteBatch);
 
-            // Drawing statistics if appropraite
             if (showStatistics)
             {
                 DrawStatistics(spriteBatch);
             }
 
-            // Ending regular spriteBatch
+            // Ending regular sprite batch
             spriteBatch.End();
         }
 

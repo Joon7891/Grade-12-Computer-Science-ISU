@@ -25,6 +25,13 @@ namespace ISU_Medieval_Odyssey
         public static bool NewClick() => Main.Instance.NewMouse.LeftButton == ButtonState.Pressed && Main.Instance.OldMouse.LeftButton != ButtonState.Pressed;
 
         /// <summary>
+        /// Subprogram to check if a rectangle is clicked
+        /// </summary>
+        /// <param name="rectangle">The rectangle to check if clicked</param>
+        /// <returns>Whether the rectangle was clicked</returns>
+        public static bool IsRectangleClicked(Rectangle rectangle) => NewClick() && CollisionHelper.PointToRect(Location, rectangle);
+
+        /// <summary>
         /// The location of the mouse on the screen
         /// </summary>
         public static Vector2 Location => Main.Instance.NewMouse.Position.ToVector2();
