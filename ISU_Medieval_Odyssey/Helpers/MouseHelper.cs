@@ -32,6 +32,12 @@ namespace ISU_Medieval_Odyssey
         public static bool IsRectangleClicked(Rectangle rectangle) => NewClick() && CollisionHelper.PointToRect(Location, rectangle);
 
         /// <summary>
+        /// Subprogram to determine the amount that the scroll wheel has moved in the last update
+        /// </summary>
+        /// <returns>The amount of "Scroll Units" the scroll wheel has moved</returns>
+        public static int ScrollAmount() => (Main.Instance.NewMouse.ScrollWheelValue - Main.Instance.OldMouse.ScrollWheelValue) / 120;
+
+        /// <summary>
         /// The location of the mouse on the screen
         /// </summary>
         public static Vector2 Location => Main.Instance.NewMouse.Position.ToVector2();

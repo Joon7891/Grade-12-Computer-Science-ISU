@@ -16,8 +16,13 @@ namespace ISU_Medieval_Odyssey
         /// The value of the item - the price at which it will be purchased at
         /// </summary>
         public virtual int Value { get; }
-        
-        private Texture2D iconImage;
+
+        protected Texture2D iconImage;
+
+        public virtual void Use(GameTime gameTime)
+        {
+
+        }
 
         /// <summary>
         /// Subprogram to draw the <see cref="Item"/>'s icon

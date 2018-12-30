@@ -25,21 +25,20 @@ namespace ISU_Medieval_Odyssey
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         // Armour-related data
-        private Armour[] armours = new Armour[6];
         private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
 
         // Movement-related data
         private float rotation;
+        private Queue<Tuple<MovementType, int>> framesToAnimate = new Queue<Tuple<MovementType, int>>();
         private Vector2 nonRoundedLocation;
 
         int counter;
         int frameNo;
 
         // Inventory related variables
-        public bool isInventoryOpen = false;
-        private byte hotbarSelectionIndex = 0;
-        private ItemSlot[] hotbarItems = new ItemSlot[8];
-        private ItemSlot[,] inventory = new ItemSlot[2, 8];
+        private int hotbarSelectionIndex = 0;
+        private ItemSlot[] armourItems = new ItemSlot[6];
+        private ItemSlot[] hotbarItems = new ItemSlot[10];
 
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
@@ -98,7 +97,11 @@ namespace ISU_Medieval_Odyssey
             // Constructing player inventory
             for (int i = 0; i < hotbarItems.Length; ++i)
             {
-                hotbarItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH / 2 - 5 + (i - 4) * 70, 700);
+                hotbarItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH / 2 - 5 + (i - 5) * 70, 700);
+            }
+            for (int i = 0; i < armourItems.Length; ++i)
+            {
+                armourItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 10 + 70 * i);
             }
         }
 
@@ -109,66 +112,15 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
-            // Switching between inventory or player, depending on keystroke
-            if (KeyboardHelper.NewKeyStroke(Keys.T))
-            {
-                isInventoryOpen = !isInventoryOpen;
-            }
-            UpdateHotbar(gameTime);
-
-            // Updating inventory or player, whatever is appropraite
-            if (isInventoryOpen)
-            {
-
-            }
-            else
-            {
-                UpdatePlayer(gameTime, cameraCenter);
-            }
-        }
-
-        /// <summary>
-        /// Subprogram to update the hotbar
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values</param>
-        private void UpdateHotbar(GameTime gameTime)
-        {
-            // Updating selected item if user clicks it
-            for (byte i = 0; i < hotbarItems.Length; ++i)
-            {
-                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle))
-                {
-                    hotbarSelectionIndex = i;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Subprogram to update the inventory
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values</param>
-        private void UpdateInventory(GameTime gameTime)
-        {
-
-        }
-
-        /// <summary>
-        /// Subprogram to upddate the just the player
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values</param>
-        /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
-        private void UpdatePlayer(GameTime gameTime, Vector2 cameraCenter)
-        {
-            ++counter;
-            if (counter == 5)
-            {
-                counter = 0;
-                frameNo = (frameNo + 1) % SharedData.MovementNumFrames[movementType];
-            }
-
             // Calling subprograms to update movement and direction
             UpdateMovement(gameTime);
             UpdateDirection(gameTime, cameraCenter);
+
+            // If the player clicks, use the current item - if appropraite
+            if (MouseHelper.NewClick())
+            {
+                UseItem(gameTime);
+            }
 
             // Updating current tile and chunk coordinates
             CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
@@ -179,6 +131,29 @@ namespace ISU_Medieval_Odyssey
             statisticsLocs[2].X = 160 - SharedData.InformationFonts[0].MeasureString($"{Gold} Gold").X / 2;
             experienceBar.Update(gameTime);
             healthBar.Update(gameTime);
+
+            // Calling subprogram to update hotbar
+            UpdateInventory(gameTime);
+        }
+
+        /// <summary>
+        /// Subprogram to update the <see cref="Player"/>'s inventory
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        private void UpdateInventory(GameTime gameTime)
+        {
+            // Updating hotbar selection if user clicks a hotbar item
+            for (byte i = 0; i < hotbarItems.Length; ++i)
+            {
+                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle))
+                {
+                    hotbarSelectionIndex = i;
+                }
+            }
+
+            // Updating hotbar selection via scroll
+            hotbarSelectionIndex = ((hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (hotbarItems.Length) +
+                hotbarItems.Length) % hotbarItems.Length;
         }
 
         /// <summary>
@@ -187,22 +162,44 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         private void UpdateMovement(GameTime gameTime)
         {
-            // Updating player location (non-rounded) given appropraite keystroke
-            if (KeyboardHelper.IsKeyDown(Keys.W))
+            // Calling movement animation of any of the keys are pressed
+            if (KeyboardHelper.IsKeyDown(Keys.W) || KeyboardHelper.IsKeyDown(Keys.S) ||
+                KeyboardHelper.IsKeyDown(Keys.A) || KeyboardHelper.IsKeyDown(Keys.D))
             {
-                nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                // Animating movement frames if there are no other frames to be animated
+                if (framesToAnimate.Count == 0)
+                {
+                    movementType = MovementType.Walk;
+                    ++counter;
+                    if (counter == 3)
+                    {
+                        counter = 0;
+                        frameNo = (frameNo + 1) % SharedData.MovementNumFrames[MovementType.Walk];
+                    }
+                }
+
+                // Updating player location as appropraite
+                if (KeyboardHelper.IsKeyDown(Keys.W))
+                {
+                    nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                }
+                if (KeyboardHelper.IsKeyDown(Keys.S))
+                {
+                    nonRoundedLocation.Y += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                }
+                if (KeyboardHelper.IsKeyDown(Keys.A))
+                {
+                    nonRoundedLocation.X -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                }
+                if (KeyboardHelper.IsKeyDown(Keys.D))
+                {
+                    nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                }
             }
-            if (KeyboardHelper.IsKeyDown(Keys.S))
+            else if (framesToAnimate.Count == 0)
             {
-                nonRoundedLocation.Y += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            }
-            if (KeyboardHelper.IsKeyDown(Keys.A))
-            {
-                nonRoundedLocation.X -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            }
-            if (KeyboardHelper.IsKeyDown(Keys.D))
-            {
-                nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                // Resetting frame number to stationary image
+                frameNo = 0;
             }
 
             // Updating player coordinate-related variable
@@ -226,6 +223,15 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// Subprogram to use the item that the player is using, under certain conditions
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        private void UseItem(GameTime gameTime)
+        {
+           // for (int i = 0; i < )
+        }
+
+        /// <summary>
         /// Subprogram to inflict damage to the player
         /// </summary>
         /// <param name="damageAmount">The amount of damage to inflict</param>
@@ -233,18 +239,18 @@ namespace ISU_Medieval_Odyssey
         {
             // Calculating final damage amount and inflicting it on user
             int finalDamageAmount = damageAmount;
-            for (int i = 0; i < armours.Length; ++i)
+            for (int i = 0; i < armourItems.Length; ++i)
             {
-                finalDamageAmount = armours[i].Use(finalDamageAmount);
+                finalDamageAmount = ((Armour)armourItems[i].Item).Defend(finalDamageAmount);
             }
             Health -= finalDamageAmount;
 
             // Removing broken armour
-            for (int i = 0; i < armours.Length; ++i)
+            for (int i = 0; i < armourItems.Length; ++i)
             {
-                if (armours[i] != null && armours[i].IsBroken)
+                if (armourItems[i].Item != null && ((Armour)armourItems[i].Item).IsBroken)
                 {
-                    armours[i] = null;
+                    armourItems[i].Item = null;
                 }
             }
         }
@@ -259,9 +265,9 @@ namespace ISU_Medieval_Odyssey
             // Drawing player and its corresponding armour in appropraite sprite batch
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
-            foreach (Armour armour in armours)
+            for (int i = 0; i < armourItems.Length; ++i)
             {
-                armour?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+                ((Armour)armourItems[i].Item)?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
             }
             spriteBatch.End();
 
@@ -270,38 +276,28 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing HUD and hobar
             DrawHUD(spriteBatch);
-            DrawHotbar(spriteBatch);
-
-            // Drawing inventory if appropraite
-            if (isInventoryOpen)
-            {
-                DrawInventory(spriteBatch);
-            }
+            DrawInventory(spriteBatch);
 
             spriteBatch.End();
         }
 
         /// <summary>
-        /// Subprogram to draw the hotbar
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        private void DrawHotbar(SpriteBatch spriteBatch)
-        {
-            // Drawing the hot bar
-            for (int i = 0; i < hotbarItems.Length; ++i)
-            {
-                hotbarItems[i].Draw(spriteBatch, i == hotbarSelectionIndex);
-            }
-        }
-
-        /// <summary>
-        /// Subprogram to draw the inventory
+        /// Subprogram to draw the <see cref="Player"/>'s inventory
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         private void DrawInventory(SpriteBatch spriteBatch)
         {
-            // Drawing inventory
+            // Drawing the hotbar
+            for (int i = 0; i < hotbarItems.Length; ++i)
+            {
+                hotbarItems[i].Draw(spriteBatch, i == hotbarSelectionIndex);
+            }
 
+            // Drawing the armour hotbar
+            for (int i = 0; i < armourItems.Length; ++i)
+            {
+                armourItems[i].Draw(spriteBatch);
+            }
         }
 
         /// <summary>

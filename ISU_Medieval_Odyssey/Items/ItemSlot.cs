@@ -56,8 +56,8 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to draw <see cref="ItemSlot"/> object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch</param>
-        /// <param name="isSelected">Whether the item is currently selected</param>
-        public void Draw(SpriteBatch spriteBatch, bool isSelected)
+        /// <param name="isSelected">Whether the item is currently selected - default is false</param>
+        public void Draw(SpriteBatch spriteBatch, bool isSelected = false)
         {
             // Drawing item slot and item
             spriteBatch.Draw(itemSlotImage, Rectangle, (isSelected ? Color.SkyBlue : Color.White) * 0.65f);

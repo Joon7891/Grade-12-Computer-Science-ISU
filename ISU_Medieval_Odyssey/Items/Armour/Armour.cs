@@ -51,7 +51,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="damageAmount">The original damage amount</param>
         /// <returns>The adjusted damage amount</returns>
-        public int Use(int damageAmount)
+        public int Defend(int damageAmount)
         {
             // Decrementing durability and making appropraite updates if armour breaks
             if (--durability == 0)
