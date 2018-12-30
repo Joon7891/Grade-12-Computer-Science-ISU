@@ -18,6 +18,6 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The value of the item - the price at which it will be purchased at
         /// </summary>
-        public short Value { get; protected set; }
+        public virtual int Value { get; }
     }
 }

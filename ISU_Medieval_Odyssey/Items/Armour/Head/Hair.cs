@@ -29,6 +29,8 @@ namespace ISU_Medieval_Odyssey
         public Hair()
         {
             base.movementImages = movementImages;
+            defence = 0;
+            durability = SharedData.INFINITY;
         }
     }
 }

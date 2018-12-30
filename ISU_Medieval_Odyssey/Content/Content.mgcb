@@ -39281,3 +39281,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Armour/Torso/RobeShirt/Walk/Up/robeShirtWalkUp8.png
 
+#begin Audio/SoundEffects/armourBreakSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SoundEffects/armourBreakSoundEffect.wav
+

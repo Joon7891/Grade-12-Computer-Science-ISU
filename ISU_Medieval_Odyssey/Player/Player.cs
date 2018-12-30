@@ -24,13 +24,9 @@ namespace ISU_Medieval_Odyssey
         private MovementType movementType = MovementType.Walk;
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
-        // Player armour
-        private Belt belt;
-        private Head head;
-        private Pants pants;
-        private Shoes shoes;
-        private Shoulders shoulders;
-        private Torso torso;
+        // Armour-related data
+        private Armour[] armours = new Armour[6];
+        private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
 
         // Movement-related data
         private float rotation;
@@ -59,6 +55,14 @@ namespace ISU_Medieval_Odyssey
             string basePath = "Images/Sprites/Player/";
             string entityTypeName = "player";
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
+
+            // Setting up armour indexer - maps a armour type to the corresponding index
+            armourTypeIndexer.Add(typeof(Belt), 0);
+            armourTypeIndexer.Add(typeof(Head), 1);
+            armourTypeIndexer.Add(typeof(Pants), 2);
+            armourTypeIndexer.Add(typeof(Shoes), 3);
+            armourTypeIndexer.Add(typeof(Shoulders), 4);
+            armourTypeIndexer.Add(typeof(Torso), 5);
         }
 
         /// <summary>
@@ -84,14 +88,6 @@ namespace ISU_Medieval_Odyssey
                 Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
             healthBar = new ProgressBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
-
-
-            belt = new RopeBelt();
-            head = new RobeHood();
-            pants = new RobeSkirt();
-            shoes = new LeatherShoes();
-            shoulders = new MetalShoulders();
-            torso = new ChainJacket();
         }
 
         /// <summary>
@@ -168,6 +164,30 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// Subprogram to inflict damage to the player
+        /// </summary>
+        /// <param name="damageAmount">The amount of damage to inflict</param>
+        public void InflictDamage(int damageAmount)
+        {
+            // Calculating final damage amount and inflicting it on user
+            int finalDamageAmount = damageAmount;
+            for (int i = 0; i < armours.Length; ++i)
+            {
+                finalDamageAmount = armours[i].Use(finalDamageAmount);
+            }
+            Health -= finalDamageAmount;
+
+            // Removing broken armour
+            for (int i = 0; i < armours.Length; ++i)
+            {
+                if (armours[i] != null && armours[i].IsBroken)
+                {
+                    armours[i] = null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Draw subprogram for <see cref="Player"/> object - draw's the player and his armour only
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
@@ -175,12 +195,10 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour
             spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
-            belt?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
-            head?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
-            torso?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
-            pants?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
-            shoes?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
-            shoulders?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            foreach (Armour armour in armours)
+            {
+                armour?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
+            }
         }
 
         /// <summary>

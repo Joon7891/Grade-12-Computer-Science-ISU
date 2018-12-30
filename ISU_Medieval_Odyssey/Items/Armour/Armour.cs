@@ -19,14 +19,18 @@ namespace ISU_Medieval_Odyssey
     public abstract class Armour : Item
     {
         /// <summary>
+        /// The value of the armour
+        /// </summary>
+        public override int Value => 3 * defence + durability;
+            
+        /// <summary>
         /// Whether the <see cref="Armour"/> is broken
         /// </summary>
         public bool IsBroken { get; private set; }
 
         // Armour functionality related data
-        private int defenseModifier;
-        private int hitsLeft;
-
+        protected int defence;
+        protected int durability;
 
         // Dictionary to map MovementTypes to the appropriate images
         protected Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
@@ -39,8 +43,25 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Armour()
         {
-            // breakSoundEffect = Main.Instance.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
-            // To Do
+            breakSoundEffect = Main.Instance.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
+        }
+
+        /// <summary>
+        /// Subprogram to 'use' the armour
+        /// </summary>
+        /// <param name="damageAmount">The original damage amount</param>
+        /// <returns>The adjusted damage amount</returns>
+        public int Use(int damageAmount)
+        {
+            // Decrementing durability and making appropraite updates if armour breaks
+            if (--durability == 0)
+            {
+                breakSoundEffect.CreateInstance().Play();
+                IsBroken = true;
+            }
+
+            // Returning the adjusted damage amount - player must take at least 1 HP in damage
+            return Math.Max(1, damageAmount - defence);
         }
 
         /// <summary>
