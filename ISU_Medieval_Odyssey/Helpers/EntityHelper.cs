@@ -31,7 +31,7 @@ namespace ISU_Medieval_Odyssey
             // Loading directionary images for each movement type
             foreach (MovementType movementType in Enum.GetValues(typeof(MovementType)))
             {
-                movementImages.Add(movementType, LoadDirectionalImages(basePath, entityTypeName, movementType));
+                movementImages.Add(movementType, LoadDirectionalImages($"{basePath}/{movementType.ToString()}/", $"{entityTypeName}{movementType.ToString()}", SharedData.MovementNumFrames[movementType]));
             }
 
             // Returning movement images
@@ -45,10 +45,9 @@ namespace ISU_Medieval_Odyssey
         /// <param name="entityTypeName">The entity type name</param>
         /// <param name="movementType">The movement type</param>
         /// <returns>A 2D array containing the directional images</returns>
-        private static Texture2D[,] LoadDirectionalImages(string basePath, string entityTypeName, MovementType movementType)
+        public static Texture2D[,] LoadDirectionalImages(string basePath, string entityName, byte numFrames)
         {
             // Various variables to help hold and setup loaded images
-            byte numFrames = SharedData.MovementNumFrames[movementType];
             Texture2D[,] loadedImages = new Texture2D[Enum.GetValues(typeof(Direction)).Length, numFrames];
 
             // Loading in images for each direction and frame
@@ -57,7 +56,7 @@ namespace ISU_Medieval_Odyssey
                 for (byte i = 0; i < numFrames; ++i)
                 {
                     loadedImages[(byte)direction, i] = Main.Instance.Content.Load<Texture2D>
-                        (basePath + $"{movementType.ToString()}/{direction.ToString()}/{entityTypeName}{movementType.ToString()}{direction.ToString()}{i}");
+                        (basePath + $"{direction.ToString()}/{entityName}{direction.ToString()}{i}");
                 }
             }
 

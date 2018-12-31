@@ -26,10 +26,11 @@ namespace ISU_Medieval_Odyssey
         private int frameNumber;
         private int animationCounter;
         private Vector2 nonRoundedLocation;
-        private Queue<MovementImageData> framesToAnimate = new Queue<MovementImageData>();
+        private Queue<MovementImageData> imagesToAnimate = new Queue<MovementImageData>();
 
         // Player item related variables
         private int hotbarSelectionIndex = 0;
+        private Weapon weaponBeingUsed;
         private ItemSlot[] armourItems = new ItemSlot[6];
         private ItemSlot[] hotbarItems = new ItemSlot[10];
         private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
@@ -97,6 +98,9 @@ namespace ISU_Medieval_Odyssey
             {
                 armourItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 10 + 70 * i);
             }
+            hotbarItems[0].Item = new Spear();
+            hotbarItems[1].Item = new Sword();
+            hotbarItems[2].Item = new Bow();
         }
 
         /// <summary>
@@ -143,8 +147,8 @@ namespace ISU_Medieval_Odyssey
             hotbarSelectionIndex = ((hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (hotbarItems.Length) +
                 hotbarItems.Length) % hotbarItems.Length;
 
-            // Using item if user clicks to use it
-            if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem)
+            // Using item if user clicks to use it and is not currently using an item
+            if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0)
             {
                 UseItem(hotbarItems[hotbarSelectionIndex].Item);
             }
@@ -161,15 +165,30 @@ namespace ISU_Medieval_Odyssey
             {
                 if (item is SlashWeapon)
                 {
-                    // 
+                    // Adding slash movement images
+                    for (byte i = 0; i < SharedData.MovementNumFrames[MovementType.Slash]; ++i)
+                    {
+                        imagesToAnimate.Enqueue(new MovementImageData(MovementType.Slash, i));
+                    }
+                    weaponBeingUsed = (Weapon)item;
                 }
                 else if (item is ThrustWeapon)
                 {
-
+                    // Adding thrust movement iamges
+                    for (byte i = 0; i < SharedData.MovementNumFrames[MovementType.Thrust]; ++i)
+                    {
+                        imagesToAnimate.Enqueue(new MovementImageData(MovementType.Thrust, i));
+                    }
+                    weaponBeingUsed = (Weapon)item;
                 }
                 else
                 {
-
+                    // Adding shooting movement images
+                    for (byte i = 0; i < SharedData.MovementNumFrames[MovementType.Shoot]; ++i)
+                    {
+                        imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
+                    }
+                    weaponBeingUsed = (Weapon)item;
                 }
             }
 
@@ -183,6 +202,20 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         private void UpdateMovement(GameTime gameTime)
         {
+            // If there are frames left to animate, increment animation counter
+            if (imagesToAnimate.Count != 0)
+            {
+                ++animationCounter;
+
+                // Moving onto next frame every 3 updates
+                if (animationCounter == 5)
+                {
+                    animationCounter = 0;
+                    movementType = imagesToAnimate.Peek().MovementType;
+                    frameNumber = imagesToAnimate.Dequeue().FrameNumber;
+                }
+            }
+
             // Updating player movement if any of the movement keys are down
             if (KeyboardHelper.IsAnyKeyDown(Keys.W, Keys.A, Keys.S, Keys.D))
             {
@@ -205,38 +238,25 @@ namespace ISU_Medieval_Odyssey
                 }
 
                 // Animating movement frames if there are no other frames to be animated
-                if (framesToAnimate.Count == 0)
+                if (imagesToAnimate.Count == 0)
                 {
                     movementType = MovementType.Walk;
+                    weaponBeingUsed = null;
                     ++animationCounter;
                     if (animationCounter == 3)
                     {
                         animationCounter = 0;
                         frameNumber = (frameNumber + 1) % SharedData.MovementNumFrames[MovementType.Walk];
                     }
-
-
                 }
             }
-            else if (framesToAnimate.Count == 0)
+            else if (imagesToAnimate.Count == 0)
             {
-                // Resetting frame if player is not moving and it's movement is walking
-                frameNumber = 0;
+                // Resetting image if player is not moving and weapon is not being used
+                movementType = MovementType.Walk;
+                weaponBeingUsed = null;
                 animationCounter = 0;
-            }
-
-            // If there are frames left to animate, increment animation counter
-            if (framesToAnimate.Count != 0)
-            {
-                ++animationCounter;
-
-                // Moving onto next frame every 3 updates
-                if (animationCounter == 3)
-                {
-                    animationCounter = 0;
-                    movementType = framesToAnimate.Peek().MovementType;
-                    frameNumber = framesToAnimate.Dequeue().FrameNumber;
-                }
+                frameNumber = 0;
             }
 
             // Updating player coordinate-related variable
@@ -256,23 +276,27 @@ namespace ISU_Medieval_Odyssey
         {
             // Updating player mouse rotation and direction
             rotation = (float)((Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI));
-            Direction = (Direction)(2 * rotation / Math.PI % 4);
+            if (weaponBeingUsed == null)
+            {
+                Direction = (Direction)(2 * rotation / Math.PI % 4);
+            }
         }
 
         /// <summary>
         /// Draw subprogram for <see cref="Player"/> object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        /// <param name="camera">The camera currently pointed at the player</param>
+        /// <param name="camera">The camaera currently pointed at the player</param>
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            // Drawing player and its corresponding armour in appropraite sprite batch
+            // Drawing player and its corresponding armour and weapon in appropraite sprite batch
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNumber], rectangle, Color.White);
             for (int i = 0; i < armourItems.Length; ++i)
             {
                 ((Armour)armourItems[i].Item)?.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
             }
+            weaponBeingUsed?.Draw(spriteBatch, rectangle, Direction, frameNumber);
             spriteBatch.End();
 
             // Beginning regular sprite batch

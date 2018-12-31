@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -22,9 +23,19 @@ namespace ISU_Medieval_Odyssey
         // Base attack speed of the weapon, measured in attacks per second
         public double AttackSpeed { get; protected set; }
 
+        protected Texture2D[,] directionalImages;
+
         /// <summary>
-        /// The images of this <see cref="Weapon"/>
+        /// Subprogram to draw <see cref="Weapon"/> object
         /// </summary>
-        public Dictionary<MovementType, Texture2D[,]> WeaponImages { get; private set; } = new Dictionary<MovementType, Texture2D[,]>();
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        /// <param name="playerRectangle">The corresponding player's rectangle</param>
+        /// <param name="movementType">The movement type</param>
+        /// <param name="direction">The current direction</param>
+        /// <param name="currentFrame">The current frame number</param>
+        public void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, Direction direction, int currentFrame)
+        {
+            spriteBatch.Draw(directionalImages[(int)direction, currentFrame], playerRectangle, Color.White);
+        }
     }
 }
