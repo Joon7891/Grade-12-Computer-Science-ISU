@@ -31,5 +31,25 @@ namespace ISU_Medieval_Odyssey
         /// <param name="key">The key to check if it is down</param>
         /// <returns>Whether or whether not the key is currently down</returns>
         public static bool IsKeyDown(Keys key) => Main.Instance.NewKeyboard.IsKeyDown(key);
+
+        /// <summary>
+        /// Subprogram to determine if any keys in an array of keys are down
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public static bool IsAnyKeyDown(params Keys[] keys)
+        {
+            // Returning true of any of the keys are down
+            foreach (Keys key in keys)
+            {
+                if (IsKeyDown(key))
+                {
+                    return true;
+                }
+            }
+
+            // Otherwise returning false
+            return false;
+        }
     }
 }

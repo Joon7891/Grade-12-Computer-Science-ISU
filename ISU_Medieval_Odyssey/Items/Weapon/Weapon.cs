@@ -21,5 +21,10 @@ namespace ISU_Medieval_Odyssey
 
         // Base attack speed of the weapon, measured in attacks per second
         public double AttackSpeed { get; protected set; }
+
+        /// <summary>
+        /// The images of this <see cref="Weapon"/>
+        /// </summary>
+        public Dictionary<MovementType, Texture2D[,]> WeaponImages { get; private set; } = new Dictionary<MovementType, Texture2D[,]>();
     }
 }

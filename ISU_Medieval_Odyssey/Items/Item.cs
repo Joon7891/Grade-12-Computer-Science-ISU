@@ -19,7 +19,11 @@ namespace ISU_Medieval_Odyssey
 
         protected Texture2D iconImage;
 
-        public virtual void Use(GameTime gameTime)
+        /// <summary>
+        /// Subprogram to use this <see cref="Item"/>
+        /// </summary>
+        /// <param name="player">The player using this particular item</param>
+        public virtual void Use(Player player)
         {
 
         }

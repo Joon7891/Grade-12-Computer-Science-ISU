@@ -7,9 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,21 +21,18 @@ namespace ISU_Medieval_Odyssey
         private MovementType movementType = MovementType.Walk;
         private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
-        // Armour-related data
-        private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
-
-        // Movement-related data
+        // Animation & movement related data
         private float rotation;
-        private Queue<Tuple<MovementType, int>> framesToAnimate = new Queue<Tuple<MovementType, int>>();
+        private int frameNumber;
+        private int animationCounter;
         private Vector2 nonRoundedLocation;
+        private Queue<MovementImageData> framesToAnimate = new Queue<MovementImageData>();
 
-        int counter;
-        int frameNo;
-
-        // Inventory related variables
+        // Player item related variables
         private int hotbarSelectionIndex = 0;
         private ItemSlot[] armourItems = new ItemSlot[6];
         private ItemSlot[] hotbarItems = new ItemSlot[10];
+        private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
 
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
@@ -116,12 +110,6 @@ namespace ISU_Medieval_Odyssey
             UpdateMovement(gameTime);
             UpdateDirection(gameTime, cameraCenter);
 
-            // If the player clicks, use the current item - if appropraite
-            if (MouseHelper.NewClick())
-            {
-                UseItem(gameTime);
-            }
-
             // Updating current tile and chunk coordinates
             CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
             CurrentChunk = CurrentTile / Chunk.SIZE;
@@ -154,6 +142,39 @@ namespace ISU_Medieval_Odyssey
             // Updating hotbar selection via scroll
             hotbarSelectionIndex = ((hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (hotbarItems.Length) +
                 hotbarItems.Length) % hotbarItems.Length;
+
+            // Using item if user clicks to use it
+            if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem)
+            {
+                UseItem(hotbarItems[hotbarSelectionIndex].Item);
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to "use" a certain item
+        /// </summary>
+        /// <param name="item">Item to be used</param>
+        private void UseItem(Item item)
+        {
+            // Adding appropraite animation frames if player is using a weapon
+            if (item is Weapon)
+            {
+                if (item is SlashWeapon)
+                {
+                    // 
+                }
+                else if (item is ThrustWeapon)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+
+            // Using item
+            item.Use(this);
         }
 
         /// <summary>
@@ -162,23 +183,10 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         private void UpdateMovement(GameTime gameTime)
         {
-            // Calling movement animation of any of the keys are pressed
-            if (KeyboardHelper.IsKeyDown(Keys.W) || KeyboardHelper.IsKeyDown(Keys.S) ||
-                KeyboardHelper.IsKeyDown(Keys.A) || KeyboardHelper.IsKeyDown(Keys.D))
+            // Updating player movement if any of the movement keys are down
+            if (KeyboardHelper.IsAnyKeyDown(Keys.W, Keys.A, Keys.S, Keys.D))
             {
-                // Animating movement frames if there are no other frames to be animated
-                if (framesToAnimate.Count == 0)
-                {
-                    movementType = MovementType.Walk;
-                    ++counter;
-                    if (counter == 3)
-                    {
-                        counter = 0;
-                        frameNo = (frameNo + 1) % SharedData.MovementNumFrames[MovementType.Walk];
-                    }
-                }
-
-                // Updating player location as appropraite
+                // Moving player in appropraite direction given movement keystroke
                 if (KeyboardHelper.IsKeyDown(Keys.W))
                 {
                     nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -195,11 +203,40 @@ namespace ISU_Medieval_Odyssey
                 {
                     nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
+
+                // Animating movement frames if there are no other frames to be animated
+                if (framesToAnimate.Count == 0)
+                {
+                    movementType = MovementType.Walk;
+                    ++animationCounter;
+                    if (animationCounter == 3)
+                    {
+                        animationCounter = 0;
+                        frameNumber = (frameNumber + 1) % SharedData.MovementNumFrames[MovementType.Walk];
+                    }
+
+
+                }
             }
             else if (framesToAnimate.Count == 0)
             {
-                // Resetting frame number to stationary image
-                frameNo = 0;
+                // Resetting frame if player is not moving and it's movement is walking
+                frameNumber = 0;
+                animationCounter = 0;
+            }
+
+            // If there are frames left to animate, increment animation counter
+            if (framesToAnimate.Count != 0)
+            {
+                ++animationCounter;
+
+                // Moving onto next frame every 3 updates
+                if (animationCounter == 3)
+                {
+                    animationCounter = 0;
+                    movementType = framesToAnimate.Peek().MovementType;
+                    frameNumber = framesToAnimate.Dequeue().FrameNumber;
+                }
             }
 
             // Updating player coordinate-related variable
@@ -223,12 +260,49 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Subprogram to use the item that the player is using, under certain conditions
+        /// Draw subprogram for <see cref="Player"/> object
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values</param>
-        private void UseItem(GameTime gameTime)
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        /// <param name="camera">The camera currently pointed at the player</param>
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-           // for (int i = 0; i < )
+            // Drawing player and its corresponding armour in appropraite sprite batch
+            spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
+            spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNumber], rectangle, Color.White);
+            for (int i = 0; i < armourItems.Length; ++i)
+            {
+                ((Armour)armourItems[i].Item)?.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
+            }
+            spriteBatch.End();
+
+            // Beginning regular sprite batch
+            spriteBatch.Begin();
+
+            // Drawing HUD and hobar
+            DrawHUD(spriteBatch);
+            DrawInventory(spriteBatch);
+
+            // Ending regular sprite batch
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Subprogram to draw the <see cref="Player"/>'s inventory
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        private void DrawInventory(SpriteBatch spriteBatch)
+        {
+            // Drawing the hotbar
+            for (int i = 0; i < hotbarItems.Length; ++i)
+            {
+                hotbarItems[i].Draw(spriteBatch, i == hotbarSelectionIndex);
+            }
+
+            // Drawing the armour items
+            for (int i = 0; i < armourItems.Length; ++i)
+            {
+                armourItems[i].Draw(spriteBatch);
+            }
         }
 
         /// <summary>
@@ -252,51 +326,6 @@ namespace ISU_Medieval_Odyssey
                 {
                     armourItems[i].Item = null;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Draw subprogram for <see cref="Player"/> object
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        /// <param name="camera">The camera currently pointed at the player</param>
-        public void Draw(SpriteBatch spriteBatch, Camera camera)
-        {
-            // Drawing player and its corresponding armour in appropraite sprite batch
-            spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
-            spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNo], rectangle, Color.White);
-            for (int i = 0; i < armourItems.Length; ++i)
-            {
-                ((Armour)armourItems[i].Item)?.Draw(spriteBatch, rectangle, movementType, Direction, frameNo);
-            }
-            spriteBatch.End();
-
-            // Beginning regular sprite bathc
-            spriteBatch.Begin();
-
-            // Drawing HUD and hobar
-            DrawHUD(spriteBatch);
-            DrawInventory(spriteBatch);
-
-            spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Subprogram to draw the <see cref="Player"/>'s inventory
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        private void DrawInventory(SpriteBatch spriteBatch)
-        {
-            // Drawing the hotbar
-            for (int i = 0; i < hotbarItems.Length; ++i)
-            {
-                hotbarItems[i].Draw(spriteBatch, i == hotbarSelectionIndex);
-            }
-
-            // Drawing the armour hotbar
-            for (int i = 0; i < armourItems.Length; ++i)
-            {
-                armourItems[i].Draw(spriteBatch);
             }
         }
 
