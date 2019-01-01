@@ -20,18 +20,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 2;
 
         /// <summary>
-        /// Static constructor to setup various LeatherHat components
+        /// Static constructor to setup various <see cref="LeatherHat"/> components
         /// </summary>
         static LeatherHat()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Head/LeatherHat/";
             string armourTypeName = "leatherHat";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="LeatherHat"/> object
+        /// </summary>
         public LeatherHat()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

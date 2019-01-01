@@ -24,18 +24,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 4;
 
         /// <summary>
-        /// Static constructor to setup various RopeBelt components
+        /// Static constructor to setup various <see cref="RopeBelt"/> components
         /// </summary>
         static RopeBelt()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Belt/RopeBelt/";
             string armourTypeName = "ropeBelt";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="RopeBelt"/> object
+        /// </summary>
         public RopeBelt()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

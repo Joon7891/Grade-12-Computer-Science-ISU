@@ -20,18 +20,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 2;
 
         /// <summary>
-        /// Static constructor to setup various MetalTorso components
+        /// Static constructor to setup various <see cref="LeatherShoulders"/> components
         /// </summary>
         static LeatherShoulders()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Shoulders/LeatherShoulders/";
             string armourTypeName = "leatherShoulders";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="LeatherShoulders"/> object
+        /// </summary>
         public LeatherShoulders()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

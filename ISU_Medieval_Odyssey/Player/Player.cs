@@ -98,7 +98,7 @@ namespace ISU_Medieval_Odyssey
             {
                 armourItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 10 + 70 * i);
             }
-            hotbarItems[0].Item = new Spear();
+            hotbarItems[0].Item = new LongSpear();
             hotbarItems[1].Item = new Sword();
             hotbarItems[2].Item = new Bow();
         }
@@ -190,6 +190,8 @@ namespace ISU_Medieval_Odyssey
                     }
                     weaponBeingUsed = (Weapon)item;
                 }
+                frameNumber = 0;
+                animationCounter = 0;
             }
 
             // Using item

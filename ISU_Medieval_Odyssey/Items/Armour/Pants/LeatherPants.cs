@@ -24,18 +24,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 4;
 
         /// <summary>
-        /// Static constructor to setup various LeatherPants components
+        /// Static constructor to setup various <see cref="LeatherPants"/> components
         /// </summary>
         static LeatherPants()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Pants/LeatherPants/";
             string armourTypeName = "leatherPants";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="LeatherPants"/> object
+        /// </summary>
         public LeatherPants()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

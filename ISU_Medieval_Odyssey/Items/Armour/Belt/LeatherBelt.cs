@@ -24,7 +24,7 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 2;
 
         /// <summary>
-        /// Static constructor to setup various LeatherBelt components
+        /// Static constructor to setup various <see cref="LeatherBelt"/> components
         /// </summary>
         static LeatherBelt()
         {
@@ -34,8 +34,12 @@ namespace ISU_Medieval_Odyssey
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="LeatherBelt"/> object
+        /// </summary>
         public LeatherBelt()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

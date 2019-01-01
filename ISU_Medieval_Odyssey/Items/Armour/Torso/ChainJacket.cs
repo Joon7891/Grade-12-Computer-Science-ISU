@@ -20,18 +20,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 7;
 
         /// <summary>
-        /// Static constructor to setup various MetalTorso components
+        /// Static constructor to setup various <see cref="ChainJacket"/> components
         /// </summary>
         static ChainJacket()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Torso/ChainJacket/";
             string armourTypeName = "chainJacket";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
-
+        
+        /// <summary>
+        /// Constructor for <see cref="ChainJacket"/> object
+        /// </summary>
         public ChainJacket()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

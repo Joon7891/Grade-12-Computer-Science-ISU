@@ -24,18 +24,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 4;
 
         /// <summary>
-        /// Static constructor to set up various MetalShoes components
+        /// Static constructor to set up various <see cref="MetalShoes"/> components
         /// </summary>
         static MetalShoes()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Shoes/MetalShoes/";
             string armourTypeName = "metalShoes";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="MetalShoes"/> object
+        /// </summary>
         public MetalShoes()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

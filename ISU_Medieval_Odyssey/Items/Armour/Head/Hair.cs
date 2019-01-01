@@ -20,14 +20,18 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Hair()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Head/Hair/";
             string armourTypeName = "hair";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="Hair"/> object
+        /// </summary>
         public Hair()
         {
+            // Setting up "armour" attributes and images
             base.movementImages = movementImages;
             defence = 0;
             durability = SharedData.INFINITY;

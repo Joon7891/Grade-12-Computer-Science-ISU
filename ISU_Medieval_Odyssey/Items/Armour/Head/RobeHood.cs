@@ -24,18 +24,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 4;
 
         /// <summary>
-        /// Static constructor to setup various RobeHood components
+        /// Static constructor to setup various <see cref="RobeHood"/> components
         /// </summary>
         static RobeHood()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Head/RobeHood/";
             string armourTypeName = "robeHood";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="RobeHood"/> object
+        /// </summary>
         public RobeHood()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

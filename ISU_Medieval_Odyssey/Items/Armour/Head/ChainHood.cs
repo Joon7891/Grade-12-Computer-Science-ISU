@@ -24,18 +24,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 6;
 
         /// <summary>
-        /// Static constructor to setup various ChainHood components
+        /// Static constructor to setup various <see cref="ChainHood"/> components
         /// </summary>
         static ChainHood()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Head/ChainHood/";
             string armourTypeName = "chainHood";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="ChainHood"/> object
+        /// </summary>
         public ChainHood()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

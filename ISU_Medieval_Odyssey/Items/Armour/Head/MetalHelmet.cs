@@ -24,18 +24,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 8;
 
         /// <summary>
-        /// Static constructor to setup various MetalHelmet components
+        /// Static constructor to setup various <see cref="MetalHelmet"/> components
         /// </summary>
         static MetalHelmet()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Head/MetalHelmet/";
             string armourTypeName = "metalHelmet";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="MetalHelmet"/> object
+        /// </summary>
         public MetalHelmet()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }

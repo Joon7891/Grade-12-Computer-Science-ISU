@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -17,6 +18,13 @@ namespace ISU_Medieval_Odyssey
         public LongSpear()
         {
             base.directionalImages = directionalImages;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, Direction direction, int currentFrame)
+        {
+            adjustedRectangle.X = playerRectangle.X - playerRectangle.Width;
+            adjustedRectangle.Y = playerRectangle.Y - playerRectangle.Height;
+            spriteBatch.Draw(directionalImages[(int)direction, currentFrame], adjustedRectangle, Color.White);
         }
     }
 }

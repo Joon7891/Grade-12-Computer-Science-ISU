@@ -20,18 +20,22 @@ namespace ISU_Medieval_Odyssey
         private const int DEFENSE_MAX = 5;
 
         /// <summary>
-        /// Static constructor to setup various RobeSkirt components
+        /// Static constructor to setup various <see cref="RobeSkirt"/> components
         /// </summary>
         static RobeSkirt()
         {
-            // Temporary strings to help with file paths
+            // Setting up movement images dictionary
             string basePath = "Images/Sprites/Armour/Pants/RobeSkirt/";
             string armourTypeName = "robeSkirt";
             movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="RobeSkirt"/> object
+        /// </summary>
         public RobeSkirt()
         {
+            // Setting up armour attributes and images
             base.movementImages = movementImages;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }
