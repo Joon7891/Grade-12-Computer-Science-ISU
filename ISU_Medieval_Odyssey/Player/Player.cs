@@ -57,12 +57,12 @@ namespace ISU_Medieval_Odyssey
             movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
 
             // Setting up armour indexer - maps a armour type to the corresponding index
-            armourTypeIndexer.Add(typeof(Belt), 0);
-            armourTypeIndexer.Add(typeof(Head), 1);
-            armourTypeIndexer.Add(typeof(Pants), 2);
-            armourTypeIndexer.Add(typeof(Shoes), 3);
+            armourTypeIndexer.Add(typeof(Shoes), 0);
+            armourTypeIndexer.Add(typeof(Pants), 1);
+            armourTypeIndexer.Add(typeof(Belt), 2);
+            armourTypeIndexer.Add(typeof(Torso), 3);
             armourTypeIndexer.Add(typeof(Shoulders), 4);
-            armourTypeIndexer.Add(typeof(Torso), 5);
+            armourTypeIndexer.Add(typeof(Head), 5);
         }
 
         /// <summary>
@@ -96,11 +96,18 @@ namespace ISU_Medieval_Odyssey
             }
             for (int i = 0; i < armourItems.Length; ++i)
             {
-                armourItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 10 + 70 * i);
+                armourItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 630 - 70 * i);
             }
             hotbarItems[0].Item = new LongSpear();
             hotbarItems[1].Item = new Sword();
             hotbarItems[2].Item = new Bow();
+
+            armourItems[0].Item = new MetalShoes();
+            armourItems[1].Item = new MetalPants();
+            armourItems[2].Item = new LeatherBelt();
+            armourItems[3].Item = new MetalTorso();
+            armourItems[4].Item = new MetalShoulders();
+            armourItems[5].Item = new MetalHelmet();
         }
 
         /// <summary>

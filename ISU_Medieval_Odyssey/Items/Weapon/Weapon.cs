@@ -25,7 +25,7 @@ namespace ISU_Medieval_Odyssey
 
         protected Texture2D[,] directionalImages;
 
-        // Note: Only used for weapons with 196 x 196 - Long Spear, Long Sword and Rapier
+        // Note: Only used for weapons with 196 x 196 - Long Spear, Sword and Rapier
         protected Rectangle adjustedRectangle = new Rectangle(0, 0, 300, 300);
 
         /// <summary>
@@ -38,6 +38,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="currentFrame">The current frame number</param>
         public virtual void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, Direction direction, int currentFrame)
         {
+            // Drawing weapon
             spriteBatch.Draw(directionalImages[(int)direction, currentFrame], playerRectangle, Color.White);
         }
     }
