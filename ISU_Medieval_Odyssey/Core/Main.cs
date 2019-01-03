@@ -24,44 +24,48 @@ namespace ISU_Medieval_Odyssey
         private SpriteBatch spriteBatch;
 
         /// <summary>
-        /// Static instance of Main class - used to access Main class properties
+        /// Instance of <see cref="ContentManager"/> - used for loading
         /// </summary>
-        public static Main Instance { get; private set; }
+        public new static ContentManager Content { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse 1 frame back
         /// </summary>
-        public MouseState OldMouse { get; private set; }
+        public static MouseState OldMouse { get; private set; }
 
         /// <summary>
         /// The mouse state of the mouse currently
         /// </summary>
-        public MouseState NewMouse { get; private set; }
+        public static MouseState NewMouse { get; private set; }
 
         /// <summary>
         /// The keyboard state of the keyboard 1 frame back
         /// </summary>
-        public KeyboardState OldKeyboard { get; private set; }
+        public static KeyboardState OldKeyboard { get; private set; }
 
         /// <summary>
         /// The keyboard state of the keyboard currently
         /// </summary>
-        public KeyboardState NewKeyboard { get; private set; }
+        public static KeyboardState NewKeyboard { get; private set; }
 
         /// <summary>
         /// The number of frames per second
         /// </summary>
         public static float FPS { get; private set; }
 
+        /// <summary>
+        /// The current screen of the game
+        /// </summary>
+        public static ScreenMode CurrentScreen { get; set; } = ScreenMode.Game;
+
         // Current screen mode and dictionary to map screen mode to a IScreen
-        private ScreenMode currentScreen = ScreenMode.Game;
         private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            Content = base.Content;
             Content.RootDirectory = "Content";
-            Instance = this;
         }
 
         /// <summary>
@@ -126,7 +130,7 @@ namespace ISU_Medieval_Odyssey
             FPS = (float) Math.Round(1000.0f / gameTime.ElapsedGameTime.TotalMilliseconds, 2);
 
             // Updating current screen
-            screenDictionary[currentScreen].Update(gameTime);
+            screenDictionary[CurrentScreen].Update(gameTime);
 
             // Updating base game
             base.Update(gameTime);
@@ -142,7 +146,7 @@ namespace ISU_Medieval_Odyssey
             GraphicsDevice.Clear(Color.Black);
             
             // Drawing current screen
-            screenDictionary[currentScreen].Draw(spriteBatch);
+            screenDictionary[CurrentScreen].Draw(spriteBatch);
 
             // Drawing base game
             base.Draw(gameTime);

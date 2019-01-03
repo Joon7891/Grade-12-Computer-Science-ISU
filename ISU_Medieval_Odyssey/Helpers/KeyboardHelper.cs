@@ -23,14 +23,14 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="key">The key to check for new keystroke</param>
         /// <returns>Whether the keystroke was a new one</returns>
-        public static bool NewKeyStroke(Keys key) => Main.Instance.NewKeyboard.IsKeyDown(key) && !Main.Instance.OldKeyboard.IsKeyDown(key);
+        public static bool NewKeyStroke(Keys key) => Main.NewKeyboard.IsKeyDown(key) && !Main.OldKeyboard.IsKeyDown(key);
 
         /// <summary>
         /// Subprogram to check if a keystroke is currently pressed/down
         /// </summary>
         /// <param name="key">The key to check if it is down</param>
         /// <returns>Whether or whether not the key is currently down</returns>
-        public static bool IsKeyDown(Keys key) => Main.Instance.NewKeyboard.IsKeyDown(key);
+        public static bool IsKeyDown(Keys key) => Main.NewKeyboard.IsKeyDown(key);
 
         /// <summary>
         /// Subprogram to determine if any keys in an array of keys are down

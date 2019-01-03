@@ -55,7 +55,7 @@ namespace ISU_Medieval_Odyssey
             {
                 for (byte i = 0; i < numFrames; ++i)
                 {
-                    loadedImages[(byte)direction, i] = Main.Instance.Content.Load<Texture2D>
+                    loadedImages[(byte)direction, i] = Main.Content.Load<Texture2D>
                         (basePath + $"{direction.ToString()}/{entityName}{direction.ToString()}{i}");
                 }
             }

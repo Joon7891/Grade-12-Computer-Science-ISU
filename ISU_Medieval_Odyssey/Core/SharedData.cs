@@ -72,11 +72,11 @@ namespace ISU_Medieval_Odyssey
             MovementNumFrames.Add(MovementType.Thrust, 8);
 
             // Importing images and fonts
-            WhiteImage = Main.Instance.Content.Load<Texture2D>("Images/Sprites/whiteImage");
+            WhiteImage = Main.Content.Load<Texture2D>("Images/Sprites/whiteImage");
             InformationFonts = new SpriteFont[4];
             for (byte i = 0; i < InformationFonts.Length; ++i)
             {
-                InformationFonts[i] = Main.Instance.Content.Load<SpriteFont>($"Fonts/InformationFont{i}");
+                InformationFonts[i] = Main.Content.Load<SpriteFont>($"Fonts/InformationFont{i}");
             }
         }
     }

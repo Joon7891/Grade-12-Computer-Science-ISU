@@ -36,7 +36,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static ItemSlot()
         {
-            itemSlotImage = Main.Instance.Content.Load<Texture2D>("Images/Sprites/itemSlotImage");
+            itemSlotImage = Main.Content.Load<Texture2D>("Images/Sprites/itemSlotImage");
         }
 
         /// <summary>

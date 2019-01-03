@@ -43,7 +43,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Armour()
         {
-            breakSoundEffect = Main.Instance.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
+            breakSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
         }
 
         /// <summary>

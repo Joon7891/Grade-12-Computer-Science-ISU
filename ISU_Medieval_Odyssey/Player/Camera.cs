@@ -62,8 +62,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting orthographic size and origin to default values
             OrthographicSize = 1;
-            Origin = new Vector2(Main.Instance.GraphicsDevice.Viewport.Width / 2.0f,
-                Main.Instance.GraphicsDevice.Viewport.Height / 2.0f);
+            Origin = new Vector2(SharedData.SCREEN_WIDTH / 2.0f, SharedData.SCREEN_HEIGHT / 2.0f);
         }
     }
 }

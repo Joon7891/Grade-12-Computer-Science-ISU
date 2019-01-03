@@ -56,7 +56,7 @@ namespace ISU_Medieval_Odyssey
             // Loading images for each tile type
             foreach (TileType tileType in Enum.GetValues(typeof(TileType)))
             {
-                tileImageDictionary.Add(tileType, Main.Instance.Content.Load<Texture2D>($"Images/Sprites/Tiles/tile{tileType.ToString()}"));
+                tileImageDictionary.Add(tileType, Main.Content.Load<Texture2D>($"Images/Sprites/Tiles/tile{tileType.ToString()}"));
             }
         }
 

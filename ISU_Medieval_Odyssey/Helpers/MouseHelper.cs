@@ -22,7 +22,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to check if a mouse click was a new one
         /// </summary>
         /// <returns>Whether or whether not a mouse click was a new one</returns>
-        public static bool NewClick() => Main.Instance.NewMouse.LeftButton == ButtonState.Pressed && Main.Instance.OldMouse.LeftButton != ButtonState.Pressed;
+        public static bool NewClick() => Main.NewMouse.LeftButton == ButtonState.Pressed && Main.OldMouse.LeftButton != ButtonState.Pressed;
 
         /// <summary>
         /// Subprogram to check if a rectangle is clicked
@@ -35,11 +35,11 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to determine the amount that the scroll wheel has moved in the last update
         /// </summary>
         /// <returns>The amount of "Scroll Units" the scroll wheel has moved</returns>
-        public static int ScrollAmount() => (Main.Instance.NewMouse.ScrollWheelValue - Main.Instance.OldMouse.ScrollWheelValue) / 120;
+        public static int ScrollAmount() => (Main.NewMouse.ScrollWheelValue - Main.OldMouse.ScrollWheelValue) / 120;
 
         /// <summary>
         /// The location of the mouse on the screen
         /// </summary>
-        public static Vector2 Location => Main.Instance.NewMouse.Position.ToVector2();
+        public static Vector2 Location => Main.NewMouse.Position.ToVector2();
     }
 }
