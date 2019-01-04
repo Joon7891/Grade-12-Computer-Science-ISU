@@ -6,18 +6,30 @@
 // Description: Class to hold SettingsScreen object, implements IScreen
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class SettingsScreen : IScreen
     {
+        // Background images and graphics
+        private Song backgroundMusic;
+        private Background background;
+        private Button backButton;
+        
         /// <summary>
         /// Subprogram to load settings screen content
         /// </summary>
         public void LoadContent()
         {
-
+            // Setting up settings screen background components
+            backgroundMusic = Main.Content.Load<Song>("Audio/Music/settingsBackgroundMusic");
+            backButton = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/backButton"), new Rectangle(10, 10, 65, 65), () =>
+            {
+                Main.CurrentScreen = ScreenMode.MainMenu;
+                MediaPlayer.Stop();
+            });            
         }
         
         /// <summary>
@@ -26,7 +38,14 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
+            // Playing background music
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+               MediaPlayer.Play(backgroundMusic);
+            }
 
+            // Updating back button
+            backButton.Update(gameTime);
         }
 
         /// <summary>
@@ -35,7 +54,16 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            // Starting sprite batch
+            spriteBatch.Begin();
 
+            // Drawing background
+
+            // Drawing back button
+            backButton.Draw(spriteBatch);
+
+            // Ending sprite batch
+            spriteBatch.End();
         }
     }
 }

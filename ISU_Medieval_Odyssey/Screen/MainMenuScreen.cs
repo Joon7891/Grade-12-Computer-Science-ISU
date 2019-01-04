@@ -30,18 +30,18 @@ namespace ISU_Medieval_Odyssey
             // Setting up option buttons
             optionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 400, 300, 100),() =>
             {
-                MediaPlayer.Stop();
                 Main.CurrentScreen = ScreenMode.Game;
+                MediaPlayer.Stop();
             });
             optionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/loadGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 510, 300, 100), () =>
             {
-                MediaPlayer.Stop();
                 Main.CurrentScreen = ScreenMode.Game;
+                MediaPlayer.Stop();
             });
             optionButtons[2] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/settingsButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 620, 300, 100), () =>
             {
-                MediaPlayer.Stop();
                 Main.CurrentScreen = ScreenMode.Settings;
+                MediaPlayer.Stop();
             });
         }
         
@@ -51,16 +51,16 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
-            // Updating various main menu buttons
-            for (int i = 0; i < optionButtons.Length; ++i)
-            {
-                optionButtons[i].Update(gameTime);
-            }
-            
             // Playing background music
             if (MediaPlayer.State != MediaState.Playing)
             {
                 MediaPlayer.Play(backgroundMusic);
+            }
+
+            // Updating various main menu buttons
+            for (int i = 0; i < optionButtons.Length; ++i)
+            {
+                optionButtons[i].Update(gameTime);
             }
         }
 
