@@ -12,8 +12,9 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class MetalPants : Pants
     {
-        // Dictionary to map MovementTypes to the appropriate images
+        // MetalPants specific images
         private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
         private const int DEFENCE_MIN = 4;
@@ -24,10 +25,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static MetalPants()
         {
-            // Setting up movement images dictionary
-            string basePath = "Images/Sprites/Armour/Pants/MetalPants/";
-            string armourTypeName = "metalPants";
-            movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
+            // Loading in various MetalPants images
+            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Pants/MetalPants/", "metalPants");
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/metalPantsIcon");
         }
 
         /// <summary>
@@ -37,6 +37,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up armour attributes and images
             base.movementImages = movementImages;
+            base.iconImage = iconImage;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }
     }

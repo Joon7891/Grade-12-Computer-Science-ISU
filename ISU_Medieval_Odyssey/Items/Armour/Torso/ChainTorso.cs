@@ -12,8 +12,9 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class ChainTorso : Torso
     {
-        // Dictionary to map MovementTypes to the appropriate images
+        // ChainTorso specific images
         private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
         private const int DEFENCE_MIN = 5;
@@ -24,10 +25,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static ChainTorso()
         {
-            // Setting up movement images dictionary
-            string basePath = "Images/Sprites/Armour/Torso/ChainTorso/";
-            string armourTypeName = "chainTorso";
-            movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
+            // Loading in various ChainTorso images
+            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Torso/ChainTorso/", "chainTorso");
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/chainTorsoIcon");
         }
 
         /// <summary>
@@ -37,6 +37,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up armour attributes and images
             base.movementImages = movementImages;
+            base.iconImage = iconImage;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }
     }

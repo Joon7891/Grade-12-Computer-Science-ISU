@@ -16,8 +16,9 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class MetalHelmet : Head
     {
-        // Dictionary to map MovementTypes to the appropriate images
+        // MetalHelmet specific images
         private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
         private const int DEFENCE_MIN = 6;
@@ -28,10 +29,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static MetalHelmet()
         {
-            // Setting up movement images dictionary
-            string basePath = "Images/Sprites/Armour/Head/MetalHelmet/";
-            string armourTypeName = "metalHelmet";
-            movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
+            // Loading in various MetalHelmet images
+            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Head/MetalHelmet/", "metalHelmet");
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/metalHelmetIcon");
         }
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up armour attributes and images
             base.movementImages = movementImages;
+            base.iconImage = iconImage;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }
     }

@@ -16,8 +16,9 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class ChainHood : Head
     {
-        // Dictionary to map MovementTypes to the appropriate images
+        // ChainHood specific images
         private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
         private const int DEFENCE_MIN = 4;
@@ -28,10 +29,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static ChainHood()
         {
-            // Setting up movement images dictionary
-            string basePath = "Images/Sprites/Armour/Head/ChainHood/";
-            string armourTypeName = "chainHood";
-            movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
+            // Loading in various ChainHood images
+            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Head/ChainHood/", "chainHood");
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/chainHoodIcon");
         }
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up armour attributes and images
             base.movementImages = movementImages;
+            base.iconImage = iconImage;
             defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
         }
     }
