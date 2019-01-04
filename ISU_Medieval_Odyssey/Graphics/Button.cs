@@ -20,6 +20,7 @@ namespace ISU_Medieval_Odyssey
     {
         // Variables button click related fields
         private static SoundEffect clickSoundEffect;
+        private static SoundEffect errorSoundEffect;
         public delegate void OnClick();
         private OnClick onClick;
 
@@ -27,6 +28,11 @@ namespace ISU_Medieval_Odyssey
         private Texture2D image;
         private Rectangle rect;
 
+        /// <summary>
+        /// Whether or whether not the button is active
+        /// </summary>
+        public bool Active { get; set; }
+        
         /// <summary>
         /// Whether the mouse is hovering above the button
         /// </summary>
@@ -37,7 +43,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Button()
         {
+            // Importing various sound effects
             clickSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/buttonClick");
+            errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
         }
 
         /// <summary>
@@ -46,12 +54,14 @@ namespace ISU_Medieval_Odyssey
         /// <param name="image">The image of the button</param>
         /// <param name="rect">The rectangle representing the rectangular dimensions of the button</param>
         /// <param name="onClick">The behavior of the button when clicked</param>
-        public Button(Texture2D image, Rectangle rect, OnClick onClick)
+        /// <param name="active">Whether the button is active/can be used - true by default</param>
+        public Button(Texture2D image, Rectangle rect, OnClick onClick, bool active = true)
         {
             // Setting up button variables from parameters
             this.onClick = onClick;
             this.image = image;
             this.rect = rect;
+            Active = active;
         }
 
         /// <summary>
@@ -60,11 +70,18 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
-            // Invoking button behavior and sound if button is clicked
+            // If button is pressed - inoke behavior and click sound if button is active, otherwise error sound
             if (MouseHelper.NewClick() && IsMouseHovering)
             {
-                clickSoundEffect.CreateInstance().Play();
-                onClick();
+                if (Active)
+                {
+                    clickSoundEffect.CreateInstance().Play();
+                    onClick();
+                }
+                else
+                {
+                    errorSoundEffect.CreateInstance().Play();
+                }
             }
         }
 
@@ -75,7 +92,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing button; transparency is higher if mouse is not hovering over button
-            spriteBatch.Draw(image, rect, Color.White * (0.6f + 0.4f * Convert.ToByte(IsMouseHovering)));
+            spriteBatch.Draw(image, rect, Color.White * (0.6f + 0.4f * Convert.ToByte(IsMouseHovering && Active)));
         }
     }
 }

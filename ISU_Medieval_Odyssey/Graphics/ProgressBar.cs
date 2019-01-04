@@ -38,7 +38,7 @@ namespace ISU_Medieval_Odyssey
         private Rectangle progressRectangle;
 
         // Variables required to draw the progress bar text
-        private string text;
+        private string text = string.Empty;
         private Vector2 textLocation;
         private readonly Color textColor;
         private readonly SpriteFont progressFont;

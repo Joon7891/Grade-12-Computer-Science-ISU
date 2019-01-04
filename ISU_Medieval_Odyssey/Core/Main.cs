@@ -56,7 +56,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The current screen of the game
         /// </summary>
-        public static ScreenMode CurrentScreen { get; set; } = ScreenMode.Game;
+        public static ScreenMode CurrentScreen { get; set; } = ScreenMode.MainMenu;
 
         // Current screen mode and dictionary to map screen mode to a IScreen
         private Dictionary<ScreenMode, IScreen> screenDictionary = new Dictionary<ScreenMode, IScreen>();
