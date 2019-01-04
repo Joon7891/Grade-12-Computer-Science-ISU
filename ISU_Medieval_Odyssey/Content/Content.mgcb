@@ -42899,3 +42899,10 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/IconImages/ropeBeltIcon.png
 
+#begin Fonts/TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TitleFont.spritefont
+
