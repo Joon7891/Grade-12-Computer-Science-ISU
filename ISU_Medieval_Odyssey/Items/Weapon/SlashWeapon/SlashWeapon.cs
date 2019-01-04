@@ -10,11 +10,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public abstract class SlashWeapon : Weapon
     {
+        private static SoundEffect slashSoundEffect;
+
+        static SlashWeapon()
+        {
+            slashSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/slashSoundEffect");
+        }
+
+
+        public override void Use(Player player)
+        {
+            slashSoundEffect.CreateInstance().Play();
+        }
     }
 }

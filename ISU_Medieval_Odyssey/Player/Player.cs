@@ -31,6 +31,7 @@ namespace ISU_Medieval_Odyssey
         // Player item related variables
         private int hotbarSelectionIndex = 0;
         private Weapon weaponBeingUsed;
+        private Armour hair = new Hair();
         private ItemSlot[] armourItems = new ItemSlot[6];
         private ItemSlot[] hotbarItems = new ItemSlot[10];
         private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
@@ -107,7 +108,7 @@ namespace ISU_Medieval_Odyssey
             armourItems[2].Item = new LeatherBelt();
             armourItems[3].Item = new MetalTorso();
             armourItems[4].Item = new MetalShoulders();
-            armourItems[5].Item = new MetalHelmet();
+            //armourItems[5].Item = new MetalHelmet();
         }
 
         /// <summary>
@@ -177,7 +178,6 @@ namespace ISU_Medieval_Odyssey
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Slash, i));
                     }
-                    weaponBeingUsed = (Weapon)item;
                 }
                 else if (item is ThrustWeapon)
                 {
@@ -186,7 +186,6 @@ namespace ISU_Medieval_Odyssey
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Thrust, i));
                     }
-                    weaponBeingUsed = (Weapon)item;
                 }
                 else
                 {
@@ -195,8 +194,8 @@ namespace ISU_Medieval_Odyssey
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
                     }
-                    weaponBeingUsed = (Weapon)item;
                 }
+                weaponBeingUsed = (Weapon)item;
                 frameNumber = 0;
                 animationCounter = 0;
             }
@@ -212,16 +211,26 @@ namespace ISU_Medieval_Odyssey
         private void UpdateMovement(GameTime gameTime)
         {
             // If there are frames left to animate, increment animation counter
-            if (imagesToAnimate.Count != 0)
+            if (imagesToAnimate.Count > 0 || weaponBeingUsed != null)
             {
                 ++animationCounter;
 
                 // Moving onto next frame every 3 updates
-                if (animationCounter == 5)
+                if (animationCounter % 5 == 0)
                 {
                     animationCounter = 0;
-                    movementType = imagesToAnimate.Peek().MovementType;
-                    frameNumber = imagesToAnimate.Dequeue().FrameNumber;
+
+                    if (imagesToAnimate.Count == 0)
+                    {
+                        movementType = MovementType.Walk;
+                        weaponBeingUsed = null;
+                        frameNumber = 0;
+                    }
+                    else
+                    {
+                        movementType = imagesToAnimate.Peek().MovementType;
+                        frameNumber = imagesToAnimate.Dequeue().FrameNumber;
+                    }
                 }
             }
 
@@ -249,8 +258,6 @@ namespace ISU_Medieval_Odyssey
                 // Animating movement frames if there are no other frames to be animated
                 if (imagesToAnimate.Count == 0)
                 {
-                    movementType = MovementType.Walk;
-                    weaponBeingUsed = null;
                     ++animationCounter;
                     if (animationCounter == 3)
                     {
@@ -259,11 +266,9 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
             }
-            else if (imagesToAnimate.Count == 0)
+            else if (imagesToAnimate.Count == 0 && weaponBeingUsed == null)
             {
-                // Resetting image if player is not moving and weapon is not being used
-                movementType = MovementType.Walk;
-                weaponBeingUsed = null;
+                // Resetting animation and frame counters
                 animationCounter = 0;
                 frameNumber = 0;
             }
@@ -304,6 +309,10 @@ namespace ISU_Medieval_Odyssey
             for (int i = 0; i < armourItems.Length; ++i)
             {
                 ((Armour)armourItems[i].Item)?.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
+            }
+            if (armourItems[5].Item == null)
+            {
+                hair.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
             }
             weaponBeingUsed?.Draw(spriteBatch, rectangle, Direction, frameNumber);
             spriteBatch.End();
