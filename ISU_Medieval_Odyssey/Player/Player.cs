@@ -104,6 +104,7 @@ namespace ISU_Medieval_Odyssey
             hotbarItems[0].Item = new LongSpear();
             hotbarItems[1].Item = new Sword();
             hotbarItems[2].Item = new Bow();
+            hotbarItems[3].Item = new HealthPotion();
             armourItems[0].Item = new MetalShoes();
             armourItems[1].Item = new MetalPants();
             armourItems[2].Item = new LeatherBelt();
@@ -149,6 +150,12 @@ namespace ISU_Medieval_Odyssey
                 if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle))
                 {
                     hotbarSelectionIndex = i;
+                }
+
+                // Removing item if it is no longer valid
+                if (hotbarItems[i].Item != null && !hotbarItems[i].Item.Valid)
+                {
+                    hotbarItems[i].Item = null;
                 }
             }
 

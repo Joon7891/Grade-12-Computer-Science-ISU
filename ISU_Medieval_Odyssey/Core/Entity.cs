@@ -56,6 +56,8 @@ namespace ISU_Medieval_Odyssey
             set => healthBar.CurrentValue = Math.Min(healthBar.MaxValue, value);
         }
 
+        public int MaxHealth => healthBar.MaxValue;
+
         /// <summary>
         /// A modifier that increases the attack damage of the <see cref="Entity"/>
         /// </summary>

@@ -17,6 +17,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public virtual int Value { get; }
 
+        /// <summary>
+        /// Whether the item is valid or not - does it still exist
+        /// </summary>
+        public bool Valid { get; protected set; } = true;
+
         protected Texture2D iconImage;
 
         /// <summary>

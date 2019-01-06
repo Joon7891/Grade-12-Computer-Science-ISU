@@ -17,22 +17,22 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The horizontal size of the <see cref="Tile"/>, in pixels
         /// </summary>
-        public const int HORIZONTAL_SIZE = 72; //72
+        public const byte HORIZONTAL_SIZE = 72; //72
 
         /// <summary>
         /// The vertical size of the <see cref="Tile"/>, in pixels
         /// </summary>
-        public const int VERTICAL_SIZE = 100; //100
+        public const byte VERTICAL_SIZE = 100; //100
 
         /// <summary>
         /// The horizontal spacing between adjacent <see cref="Tile"/>s
         /// </summary>
-        public const int HORIZONTAL_SPACING = HORIZONTAL_SIZE;
+        public const byte HORIZONTAL_SPACING = HORIZONTAL_SIZE;
 
         /// <summary>
         /// The vertical spacing between adjacent <see cref="Tile"/>s
         /// </summary>
-        public const int VERTICAL_SPACING = VERTICAL_SIZE / 2;
+        public const byte VERTICAL_SPACING = VERTICAL_SIZE / 2;
 
         /// <summary>
         /// The type of the <see cref="Tile"/>
