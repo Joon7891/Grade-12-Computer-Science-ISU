@@ -31,11 +31,6 @@ namespace ISU_Medieval_Odyssey
         public static Vector2 ScreenCenter { get; private set; }
 
         /// <summary>
-        /// The hexadecimal representation of "infinity" 
-        /// </summary>
-        public const int INFINITY = 0x3f3f3f3f;
-
-        /// <summary>
         /// Dictionary to map movement types to its number of frames
         /// </summary>
         public static Dictionary<MovementType, byte> MovementNumFrames { get; private set; }

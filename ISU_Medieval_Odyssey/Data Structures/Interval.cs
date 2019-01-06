@@ -54,6 +54,10 @@ namespace ISU_Medieval_Odyssey
         /// <returns>Whether the value is inside the <see cref="Interval{T}"/></returns>
         public bool Contains(T value) => 
             LowerBoundType == IntervalType.Open ? LowerBound.CompareTo(value) < 0 : LowerBound.CompareTo(value) <= 0 &&
-            UpperBoundType == IntervalType.Open ? UpperBound.CompareTo(value) > 0 : UpperBound.CompareTo(value) >= 0;       
+            UpperBoundType == IntervalType.Open ? UpperBound.CompareTo(value) > 0 : UpperBound.CompareTo(value) >= 0;
+
+        public override string ToString() =>
+            $"{(LowerBoundType == IntervalType.Open ? "(" : "[")}{LowerBound}, " +
+            $"{UpperBound}{(UpperBoundType == IntervalType.Open ? ")" : "]")}";
     }
 }

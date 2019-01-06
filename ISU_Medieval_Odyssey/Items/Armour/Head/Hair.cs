@@ -34,7 +34,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up "armour" attributes and images
             base.movementImages = movementImages;
             defence = 0;
-            durability = SharedData.INFINITY;
+            durability = int.MaxValue;
         }
     }
 }
