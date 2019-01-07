@@ -14,6 +14,9 @@ namespace ISU_Medieval_Odyssey
         // HealthPotion image
         private new static Texture2D iconImage;
 
+        // Variables related to health increase of the potion
+        private const int HEALTH_INCREASE_MIN = 10;
+        private const int HEALTH_INCREASE_MAX = 100;
         private int healthIncrease;
 
         /// <summary>
@@ -31,6 +34,8 @@ namespace ISU_Medieval_Odyssey
         {
             // Assigning health potion components
             base.iconImage = iconImage;
+            healthIncrease = SharedData.RNG.Next(HEALTH_INCREASE_MIN, HEALTH_INCREASE_MAX + 1);
+            Value = healthIncrease;
         }
 
         /// <summary>

@@ -54,6 +54,7 @@
     <Compile Include="Graphics\Background.cs" />
     <Compile Include="Graphics\Button.cs" />
     <Compile Include="Graphics\Graphic.cs" />
+    <Compile Include="Graphics\NumberBar.cs" />
     <Compile Include="Graphics\ProgressBar.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />

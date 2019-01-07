@@ -45,7 +45,7 @@ namespace ISU_Medieval_Odyssey
             set => experienceBar.CurrentValue = Math.Min(experienceBar.MaxValue, value);         //THIS ISN'T RIGHT, should carry onto next level
         }
 
-        protected ProgressBar experienceBar;
+        protected NumberBar experienceBar;
 
         /// <summary>
         /// The health of the <see cref="Entity"/>
@@ -83,7 +83,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public int Vitality { get; protected set; }
 
-        protected ProgressBar healthBar;
+        protected NumberBar healthBar;
 
         /// <summary>
         /// The amount of gold (currency) that the <see cref="Entity"/> has

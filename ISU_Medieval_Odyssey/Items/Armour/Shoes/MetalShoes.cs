@@ -21,8 +21,10 @@ namespace ISU_Medieval_Odyssey
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
-        private const int DEFENCE_MIN = 3;
-        private const int DEFENSE_MAX = 4;
+        private const int MIN_DEFENSE = 3;
+        private const int MAX_DEFENSE = 4;
+        private const int MIN_DURABILITY = 15;
+        private const int MAX_DURABILITY = 20;
 
         /// <summary>
         /// Static constructor to set up various <see cref="MetalShoes"/> components
@@ -37,12 +39,6 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Constructor for <see cref="MetalShoes"/> object
         /// </summary>
-        public MetalShoes()
-        {
-            // Setting up armour attributes and images
-            base.movementImages = movementImages;
-            base.iconImage = iconImage;
-            defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
-        }
+        public MetalShoes() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
     }
 }

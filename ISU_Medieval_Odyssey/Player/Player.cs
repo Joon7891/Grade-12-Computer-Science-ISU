@@ -85,9 +85,9 @@ namespace ISU_Medieval_Odyssey
             Name = name;
             Level = 1;
             statisticsLocs[0].X = 100 - SharedData.InformationFonts[0].MeasureString(name).X / 2;
-            experienceBar = new ProgressBar(new Rectangle(10, 80, 200, 28), 200, 40, Color.White * 0.5f, 
+            experienceBar = new NumberBar(new Rectangle(10, 80, 200, 28), 200, 40, Color.White * 0.5f, 
                 Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
-            healthBar = new ProgressBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
+            healthBar = new NumberBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
 
             // Constructing player inventory
@@ -131,8 +131,8 @@ namespace ISU_Medieval_Odyssey
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
             statisticsLocs[2].X = 160 - SharedData.InformationFonts[0].MeasureString($"{Gold} Gold").X / 2;
-            experienceBar.Update(gameTime);
-            healthBar.Update(gameTime);
+            experienceBar.Update();
+            healthBar.Update();
 
             // Calling subprogram to update hotbar
             UpdateInventory(gameTime);
@@ -164,7 +164,7 @@ namespace ISU_Medieval_Odyssey
                 hotbarItems.Length) % hotbarItems.Length;
 
             // Using item if user clicks to use it and is not currently using an item
-            if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0)
+            if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
             {
                 UseItem(hotbarItems[hotbarSelectionIndex].Item);
             }

@@ -15,7 +15,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The value of the item - the price at which it will be purchased at
         /// </summary>
-        public virtual int Value { get; }
+        public virtual int Value { get; protected set; }
 
         /// <summary>
         /// Whether the item is valid or not - does it still exist
@@ -25,13 +25,20 @@ namespace ISU_Medieval_Odyssey
         protected Texture2D iconImage;
 
         /// <summary>
+        /// Constructor for <see cref="Item"/> object
+        /// </summary>
+        /// <param name="iconImage">The icon image of this <see cref="Item"/></param>
+        protected Item(Texture2D iconImage)
+        {
+            // Assigning icon image
+            this.iconImage = iconImage;
+        }
+
+        /// <summary>
         /// Subprogram to use this <see cref="Item"/>
         /// </summary>
         /// <param name="player">The player using this particular item</param>
-        public virtual void Use(Player player)
-        {
-
-        }
+        public virtual void Use(Player player) { }
 
         /// <summary>
         /// Subprogram to draw the <see cref="Item"/>'s icon

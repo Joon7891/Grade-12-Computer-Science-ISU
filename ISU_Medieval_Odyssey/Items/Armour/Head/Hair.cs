@@ -20,21 +20,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Hair()
         {
-            // Setting up movement images dictionary
-            string basePath = "Images/Sprites/Armour/Head/Hair/";
-            string armourTypeName = "hair";
-            movementImages = EntityHelper.LoadMovementImages(basePath, armourTypeName);
+            // Loading Hair graphics
+            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Head/Hair/", "hair");
         }
 
         /// <summary>
         /// Constructor for <see cref="Hair"/> object
         /// </summary>
-        public Hair()
-        {
-            // Setting up "armour" attributes and images
-            base.movementImages = movementImages;
-            defence = 0;
-            durability = int.MaxValue;
-        }
+        public Hair() : base(0, 0, 0, 0, movementImages, null) { }
     }
 }

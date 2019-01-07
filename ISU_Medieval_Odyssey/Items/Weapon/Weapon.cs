@@ -28,6 +28,8 @@ namespace ISU_Medieval_Odyssey
         // Note: Only used for weapons with 196 x 196 - Long Spear, Sword and Rapier
         protected Rectangle adjustedRectangle = new Rectangle(0, 0, 300, 300);
 
+        public Weapon() : base(null) { }
+
         /// <summary>
         /// Subprogram to draw <see cref="Weapon"/> object
         /// </summary>

@@ -17,8 +17,10 @@ namespace ISU_Medieval_Odyssey
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
-        private const int DEFENCE_MIN = 4;
-        private const int DEFENSE_MAX = 7;
+        private const int MIN_DEFENSE = 4;
+        private const int MAX_DEFENSE = 7;
+        private const int MIN_DURABILITY = 20;
+        private const int MAX_DURABILITY = 35;
 
         /// <summary>
         /// Static constructor to setup various <see cref="ChainJacket"/> components
@@ -33,12 +35,6 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Constructor for <see cref="ChainJacket"/> object
         /// </summary>
-        public ChainJacket()
-        {
-            // Setting up armour attributes and images
-            base.movementImages = movementImages;
-            base.iconImage = iconImage;
-            defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
-        }
+        public ChainJacket() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
     }
 }

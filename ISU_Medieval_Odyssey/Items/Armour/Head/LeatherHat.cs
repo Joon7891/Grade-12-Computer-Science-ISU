@@ -17,8 +17,10 @@ namespace ISU_Medieval_Odyssey
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
-        private const int DEFENCE_MIN = 1;
-        private const int DEFENSE_MAX = 2;
+        private const int MIN_DEFENSE = 1;
+        private const int MAX_DEFENSE = 2;
+        private const int MIN_DURABILITY = 5;
+        private const int MAX_DURABILITY = 10;
 
         /// <summary>
         /// Static constructor to setup various <see cref="LeatherHat"/> components
@@ -33,12 +35,6 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Constructor for <see cref="LeatherHat"/> object
         /// </summary>
-        public LeatherHat()
-        {
-            // Setting up armour attributes and images
-            base.movementImages = movementImages;
-            base.iconImage = iconImage;
-            defence = SharedData.RNG.Next(DEFENCE_MIN, DEFENSE_MAX + 1);
-        }
+        public LeatherHat() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
     }
 }
