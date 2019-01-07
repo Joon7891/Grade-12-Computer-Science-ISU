@@ -61,6 +61,7 @@ namespace ISU_Medieval_Odyssey
             // Assigning various attributes and images
             int durability = SharedData.RNG.Next(minDurability, maxDurability + 1);
             durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 10), durability, durability, Color.White * 0.6f, Color.Green * 0.6f);
+            durabilityBar.Update();
             defence = SharedData.RNG.Next(minDefense, maxDefense + 1);
             this.movementImages = movementImages;
         }
@@ -78,6 +79,7 @@ namespace ISU_Medieval_Odyssey
                 breakSoundEffect.CreateInstance().Play();
                 IsBroken = true;
             }
+            durabilityBar.Update();
 
             // Returning the adjusted damage amount - player must take at least 1 HP in damage
             return Math.Max(1, damageAmount - defence);
@@ -109,7 +111,6 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing durability bar
             durabilityBar.Location = rectangle.Location.ToVector2Int() + new Vector2Int(5, 43);
-            durabilityBar.Update();
             durabilityBar.Draw(spriteBatch);
         }
     }

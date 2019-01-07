@@ -28,7 +28,11 @@ namespace ISU_Medieval_Odyssey
         public Vector2Int Location
         {
             get => backRectangle.Location.ToVector2Int();
-            set => backRectangle.Location = value.ToPoint();
+            set
+            {
+                backRectangle.Location = value.ToPoint();
+                progressRectangle.Location = backRectangle.Location;
+            }
         }
 
         // Variables required to draw back and progress rectangles

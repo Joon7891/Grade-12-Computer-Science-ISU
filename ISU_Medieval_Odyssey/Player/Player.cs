@@ -34,7 +34,7 @@ namespace ISU_Medieval_Odyssey
         private Armour hair = new Hair();
         private ItemSlot[] armourItems = new ItemSlot[6];
         private ItemSlot[] hotbarItems = new ItemSlot[10];
-        private static Dictionary<Type, int> armourTypeIndexer = new Dictionary<Type, int>();
+        private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
 
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
@@ -52,18 +52,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Player()
         {
-            // Loading in various graphics
-            string basePath = "Images/Sprites/Player/";
-            string entityTypeName = "player";
-            movementImages = EntityHelper.LoadMovementImages(basePath, entityTypeName);
-
-            // Setting up armour indexer - maps a armour type to the corresponding index
-            armourTypeIndexer.Add(typeof(Shoes), 0);
-            armourTypeIndexer.Add(typeof(Pants), 1);
-            armourTypeIndexer.Add(typeof(Belt), 2);
-            armourTypeIndexer.Add(typeof(Torso), 3);
-            armourTypeIndexer.Add(typeof(Shoulders), 4);
-            armourTypeIndexer.Add(typeof(Head), 5);
+            // Loading in movement graphics
+            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Player/", "player");
         }
 
         /// <summary>
@@ -150,6 +140,7 @@ namespace ISU_Medieval_Odyssey
                 if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle))
                 {
                     hotbarSelectionIndex = i;
+                    return;
                 }
 
                 // Removing item if it is no longer valid
@@ -163,7 +154,7 @@ namespace ISU_Medieval_Odyssey
             hotbarSelectionIndex = ((hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (hotbarItems.Length) +
                 hotbarItems.Length) % hotbarItems.Length;
 
-            // Using item if user clicks to use it and is not currently using an item
+            // Using item if user clicks to use it
             if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
             {
                 UseItem(hotbarItems[hotbarSelectionIndex].Item);
@@ -366,7 +357,10 @@ namespace ISU_Medieval_Odyssey
             int finalDamageAmount = damageAmount;
             for (int i = 0; i < armourItems.Length; ++i)
             {
-                finalDamageAmount = ((Armour)armourItems[i].Item).Defend(finalDamageAmount);
+                if (armourItems[i].Item != null)
+                {
+                    finalDamageAmount = ((Armour)armourItems[i].Item).Defend(finalDamageAmount);
+                }
             }
             Health -= finalDamageAmount;
 
