@@ -58,6 +58,7 @@
     <Compile Include="Graphics\ProgressBar.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
+    <Compile Include="Helpers\KeyBindings.cs" />
     <Compile Include="Helpers\VectorHelper.cs" />
     <Compile Include="Items\Armour\Head\Hair.cs" />
     <Compile Include="Items\Armour\Head\RobeHood.cs" />

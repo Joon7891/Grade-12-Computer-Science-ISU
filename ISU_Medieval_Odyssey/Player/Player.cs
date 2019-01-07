@@ -137,7 +137,7 @@ namespace ISU_Medieval_Odyssey
             // Updating hotbar selection if user clicks a hotbar item
             for (byte i = 0; i < hotbarItems.Length; ++i)
             {
-                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle))
+                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle) || KeyboardHelper.IsKeyDown(KeyBindings.HotbarShortcut[i]))
                 {
                     hotbarSelectionIndex = i;
                     return;
@@ -235,22 +235,22 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating player movement if any of the movement keys are down
-            if (KeyboardHelper.IsAnyKeyDown(Keys.W, Keys.A, Keys.S, Keys.D))
+            if (KeyboardHelper.IsAnyKeyDown(KeyBindings.Up, KeyBindings.Right, KeyBindings.Down, KeyBindings.Left) && currentWeapon == null)
             {
                 // Moving player in appropraite direction given movement keystroke
-                if (KeyboardHelper.IsKeyDown(Keys.W))
+                if (KeyboardHelper.IsKeyDown(KeyBindings.Up))
                 {
                     nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
-                if (KeyboardHelper.IsKeyDown(Keys.S))
+                if (KeyboardHelper.IsKeyDown(KeyBindings.Down))
                 {
                     nonRoundedLocation.Y += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
-                if (KeyboardHelper.IsKeyDown(Keys.A))
+                if (KeyboardHelper.IsKeyDown(KeyBindings.Left))
                 {
                     nonRoundedLocation.X -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
-                if (KeyboardHelper.IsKeyDown(Keys.D))
+                if (KeyboardHelper.IsKeyDown(KeyBindings.Right))
                 {
                     nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }

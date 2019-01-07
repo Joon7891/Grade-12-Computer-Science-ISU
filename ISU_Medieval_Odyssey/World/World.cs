@@ -67,6 +67,7 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[i, j].Draw(spriteBatch);
                 }
             }
+
             spriteBatch.End();
         }
     }

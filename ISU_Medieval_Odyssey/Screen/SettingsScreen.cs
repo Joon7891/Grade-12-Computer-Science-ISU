@@ -24,6 +24,7 @@ namespace ISU_Medieval_Odyssey
         public void LoadContent()
         {
             // Setting up settings screen background components
+            background = new Background(Main.Content.Load<Texture2D>("Images/Backgrounds/settingsBackground"));
             backgroundMusic = Main.Content.Load<Song>("Audio/Music/settingsBackgroundMusic");
             backButton = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/backButton"), new Rectangle(10, 10, 65, 65), () =>
             {
@@ -58,6 +59,7 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin();
 
             // Drawing background
+            background.Draw(spriteBatch);
 
             // Drawing back button
             backButton.Draw(spriteBatch);
