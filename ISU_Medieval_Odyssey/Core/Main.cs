@@ -106,8 +106,6 @@ namespace ISU_Medieval_Odyssey
 
             // TESTING
             Projectile.Load(Content);
-
-
         }
 
         /// <summary>

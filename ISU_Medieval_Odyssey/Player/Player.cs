@@ -36,6 +36,9 @@ namespace ISU_Medieval_Odyssey
         private ItemSlot[] hotbarItems = new ItemSlot[10];
         private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
 
+        // List to hold current projectiles that belong to the player, TODO: THERES PROBABLY A BETTER WAY TO DO THIS
+        private List<Projectile> projectiles = new List<Projectile>();
+
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
         {
@@ -126,6 +129,11 @@ namespace ISU_Medieval_Odyssey
 
             // Calling subprogram to update hotbar
             UpdateInventory(gameTime);
+
+            foreach(Projectile projectile in projectiles)
+            {
+                projectile.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -157,7 +165,7 @@ namespace ISU_Medieval_Odyssey
             // Using item if user clicks to use it
             if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
             {
-                UseItem(hotbarItems[hotbarSelectionIndex].Item);
+                UseItem(hotbarItems[hotbarSelectionIndex].Item, gameTime);
             }
         }
 
@@ -165,7 +173,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to "use" a certain item
         /// </summary>
         /// <param name="item">Item to be used</param>
-        private void UseItem(Item item)
+        private void UseItem(Item item, GameTime gameTime)
         {
             // Adding appropraite animation frames if player is using a weapon
             if (item is Weapon)
@@ -193,6 +201,9 @@ namespace ISU_Medieval_Odyssey
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
                     }
+
+                    projectiles.Add(new Projectile(GetAngle(), 2, 0, this.Center));
+                       
                 }
                 currentWeapon = (Weapon)item;
                 frameNumber = 0;
@@ -324,6 +335,11 @@ namespace ISU_Medieval_Odyssey
             DrawHUD(spriteBatch);
             DrawInventory(spriteBatch);
 
+            foreach(Projectile projectile in projectiles)
+            {
+                projectile.Draw(spriteBatch);
+            }
+
             // Ending regular sprite batch
             spriteBatch.End();
         }
@@ -388,6 +404,18 @@ namespace ISU_Medieval_Odyssey
             experienceBar.Draw(spriteBatch);
             spriteBatch.DrawString(SharedData.InformationFonts[0], "Health", statisticsLocs[4], Color.Red);
             healthBar.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// Calculates angle from player to the mouse
+        /// </summary>
+        /// <returns> An angle in degrees. </returns>
+        private double GetAngle()
+        {
+            double slope = (MouseHelper.Location.Y - this.rectangle.Y)
+                          /(MouseHelper.Location.X - this.rectangle.X);
+
+            return Math.Asin(slope);
         }
     }
 }

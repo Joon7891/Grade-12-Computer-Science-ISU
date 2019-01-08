@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    class Projectile
+    class Projectile // TODO: MAKE POSITIONING WORK BY TILE, NOT COORD
     {
         readonly double maxDist;
 
         protected Vector2Int positionInitial;
 
         protected Vector2Int position;
+
+        protected Rectangle hitBox;
 
         // in degrees 
         protected double angleFired;
@@ -35,18 +38,27 @@ namespace ISU_Medieval_Odyssey
             this.timePassed = 0;
         }
 
-        public void Update(double deltaTime)
+        public void Update(GameTime gameTime)
         {
+            double deltaTime = gameTime.ElapsedGameTime.Milliseconds;
             timePassed += deltaTime;
             position.X = Convert.ToInt32(velocityInitial * Math.Cos(angleFired) * timePassed);
             position.Y = Convert.ToInt32(velocityInitial * Math.Sin(angleFired) * timePassed);
+            hitBox = new Rectangle(position.X, position.Y, 10, 10);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(PLACEHOLDER, hitBox, Color.White);
         }
 
         static Texture2D PLACEHOLDER;
         public static void Load(ContentManager content)
         {
-            content.Load<Texture2D>("Images/Sprites/aaa");
+            PLACEHOLDER = content.Load<Texture2D>("Images/Sprites/aaa");
         }
+
+
 
 
     }
