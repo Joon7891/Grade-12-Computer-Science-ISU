@@ -43,7 +43,7 @@ namespace ISU_Medieval_Odyssey
             timePassed += deltaTime;
             position.X = Convert.ToInt32(velocityInitial * Math.Cos(angleFired) * timePassed);
             position.Y = Convert.ToInt32(velocityInitial * Math.Sin(angleFired) * timePassed);
-            hitBox = new Rectangle((int)(position.X), (int)(position.Y), 10, 10);
+            hitBox = new Rectangle((int)(position.X + 0.5), (int)(position.Y + 0.5), 10, 10);
         }
 
         public void Draw(SpriteBatch spriteBatch)
