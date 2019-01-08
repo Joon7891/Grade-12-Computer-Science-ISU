@@ -102,6 +102,12 @@ namespace ISU_Medieval_Odyssey
             {
                 screenDictionary[screenMode].LoadContent();
             }
+
+
+            // TESTING
+            Projectile.Load(Content);
+
+
         }
 
         /// <summary>
