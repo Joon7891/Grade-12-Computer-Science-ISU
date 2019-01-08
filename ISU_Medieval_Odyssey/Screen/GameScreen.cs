@@ -33,6 +33,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public void LoadContent()
         {
+            
+
             // Setting up statistics locations
             for (byte i = 0; i < statisticsLoc.Length; ++i)
             {

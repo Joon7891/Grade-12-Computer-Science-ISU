@@ -70,5 +70,6 @@ namespace ISU_Medieval_Odyssey
 
             spriteBatch.End();
         }
+
     }
 }
