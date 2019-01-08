@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    class Projectile // TODO: MAKE POSITIONING WORK BY TILE, NOT COORD
+    class Projectile // TODO: MAKE POSITIONING WORK BY TILE, NOT COORD, UNLOADING
     {
         readonly double maxDist;
 
+        // positions of the projectile in tiles
         protected Vector2Int positionInitial;
-
         protected Vector2Int position;
-
         protected Rectangle hitBox;
 
         // in degrees 
@@ -44,7 +43,7 @@ namespace ISU_Medieval_Odyssey
             timePassed += deltaTime;
             position.X = Convert.ToInt32(velocityInitial * Math.Cos(angleFired) * timePassed);
             position.Y = Convert.ToInt32(velocityInitial * Math.Sin(angleFired) * timePassed);
-            hitBox = new Rectangle(position.X, position.Y, 10, 10);
+            hitBox = new Rectangle((int)(position.X), (int)(position.Y), 10, 10);
         }
 
         public void Draw(SpriteBatch spriteBatch)
