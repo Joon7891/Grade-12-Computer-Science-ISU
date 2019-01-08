@@ -48,6 +48,8 @@
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Core\SharedData.cs" />
+    <Compile Include="Data Structures\SplayNode.cs" />
+    <Compile Include="Data Structures\SplayTree.cs" />
     <Compile Include="Graphics\MovementImageData.cs" />
     <Compile Include="Data Structures\Interval.cs" />
     <Compile Include="Data Structures\IntervalType.cs" />

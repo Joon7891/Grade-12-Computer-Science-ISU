@@ -326,6 +326,12 @@ namespace ISU_Medieval_Odyssey
                 hair.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
             }
             currentWeapon?.Draw(spriteBatch, rectangle, Direction, frameNumber);
+
+            foreach (Projectile projectile in projectiles)
+            {
+                projectile.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             // Beginning regular sprite batch
@@ -334,11 +340,6 @@ namespace ISU_Medieval_Odyssey
             // Drawing HUD and hobar
             DrawHUD(spriteBatch);
             DrawInventory(spriteBatch);
-
-            foreach(Projectile projectile in projectiles)
-            {
-                projectile.Draw(spriteBatch);
-            }
 
             // Ending regular sprite batch
             spriteBatch.End();
@@ -412,8 +413,8 @@ namespace ISU_Medieval_Odyssey
         /// <returns> An angle in degrees. </returns>
         private double GetAngle()
         {
-            double slope = (MouseHelper.Location.Y - this.rectangle.Y)
-                          /(MouseHelper.Location.X - this.rectangle.X);
+            double slope = (MouseHelper.Location.Y - this.nonRoundedLocation.Y)
+                          /(MouseHelper.Location.X - this.nonRoundedLocation.X);
 
             return Math.Asin(slope);
         }
