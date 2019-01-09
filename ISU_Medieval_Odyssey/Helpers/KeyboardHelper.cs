@@ -87,5 +87,31 @@ namespace ISU_Medieval_Odyssey
                 stringToBuild = stringToBuild.Substring(0, stringToBuild.Length - 1);
             }
         }
+
+        /// <summary>
+        /// Subprogram to build a number using keystrokes
+        /// </summary>
+        /// <param name="numberToBuild">The number to build - in string format</param>
+        /// <param name="maxLength">The maximum allowed length of the number</param>
+        public static void BuildNumber(ref string numberToBuild, int maxLength)
+        {
+            // Building number string if max length has not been reached and number key is pressed
+            if (numberToBuild.Length < maxLength)
+            {
+                for (Keys key = Keys.D0; key <= Keys.D9; ++key)
+                {
+                    if (NewKeyStroke(key))
+                    {
+                        numberToBuild += key.ToString()[1];
+                    }
+                }
+            }
+
+            // Removing last character if backspace is pressed and string is long enough
+            if (0 < numberToBuild.Length && NewKeyStroke(Keys.Back))
+            {
+                numberToBuild = numberToBuild.Substring(0, numberToBuild.Length - 1);
+            }
+        }
     }
 }

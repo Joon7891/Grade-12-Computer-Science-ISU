@@ -18,7 +18,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static SettingsScreen Instance { get; set; }
         
-        // Background images and graphics
+        // Background graphics and audio
         private Song backgroundMusic;
         private Background background;
         private Button backButton;
