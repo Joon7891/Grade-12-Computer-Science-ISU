@@ -22,6 +22,10 @@ namespace ISU_Medieval_Odyssey
         private Song backgroundMusic;
         private Background background;
         private Button backButton;
+
+        // Settings graphical interface
+        private Slider musicVolumeSlider;
+        private Slider soundEffectVolumeSlider;
         
         /// <summary>
         /// Subprogram to load settings screen content
@@ -38,7 +42,11 @@ namespace ISU_Medieval_Odyssey
             {
                 Main.CurrentScreen = ScreenMode.MainMenu;
                 MediaPlayer.Stop();
-            });            
+            });
+
+            // Setting up settings graphical interface
+            musicVolumeSlider = new Slider(new Rectangle(300, 200, 400, 30), Color.White, Color.Green * 0.8f);
+            soundEffectVolumeSlider = new Slider(new Rectangle(300, 400, 400, 30), Color.White, Color.Green * 0.8f);
         }
         
         /// <summary>
@@ -52,6 +60,10 @@ namespace ISU_Medieval_Odyssey
             {
                MediaPlayer.Play(backgroundMusic);
             }
+
+            // Updating graphical interface
+            musicVolumeSlider.Update(gameTime);
+            soundEffectVolumeSlider.Update(gameTime);
 
             // Updating back button
             backButton.Update(gameTime);
@@ -68,6 +80,10 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing background
             background.Draw(spriteBatch);
+
+            // Drawing graphical interface
+            musicVolumeSlider.Draw(spriteBatch);
+            soundEffectVolumeSlider.Draw(spriteBatch);
 
             // Drawing back button
             backButton.Draw(spriteBatch);

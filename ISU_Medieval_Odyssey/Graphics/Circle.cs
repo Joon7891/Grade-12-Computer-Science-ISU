@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Circle
+    public struct Circle
     {
         /// <summary>
         /// The x-coordinate of the <see cref="Circle"/>'s center
@@ -75,7 +75,7 @@ namespace ISU_Medieval_Odyssey
             Radius = radius;
             this.color = color;
             this.center = center;
-            rectangle = new Rectangle(center.X - radius, center.Y - radius, radius, radius);
+            rectangle = new Rectangle(center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
         }
 
         /// <summary>

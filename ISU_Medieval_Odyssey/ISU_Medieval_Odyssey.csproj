@@ -50,6 +50,7 @@
     <Compile Include="Core\SharedData.cs" />
     <Compile Include="Data Structures\SplayNode.cs" />
     <Compile Include="Data Structures\SplayTree.cs" />
+    <Compile Include="Graphics\Circle.cs" />
     <Compile Include="Graphics\MovementImageData.cs" />
     <Compile Include="Data Structures\Interval.cs" />
     <Compile Include="Data Structures\IntervalType.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Graphics\Graphic.cs" />
     <Compile Include="Graphics\NumberBar.cs" />
     <Compile Include="Graphics\ProgressBar.cs" />
+    <Compile Include="Graphics\Slider.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="Helpers\KeyBindings.cs" />
@@ -116,7 +118,7 @@
     <Compile Include="Screen\NewGameScreen.cs" />
     <Compile Include="Screen\ScreenMode.cs" />
     <Compile Include="Screen\SettingsScreen.cs" />
-    <Compile Include="Helpers\CollissionHelper.cs" />
+    <Compile Include="Helpers\CollisionHelper.cs" />
     <Compile Include="Data Structures\Direction.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="Helpers\MouseHelper.cs" />

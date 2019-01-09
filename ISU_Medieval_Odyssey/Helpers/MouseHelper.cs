@@ -25,11 +25,37 @@ namespace ISU_Medieval_Odyssey
         public static bool NewClick() => Main.NewMouse.LeftButton == ButtonState.Pressed && Main.OldMouse.LeftButton != ButtonState.Pressed;
 
         /// <summary>
+        /// Subprogram to check if the left button of the mouse is down
+        /// </summary>
+        /// <returns>Whether the left button of the mouse is down</returns>
+        public static bool IsLeftDown() => Main.NewMouse.LeftButton == ButtonState.Pressed;
+
+        /// <summary>
+        /// Subprogram to check if the right button of the mouse is down
+        /// </summary>
+        /// <returns>Whether the right button of the mouse is down</returns>
+        public static bool IsRightDown() => Main.NewMouse.RightButton == ButtonState.Pressed;
+
+        /// <summary>
         /// Subprogram to check if a rectangle is clicked
         /// </summary>
         /// <param name="rectangle">The rectangle to check if clicked</param>
         /// <returns>Whether the rectangle was clicked</returns>
         public static bool IsRectangleClicked(Rectangle rectangle) => NewClick() && CollisionHelper.PointToRect(Location, rectangle);
+
+        /// <summary>
+        /// Subprogram to check if a rectangle is selected via left mouse button
+        /// </summary>
+        /// <param name="rectangle">The rectangle to check if selected</param>
+        /// <returns>Whether the rectangle is selected</returns>
+        public static bool IsRectangleSelected(Rectangle rectangle) => IsLeftDown() && CollisionHelper.PointToRect(Location, rectangle);
+
+        /// <summary>
+        /// Subprogram to check if a circle is selected via left mouse button
+        /// </summary>
+        /// <param name="circle">The circle ot check if selected</param>
+        /// <returns>Whether the circle is seleected</returns>
+        public static bool IsCircleSelected(Circle circle) => IsLeftDown() && CollisionHelper.PointToCircle(Location, circle);          
 
         /// <summary>
         /// Subprogram to determine the amount that the scroll wheel has moved in the last update
