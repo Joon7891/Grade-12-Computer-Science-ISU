@@ -22,14 +22,21 @@ namespace ISU_Medieval_Odyssey
         // Background music and image
         private Song backgroundMusic;
         private Background background;
+        private Vector2 titleLocation;
+        private bool onNameScreen = true;
 
         // Various buttons to help with screen functionality
         private Button backButton;
         private Button[] advanceButtons = new Button[3];
 
+        // Graphical text related variables
+        private const int MAX_TEXT_LENGTH = 12;
         private string playerName = string.Empty;
         private string seedNumber = string.Empty;
-        private bool onNameScreen = true;
+        private int characterBufferCounter = 0;
+        private const int CHARACTER_BUFFER_MAX = 80;
+        private SpriteFont[] textFonts = new SpriteFont[3];
+        private Vector2[] textLocations = new Vector2[4];
 
         /// <summary>
         /// Subprogram to load various content for <see cref="NewGameScreen"/>
@@ -59,6 +66,17 @@ namespace ISU_Medieval_Odyssey
                 Main.CurrentScreen = ScreenMode.Game;
                 MediaPlayer.Stop();
             });
+
+            // Setting up graphical text data
+            for (byte i = 0; i < textFonts.Length; ++i)
+            {
+                textFonts[i] = Main.Content.Load<SpriteFont>($"Fonts/newGameFont{i}");
+            }
+            titleLocation = new Vector2((SharedData.SCREEN_WIDTH - textFonts[0].MeasureString("Create New Game").X) / 2 , 10);
+            textLocations[0] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("Enter Player Name:").X) / 2, 240);
+            textLocations[1] = new Vector2(0, textLocations[0].Y + 70);
+            textLocations[2] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("Enter Seed # (Optional):").X) / 2, 240);
+            textLocations[3] = new Vector2(0, textLocations[2].Y + 70);
         }
 
         /// <summary>
@@ -85,6 +103,13 @@ namespace ISU_Medieval_Odyssey
 
             // Updating back button
             backButton.Update(gameTime);
+
+            // Updating character buffer counter
+            ++characterBufferCounter;
+            if (characterBufferCounter == CHARACTER_BUFFER_MAX)
+            {
+                characterBufferCounter = 0;
+            }
         }
 
         /// <summary>
@@ -94,9 +119,11 @@ namespace ISU_Medieval_Odyssey
         private void UpdateNameScreen(GameTime gameTime)
         {
             // Updating player name text - max length of 12
-            KeyboardHelper.BuildString(ref playerName, 12);
+            KeyboardHelper.BuildString(ref playerName, MAX_TEXT_LENGTH);
+            textLocations[1].X = (SharedData.SCREEN_WIDTH - textFonts[2].MeasureString(playerName.Length == MAX_TEXT_LENGTH ? playerName : $"{playerName}_").X) / 2;
 
             // Updating name screen buttons
+            advanceButtons[0].Active = playerName != string.Empty;
             advanceButtons[0].Update(gameTime);
         }
 
@@ -113,6 +140,8 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating seed text
+            KeyboardHelper.BuildNumber(ref seedNumber, MAX_TEXT_LENGTH);
+            textLocations[3].X = (SharedData.SCREEN_WIDTH - textFonts[2].MeasureString(seedNumber.Length == MAX_TEXT_LENGTH ? seedNumber : $"{seedNumber}_").X) / 2;
         }
 
         /// <summary>
@@ -137,8 +166,9 @@ namespace ISU_Medieval_Odyssey
                 DrawSeedScreen(spriteBatch);
             }
 
-            // Drawing back button
+            // Drawing back button and title
             backButton.Draw(spriteBatch);
+            spriteBatch.DrawString(textFonts[0], "Create New Game", titleLocation, Color.SaddleBrown);
 
             // Ending spriteBatch
             spriteBatch.End();
@@ -152,6 +182,10 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing name screen buttons
             advanceButtons[0].Draw(spriteBatch);
+
+            // Drawing textual information
+            spriteBatch.DrawString(textFonts[1], "Enter Player Name:", textLocations[0], Color.White);
+            spriteBatch.DrawString(textFonts[2], playerName.Length == MAX_TEXT_LENGTH || characterBufferCounter < CHARACTER_BUFFER_MAX / 2 ? playerName : $"{playerName}_", textLocations[1], Color.Black);
         }
 
         /// <summary>
@@ -166,7 +200,9 @@ namespace ISU_Medieval_Odyssey
                 advanceButtons[i].Draw(spriteBatch);
             }
 
-            // Drawing seed text
+            // Drawing text
+            spriteBatch.DrawString(textFonts[1], "Enter Seed # (Optional):", textLocations[2], Color.White);
+            spriteBatch.DrawString(textFonts[2], seedNumber.Length == MAX_TEXT_LENGTH || characterBufferCounter < CHARACTER_BUFFER_MAX / 2 ? seedNumber : $"{seedNumber}_", textLocations[3], Color.Black);
         }
     }
 }

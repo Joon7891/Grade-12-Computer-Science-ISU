@@ -43014,3 +43014,24 @@
 /processorParam:TextureFormat=Color
 /build:Images/Backgrounds/newGameBackgroundImage.jpg
 
+#begin Fonts/NewGameFont1.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/NewGameFont1.spritefont
+
+#begin Fonts/NewGameFont0.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/NewGameFont0.spritefont
+
+#begin Fonts/NewGameFont2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/NewGameFont2.spritefont
+
