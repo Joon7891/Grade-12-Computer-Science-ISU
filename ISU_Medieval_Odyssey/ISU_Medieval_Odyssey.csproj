@@ -113,6 +113,7 @@
     <Compile Include="Screen\GameScreen.cs" />
     <Compile Include="Screen\IScreen.cs" />
     <Compile Include="Screen\MainMenuScreen.cs" />
+    <Compile Include="Screen\NewGameScreen.cs" />
     <Compile Include="Screen\ScreenMode.cs" />
     <Compile Include="Screen\SettingsScreen.cs" />
     <Compile Include="Helpers\CollissionHelper.cs" />

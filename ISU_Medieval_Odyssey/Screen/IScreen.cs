@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace ISU_Medieval_Odyssey
 {
     public interface IScreen
-    {
+    {        
         /// <summary>
         /// Subprogram to load various screen components
         /// </summary>

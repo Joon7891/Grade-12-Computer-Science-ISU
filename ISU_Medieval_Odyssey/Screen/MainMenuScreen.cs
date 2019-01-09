@@ -13,6 +13,11 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class MainMenuScreen : IScreen
     {
+        /// <summary>
+        /// Instance of <see cref="MainMenuScreen"/> - see singleton
+        /// </summary>
+        public static MainMenuScreen Instance { get; set; }
+        
         // Various main menu screen components
         private Song backgroundMusic;
         private Background background;
@@ -26,6 +31,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public void LoadContent()
         {
+            // Setting up singleton
+            Instance = this;
+
             // Setting up background components
             backgroundMusic = Main.Content.Load<Song>("Audio/Music/mainMenuBackgroundMusic");
             background = new Background(Main.Content.Load<Texture2D>("Images/Backgrounds/mainMenuBackgroundImage"));
@@ -38,7 +46,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up option buttons
             optionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 400, 300, 100),() =>
             {
-                Main.CurrentScreen = ScreenMode.Game;
+                Main.CurrentScreen = ScreenMode.NewGame;
                 MediaPlayer.Stop();
             });
             optionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/loadGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 510, 300, 100), () =>

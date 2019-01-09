@@ -51,5 +51,41 @@ namespace ISU_Medieval_Odyssey
             // Otherwise returning false
             return false;
         }
+
+        /// <summary>
+        /// Subprogram to build a string with keystrokes
+        /// </summary>
+        /// <param name="stringToBuild">The string to be built</param>
+        /// <param name="maxLength">The maximum allowed length of the string</param>
+        public static void BuildString(ref string stringToBuild, int maxLength)
+        {
+            // Building string of max length has not been reached and a keystroke has been pressed
+            if (stringToBuild.Length < maxLength)
+            {
+                // Buidling letters
+                for (Keys key = Keys.A; key <= Keys.Z; ++key)
+                {
+                    if (NewKeyStroke(key))
+                    {
+                        stringToBuild += key.ToString();
+                    }
+                }
+
+                // Building numbers
+                for (Keys key = Keys.D0; key <= Keys.D9; ++key)
+                {
+                    if (NewKeyStroke(key))
+                    {
+                        stringToBuild += key.ToString()[1];
+                    }
+                }                      
+            }
+
+            // Removing last character if backspace is pressed and string is long enough
+            if (0 < stringToBuild.Length && NewKeyStroke(Keys.Back))
+            {
+                stringToBuild = stringToBuild.Substring(0, stringToBuild.Length - 1);
+            }
+        }
     }
 }

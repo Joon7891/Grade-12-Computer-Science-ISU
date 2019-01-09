@@ -19,7 +19,8 @@ namespace ISU_Medieval_Odyssey
     public enum ScreenMode : byte
     {
         MainMenu = 0,
-        Game = 1,
-        Settings = 2
+        NewGame = 1,
+        Game = 2,
+        Settings = 3
     };
 }

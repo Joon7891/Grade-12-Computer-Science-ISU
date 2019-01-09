@@ -96,6 +96,7 @@ namespace ISU_Medieval_Odyssey
 
             // Setting up screen-related components
             screenDictionary.Add(ScreenMode.MainMenu, new MainMenuScreen());
+            screenDictionary.Add(ScreenMode.NewGame, new NewGameScreen());
             screenDictionary.Add(ScreenMode.Game, new GameScreen());
             screenDictionary.Add(ScreenMode.Settings, new SettingsScreen());
             foreach (ScreenMode screenMode in Enum.GetValues(typeof(ScreenMode)))

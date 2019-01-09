@@ -1,9 +1,9 @@
 ﻿// Author: Joon Song
 // File Name: VectorHelper.cs
 // Project Name: ISU_Medieval_Odyssey
-// Creation Date: 12/25/2018
-// Modified Date: 12/25/2018
-// Description: Class to hold various methods to help the functionality of a vector
+// Creation Date: 12/20/2018
+// Modified Date: 12/20/2018
+// Description: Class to hold a variety of methods to help the functionality of various vectors 
 
 using Microsoft.Xna.Framework;
 

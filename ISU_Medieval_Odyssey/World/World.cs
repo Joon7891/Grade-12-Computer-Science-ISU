@@ -12,7 +12,7 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class World
     {
-        private TerrainGenerator terrainGenerator = new TerrainGenerator();
+        private TerrainGenerator terrainGenerator;
         private const int LOADED_CHUNK_COUNT = 5;
         private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
 
@@ -29,6 +29,22 @@ namespace ISU_Medieval_Odyssey
         public World()
         {
             Vector2Int chunkPosition;
+            terrainGenerator = new TerrainGenerator();
+
+            for (int i = 0; i < 5; ++i)
+            {
+                for (int j = 0; j < 5; ++j)
+                {
+                    chunkPosition = new Vector2Int(i, j);
+                    loadedChunks[i, j] = new Chunk(chunkPosition, terrainGenerator);
+                }
+            }
+        }
+
+        public World(int seed)
+        {
+            Vector2Int chunkPosition;
+            terrainGenerator = new TerrainGenerator(seed);
 
             for (int i = 0; i < 5; ++i)
             {

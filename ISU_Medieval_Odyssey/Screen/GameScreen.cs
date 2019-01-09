@@ -16,9 +16,20 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class GameScreen : IScreen
     {
-        // Instance of player and world
-        private Player player = new Player("Joon7891");
-        private World world = new World();
+        /// <summary>
+        /// Instance of <see cref="GameScreen"/> - see singleton
+        /// </summary>
+        public static GameScreen Instance { get; set; }
+
+        /// <summary>
+        /// The player in the world
+        /// </summary>
+        public Player Player { get; set; } = new Player("");
+
+        /// <summary>
+        /// The world of the game
+        /// </summary>
+        public World World { get; set; } = new World();
 
         // Camera-realted variables
         private Camera camera = new Camera();
@@ -33,8 +44,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public void LoadContent()
         {
+            // Setting up singleton
+            Instance = this;
             
-
             // Setting up statistics locations
             for (byte i = 0; i < statisticsLoc.Length; ++i)
             {
@@ -49,11 +61,11 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating player and world
-            player.Update(gameTime, camera.Position);
-            world.Update(gameTime, player.CurrentChunk);
+            Player.Update(gameTime, camera.Position);
+            World.Update(gameTime, Player.CurrentChunk);
 
             // Updating the offset of the camera and moving camera if appropraite
-            cameraOffset = player.Center.ToVector2() - camera.Center;
+            cameraOffset = Player.Center.ToVector2() - camera.Center;
             if (Math.Abs(cameraOffset.X) > SharedData.SCREEN_WIDTH / 6)
             {
                 camera.Position += (cameraOffset.X > 0 ? 1 : -1) * new Vector2(Math.Abs(cameraOffset.X) - SharedData.SCREEN_WIDTH / 6, 0);
@@ -64,7 +76,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Showing/unshowing statistics as desired
-            if (KeyboardHelper.NewKeyStroke(Keys.F12))
+            if (KeyboardHelper.NewKeyStroke(KeyBindings.Debug))
             {
                 showStatistics = !showStatistics;
             }            
@@ -77,8 +89,8 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and world
-            world.Draw(spriteBatch, camera);
-            player.Draw(spriteBatch, camera);
+            World.Draw(spriteBatch, camera);
+            Player.Draw(spriteBatch, camera);
 
             // Beginning regular sprite batch
             spriteBatch.Begin();
@@ -99,8 +111,8 @@ namespace ISU_Medieval_Odyssey
         public void DrawStatistics(SpriteBatch spriteBatch)
         {
             // Drawing various statistics
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Tile Coordinate: {player.CurrentTile}", statisticsLoc[0], Color.White);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Chunk Coordinate: {player.CurrentChunk}", statisticsLoc[1], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Tile Coordinate: {Player.CurrentTile}", statisticsLoc[0], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Chunk Coordinate: {Player.CurrentChunk}", statisticsLoc[1], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Frames Per Second: {Main.FPS}", statisticsLoc[2], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Total Memory Used: {Math.Round(GC.GetTotalMemory(false) / 1048576.0, 3)} MB", statisticsLoc[3], Color.White);
         }

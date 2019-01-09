@@ -13,6 +13,11 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class SettingsScreen : IScreen
     {
+        /// <summary>
+        /// Instance of <see cref="SettingsScreen"/> - see singleton
+        /// </summary>
+        public static SettingsScreen Instance { get; set; }
+        
         // Background images and graphics
         private Song backgroundMusic;
         private Background background;
@@ -23,6 +28,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public void LoadContent()
         {
+            // Setting up singleton
+            Instance = this;
+            
             // Setting up settings screen background components
             background = new Background(Main.Content.Load<Texture2D>("Images/Backgrounds/settingsBackground"));
             backgroundMusic = Main.Content.Load<Song>("Audio/Music/settingsBackgroundMusic");

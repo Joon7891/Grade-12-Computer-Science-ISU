@@ -38,6 +38,8 @@ namespace ISU_Medieval_Odyssey
 
         public static Keys[] HotbarShortcut { get; set; } = new Keys[10];
 
+        public static Keys Debug { get; set; } = Keys.F12;
+
         static KeyBindings()
         {
             HotbarShortcut[0] = Keys.D1;

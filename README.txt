@@ -1,0 +1,1 @@
+Note: Must install Monotype Corsiva font before building game
