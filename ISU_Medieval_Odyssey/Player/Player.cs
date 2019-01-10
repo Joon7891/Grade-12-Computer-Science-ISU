@@ -20,6 +20,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static byte PIXEL_SIZE = 100;
 
+        /// <summary>
+        /// The number of frames in player walk animation
+        /// </summary>
         public static int NUM_WALK_FRAMES = 9;
 
         // Graphics-related data

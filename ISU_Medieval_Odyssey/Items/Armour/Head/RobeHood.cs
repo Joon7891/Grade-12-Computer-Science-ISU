@@ -41,6 +41,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public RobeHood()
         {
+            // Setting up RobeHood
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);

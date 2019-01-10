@@ -29,6 +29,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Hair()
         {
+            // Setting up Hair
             base.movementSpriteSheet = movementSpriteSheet;
         }
     }

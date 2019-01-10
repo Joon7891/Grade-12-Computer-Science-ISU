@@ -12,12 +12,22 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class AnimationSpriteSheet
     {
+        /// <summary>
+        /// The number of frames in the <see cref="AnimationSpriteSheet"/>
+        /// </summary>
         public int NumFrames { get; }
 
+        // The animation images
         private Texture2D[] animationImages;
 
+        /// <summary>
+        /// Constructor for <see cref="AnimationSpriteSheet"/>
+        /// </summary>
+        /// <param name="filePath">File path for <see cref="AnimationSpriteSheet"/></param>
+        /// <param name="numFrames">The number of frames in the <see cref="AnimationSpriteSheet"/></param>
         public AnimationSpriteSheet(string filePath, int numFrames)
         {
+            // Loading and setting up animation images
             NumFrames = numFrames;
             animationImages = new Texture2D[numFrames];
             for (int i = 0; i < numFrames; ++i)
@@ -26,8 +36,15 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        /// <summary>
+        /// Draw subprogram for <see cref="AnimationSpriteSheet"/>
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        /// <param name="frameNumber">The frame number of the image</param>
+        /// <param name="rectangle">The rectangle to draw the image in</param>
         public void Draw(SpriteBatch spriteBatch, int frameNumber, Rectangle rectangle)
         {
+            // Drawing correspding image
             spriteBatch.Draw(animationImages[frameNumber], rectangle, Color.White);
         }
     }

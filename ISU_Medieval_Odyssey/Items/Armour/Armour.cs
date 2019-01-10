@@ -6,10 +6,6 @@
 // Description: Class to hold Armour object
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,11 +28,8 @@ namespace ISU_Medieval_Odyssey
         protected int defence;
         protected ProgressBar durabilityBar; // Encalsuated Max and Current durability
 
-        protected static Rectangle defaultRectangle;
+        // The movement images for this Armour
         protected MovementSpriteSheet movementSpriteSheet;
-
-        // Dictionary to map MovementTypes to the appropriate images
-        // protected readonly Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         // Various sound effects
         private static SoundEffect breakSoundEffect;
@@ -46,11 +39,20 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Armour()
         {
+            // Loading in various Armour audio
             breakSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
         }
 
+        /// <summary>
+        /// Subprogram to set various <see cref="Armour"/> statistics
+        /// </summary>
+        /// <param name="minDefense">The minimum allowed defense on this <see cref="Armour"/></param>
+        /// <param name="maxDefense">The maximum allowed defense on this <see cref="Armour"/></param>
+        /// <param name="minDurability">The minimum allowed durability on this <see cref="Armour"/></param>
+        /// <param name="maxDurability"><The minimum allowed durability on this <see cref="Armour"/>/param>
         protected void SetArmourStatistics(int minDefense, int maxDefense, int minDurability, int maxDurability)
         {
+            // Calculating and assigning various armour statistics
             int durability = SharedData.RNG.Next(minDurability, maxDurability + 1);
             durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 5), durability, durability, Color.White * 0.6f, Color.Green * 0.6f);
             durabilityBar.Update();

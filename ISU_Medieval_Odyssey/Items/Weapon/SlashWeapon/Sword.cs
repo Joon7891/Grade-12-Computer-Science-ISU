@@ -17,18 +17,24 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Sword : SlashWeapon
     {
+        // Various Sword specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
 
+        /// <summary>
+        /// Static constructor for <see cref="Sword"/> object
+        /// </summary>
         static Sword()
         {
-            // Temporary strings to help with file paths
-            string basePath = "Images/Sprites/Weapon/Slash/Sword/";
-            string weaponTypeName = "sword";
-            directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
+            // Loading in various Sword images
+            directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Weapon/Slash/Sword/", "sword", NUM_FRAMES);
         }
 
+        /// <summary>
+        /// Constuctor for <see cref="Sword"/> object
+        /// </summary>
         public Sword()
         {
+            // Setting up sword
             base.directionalSpriteSheet = directionalSpriteSheet;
         }
 
@@ -36,13 +42,14 @@ namespace ISU_Medieval_Odyssey
         /// Draw subprogram for <see cref="Sword"/> object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        /// <param name="playerRectangle"></param>
-        /// <param name="direction"></param>
-        /// <param name="currentFrame"></param>
-        public override void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, Direction direction, int currentFrame)
+        /// <param name="rectangle">The rectangle in which to draw the <see cref="Sword"/></param>
+        /// <param name="direction">The direction the <see cref="Sword"/> is pointed at</param>
+        /// <param name="currentFrame">The current frame of the <see cref="Sword"/>'s animation/param>
+        public override void Draw(SpriteBatch spriteBatch, Rectangle rectangle, Direction direction, int currentFrame)
         {
-            adjustedRectangle.X = playerRectangle.X - playerRectangle.Width;
-            adjustedRectangle.Y = playerRectangle.Y - playerRectangle.Height;
+            // Adjuting rectangle and drawing Sword
+            adjustedRectangle.X = rectangle.X - rectangle.Width;
+            adjustedRectangle.Y = rectangle.Y - rectangle.Height;
             directionalSpriteSheet.Draw(spriteBatch, direction, currentFrame, adjustedRectangle);
         }
     }

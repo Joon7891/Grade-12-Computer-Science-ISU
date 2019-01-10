@@ -5,9 +5,6 @@
 // Modified Date: 12/25/2018
 // Description: Class to hold Torso object
 
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace ISU_Medieval_Odyssey
 {
     public abstract class Torso : Armour

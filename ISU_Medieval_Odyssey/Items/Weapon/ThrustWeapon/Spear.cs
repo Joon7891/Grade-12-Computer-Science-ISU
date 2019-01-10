@@ -16,18 +16,24 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Spear : ThrustWeapon
     {
+        // Spear specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
 
+        /// <summary>
+        /// Static constructor for <see cref="Spear"/> object
+        /// </summary>
         static Spear()
         {
-            // Temporary strings to help with file paths
-            string basePath = "Images/Sprites/Weapon/Thrust/Spear/";
-            string weaponTypeName = "spear";
-            directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
+            // Loading in various Spear images
+            directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Weapon/Thrust/Spear/", "spear", NUM_FRAMES);
         }
 
+        /// <summary>
+        /// Constructor for <see cref="Spear"/> object
+        /// </summary>
         public Spear()
         {
+            // Setting up Spear
             base.directionalSpriteSheet = directionalSpriteSheet;
         }
     }

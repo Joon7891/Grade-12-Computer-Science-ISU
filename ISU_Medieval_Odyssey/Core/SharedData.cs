@@ -5,11 +5,9 @@
 // Modified Date: 01/01/2019
 // Description: Static class to hold shared data
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -28,12 +26,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// A vector representing the center of the screen
         /// </summary>
-        public static Vector2 ScreenCenter { get; private set; }
+        public static Vector2 ScreenCenter { get; private set; } = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
         /// <summary>
         /// Random number generator
         /// </summary>
-        public static Random RNG { get; private set; }
+        public static Random RNG { get; private set; } = new Random();
 
         /// <summary>
         /// Array of information fonts 0-index is smallest, 3-index is largest
@@ -50,10 +48,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static SharedData()
         {
-            // Constructing various shared objects
-            RNG = new Random();
-            ScreenCenter = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-
             // Importing images and fonts
             WhiteImage = Main.Content.Load<Texture2D>("Images/Sprites/whiteImage");
             InformationFonts = new SpriteFont[4];
