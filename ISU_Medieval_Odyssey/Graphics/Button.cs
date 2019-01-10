@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Button
+    public sealed class Button : IGraphic
     {
         // Variables button click related fields
         private static SoundEffect clickSoundEffect;

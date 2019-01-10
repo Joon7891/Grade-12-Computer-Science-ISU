@@ -3,14 +3,14 @@
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/25/2018
 // Modified Date: 12/25/2018
-// Description: Class to hold ProgressBar object
+// Description: Class to hold ProgressBar object - implements IGraphic
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public class ProgressBar
+    public class ProgressBar : IGraphic
     {
         /// <summary>
         /// The maximum possible value for the progress bar

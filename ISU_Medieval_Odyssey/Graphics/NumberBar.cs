@@ -49,6 +49,10 @@ namespace ISU_Medieval_Odyssey
             textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 5;
         }
 
+        /// <summary>
+        /// Draw subprogram for <see cref="NumberBar"/>
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             // Calling ProgressBar draw subprogram

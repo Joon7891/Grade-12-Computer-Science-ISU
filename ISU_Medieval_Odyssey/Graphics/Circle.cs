@@ -3,14 +3,14 @@
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 01/06/2018
 // Modified Date: 01/06/2018
-// Description: Class to hold Circle object
+// Description: Class to hold Circle object - implements IGraphic
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public struct Circle
+    public sealed class Circle : IGraphic
     {
         /// <summary>
         /// The x-coordinate of the <see cref="Circle"/>'s center

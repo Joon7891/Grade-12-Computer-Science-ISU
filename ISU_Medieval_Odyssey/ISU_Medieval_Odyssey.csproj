@@ -51,12 +51,12 @@
     <Compile Include="Data Structures\SplayNode.cs" />
     <Compile Include="Data Structures\SplayTree.cs" />
     <Compile Include="Graphics\Circle.cs" />
+    <Compile Include="Graphics\IGraphic.cs" />
     <Compile Include="Graphics\MovementImageData.cs" />
     <Compile Include="Data Structures\Interval.cs" />
     <Compile Include="Data Structures\IntervalType.cs" />
     <Compile Include="Graphics\Background.cs" />
     <Compile Include="Graphics\Button.cs" />
-    <Compile Include="Graphics\Graphic.cs" />
     <Compile Include="Graphics\NumberBar.cs" />
     <Compile Include="Graphics\ProgressBar.cs" />
     <Compile Include="Graphics\Slider.cs" />
