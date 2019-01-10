@@ -23,25 +23,22 @@ namespace ISU_Medieval_Odyssey
         // Base attack speed of the weapon, measured in attacks per second
         public double AttackSpeed { get; protected set; }
 
-        protected Texture2D[,] directionalImages;
+        protected DirectionalSpriteSheet directionalSpriteSheet;
 
         // Note: Only used for weapons with 196 x 196 - Long Spear, Sword and Rapier
         protected Rectangle adjustedRectangle = new Rectangle(0, 0, 300, 300);
-
-        public Weapon() : base(null) { }
 
         /// <summary>
         /// Subprogram to draw <see cref="Weapon"/> object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         /// <param name="playerRectangle">The corresponding player's rectangle</param>
-        /// <param name="movementType">The movement type</param>
         /// <param name="direction">The current direction</param>
         /// <param name="currentFrame">The current frame number</param>
         public virtual void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, Direction direction, int currentFrame)
         {
             // Drawing weapon
-            spriteBatch.Draw(directionalImages[(int)direction, currentFrame], playerRectangle, Color.White);
+            directionalSpriteSheet.Draw(spriteBatch, direction, currentFrame, playerRectangle);
         }
     }
 }

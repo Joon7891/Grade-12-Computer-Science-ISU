@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class RobeShirt : Torso
     {
         // RobeShirt specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -28,13 +28,18 @@ namespace ISU_Medieval_Odyssey
         static RobeShirt()
         {
             // Loading in various robe shirt images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Torso/RobeShirt/", "robeShirt");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Torso/RobeShirt/", "robeShirt");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/robeShirtIcon");
         }
 
         /// <summary>
         /// Constructor for <see cref="RobeShirt"/> object
         /// </summary>
-        public RobeShirt() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public RobeShirt()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }

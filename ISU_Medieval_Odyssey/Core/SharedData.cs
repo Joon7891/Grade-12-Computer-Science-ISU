@@ -31,11 +31,6 @@ namespace ISU_Medieval_Odyssey
         public static Vector2 ScreenCenter { get; private set; }
 
         /// <summary>
-        /// Dictionary to map movement types to its number of frames
-        /// </summary>
-        public static Dictionary<MovementType, byte> MovementNumFrames { get; private set; }
-
-        /// <summary>
         /// Random number generator
         /// </summary>
         public static Random RNG { get; private set; }
@@ -58,13 +53,6 @@ namespace ISU_Medieval_Odyssey
             // Constructing various shared objects
             RNG = new Random();
             ScreenCenter = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-
-            // Setting up movement type num frames dictionary
-            MovementNumFrames = new Dictionary<MovementType, byte>();
-            MovementNumFrames.Add(MovementType.Walk, 9);
-            MovementNumFrames.Add(MovementType.Slash, 6);
-            MovementNumFrames.Add(MovementType.Shoot, 13);
-            MovementNumFrames.Add(MovementType.Thrust, 8);
 
             // Importing images and fonts
             WhiteImage = Main.Content.Load<Texture2D>("Images/Sprites/whiteImage");

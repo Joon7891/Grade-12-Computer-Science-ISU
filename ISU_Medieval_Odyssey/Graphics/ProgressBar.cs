@@ -23,16 +23,21 @@ namespace ISU_Medieval_Odyssey
         public int CurrentValue { get; set; }
 
         /// <summary>
-        /// The location of the progress bar
+        /// The x coordinate of the top left corner of this <see cref="ProgressBar"/>
         /// </summary>
-        public Vector2Int Location
+        public int X
         {
-            get => backRectangle.Location.ToVector2Int();
-            set
-            {
-                backRectangle.Location = value.ToPoint();
-                progressRectangle.Location = backRectangle.Location;
-            }
+            get => backRectangle.X;
+            set => backRectangle.X = value;
+        }
+
+        /// <summary>
+        /// The y coordinate of the top left corner of this <see cref="ProgressBar"/>
+        /// </summary>
+        public int Y
+        {
+            get => backRectangle.Y;
+            set => backRectangle.Y = value;
         }
 
         // Variables required to draw back and progress rectangles

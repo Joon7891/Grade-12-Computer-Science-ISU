@@ -17,7 +17,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class LeatherBelt : Belt
     {
         // LeatherBelt specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -32,13 +32,18 @@ namespace ISU_Medieval_Odyssey
         static LeatherBelt()
         {
             // Loading in various LeatherBelt images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Belt/LeatherBelt/", "leatherBelt");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Belt/LeatherBelt/", "leatherBelt");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/leatherBeltIcon");
         }
 
         /// <summary>
         /// Constructor for <see cref="LeatherBelt"/> object
         /// </summary>
-        public LeatherBelt() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public LeatherBelt()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }

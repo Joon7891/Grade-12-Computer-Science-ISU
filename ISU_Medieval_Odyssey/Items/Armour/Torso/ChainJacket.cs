@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class ChainJacket : Torso
     {
         // ChainJacket specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -28,13 +28,18 @@ namespace ISU_Medieval_Odyssey
         static ChainJacket()
         {
             // Loading in various ChainJacket images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Torso/ChainJacket/", "chainJacket");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Torso/ChainJacket/", "chainJacket");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/chainJacketIcon");
         }
         
         /// <summary>
         /// Constructor for <see cref="ChainJacket"/> object
         /// </summary>
-        public ChainJacket() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public ChainJacket()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }

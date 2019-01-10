@@ -17,7 +17,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class LeatherPants : Pants
     {
         // LeatherPants specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -32,13 +32,18 @@ namespace ISU_Medieval_Odyssey
         static LeatherPants()
         {
             // Loading in various LeatherPants images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Pants/LeatherPants/", "leatherPants");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Pants/LeatherPants/", "leatherPants");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/leatherPantsIcon");
         }
 
         /// <summary>
         /// Constructor for <see cref="LeatherPants"/> object
         /// </summary>
-        public LeatherPants() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public LeatherPants()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }

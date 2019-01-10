@@ -12,19 +12,19 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Rapier : SlashWeapon
     {
-        private new static Texture2D[,] directionalImages;
+        private new static DirectionalSpriteSheet directionalSpriteSheet;
 
         static Rapier()
         {
             // Temporary strings to help with file paths
             string basePath = "Images/Sprites/Weapon/Slash/Rapier/";
             string weaponTypeName = "rapier";
-            directionalImages = EntityHelper.LoadDirectionalImages(basePath, weaponTypeName, SharedData.MovementNumFrames[MovementType.Slash]);
+            directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
         }
 
         public Rapier()
         {
-            base.directionalImages = directionalImages;
+            base.directionalSpriteSheet = directionalSpriteSheet;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace ISU_Medieval_Odyssey
             // Updating adjusted image rectangle and drawing Rapier
             adjustedRectangle.X = playerRectangle.X - playerRectangle.Width;
             adjustedRectangle.Y = playerRectangle.Y - playerRectangle.Height;
-            spriteBatch.Draw(directionalImages[(int)direction, currentFrame], adjustedRectangle, Color.White);
+            directionalSpriteSheet.Draw(spriteBatch, direction, currentFrame, adjustedRectangle);
         }
     }
 }

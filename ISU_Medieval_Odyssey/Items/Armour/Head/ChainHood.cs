@@ -17,7 +17,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class ChainHood : Head
     {
         // ChainHood specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -32,13 +32,18 @@ namespace ISU_Medieval_Odyssey
         static ChainHood()
         {
             // Loading in various ChainHood images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Head/ChainHood/", "chainHood");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Head/ChainHood/", "chainHood");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/chainHoodIcon");
         }
 
         /// <summary>
         /// Constructor for <see cref="ChainHood"/> object
         /// </summary>
-        public ChainHood() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public ChainHood()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }

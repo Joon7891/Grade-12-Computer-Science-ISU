@@ -32,8 +32,11 @@ namespace ISU_Medieval_Odyssey
         protected int defence;
         protected ProgressBar durabilityBar; // Encalsuated Max and Current durability
 
+        protected static Rectangle defaultRectangle;
+        protected MovementSpriteSheet movementSpriteSheet;
+
         // Dictionary to map MovementTypes to the appropriate images
-        protected readonly Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        // protected readonly Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
 
         // Various sound effects
         private static SoundEffect breakSoundEffect;
@@ -46,24 +49,12 @@ namespace ISU_Medieval_Odyssey
             breakSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
         }
 
-        /// <summary>
-        /// Constructor for <see cref="Armour"/> object
-        /// </summary>
-        /// <param name="minDefense">The minimum defense of this <see cref="Armour"/></param>
-        /// <param name="maxDefense">The maximum defense of this <see cref="Armour"/></param>
-        /// <param name="minDurability">The minimum durability of this <see cref="Armour"/></param>
-        /// <param name="maxDurability">The maximum durability of this <see cref="Armour"/></param>
-        /// <param name="movementImages">The images corresponding to this <see cref="Armour"/>'s movement</param>
-        /// <param name="iconImage">The <see cref="Item"/> icon image</param>
-        protected Armour(int minDefense, int maxDefense, int minDurability, int maxDurability,
-            Dictionary<MovementType, Texture2D[,]> movementImages, Texture2D iconImage) : base(iconImage)
+        protected void SetArmourStatistics(int minDefense, int maxDefense, int minDurability, int maxDurability)
         {
-            // Assigning various attributes and images
             int durability = SharedData.RNG.Next(minDurability, maxDurability + 1);
             durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 5), durability, durability, Color.White * 0.6f, Color.Green * 0.6f);
             durabilityBar.Update();
             defence = SharedData.RNG.Next(minDefense, maxDefense + 1);
-            this.movementImages = movementImages;
         }
 
         /// <summary>
@@ -89,14 +80,14 @@ namespace ISU_Medieval_Odyssey
         /// Draw subprogram for Armour object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        /// <param name="playerRectangle">The corresponding player's rectangle</param>
         /// <param name="movementType">The movement type</param>
         /// <param name="direction">The current direction</param>
         /// <param name="currentFrame">The current frame number</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, MovementType movementType, Direction direction, int currentFrame)
+        /// <param name="rectangle">The rectangle in which to draw the armour</param>
+        public void Draw(SpriteBatch spriteBatch, MovementType movementType, Direction direction, int currentFrame, Rectangle rectangle)
         {
             // Drawing armour
-            spriteBatch.Draw(movementImages[movementType][(byte)direction, currentFrame] , playerRectangle, Color.White);
+            movementSpriteSheet.Draw(spriteBatch, movementType, direction, currentFrame, rectangle);
         }
 
         /// <summary>
@@ -110,7 +101,8 @@ namespace ISU_Medieval_Odyssey
             base.DrawIcon(spriteBatch, rectangle);
 
             // Drawing durability bar
-            durabilityBar.Location = rectangle.Location.ToVector2Int() + new Vector2Int(5, 47);
+            durabilityBar.X = rectangle.X + 5;
+            durabilityBar.Y = rectangle.Y + 47;
             durabilityBar.Draw(spriteBatch);
         }
     }

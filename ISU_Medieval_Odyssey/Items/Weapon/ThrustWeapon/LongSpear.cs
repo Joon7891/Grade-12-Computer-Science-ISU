@@ -5,14 +5,14 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class LongSpear : ThrustWeapon
     {
-        private new static Texture2D[,] directionalImages;
+        private new static DirectionalSpriteSheet directionalSpriteSheet;
 
         static LongSpear()
         {
             // Temporary strings to help with file paths
             string basePath = "Images/Sprites/Weapon/Thrust/LongSpear/";
             string weaponTypeName = "longSpear";
-            directionalImages = EntityHelper.LoadDirectionalImages(basePath, weaponTypeName, SharedData.MovementNumFrames[MovementType.Thrust]);
+            directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public LongSpear()
         {
-            base.directionalImages = directionalImages;
+            base.directionalSpriteSheet = directionalSpriteSheet;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace ISU_Medieval_Odyssey
         {
             adjustedRectangle.X = playerRectangle.X - playerRectangle.Width;
             adjustedRectangle.Y = playerRectangle.Y - playerRectangle.Height;
-            spriteBatch.Draw(directionalImages[(int)direction, currentFrame], adjustedRectangle, Color.White);
+            directionalSpriteSheet.Draw(spriteBatch, direction, currentFrame, adjustedRectangle);
         }
     }
 }

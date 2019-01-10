@@ -23,8 +23,6 @@ namespace ISU_Medieval_Odyssey
             potionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/potionSoundEffect");
         }
 
-        public Potion() : base(null) { }
-
         /// <summary>
         /// Subprogram to use a <see cref="Potion"/> <see cref="Item"/>
         /// </summary>

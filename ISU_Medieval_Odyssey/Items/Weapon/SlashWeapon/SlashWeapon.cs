@@ -17,6 +17,8 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class SlashWeapon : Weapon
     {
+        public const int NUM_FRAMES = 6;
+
         private static SoundEffect slashSoundEffect;
 
         static SlashWeapon()

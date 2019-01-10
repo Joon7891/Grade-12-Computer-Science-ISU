@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class Hair : Head
     {
         // Dictionary to map MovementTypes to the appropriate images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
 
         /// <summary>
         /// Static constructor to setup various <see cref="Hair"/> components
@@ -21,12 +21,15 @@ namespace ISU_Medieval_Odyssey
         static Hair()
         {
             // Loading Hair graphics
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Head/Hair/", "hair");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Head/Hair/", "hair");
         }
 
         /// <summary>
         /// Constructor for <see cref="Hair"/> object
         /// </summary>
-        public Hair() : base(0, 0, 0, 0, movementImages, null) { }
+        public Hair()
+        {
+            base.movementSpriteSheet = movementSpriteSheet;
+        }
     }
 }

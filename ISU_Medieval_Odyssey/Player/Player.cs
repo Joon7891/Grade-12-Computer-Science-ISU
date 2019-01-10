@@ -15,11 +15,17 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Player : Entity
     {
+        /// <summary>
+        /// The size of the player, in pixels
+        /// </summary>
+        public static byte PIXEL_SIZE = 100;
+
+        public static int NUM_WALK_FRAMES = 9;
+
         // Graphics-related data
         private Rectangle rectangle;
-        private const byte PIXEL_SIZE = 100;
         private MovementType movementType = MovementType.Walk;
-        private static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private static MovementSpriteSheet movementSpriteSheet;
 
         // Animation & movement related data
         private float rotation;
@@ -56,7 +62,7 @@ namespace ISU_Medieval_Odyssey
         static Player()
         {
             // Loading in movement graphics
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Player/", "player");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Player/", "player");
         }
 
         /// <summary>
@@ -181,7 +187,7 @@ namespace ISU_Medieval_Odyssey
                 if (item is SlashWeapon)
                 {
                     // Adding slash movement images
-                    for (byte i = 0; i < SharedData.MovementNumFrames[MovementType.Slash]; ++i)
+                    for (byte i = 0; i < SlashWeapon.NUM_FRAMES; ++i)
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Slash, i));
                     }
@@ -189,7 +195,7 @@ namespace ISU_Medieval_Odyssey
                 else if (item is ThrustWeapon)
                 {
                     // Adding thrust movement iamges
-                    for (byte i = 0; i < SharedData.MovementNumFrames[MovementType.Thrust]; ++i)
+                    for (byte i = 0; i < ThrustWeapon.NUM_FRAMES; ++i)
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Thrust, i));
                     }
@@ -197,7 +203,7 @@ namespace ISU_Medieval_Odyssey
                 else
                 {
                     // Adding shooting movement images
-                    for (byte i = 0; i < SharedData.MovementNumFrames[MovementType.Shoot]; ++i)
+                    for (byte i = 0; i < Bow.NUM_FRAMES; ++i)
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
                     }
@@ -273,7 +279,7 @@ namespace ISU_Medieval_Odyssey
                     if (animationCounter == 3)
                     {
                         animationCounter = 0;
-                        frameNumber = (frameNumber + 1) % SharedData.MovementNumFrames[MovementType.Walk];
+                        frameNumber = (frameNumber + 1) % NUM_WALK_FRAMES;
                     }
                 }
             }
@@ -316,14 +322,14 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing player and its corresponding armour and weapon in appropraite sprite batch
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
-            spriteBatch.Draw(movementImages[movementType][(byte)Direction, frameNumber], rectangle, Color.White);
+            movementSpriteSheet.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             for (int i = 0; i < armourItems.Length; ++i)
             {
-                ((Armour)armourItems[i].Item)?.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
+                ((Armour)armourItems[i].Item)?.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             }
             if (armourItems[5].Item == null)
             {
-                hair.Draw(spriteBatch, rectangle, movementType, Direction, frameNumber);
+                hair.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             }
             currentWeapon?.Draw(spriteBatch, rectangle, Direction, frameNumber);
 

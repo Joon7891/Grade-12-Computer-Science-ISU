@@ -22,17 +22,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public bool Valid { get; protected set; } = true;
 
+        // The image the item's icon
         protected Texture2D iconImage;
-
-        /// <summary>
-        /// Constructor for <see cref="Item"/> object
-        /// </summary>
-        /// <param name="iconImage">The icon image of this <see cref="Item"/></param>
-        protected Item(Texture2D iconImage)
-        {
-            // Assigning icon image
-            this.iconImage = iconImage;
-        }
 
         /// <summary>
         /// Subprogram to use this <see cref="Item"/>

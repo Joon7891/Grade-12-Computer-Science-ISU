@@ -17,19 +17,19 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Sword : SlashWeapon
     {
-        private new static Texture2D[,] directionalImages;
+        private new static DirectionalSpriteSheet directionalSpriteSheet;
 
         static Sword()
         {
             // Temporary strings to help with file paths
             string basePath = "Images/Sprites/Weapon/Slash/Sword/";
             string weaponTypeName = "sword";
-            directionalImages = EntityHelper.LoadDirectionalImages(basePath, weaponTypeName, SharedData.MovementNumFrames[MovementType.Slash]);
+            directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
         }
 
         public Sword()
         {
-            base.directionalImages = directionalImages;
+            base.directionalSpriteSheet = directionalSpriteSheet;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ISU_Medieval_Odyssey
         {
             adjustedRectangle.X = playerRectangle.X - playerRectangle.Width;
             adjustedRectangle.Y = playerRectangle.Y - playerRectangle.Height;
-            spriteBatch.Draw(directionalImages[(int)direction, currentFrame], adjustedRectangle, Color.White);
+            directionalSpriteSheet.Draw(spriteBatch, direction, currentFrame, adjustedRectangle);
         }
     }
 }

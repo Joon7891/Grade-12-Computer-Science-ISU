@@ -17,27 +17,28 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Bow : Weapon
     {
-        private new static Texture2D[,] directionalImages;
-        private static Texture2D[,] arrowBowImages;
+        public const int NUM_FRAMES = 13;
+
+        private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private static DirectionalSpriteSheet arrowSpriteSheet;
 
         static Bow()
         {
             string basePath = "Images/Sprites/Weapon/Shoot/";
             string weaponTypeName = "bow";
-            directionalImages = EntityHelper.LoadDirectionalImages($"{basePath}Bow/", weaponTypeName, SharedData.MovementNumFrames[MovementType.Shoot]);
-            arrowBowImages = EntityHelper.LoadDirectionalImages($"{basePath}Arrow/", "arrow", SharedData.MovementNumFrames[MovementType.Shoot]);
+            directionalSpriteSheet = new DirectionalSpriteSheet($"{basePath}Bow/", weaponTypeName, NUM_FRAMES);
+            directionalSpriteSheet = new DirectionalSpriteSheet($"{basePath}Arrow/", "arrow", NUM_FRAMES);
         }
 
         public Bow()
         {
-            base.directionalImages = directionalImages;
+            base.directionalSpriteSheet = directionalSpriteSheet;
         }
 
         public override void Draw(SpriteBatch spriteBatch, Rectangle playerRectangle, Direction direction, int currentFrame)
         {
             base.Draw(spriteBatch, playerRectangle, direction, currentFrame);
-            spriteBatch.Draw(arrowBowImages[(int)direction, currentFrame], playerRectangle, Color.White);
-
+            arrowSpriteSheet.Draw(spriteBatch, direction, currentFrame, playerRectangle);
         }
     }
 }

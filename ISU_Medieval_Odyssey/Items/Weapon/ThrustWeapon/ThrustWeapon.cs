@@ -16,5 +16,6 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class ThrustWeapon : Weapon
     {
+        public const int NUM_FRAMES = 8;
     }
 }

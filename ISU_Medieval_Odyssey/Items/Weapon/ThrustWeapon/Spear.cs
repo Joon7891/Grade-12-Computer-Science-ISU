@@ -16,19 +16,19 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Spear : ThrustWeapon
     {
-        private new static Texture2D[,] directionalImages;
+        private new static DirectionalSpriteSheet directionalSpriteSheet;
 
         static Spear()
         {
             // Temporary strings to help with file paths
             string basePath = "Images/Sprites/Weapon/Thrust/Spear/";
             string weaponTypeName = "spear";
-            directionalImages = EntityHelper.LoadDirectionalImages(basePath, weaponTypeName, SharedData.MovementNumFrames[MovementType.Thrust]);
+            directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
         }
 
         public Spear()
         {
-            base.directionalImages = directionalImages;
+            base.directionalSpriteSheet = directionalSpriteSheet;
         }
     }
 }

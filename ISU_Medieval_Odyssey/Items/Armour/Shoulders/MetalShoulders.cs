@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class MetalShoulders : Shoulders
     {
         // MetalShoulders specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -28,13 +28,18 @@ namespace ISU_Medieval_Odyssey
         static MetalShoulders()
         {
             // Loading in various MetalShoulders images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Shoulders/MetalShoulders/", "metalShoulders");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Shoulders/MetalShoulders/", "metalShoulders");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/metalShouldersIcon");
         }
 
         /// <summary>
         /// Constructor for <see cref="MetalShoulders"/> object
         /// </summary>
-        public MetalShoulders() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public MetalShoulders()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }

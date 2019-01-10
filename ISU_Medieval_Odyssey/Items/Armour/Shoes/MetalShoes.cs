@@ -17,7 +17,7 @@ namespace ISU_Medieval_Odyssey
     public sealed class MetalShoes : Shoes
     {
         // MetalShoes specific images
-        private new static Dictionary<MovementType, Texture2D[,]> movementImages = new Dictionary<MovementType, Texture2D[,]>();
+        private new static MovementSpriteSheet movementSpriteSheet;
         private new static Texture2D iconImage;
 
         // Constants dictating minimum and maximum values of armour attributes
@@ -32,13 +32,18 @@ namespace ISU_Medieval_Odyssey
         static MetalShoes()
         {
             // Loading in various MetalShoes images
-            movementImages = EntityHelper.LoadMovementImages("Images/Sprites/Armour/Shoes/MetalShoes/", "metalShoes");
+            movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Shoes/MetalShoes/", "metalShoes");
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/metalShoesIcon");
         }
 
         /// <summary>
         /// Constructor for <see cref="MetalShoes"/> object
         /// </summary>
-        public MetalShoes() : base(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY, movementImages, iconImage) { }
+        public MetalShoes()
+        {
+            base.iconImage = iconImage;
+            base.movementSpriteSheet = movementSpriteSheet;
+            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+        }
     }
 }
