@@ -422,10 +422,10 @@ namespace ISU_Medieval_Odyssey
         /// <returns> An angle in degrees. </returns>
         private double GetAngle()
         {
-            double slope = (MouseHelper.Location.Y - this.nonRoundedLocation.Y)
-                          /(MouseHelper.Location.X - this.nonRoundedLocation.X);
+            double deltaY = MouseHelper.Location.Y - this.rectangle.Y;
+            double deltaX = MouseHelper.Location.X - this.rectangle.X;
 
-            return Math.Asin(slope);
+            return Math.Atan2(deltaY, deltaX);
         }
     }
 }
