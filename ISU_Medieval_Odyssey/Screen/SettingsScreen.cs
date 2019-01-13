@@ -46,14 +46,29 @@ namespace ISU_Medieval_Odyssey
         public Keys Interact { get; private set; } = Keys.E;
 
         /// <summary>
-        /// The keybindings for quick HotBar access
+        /// The keybinding to pickup an item
         /// </summary>
-        public Keys[] HotbarShortcut { get; private set; } = new Keys[10];
+        public Keys Pickup { get; private set; }
 
         /// <summary>
-        /// The keybinding for Debug
+        /// The keybinding to open inventory
         /// </summary>
-        public Keys Debug { get; private set; } = Keys.F12;
+        public Keys Inventory { get; private set; }
+
+        /// <summary>
+        /// The keybinding for Pause
+        /// </summary>
+        public Keys Pause { get; private set; }
+
+        /// <summary>
+        /// The keybinding for Statistics
+        /// </summary>
+        public Keys Statistics { get; private set; } = Keys.F12;
+
+        /// <summary>
+        /// The keybindings for quick HotBar access
+        /// </summary>
+        public Keys[] HotbarShortcut { get; private set; } = new Keys[9];
 
         // Background components
         private Song backgroundMusic;
@@ -64,8 +79,11 @@ namespace ISU_Medieval_Odyssey
         // Graphical user interface components
         private Slider[] volumeSliders = new Slider[2];
         private string[] volumeText = { "Music Volume", "Sound Effect Volume" };
-        private Vector2[] textLocations = new Vector2[4];
+        private Vector2[] textLocations = new Vector2[5];
         private SpriteFont[] textFonts = new SpriteFont[2];
+
+        // Various variables needed for function and GUI for keybindings
+        private KeyBinding[] keyBindings = new KeyBinding[18];
 
         /// <summary>
         /// The Music volume level
@@ -108,7 +126,18 @@ namespace ISU_Medieval_Odyssey
                 textLocations[2 * i] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString(volumeText[i]).X) / 2, 150 + 130 * i);
                 textLocations[2 * i + 1] = new Vector2(825, 195 + 130 * i);
             }
+            textLocations[4] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("KeyBindings").X) / 2, 390);
 
+            keyBindings[0] = new KeyBinding(Keys.Up, "Up", new Rectangle(100, 450, 150, 40));
+            keyBindings[1] = new KeyBinding(Keys.Right, "Right", new Rectangle(100, 505, 150, 40));
+            keyBindings[2] = new KeyBinding(Keys.Down, "Down", new Rectangle(100, 560, 150, 40));
+            keyBindings[3] = new KeyBinding(Keys.Left, "Left", new Rectangle(100, 615, 150, 40));
+            keyBindings[4] = new KeyBinding(Keys.E, "Interact", new Rectangle(100, 670, 150, 40));
+            keyBindings[5] = new KeyBinding(Keys.F, "Pickup", new Rectangle(100, 725, 150, 40));
+
+            keyBindings[6] = new KeyBinding(Keys.I, "Inventory", new Rectangle(425, 450, 150, 40));
+            keyBindings[7] = new KeyBinding(Keys.Escape, "Pause", new Rectangle(425, 505, 150, 40));
+            keyBindings[8] = new KeyBinding(Keys.F12, "Statistics", new Rectangle(425, 560, 150, 40));
 
             HotbarShortcut[0] = Keys.D1;
             HotbarShortcut[1] = Keys.D2;
@@ -119,7 +148,6 @@ namespace ISU_Medieval_Odyssey
             HotbarShortcut[6] = Keys.D7;
             HotbarShortcut[7] = Keys.D8;
             HotbarShortcut[8] = Keys.D9;
-            HotbarShortcut[9] = Keys.D0;
         }
         
         /// <summary>
@@ -166,6 +194,17 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Drawing keybindings and corresponding graphics
+            spriteBatch.DrawString(textFonts[1], "KeyBindings", textLocations[4], Color.White);
+            keyBindings[0].Draw(spriteBatch, false);
+            keyBindings[1].Draw(spriteBatch, false);
+            keyBindings[2].Draw(spriteBatch, false);
+            keyBindings[3].Draw(spriteBatch, false);
+            keyBindings[4].Draw(spriteBatch, false);
+            keyBindings[5].Draw(spriteBatch, false);
+            keyBindings[6].Draw(spriteBatch, false);
+            keyBindings[7].Draw(spriteBatch, false);
+            keyBindings[8].Draw(spriteBatch, false);
+
 
             // Drawing back button
             backButton.Draw(spriteBatch);

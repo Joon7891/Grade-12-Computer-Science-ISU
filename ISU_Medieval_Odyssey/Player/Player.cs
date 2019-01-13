@@ -48,7 +48,7 @@ namespace ISU_Medieval_Odyssey
         private Weapon currentWeapon;
         private Armour hair = new Hair();
         private ItemSlot[] armourItems = new ItemSlot[6];
-        private ItemSlot[] hotbarItems = new ItemSlot[10];
+        private ItemSlot[] hotbarItems = new ItemSlot[9];
         private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
 
         // List to hold current projectiles that belong to the player, TODO: THERES PROBABLY A BETTER WAY TO DO THIS
@@ -101,7 +101,7 @@ namespace ISU_Medieval_Odyssey
             // Constructing player inventory
             for (int i = 0; i < hotbarItems.Length; ++i)
             {
-                hotbarItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH / 2 - 5 + (i - 5) * 70, 700);
+                hotbarItems[i] = new ItemSlot((int)(SharedData.SCREEN_WIDTH / 2 - 5 + (i - 4.5) * 70), 700);
             }
             for (int i = 0; i < armourItems.Length; ++i)
             {

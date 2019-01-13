@@ -43769,3 +43769,10 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Keys/keys_Z.png
 
+#begin Fonts/KeyBindingFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/KeyBindingFont.spritefont
+

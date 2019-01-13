@@ -65,6 +65,10 @@ namespace ISU_Medieval_Odyssey
             {
                 AllowedBindings.Add(key);
             }
+            for (Keys key = Keys.F1; key <= Keys.F12; ++key)
+            {
+                AllowedBindings.Add(key);
+            }
             AllowedBindings.Add(Keys.Tab);
             AllowedBindings.Add(Keys.Space);
             AllowedBindings.Add(Keys.Enter);
@@ -81,19 +85,24 @@ namespace ISU_Medieval_Odyssey
                     keyImages.Add(key, Main.Content.Load<Texture2D>($"Images/Sprites/Keys/keys_{key.ToString()}"));
                 }
             }
+
+            // Importing fonts
+            textFont = Main.Content.Load<SpriteFont>("Fonts/KeyBindingFont");
         }
 
         /// <summary>
         /// Constructor for <see cref="KeyBinding"/> object
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="text"></param>
-        /// <param name="rectangle"></param>
+        /// <param name="key">The <see cref="Keys"/> assosiated with this <see cref="KeyBinding"/></param>
+        /// <param name="text">The text to be draw alongside this <see cref="KeyBinding"/></param>
+        /// <param name="rectangle">The <see cref="Rectangle"/> in which this <see cref="KeyBinding"/> is to be drawn in</param>
         public KeyBinding(Keys key, string text, Rectangle rectangle)
         {
             Key = key;
             this.text = text;
             Rectangle = rectangle;
+            DisallowedBindings.Add(key);
+            textLocation = new Vector2(rectangle.X + (rectangle.Width - textFont.MeasureString(text).X) / 2, rectangle.Y - 25);
         }
 
         /// <summary>
@@ -104,7 +113,8 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch, bool isSelected)
         {
             // Drawing key image and corresponding text
-            spriteBatch.Draw(keyImages[key], Rectangle, isSelected == false ? Color.White : Color.Yellow);
+            spriteBatch.Draw(keyImages[key], Rectangle, !isSelected ? Color.White : Color.Yellow);
+            spriteBatch.DrawString(textFont, text, textLocation, !isSelected ? Color.White : Color.Yellow);
         }
     }
 }

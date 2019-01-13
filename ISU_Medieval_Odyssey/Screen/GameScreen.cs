@@ -76,7 +76,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Showing/unshowing statistics as desired
-            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Debug))
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Statistics))
             {
                 showStatistics = !showStatistics;
             }            
