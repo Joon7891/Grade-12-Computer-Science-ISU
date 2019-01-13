@@ -99,13 +99,8 @@ namespace ISU_Medieval_Odyssey
             screenDictionary.Add(ScreenMode.NewGame, new NewGameScreen());
             screenDictionary.Add(ScreenMode.Game, new GameScreen());
             screenDictionary.Add(ScreenMode.Settings, new SettingsScreen());
-            foreach (ScreenMode screenMode in Enum.GetValues(typeof(ScreenMode)))
-            {
-                screenDictionary[screenMode].LoadContent();
-            }
 
-
-            // TESTING
+            // TESTING - Use Static constructors Steven plz
             Projectile.Load(Content);
         }
 

@@ -25,6 +25,12 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static int NUM_WALK_FRAMES = 9;
 
+        /// <summary>
+        /// Whether the <see cref="Player"/> is moving
+        /// </summary>
+        public bool IsMoving => KeyboardHelper.IsAnyKeyDown(SettingsScreen.Instance.Up, 
+            SettingsScreen.Instance.Right, SettingsScreen.Instance.Down, SettingsScreen.Instance.Left);
+
         // Graphics-related data
         private Rectangle rectangle;
         private MovementType movementType = MovementType.Walk;
@@ -154,7 +160,7 @@ namespace ISU_Medieval_Odyssey
             // Updating hotbar selection if user clicks a hotbar item
             for (byte i = 0; i < hotbarItems.Length; ++i)
             {
-                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle) || KeyboardHelper.IsKeyDown(KeyBindings.HotbarShortcut[i]))
+                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle) || KeyboardHelper.IsKeyDown(SettingsScreen.Instance.HotbarShortcut[i]))
                 {
                     hotbarSelectionIndex = i;
                     return;
@@ -255,23 +261,27 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating player movement if any of the movement keys are down
-            if (KeyboardHelper.IsAnyKeyDown(KeyBindings.Up, KeyBindings.Right, KeyBindings.Down, KeyBindings.Left) && currentWeapon == null)
+            if (IsMoving && currentWeapon == null)
             {
                 // Moving player in appropraite direction given movement keystroke
-                if (KeyboardHelper.IsKeyDown(KeyBindings.Up))
+                if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {
+                    Direction = Direction.Up;
                     nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
-                if (KeyboardHelper.IsKeyDown(KeyBindings.Down))
+                if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
+                    Direction = Direction.Down;
                     nonRoundedLocation.Y += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
-                if (KeyboardHelper.IsKeyDown(KeyBindings.Left))
+                if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
+                    Direction = Direction.Left;
                     nonRoundedLocation.X -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
-                if (KeyboardHelper.IsKeyDown(KeyBindings.Right))
+                if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
+                    Direction = Direction.Right;
                     nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
 
@@ -310,7 +320,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Updating player mouse rotation and direction
             rotation = (float)((Math.Atan2(MouseHelper.Location.Y - (Center.Y - cameraCenter.Y), MouseHelper.Location.X - (Center.X - cameraCenter.X)) + 2.75 * Math.PI) % (2 * Math.PI));
-            if (currentWeapon == null)
+            if (!IsMoving && currentWeapon == null)
             {
                 Direction = (Direction)(2 * rotation / Math.PI % 4);
             }

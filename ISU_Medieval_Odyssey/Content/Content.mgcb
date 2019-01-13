@@ -43047,3 +43047,10 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/circleImage.png
 
+#begin Fonts/SettingsFont0.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/SettingsFont0.spritefont
+

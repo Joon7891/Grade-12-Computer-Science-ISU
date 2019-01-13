@@ -35,7 +35,7 @@ namespace ISU_Medieval_Odyssey
             string basePath = "Images/Sprites/Weapon/Shoot/";
             string weaponTypeName = "bow";
             directionalSpriteSheet = new DirectionalSpriteSheet($"{basePath}Bow/", weaponTypeName, NUM_FRAMES);
-            directionalSpriteSheet = new DirectionalSpriteSheet($"{basePath}Arrow/", "arrow", NUM_FRAMES);
+            arrowSpriteSheet = new DirectionalSpriteSheet($"{basePath}Arrow/", "arrow", NUM_FRAMES);
         }
 
         /// <summary>

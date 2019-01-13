@@ -27,9 +27,9 @@ namespace ISU_Medieval_Odyssey
         private Button[] optionButtons = new Button[3];
         
         /// <summary>
-        /// Subprogram to load main menu screen content
+        /// Constructor for <see cref="MainMenuScreen"/>
         /// </summary>
-        public void LoadContent()
+        public MainMenuScreen()
         {
             // Setting up singleton
             Instance = this;
@@ -44,7 +44,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Setting up option buttons
-            optionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 400, 300, 100),() =>
+            optionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 400, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.NewGame;
                 MediaPlayer.Stop();

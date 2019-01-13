@@ -39,9 +39,9 @@ namespace ISU_Medieval_Odyssey
         private Vector2[] textLocations = new Vector2[4];
 
         /// <summary>
-        /// Subprogram to load various content for <see cref="NewGameScreen"/>
+        /// Constructor for <see cref="NewGameScreen"/>
         /// </summary>
-        public void LoadContent()
+        public NewGameScreen()
         {
             // Setting up singleton
             Instance = this;
@@ -70,9 +70,9 @@ namespace ISU_Medieval_Odyssey
             // Setting up graphical text data
             for (byte i = 0; i < textFonts.Length; ++i)
             {
-                textFonts[i] = Main.Content.Load<SpriteFont>($"Fonts/newGameFont{i}");
+                textFonts[i] = Main.Content.Load<SpriteFont>($"Fonts/NewGameFont{i}");
             }
-            titleLocation = new Vector2((SharedData.SCREEN_WIDTH - textFonts[0].MeasureString("Create New Game").X) / 2 , 10);
+            titleLocation = new Vector2((SharedData.SCREEN_WIDTH - textFonts[0].MeasureString("Create New Game").X) / 2, 10);
             textLocations[0] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("Enter Player Name:").X) / 2, 240);
             textLocations[1] = new Vector2(0, textLocations[0].Y + 70);
             textLocations[2] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("Enter Seed # (Optional):").X) / 2, 240);

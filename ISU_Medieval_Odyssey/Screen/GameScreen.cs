@@ -40,13 +40,13 @@ namespace ISU_Medieval_Odyssey
         private Vector2[] statisticsLoc = new Vector2[4];
 
         /// <summary>
-        /// Subprogram to load GameScreen content
+        /// Constructor for <see cref="GameScreen"/>
         /// </summary>
-        public void LoadContent()
+        public GameScreen()
         {
             // Setting up singleton
             Instance = this;
-            
+
             // Setting up statistics locations
             for (byte i = 0; i < statisticsLoc.Length; ++i)
             {
@@ -76,7 +76,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Showing/unshowing statistics as desired
-            if (KeyboardHelper.NewKeyStroke(KeyBindings.Debug))
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Debug))
             {
                 showStatistics = !showStatistics;
             }            
