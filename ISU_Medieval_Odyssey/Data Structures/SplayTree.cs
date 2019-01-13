@@ -40,5 +40,15 @@ namespace ISU_Medieval_Odyssey
         {
             return -1;
         }
+
+        /// <summary>
+        /// kth smallest
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public int FindRank(int rank)
+        {
+            return -1;
+        }
     }
 }
