@@ -6,6 +6,7 @@
 // Description: Class to hold SettingsScreen object, implements IScreen
 
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,52 +24,52 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The keybinding for the move Up functionality
         /// </summary>
-        public Keys Up { get; private set; } = Keys.W;
+        public Keys Up => keyBindings[0].Key;
 
         /// <summary>
         /// The keybinding for the move Down functionality 
         /// </summary>
-        public Keys Right { get; private set; } = Keys.D;
+        public Keys Right => keyBindings[1].Key;
 
         /// <summary>
         /// The keybinding for the move Down functionality
         /// </summary>
-        public Keys Down { get; private set; } = Keys.S;
+        public Keys Down => keyBindings[2].Key;
 
         /// <summary>
         /// The keybinding for the move Left functionality
         /// </summary>
-        public Keys Left { get; private set; } = Keys.A;
+        public Keys Left => keyBindings[3].Key;
 
         /// <summary>
         /// The keybinding for the Interaction functionality
         /// </summary>
-        public Keys Interact { get; private set; } = Keys.E;
+        public Keys Interact => keyBindings[4].Key;
 
         /// <summary>
         /// The keybinding to pickup an item
         /// </summary>
-        public Keys Pickup { get; private set; }
+        public Keys Pickup => keyBindings[5].Key;
 
         /// <summary>
         /// The keybinding to open inventory
         /// </summary>
-        public Keys Inventory { get; private set; }
+        public Keys Inventory => keyBindings[6].Key;
 
         /// <summary>
         /// The keybinding for Pause
         /// </summary>
-        public Keys Pause { get; private set; }
+        public Keys Pause => keyBindings[7].Key;
 
         /// <summary>
         /// The keybinding for Statistics
         /// </summary>
-        public Keys Statistics { get; private set; } = Keys.F12;
+        public Keys Statistics => keyBindings[8].Key;
 
         /// <summary>
         /// The keybindings for quick HotBar access
         /// </summary>
-        public Keys[] HotbarShortcut { get; private set; } = new Keys[9];
+        public Keys[] HotbarShortcut => ArrayHelper<KeyBinding>.GetSubArray(keyBindings, 9, 9).Select(keyBinding => keyBinding.Key).ToArray();
 
         // Background components
         private Song backgroundMusic;
@@ -84,6 +85,7 @@ namespace ISU_Medieval_Odyssey
 
         // Various variables needed for function and GUI for keybindings
         private KeyBinding[] keyBindings = new KeyBinding[18];
+        private int selectedKeyBinding = -1;
 
         /// <summary>
         /// The Music volume level
@@ -100,6 +102,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public SettingsScreen()
         {
+            // Tuple to hold IO loaded settings data
+            Tuple<float, float, KeyBinding[]> loadedSettingsData;
+            loadedSettingsData = IO.LoadSettingsData();
+            keyBindings = loadedSettingsData.Item3;
+
             // Setting up singleton
             Instance = this;
 
@@ -122,32 +129,11 @@ namespace ISU_Medieval_Odyssey
             // Setting up volume levels graphical interface
             for (byte i = 0; i < volumeSliders.Length; ++i)
             {
-                volumeSliders[i] = new Slider(new Rectangle(200, 200 + 130 * i, 600, 40), Color.White, Color.Black * 0.8f);
+                volumeSliders[i] = new Slider(new Rectangle(200, 200 + 130 * i, 600, 40), Color.White, Color.Black * 0.8f, i == 0 ? loadedSettingsData.Item1 : loadedSettingsData.Item2);
                 textLocations[2 * i] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString(volumeText[i]).X) / 2, 150 + 130 * i);
                 textLocations[2 * i + 1] = new Vector2(825, 195 + 130 * i);
             }
-            textLocations[4] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("KeyBindings").X) / 2, 390);
-
-            keyBindings[0] = new KeyBinding(Keys.Up, "Up", new Rectangle(100, 450, 150, 40));
-            keyBindings[1] = new KeyBinding(Keys.Right, "Right", new Rectangle(100, 505, 150, 40));
-            keyBindings[2] = new KeyBinding(Keys.Down, "Down", new Rectangle(100, 560, 150, 40));
-            keyBindings[3] = new KeyBinding(Keys.Left, "Left", new Rectangle(100, 615, 150, 40));
-            keyBindings[4] = new KeyBinding(Keys.E, "Interact", new Rectangle(100, 670, 150, 40));
-            keyBindings[5] = new KeyBinding(Keys.F, "Pickup", new Rectangle(100, 725, 150, 40));
-
-            keyBindings[6] = new KeyBinding(Keys.I, "Inventory", new Rectangle(425, 450, 150, 40));
-            keyBindings[7] = new KeyBinding(Keys.Escape, "Pause", new Rectangle(425, 505, 150, 40));
-            keyBindings[8] = new KeyBinding(Keys.F12, "Statistics", new Rectangle(425, 560, 150, 40));
-
-            HotbarShortcut[0] = Keys.D1;
-            HotbarShortcut[1] = Keys.D2;
-            HotbarShortcut[2] = Keys.D3;
-            HotbarShortcut[3] = Keys.D4;
-            HotbarShortcut[4] = Keys.D5;
-            HotbarShortcut[5] = Keys.D6;
-            HotbarShortcut[6] = Keys.D7;
-            HotbarShortcut[7] = Keys.D8;
-            HotbarShortcut[8] = Keys.D9;
+            textLocations[4] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("KeyBindings").X) / 2, 410);
         }
         
         /// <summary>
@@ -166,6 +152,38 @@ namespace ISU_Medieval_Odyssey
             for (byte i = 0; i < volumeSliders.Length; ++i)
             {
                 volumeSliders[i].Update(gameTime);
+            }
+
+            // Determining selected keybinding
+            if (MouseHelper.NewClick())
+            {
+                selectedKeyBinding = -1;
+
+                for (byte i = 0; i < keyBindings.Length; ++i)
+                {
+                    if (MouseHelper.IsRectangleClicked(keyBindings[i].Rectangle))
+                    {
+                        selectedKeyBinding = i;
+                        break;
+                    }
+                }
+            }
+
+            // Setting new keybinding if possible
+            if (selectedKeyBinding != -1)
+            {
+                if (KeyboardHelper.SelectedKeyFromSet(KeyBinding.AllowedBindings, KeyBinding.DisallowedBindings) != Keys.None)
+                {
+                    keyBindings[selectedKeyBinding].Key = KeyboardHelper.SelectedKeyFromSet(KeyBinding.AllowedBindings, KeyBinding.DisallowedBindings);
+                    selectedKeyBinding = -1;
+                    IO.UploadSettingsData(MusicVolume, SoundEffectVolume, keyBindings);
+                }
+            }
+
+            // Uploading data off mouse presses - indicates an update
+            if (MouseHelper.NewClick())
+            {
+                IO.UploadSettingsData(MusicVolume, SoundEffectVolume, keyBindings);
             }
 
             // Updating back button
@@ -195,16 +213,11 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing keybindings and corresponding graphics
             spriteBatch.DrawString(textFonts[1], "KeyBindings", textLocations[4], Color.White);
-            keyBindings[0].Draw(spriteBatch, false);
-            keyBindings[1].Draw(spriteBatch, false);
-            keyBindings[2].Draw(spriteBatch, false);
-            keyBindings[3].Draw(spriteBatch, false);
-            keyBindings[4].Draw(spriteBatch, false);
-            keyBindings[5].Draw(spriteBatch, false);
-            keyBindings[6].Draw(spriteBatch, false);
-            keyBindings[7].Draw(spriteBatch, false);
-            keyBindings[8].Draw(spriteBatch, false);
 
+            for (int i = 0; i < keyBindings.Length; ++i)
+            {
+                keyBindings[i].Draw(spriteBatch, i == selectedKeyBinding);
+            }
 
             // Drawing back button
             backButton.Draw(spriteBatch);

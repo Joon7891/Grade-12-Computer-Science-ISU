@@ -26,6 +26,11 @@ namespace ISU_Medieval_Odyssey
         public static HashSet<Keys> DisallowedBindings { get; private set; } = new HashSet<Keys>();
 
         /// <summary>
+        /// The text describing this <see cref="KeyBinding"/>
+        /// </summary>
+        public string Text { get; }
+
+        /// <summary>
         /// The <see cref="Keys"/> assosiated with this <see cref="KeyBinding"/>
         /// </summary>
         public Keys Key
@@ -48,7 +53,6 @@ namespace ISU_Medieval_Odyssey
         // Various variables required for the drawing of the KeyBinding
         private static Dictionary<Keys, Texture2D> keyImages = new Dictionary<Keys, Texture2D>();
         private static SpriteFont textFont;
-        private readonly string text;
         private readonly Vector2 textLocation;
 
         /// <summary>
@@ -99,10 +103,10 @@ namespace ISU_Medieval_Odyssey
         public KeyBinding(Keys key, string text, Rectangle rectangle)
         {
             Key = key;
-            this.text = text;
+            Text = text;
             Rectangle = rectangle;
             DisallowedBindings.Add(key);
-            textLocation = new Vector2(rectangle.X + (rectangle.Width - textFont.MeasureString(text).X) / 2, rectangle.Y - 25);
+            textLocation = new Vector2(rectangle.X + (rectangle.Width - textFont.MeasureString(text).X) / 2, rectangle.Y - 30);
         }
 
         /// <summary>
@@ -114,7 +118,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing key image and corresponding text
             spriteBatch.Draw(keyImages[key], Rectangle, !isSelected ? Color.White : Color.Yellow);
-            spriteBatch.DrawString(textFont, text, textLocation, !isSelected ? Color.White : Color.Yellow);
+            spriteBatch.DrawString(textFont, Text, textLocation, !isSelected ? Color.White : Color.Yellow);
         }
     }
 }

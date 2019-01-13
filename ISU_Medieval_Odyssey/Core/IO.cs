@@ -86,7 +86,7 @@ namespace ISU_Medieval_Odyssey
                 outFile = File.CreateText(FILE_PATH + "SettingsData.json");
 
                 // Creating data, converting, and uploading it
-                uploadData = new Tuple<float, float, KeyBinding[]>(0.1f, 0.2f, new KeyBinding[10]);
+                uploadData = new Tuple<float, float, KeyBinding[]>(musicVolume, soundEffectVolume, keyBindings);
                 serializedData = JsonConvert.SerializeObject(uploadData);
                 outFile.WriteLine(serializedData);
 
