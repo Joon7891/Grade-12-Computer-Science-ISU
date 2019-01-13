@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Input;
 namespace ISU_Medieval_Odyssey
 {
     public static class KeyboardHelper
-    {
+    {        
         /// <summary>
         /// Subprogram to check if a keystroke was a new one
         /// </summary>
@@ -50,6 +50,27 @@ namespace ISU_Medieval_Odyssey
 
             // Otherwise returning false
             return false;
+        }
+
+        /// <summary>
+        /// Subprogram to determine the pressed key given a set of allowed and disallowed keys
+        /// </summary>
+        /// <param name="allowedKeys">The allowed keys</param>
+        /// <param name="disallowedKeys">The disallowed keys</param>
+        /// <returns>The key that is pressed and meets the set requirements</returns>
+        public static Keys SelectedKeyFromSet(HashSet<Keys> allowedKeys, HashSet<Keys> disallowedKeys)
+        {
+            // Looping through new keystroke keys and returning if it meets set requirements
+            foreach (Keys key in Main.NewKeyboard.GetPressedKeys())
+            {
+                if (NewKeyStroke(key) && allowedKeys.Contains(key) && !disallowedKeys.Contains(key))
+                {
+                    return key;
+                }
+            }
+            
+            // Otherwise returning None
+            return Keys.None;
         }
 
         /// <summary>

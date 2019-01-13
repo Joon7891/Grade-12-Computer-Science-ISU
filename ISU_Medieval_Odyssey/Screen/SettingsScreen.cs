@@ -55,24 +55,27 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Keys Debug { get; private set; } = Keys.F12;
 
-        // Background graphics, audio, and fonts/text locations
+        // Background components
         private Song backgroundMusic;
         private Background background;
         private Button backButton;
-        private SpriteFont[] textFonts = new SpriteFont[1];
         private Vector2 titleLocation;
+
+        // Graphical user interface components
+        private Slider[] volumeSliders = new Slider[2];
+        private string[] volumeText = { "Music Volume", "Sound Effect Volume" };
+        private Vector2[] textLocations = new Vector2[4];
+        private SpriteFont[] textFonts = new SpriteFont[2];
 
         /// <summary>
         /// The Music volume level
         /// </summary>
-        public float MusicVolume => (float) Math.Round(musicVolumeSlider.Value, 2);
-        private Slider musicVolumeSlider;
+        public float MusicVolume => (float) Math.Round(volumeSliders[0].Value, 2);
 
         /// <summary>
         /// The SoundEffect volume level
         /// </summary>
-        public float SoundEffectVolume => (float) Math.Round(soundEffectVolumeSlider.Value, 2);
-        private Slider soundEffectVolumeSlider;
+        public float SoundEffectVolume => (float) Math.Round(volumeSliders[1].Value, 2);
         
         /// <summary>
         /// Constructor for <see cref="SettingsScreen"/>
@@ -91,16 +94,21 @@ namespace ISU_Medieval_Odyssey
                 MediaPlayer.Stop();
             });
 
-            // Setting up settings graphical interface
-            musicVolumeSlider = new Slider(new Rectangle(300, 200, 400, 30), Color.White, Color.Black * 0.8f);
-            soundEffectVolumeSlider = new Slider(new Rectangle(300, 400, 400, 30), Color.White, Color.Black * 0.8f);
-
             // Loading in various fonts and text locations
             for (byte i = 0; i < textFonts.Length; ++i)
             {
                 textFonts[i] = Main.Content.Load<SpriteFont>($"Fonts/SettingsFont{i}");
             }
             titleLocation = new Vector2((SharedData.SCREEN_WIDTH - textFonts[0].MeasureString("Settings").X) / 2, 10);
+
+            // Setting up volume levels graphical interface
+            for (byte i = 0; i < volumeSliders.Length; ++i)
+            {
+                volumeSliders[i] = new Slider(new Rectangle(200, 200 + 130 * i, 600, 40), Color.White, Color.Black * 0.8f);
+                textLocations[2 * i] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString(volumeText[i]).X) / 2, 150 + 130 * i);
+                textLocations[2 * i + 1] = new Vector2(825, 195 + 130 * i);
+            }
+
 
             HotbarShortcut[0] = Keys.D1;
             HotbarShortcut[1] = Keys.D2;
@@ -127,8 +135,10 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating graphical interface
-            musicVolumeSlider.Update(gameTime);
-            soundEffectVolumeSlider.Update(gameTime);
+            for (byte i = 0; i < volumeSliders.Length; ++i)
+            {
+                volumeSliders[i].Update(gameTime);
+            }
 
             // Updating back button
             backButton.Update(gameTime);
@@ -148,8 +158,12 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.DrawString(textFonts[0], "Settings", titleLocation, Color.White);
 
             // Drawing volunme sliders and corresponding text
-            musicVolumeSlider.Draw(spriteBatch);
-            soundEffectVolumeSlider.Draw(spriteBatch);
+            for (byte i = 0; i < volumeSliders.Length; ++i)
+            {
+                volumeSliders[i].Draw(spriteBatch);
+                spriteBatch.DrawString(textFonts[1], volumeText[i], textLocations[2 * i], Color.White);
+                spriteBatch.DrawString(textFonts[1], $"{Math.Round(100 * volumeSliders[i].Value, 2)}%", textLocations[2 * i + 1], Color.White);
+            }
 
             // Drawing keybindings and corresponding graphics
 
