@@ -5,7 +5,10 @@
 // Modified Date: 01/12/2019
 // Description: Class to hold KeyBinding object
 
+using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace ISU_Medieval_Odyssey
@@ -38,6 +41,17 @@ namespace ISU_Medieval_Odyssey
         private Keys key;
 
         /// <summary>
+        /// The <see cref="Rectangle"/> assosiated with this <see cref="KeyBinding"/>
+        /// </summary>
+        public Rectangle Rectangle { get;  }
+
+        // Various variables required for the drawing of the KeyBinding
+        private static Dictionary<Keys, Texture2D> keyImages = new Dictionary<Keys, Texture2D>();
+        private static SpriteFont textFont;
+        private readonly string text;
+        private readonly Vector2 textLocation;
+
+        /// <summary>
         /// Static constructor for <see cref="KeyBinding"/> object
         /// </summary>
         static KeyBinding()
@@ -58,6 +72,39 @@ namespace ISU_Medieval_Odyssey
             AllowedBindings.Add(Keys.CapsLock);
             AllowedBindings.Add(Keys.LeftShift);
             AllowedBindings.Add(Keys.RightShift);
+
+            // Adding images to hashmap
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            {
+                if (AllowedBindings.Contains(key))
+                {
+                    keyImages.Add(key, Main.Content.Load<Texture2D>($"Images/Sprites/Keys/keys_{key.ToString()}"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Constructor for <see cref="KeyBinding"/> object
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="text"></param>
+        /// <param name="rectangle"></param>
+        public KeyBinding(Keys key, string text, Rectangle rectangle)
+        {
+            Key = key;
+            this.text = text;
+            Rectangle = rectangle;
+        }
+
+        /// <summary>
+        /// Draw subprogram for <see cref="KeyBinding"/> object
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        /// <param name="isSelected">Whether the <see cref="KeyBinding"/> is selected for modification</param>
+        public void Draw(SpriteBatch spriteBatch, bool isSelected)
+        {
+            // Drawing key image and corresponding text
+            spriteBatch.Draw(keyImages[key], Rectangle, isSelected == false ? Color.White : Color.Yellow);
         }
     }
 }

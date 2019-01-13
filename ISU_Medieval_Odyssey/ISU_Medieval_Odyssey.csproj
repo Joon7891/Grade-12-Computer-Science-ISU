@@ -54,6 +54,7 @@
     <Compile Include="Graphics\Circle.cs" />
     <Compile Include="Graphics\DirectionalSpriteSheet.cs" />
     <Compile Include="Graphics\IGraphic.cs" />
+    <Compile Include="Graphics\KeyBinding.cs" />
     <Compile Include="Graphics\MovementImageData.cs" />
     <Compile Include="Data Structures\Interval.cs" />
     <Compile Include="Data Structures\IntervalType.cs" />
