@@ -7,6 +7,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -87,5 +88,20 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.End();
         }
 
+        public Vector2 GetTile(Vector2 coordLoc)
+        {
+            return new Vector2(coordLoc.X / Tile.HORIZONTAL_SIZE, coordLoc.Y / Tile.VERTICAL_SIZE);
+        }
+
+        public Vector2 GetUnroundedCoord(Vector2 tileLoc)
+        {
+            return new Vector2(tileLoc.X * Tile.HORIZONTAL_SIZE, tileLoc.Y * Tile.VERTICAL_SIZE);
+        }
+
+        public Vector2Int GetCoord(Vector2 tileLoc)
+        {
+            return new Vector2Int(Convert.ToInt32(tileLoc.X * Tile.HORIZONTAL_SIZE),
+                                  Convert.ToInt32(tileLoc.Y * Tile.VERTICAL_SIZE));
+        }
     }
 }

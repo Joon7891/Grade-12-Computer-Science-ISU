@@ -14,8 +14,8 @@ namespace ISU_Medieval_Odyssey
         readonly double maxDist;
 
         // positions of the projectile in tiles
-        protected Vector2Int positionInitial;
-        protected Vector2Int position;
+        protected Vector2 positionInitial;
+        protected Vector2 position;
         protected Rectangle hitBox;
 
         // in degrees 
@@ -27,7 +27,7 @@ namespace ISU_Medieval_Odyssey
 
         protected double timePassed;
 
-        public Projectile(double angleFired, double velocityInitial, double acceleration, Vector2Int positionInitial)
+        public Projectile(double angleFired, double velocityInitial, double acceleration, Vector2 positionInitial)
         {
             this.angleFired = angleFired;
             this.velocityInitial = velocityInitial;
@@ -41,9 +41,11 @@ namespace ISU_Medieval_Odyssey
         {
             double deltaTime = gameTime.ElapsedGameTime.Milliseconds;
             timePassed += deltaTime;
-            position.X = Convert.ToInt32(velocityInitial * Math.Cos(angleFired) * timePassed);
-            position.Y = Convert.ToInt32(velocityInitial * Math.Sin(angleFired) * timePassed);
-            hitBox = new Rectangle((int)(position.X + 0.5), (int)(position.Y + 0.5), 10, 10);
+            position.X = Convert.ToInt32(positionInitial.X + velocityInitial * Math.Cos(angleFired) * timePassed);
+            position.Y = Convert.ToInt32(positionInitial.Y + velocityInitial * Math.Sin(angleFired) * timePassed);
+
+            Vector2Int coordPos = GameScreen.Instance.World.GetCoord(position);
+            hitBox = new Rectangle(coordPos.X, coordPos.Y, 10, 10);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -56,9 +58,5 @@ namespace ISU_Medieval_Odyssey
         {
             PLACEHOLDER = content.Load<Texture2D>("Images/Sprites/aaa");
         }
-
-
-
-
     }
 }

@@ -5,6 +5,7 @@
 // Modified Date: 12/20/2018
 // Description: Class to hold Vector2Int struct
 
+using System;
 using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
@@ -122,6 +123,14 @@ namespace ISU_Medieval_Odyssey
         /// <returns>The result of multiplying two <see cref="Vector2Int"/></returns>
         public static Vector2Int operator *(Vector2Int left, Vector2Int right) => new Vector2Int(left.X * right.X, left.Y * right.Y);
 
+        /// <summary>
+        /// Allows casting from <see cref="Vector2"/> to <see cref="Vector2Int"/>
+        /// </summary>
+        /// <param name="vector"> Vector2 to Convert </param>
+        public static explicit operator Vector2Int(Vector2 vector)
+        {
+            return new Vector2Int(Convert.ToInt32(vector.X), Convert.ToInt32(vector.Y));
+        }
 
         /// <summary>
         /// <see cref="Vector2Int"/> division

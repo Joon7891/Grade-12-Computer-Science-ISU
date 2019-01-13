@@ -32,7 +32,7 @@ namespace ISU_Medieval_Odyssey
         public World World { get; set; } = new World();
 
         // Camera-realted variables
-        private Camera camera = new Camera();
+        public Camera Camera { get; set; } = new Camera();
         private Vector2 cameraOffset;
 
         // Statistics display-related variables
@@ -61,18 +61,18 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating player and world
-            Player.Update(gameTime, camera.Position);
+            Player.Update(gameTime, Camera.Position);
             World.Update(gameTime, Player.CurrentChunk);
 
             // Updating the offset of the camera and moving camera if appropraite
-            cameraOffset = Player.Center.ToVector2() - camera.Center;
+            cameraOffset = Player.Center.ToVector2() - Camera.Center;
             if (Math.Abs(cameraOffset.X) > SharedData.SCREEN_WIDTH / 6)
             {
-                camera.Position += (cameraOffset.X > 0 ? 1 : -1) * new Vector2(Math.Abs(cameraOffset.X) - SharedData.SCREEN_WIDTH / 6, 0);
+                Camera.Position += (cameraOffset.X > 0 ? 1 : -1) * new Vector2(Math.Abs(cameraOffset.X) - SharedData.SCREEN_WIDTH / 6, 0);
             }
             if (Math.Abs(cameraOffset.Y) > SharedData.SCREEN_HEIGHT / 6)
             {
-                camera.Position += (cameraOffset.Y > 0 ? 1 : -1) * new Vector2(0, Math.Abs(cameraOffset.Y) - SharedData.SCREEN_HEIGHT / 6);
+                Camera.Position += (cameraOffset.Y > 0 ? 1 : -1) * new Vector2(0, Math.Abs(cameraOffset.Y) - SharedData.SCREEN_HEIGHT / 6);
             }
 
             // Showing/unshowing statistics as desired
@@ -89,8 +89,8 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing player and world
-            World.Draw(spriteBatch, camera);
-            Player.Draw(spriteBatch, camera);
+            World.Draw(spriteBatch, Camera);
+            Player.Draw(spriteBatch, Camera);
 
             // Beginning regular sprite batch
             spriteBatch.Begin();

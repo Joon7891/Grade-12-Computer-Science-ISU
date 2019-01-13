@@ -86,7 +86,7 @@ namespace ISU_Medieval_Odyssey
 
             // Constructing world coordinate variables
             Center = Vector2Int.Zero;
-            CurrentTile = Vector2Int.Zero;
+            CurrentTile = new Vector2(0,0);
             CurrentChunk = Vector2Int.Zero;
 
             // Setting up name and other attributes
@@ -133,8 +133,8 @@ namespace ISU_Medieval_Odyssey
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating current tile and chunk coordinates
-            CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
-            CurrentChunk = CurrentTile / Chunk.SIZE;
+            //CurrentTile = new Vector2(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
+            CurrentChunk = (Vector2Int)CurrentTile / Chunk.SIZE;
 
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
@@ -217,7 +217,7 @@ namespace ISU_Medieval_Odyssey
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
                     }
 
-                    projectiles.Add(new Projectile(GetAngle(), 2, 0, this.Center));
+                    projectiles.Add(new Projectile(GetAngle(), 0.02, 0, CurrentTile));
                        
                 }
                 currentWeapon = (Weapon)item;
@@ -267,23 +267,29 @@ namespace ISU_Medieval_Odyssey
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {
                     Direction = Direction.Up;
-                    nonRoundedLocation.Y -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    CurrentTile = new Vector2(CurrentTile.X, 
+                                              CurrentTile.Y - Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
-                    nonRoundedLocation.Y += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    CurrentTile = new Vector2(CurrentTile.X,
+                                              CurrentTile.Y + Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
-                    nonRoundedLocation.X -= Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    CurrentTile = new Vector2(CurrentTile.X - Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f,
+                                              CurrentTile.Y);
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
-                    nonRoundedLocation.X += Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    CurrentTile = new Vector2(CurrentTile.X + Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f,
+                                              CurrentTile.Y);
                 }
+                
+                nonRoundedLocation = GameScreen.Instance.World.GetUnroundedCoord(CurrentTile);
 
                 // Animating movement frames if weapon is not being used
                 if (imagesToAnimate.Count == 0 && currentWeapon == null)
@@ -432,8 +438,13 @@ namespace ISU_Medieval_Odyssey
         /// <returns> An angle in degrees. </returns>
         private double GetAngle()
         {
-            double deltaY = MouseHelper.Location.Y - this.rectangle.Y;
-            double deltaX = MouseHelper.Location.X - this.rectangle.X;
+            //float offsetX = GameScreen.Instance.cameraOffset.X;
+            //float offsetY = GameScreen.Instance.cameraOffset.Y;
+            //Vector2 offsetLoc = new Vector2(MouseHelper.Location.X + Center.X,
+            //                                MouseHelper.Location.Y + Center.Y);
+            //Vector2 mouseTile = GameScreen.Instance.World.GetTile(offsetLoc);
+            double deltaY = MouseHelper.Location.Y - (nonRoundedLocation.Y - GameScreen.Instance.Camera.Position.Y);
+            double deltaX = MouseHelper.Location.X - (nonRoundedLocation.X - GameScreen.Instance.Camera.Position.X);
 
             return Math.Atan2(deltaY, deltaX);
         }
