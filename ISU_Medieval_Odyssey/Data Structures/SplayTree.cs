@@ -12,18 +12,78 @@ namespace ISU_Medieval_Odyssey
 
         public SplayTree() { }
 
-        private void RotateLeft(SplayNode<T> node)
+        private SplayNode<T> RotateLeft(SplayNode<T> node)
         {
-
+            SplayNode<T> temp = node.Right;
+            node.Right = temp.Left;
+            temp.Left = node;
+            return temp;
         }
 
-        private void RotateRight(SplayNode<T> node)
+        private SplayNode<T> RotateRight(SplayNode<T> node)
         {
-
+            SplayNode<T> temp = node.Left;
+            node.Left = temp.Right;
+            temp.Right = node;
+            return temp;
         }
 
-        private void Splay(SplayNode<T> node)
+        private SplayNode<T> Splay(SplayNode<T> node, T key)
         {
+            if(node == null || node.Key.CompareTo(key) == 0)
+            {
+                return node;
+            }
+
+            if (node.Key.CompareTo(key) > 0)
+            {
+                if (node.Left == null)
+                {
+                    return node;
+                }
+
+                // left-left rotation
+                if (node.Left.Key.CompareTo(key) > 0)
+                {
+                    node.Left.Left = Splay(node.Left.Left, key);
+                    node = RotateRight(node);
+                }
+                // left-right rotation
+                else if (node.Left.Key.CompareTo(key) < 0)
+                {
+                    node.Left.Right = Splay(node.Left.Right, key);
+
+                    if (node.Left.Right != null)
+                    {
+                        node.Left = RotateLeft(node.Left);
+                    }
+                }
+                return (node.Left != null ? RotateRight(node) : node);
+            }
+            else
+            {
+                if (node.Right == null)
+                {
+                    return node;
+                }
+                // right-left rotation
+                if (node.Right.Key.CompareTo(key) > 0)
+                {
+                    node.Right.Left = Splay(node.Right.Left, key);
+
+                    if (node.Right.Left != null)
+                    {
+                        node.Right = RotateRight(node.Right);
+                    }
+                }
+                // right-right rotation
+                else if(node.Right.Key.CompareTo(key) < 0)
+                {
+                    node.Right.Right = Splay(node.Right.Right, key);
+                    node = RotateLeft(node);
+                }
+                return (node.Right != null ? RotateLeft(node) : node);
+            }
         }
 
         public void Insert(T key)
@@ -36,9 +96,9 @@ namespace ISU_Medieval_Odyssey
 
         }
 
-        public int Search(T key)
+        public SplayNode<T> Search(T key)
         {
-            return -1;
+            return Splay(root, key);
         }
 
         /// <summary>

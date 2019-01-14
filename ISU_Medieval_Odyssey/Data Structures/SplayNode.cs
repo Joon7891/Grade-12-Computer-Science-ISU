@@ -8,11 +8,11 @@ namespace ISU_Medieval_Odyssey
 {
     class SplayNode<T> where T : IComparable<T>
     {
-        T Key { get; set; }
+        public T Key { get; set; }
 
-        SplayNode<T> Left { get; set; }
-        SplayNode<T> Right { get; set; }
-        SplayNode<T> Parent { get; set; }
+        public SplayNode<T> Left { get; set; }
+        public SplayNode<T> Right { get; set; }
+        public SplayNode<T> Parent { get; set; }
 
         public SplayNode(T key, SplayNode<T> parent)
         {
