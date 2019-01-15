@@ -86,7 +86,7 @@ namespace ISU_Medieval_Odyssey
 
             // Constructing world coordinate variables
             Center = Vector2Int.Zero;
-            CurrentTile = new Vector2(0,0);
+            CurrentTile = Vector2Int.Zero;
             CurrentChunk = Vector2Int.Zero;
 
             // Setting up name and other attributes
@@ -133,8 +133,8 @@ namespace ISU_Medieval_Odyssey
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating current tile and chunk coordinates
-            //CurrentTile = new Vector2(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
-            CurrentChunk = (Vector2Int)CurrentTile / Chunk.SIZE;
+            CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
+            CurrentChunk = CurrentTile / Chunk.SIZE;
 
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
@@ -144,11 +144,6 @@ namespace ISU_Medieval_Odyssey
 
             // Calling subprogram to update hotbar
             UpdateInventory(gameTime);
-
-            foreach(Projectile projectile in projectiles)
-            {
-                projectile.Update(gameTime);
-            }
         }
 
         /// <summary>
@@ -217,7 +212,7 @@ namespace ISU_Medieval_Odyssey
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
                     }
 
-                    projectiles.Add(new Projectile(GetAngle(), 0.02, 0, CurrentTile));
+                    //projectiles.Add(new Projectile(GetAngle(), 0.02, 0, CurrentTile));
                        
                 }
                 currentWeapon = (Weapon)item;
@@ -248,6 +243,12 @@ namespace ISU_Medieval_Odyssey
                     // If there are no more images left to animate, switch to walking graphics, otherwise animate weapon
                     if (imagesToAnimate.Count == 0)
                     {
+                        // Adding arrow if the animation was a shooting animation 
+                        if (currentWeapon is Bow)
+                        {
+                            World.Instance.AddProjectile(new Arrow(Direction, Center));
+                        }
+
                         movementType = MovementType.Walk;
                         currentWeapon = null;
                         frameNumber = 0;
@@ -267,30 +268,24 @@ namespace ISU_Medieval_Odyssey
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {
                     Direction = Direction.Up;
-                    CurrentTile = new Vector2(CurrentTile.X, 
-                                              CurrentTile.Y - Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    nonRoundedLocation.Y -= Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
-                    CurrentTile = new Vector2(CurrentTile.X,
-                                              CurrentTile.Y + Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                    nonRoundedLocation.Y += Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
-                    CurrentTile = new Vector2(CurrentTile.X - Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f,
-                                              CurrentTile.Y);
+                    nonRoundedLocation.X -= Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
-                    CurrentTile = new Vector2(CurrentTile.X + Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f,
-                                              CurrentTile.Y);
+                    nonRoundedLocation.X += Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 
-                nonRoundedLocation = GameScreen.Instance.World.GetUnroundedCoord(CurrentTile);
-
                 // Animating movement frames if weapon is not being used
                 if (imagesToAnimate.Count == 0 && currentWeapon == null)
                 {
@@ -309,7 +304,7 @@ namespace ISU_Medieval_Odyssey
                 frameNumber = 0;
             }
 
-            // Updating player coordinate-related variable
+            // Updating player coordinate-related variables
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
             colisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
@@ -351,11 +346,6 @@ namespace ISU_Medieval_Odyssey
                 hair.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             }
             currentWeapon?.Draw(spriteBatch, rectangle, Direction, frameNumber);
-
-            foreach (Projectile projectile in projectiles)
-            {
-                projectile.Draw(spriteBatch);
-            }
 
             spriteBatch.End();
 

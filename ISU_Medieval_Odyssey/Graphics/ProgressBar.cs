@@ -28,7 +28,11 @@ namespace ISU_Medieval_Odyssey
         public int X
         {
             get => backRectangle.X;
-            set => backRectangle.X = value;
+            set
+            {
+                backRectangle.X = value;
+                progressRectangle.X = backRectangle.X;
+            }
         }
 
         /// <summary>
@@ -37,7 +41,11 @@ namespace ISU_Medieval_Odyssey
         public int Y
         {
             get => backRectangle.Y;
-            set => backRectangle.Y = value;
+            set
+            {
+                backRectangle.Y = value;
+                progressRectangle.Y = backRectangle.Y;
+            }
         }
 
         // Variables required to draw back and progress rectangles

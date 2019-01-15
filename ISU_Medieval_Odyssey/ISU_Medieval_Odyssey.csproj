@@ -115,6 +115,7 @@
     <Compile Include="Items\Weapon\ThrustWeapon\ThrustWeapon.cs" />
     <Compile Include="Items\Weapon\Weapon.cs" />
     <Compile Include="Player\Player.cs" />
+    <Compile Include="Projectiles\Arrow.cs" />
     <Compile Include="Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\GameScreen.cs" />

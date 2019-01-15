@@ -26,7 +26,7 @@ namespace ISU_Medieval_Odyssey
 
         // Armour functionality related data
         protected int defence;
-        protected ProgressBar durabilityBar; // Encalsuated Max and Current durability
+        protected ProgressBar durabilityBar;
 
         // The movement images for this Armour
         protected MovementSpriteSheet movementSpriteSheet;

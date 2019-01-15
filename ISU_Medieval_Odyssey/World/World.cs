@@ -8,14 +8,19 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class World
     {
+        public static World Instance { get; set; }
+
         private TerrainGenerator terrainGenerator;
         private const int LOADED_CHUNK_COUNT = 5;
         private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
+
+        private List<Projectile> projectiles = new List<Projectile>();
 
         public Tile this[int x, int y]
         {
@@ -40,6 +45,8 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[i, j] = new Chunk(chunkPosition, terrainGenerator);
                 }
             }
+
+            Instance = this;
         }
 
         public World(int seed)
@@ -55,6 +62,13 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[i, j] = new Chunk(chunkPosition, terrainGenerator);
                 }
             }
+
+            Instance = this;
+        }
+
+        public void AddProjectile(Projectile projectile)
+        {
+            projectiles.Add(projectile);
         }
 
         public void Update(GameTime gameTime, Vector2Int currentPosition)
@@ -71,6 +85,19 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
             }
+
+            // Updating the projectiles in the world
+            for (int i = 0; i < projectiles.Count; ++i)
+            {
+                projectiles[i].Update(gameTime);
+
+                // Removing projectiles if they are not active
+                if (!projectiles[i].Active)
+                {
+                    projectiles.RemoveAt(i);
+                    --i;
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
@@ -83,6 +110,12 @@ namespace ISU_Medieval_Odyssey
                 {
                     loadedChunks[i, j].Draw(spriteBatch);
                 }
+            }
+
+            // Drawing projectiles
+            for (int i = 0; i < projectiles.Count; ++i)
+            {
+                projectiles[i].Draw(spriteBatch);
             }
 
             spriteBatch.End();
