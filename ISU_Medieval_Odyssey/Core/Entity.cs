@@ -17,7 +17,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// A cartesian intergral vector representing the player's current tile coordinates
         /// </summary>
-        public Vector2 CurrentTile { get; protected set; }
+        public Vector2Int CurrentTile { get; protected set; }
 
         /// <summary>
         /// A cartesian intergral vector representing the player's current chunk coordinates
@@ -71,7 +71,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second
         /// </summary>
-        public int Speed { get; protected set; } = 2;
+        public int Speed { get; protected set; } = 200;
 
         /// <summary>
         /// A modifier that increases the speed at which the <see cref="Entity"/> can attack
