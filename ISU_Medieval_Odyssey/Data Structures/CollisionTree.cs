@@ -24,13 +24,39 @@ namespace ISU_Medieval_Odyssey.Data_Structures
             projectiles = new List<Projectile>();
         }
 
+        private void Fit(Projectile projectile)
+        {
+            double halfWidth = range.X + range.Width / 2.0;
+            double halfHeight = range.Y + range.Height / 2.0;
+                                                                                                                                                                                                                                                                                                                                    
+
+        }
+
         private void Split()
         {
+            int x = range.X;
+            int y = range.Y;
+            int halfWidth = range.Width / 2;
+            int halfHeight = range.Height / 2;
 
+            nodes[1] = new CollisionTree(level + 1, new Rectangle(x, y, halfWidth, halfHeight));
+            nodes[0] = new CollisionTree(level + 1, new Rectangle(x + halfWidth, y, halfWidth, halfHeight));
+            nodes[2] = new CollisionTree(level + 1, new Rectangle(x, y + halfHeight, halfWidth, halfHeight));
+            nodes[3] = new CollisionTree(level + 1, new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight));
         }
 
         public void Clear()
         {
+            projectiles.Clear();
+
+            for(int i = 0; i < nodes.Length; i++)
+            {
+                if (nodes[i] != null)
+                {
+                    nodes[i].Clear();
+                    nodes[i] = null;
+                }
+            }
 
         }
 
