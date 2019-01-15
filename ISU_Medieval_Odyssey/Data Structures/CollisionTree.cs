@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.Data_Structures
+namespace ISU_Medieval_Odyssey
 {
     class CollisionTree
     {
@@ -137,13 +137,14 @@ namespace ISU_Medieval_Odyssey.Data_Structures
 
         private bool CheckCollision(Rectangle x, Rectangle y)
         {
-            throw new NotImplementedException();
+            return (Math.Abs(x.X - y.X) * 2 < (x.Width + y.Width)) &&
+                   (Math.Abs(x.Y - y.Y) * 2 < (x.Height + y.Height));
         }
 
         private List<Projectile> ReturnCollisions(Rectangle hitBox, List<Projectile> collisions)
         {
             int i = Fit(hitBox);
-
+                                                                                                                  
             if(nodes[0] != null && i != 0)
             {
                 nodes[i].ReturnCollisions(hitBox, collisions);
@@ -156,7 +157,7 @@ namespace ISU_Medieval_Odyssey.Data_Structures
 
             return collisions;
         }
-
+                                                                                                                                                   
         public List<Projectile> ReturnCollisions(Rectangle hitBox)
         {
             List<Projectile> collisions = ReturnCollisions(hitBox, new List<Projectile>());
@@ -170,7 +171,6 @@ namespace ISU_Medieval_Odyssey.Data_Structures
             }
 
             return collisions;
-        }
-
-    }
+        }                     
+    }                                                                
 }

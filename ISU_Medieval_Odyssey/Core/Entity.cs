@@ -7,7 +7,6 @@
 
 using Microsoft.Xna.Framework;
 using System;
-using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {

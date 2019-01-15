@@ -1,4 +1,4 @@
-﻿// Author: Joon Song
+﻿// Author: Joon Song, Steven Ung
 // File Name: World.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/20/2018
@@ -21,6 +21,7 @@ namespace ISU_Medieval_Odyssey
         private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
 
         private List<Projectile> projectiles = new List<Projectile>();
+        CollisionTree collisionTree;
 
         public Tile this[int x, int y]
         {
@@ -84,10 +85,16 @@ namespace ISU_Medieval_Odyssey
                         loadedChunks[i, j] = new Chunk(newPos, terrainGenerator);
                     }
                 }
+
+                // recreate new collision tree for new bounds
+                Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
+                                                       Tile.HORIZONTAL_SIZE * Chunk.SIZE * LOADED_CHUNK_COUNT,
+                                                       Tile.VERTICAL_SIZE * Chunk.SIZE * LOADED_CHUNK_COUNT);
+                collisionTree = new CollisionTree(0, loadedRegion);
             }
 
-            // Updating the projectiles in the world
-            for (int i = 0; i < projectiles.Count; ++i)
+            // Updating the projectiles and collision info in the world
+            for (int i = projectiles.Count; i >= 0; i--)
             {
                 projectiles[i].Update(gameTime);
 
@@ -95,10 +102,16 @@ namespace ISU_Medieval_Odyssey
                 if (!projectiles[i].Active)
                 {
                     projectiles.RemoveAt(i);
-                    --i;
                 }
+
+                collisionTree.Update(projectiles);
             }
         }
+
+        public List<Projectile> CheckCollisions(Rectangle rectangle)
+        {
+            return collisionTree.ReturnCollisions(rectangle);
+        } 
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
