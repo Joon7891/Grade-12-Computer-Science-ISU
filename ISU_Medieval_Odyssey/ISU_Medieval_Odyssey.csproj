@@ -47,6 +47,7 @@
     <Compile Include="Core\IO.cs" />
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
+    <Compile Include="Data Structures\SettingsData.cs" />
     <Compile Include="Core\SharedData.cs" />
     <Compile Include="Data Structures\SplayNode.cs" />
     <Compile Include="Data Structures\SplayTree.cs" />

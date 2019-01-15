@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -102,6 +103,9 @@ namespace ISU_Medieval_Odyssey
 
             // TESTING - Use Static constructors Steven plz
             Projectile.Load(Content);
+
+            Console.WriteLine(Assembly.GetExecutingAssembly().CodeBase);
+
         }
 
         /// <summary>

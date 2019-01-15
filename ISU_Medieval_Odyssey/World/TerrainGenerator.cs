@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
         private const long PRIME_SEED = 4294967295;
 
         // HashSet to hold tile noise maps for all tile types
-        private static readonly HashSet<TileNoiseMap> tileNoiseMaps = new HashSet<TileNoiseMap>()
+        private static readonly List<TileNoiseMap> tileNoiseMaps = new List<TileNoiseMap>()
         {
             new TileNoiseMap(0.00f, 0.10f, TileType.DeepWater),
             new TileNoiseMap(0.10f, 0.50f, TileType.Water),

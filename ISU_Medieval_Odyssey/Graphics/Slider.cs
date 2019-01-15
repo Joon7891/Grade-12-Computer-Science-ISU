@@ -31,7 +31,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="backColor">The background color of the <see cref="Slider"/></param>
         /// <param name="valueColor">The value color of the <see cref="Slider"/></param>
         /// <param name="currentValue">The current value of the slider - zero by default</param>
-        public Slider(Rectangle rectangle, Color backColor, Color valueColor, float currentValue = default(float))
+        public Slider(Rectangle rectangle, Color backColor, Color valueColor, float currentValue)
         {
             int circleRadius = rectangle.Height / 2;
             this.rectangle = rectangle;

@@ -86,6 +86,27 @@ namespace ISU_Medieval_Odyssey
         // Various variables needed for function and GUI for keybindings
         private KeyBinding[] keyBindings = new KeyBinding[18];
         private int selectedKeyBinding = -1;
+        private readonly string[] keyBindingsText =
+        {
+            "Up",
+            "Right",
+            "Down",
+            "Left",
+            "Interact",
+            "Pickup",
+            "Inventory",
+            "Pause",
+            "Statistics",
+            "Inventory 1",
+            "Inventory 2",
+            "Inventory 3",
+            "Inventory 4",
+            "Inventory 5",
+            "Inventory 6",
+            "Inventory 7",
+            "Inventory 8",
+            "Inventory 9",
+        };
 
         /// <summary>
         /// The Music volume level
@@ -102,10 +123,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public SettingsScreen()
         {
-            // Tuple to hold IO loaded settings data
-            Tuple<float, float, KeyBinding[]> loadedSettingsData;
-            loadedSettingsData = IO.LoadSettingsData();
-            keyBindings = loadedSettingsData.Item3;
+            // Loading settings data
+            SettingsData settingsData;
+            settingsData = IO.LoadSettingsData();
 
             // Setting up singleton
             Instance = this;
@@ -129,11 +149,17 @@ namespace ISU_Medieval_Odyssey
             // Setting up volume levels graphical interface
             for (byte i = 0; i < volumeSliders.Length; ++i)
             {
-                volumeSliders[i] = new Slider(new Rectangle(200, 200 + 130 * i, 600, 40), Color.White, Color.Black * 0.8f, i == 0 ? loadedSettingsData.Item1 : loadedSettingsData.Item2);
+                volumeSliders[i] = new Slider(new Rectangle(200, 200 + 130 * i, 600, 40), Color.White, Color.Black * 0.8f, i == 0 ? settingsData.MusicVolume : settingsData.SoundEffectVolume);
                 textLocations[2 * i] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString(volumeText[i]).X) / 2, 150 + 130 * i);
                 textLocations[2 * i + 1] = new Vector2(825, 195 + 130 * i);
             }
             textLocations[4] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("KeyBindings").X) / 2, 410);
+
+            // Setting up keybindings
+            for (byte i = 0; i < keyBindings.Length; ++i)
+            {
+                keyBindings[i] = new KeyBinding(settingsData.KeyBindings[i], keyBindingsText[i], new Rectangle(18 + 168 * (i % 6), 510 + 90 * (i / 6), 130, 35));
+            }
         }
         
         /// <summary>
@@ -176,14 +202,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     keyBindings[selectedKeyBinding].Key = KeyboardHelper.SelectedKeyFromSet(KeyBinding.AllowedBindings, KeyBinding.DisallowedBindings);
                     selectedKeyBinding = -1;
-                    IO.UploadSettingsData(MusicVolume, SoundEffectVolume, keyBindings);
                 }
-            }
-
-            // Uploading data off mouse presses - indicates an update
-            if (MouseHelper.NewClick())
-            {
-                IO.UploadSettingsData(MusicVolume, SoundEffectVolume, keyBindings);
             }
 
             // Updating back button
