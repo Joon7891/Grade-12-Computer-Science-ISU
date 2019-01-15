@@ -12,10 +12,9 @@ namespace ISU_Medieval_Odyssey
     {
         private static Dictionary<Direction, Texture2D> images = new Dictionary<Direction, Texture2D>();
         private const int WIDTH = 50;
-        private const int HEIGHT = 8;
-        private const int SPEED = 15;
+        private const int HEIGHT = 5;
+        private const int SPEED = 12;
         private const int MAX_DISTANCE = 10;
-
 
         /// <summary>
         /// Static constructor for <see cref="Arrow"/> object
@@ -28,7 +27,7 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public Arrow(Direction direction, Vector2Int center)
+        public Arrow(Direction direction, Vector2Int center, Entity shooter)
         {
             image = images[direction];
 

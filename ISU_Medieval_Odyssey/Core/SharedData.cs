@@ -1,4 +1,4 @@
-﻿// Author: Joon Song, Steven Ung
+﻿// Author: Joon Song
 // File Name: SharedData.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/17/2018
@@ -24,14 +24,14 @@ namespace ISU_Medieval_Odyssey
         public const int SCREEN_HEIGHT = 800;
 
         /// <summary>
-        /// A vector representing the center of the screen
+        /// A <see cref="Vector2"/> representing the center of the screen
         /// </summary>
-        public static Vector2 ScreenCenter { get; private set; } = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        public static Vector2 ScreenCenter { get; } = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
         /// <summary>
         /// Random number generator
         /// </summary>
-        public static Random RNG { get; private set; } = new Random();
+        public static Random RNG { get; } = new Random();
 
         /// <summary>
         /// Array of information fonts 0-index is smallest, 3-index is largest
@@ -44,7 +44,7 @@ namespace ISU_Medieval_Odyssey
         public static Texture2D WhiteImage { get; private set; }
 
         /// <summary>
-        /// Static constructor to setup various SharedData components
+        /// Static constructor to setup various <see cref="SharedData"/> components
         /// </summary>
         static SharedData()
         {

@@ -1,51 +1,35 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Author: Joon Song, Steven Ung
+// File Name: Entity.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 12/31/2018
+// Modified Date: 12/31/2018
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
     public abstract class Entity
     {
         /// <summary>
-        /// The center of the entity
+        /// The center of this <see cref="Entity"/>
         /// </summary>
         public Vector2Int Center { get; protected set; }
 
         /// <summary>
-        /// A cartesian intergral vector representing the player's current tile coordinates
+        /// A cartesian intergral vector representing this <see cref="Entity"/>'s current tile coordinates
         /// </summary>
         public Vector2Int CurrentTile { get; protected set; }
 
         /// <summary>
-        /// A cartesian intergral vector representing the player's current chunk coordinates
+        /// A cartesian intergral vector representing this <see cref="Entity"/>'s current chunk coordinates
         /// </summary>
-        public Vector2Int CurrentChunk { get; protected set; }
-
-        public Rectangle colisionRectangle;
+        public Vector2Int CurrentChunk => CurrentTile / Chunk.SIZE;
 
         /// <summary>
-        /// The name of the <see cref="Entity"/>
+        /// This <see cref="Entity"/>'s colission rectangle
         /// </summary>
-        public string Name { get; protected set; }
-
-        /// <summary>
-        /// The current level of the <see cref="Entity"/>
-        /// </summary>
-        public byte Level { get; protected set; }
-
-        /// <summary>
-        /// The amount of experience that the <see cref="Entity"/> has
-        /// </summary>
-        public int Experience
-        {
-            get => experienceBar.CurrentValue;
-            set => experienceBar.CurrentValue = Math.Min(experienceBar.MaxValue, value);         //THIS ISN'T RIGHT, should carry onto next level
-        }
-
-        protected NumberBar experienceBar;
+        public Rectangle CollisionRectangle { get; protected set; }
 
         /// <summary>
         /// The health of the <see cref="Entity"/>
@@ -53,17 +37,14 @@ namespace ISU_Medieval_Odyssey
         public int Health
         {
             get => healthBar.CurrentValue;
-            set => healthBar.CurrentValue = Math.Min(healthBar.MaxValue, value);
+            set => healthBar.CurrentValue = Math.Max(Math.Min(healthBar.MaxValue, value), 0);
         }
-
-        public int MaxHealth => healthBar.MaxValue;
+        protected NumberBar healthBar;
 
         /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second
         /// </summary>
         public int Speed { get; protected set; } = 3;
-
-        protected NumberBar healthBar;
 
         /// <summary>
         /// The amount of gold (currency) that the <see cref="Entity"/> has

@@ -5,7 +5,7 @@
 // Modified Date: 12/29/2018
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
-using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -41,7 +41,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The position of this <see cref="Chunk"/> in world/tile-space
         /// </summary>
-        public Vector2Int WorldPosition { get; private set; }
+        public Vector2Int WorldPosition => Position * SIZE;
 
         /// <summary>
         /// Constructor for <see cref="Chunk"/> object
@@ -63,14 +63,23 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing all 32 x 32 tiles in the chunk
-            for (int i = 0; i < SIZE; ++i)
+            foreach (Tile tile in tiles)
             {
-                for (int j = 0; j < SIZE; ++j)
-                {
-                    tiles[i, j].Draw(spriteBatch);
-                }
+                tile.Draw(spriteBatch);
             }
         }
 
+        /// <summary>
+        /// Subprogarm to serialized this <see cref="Chunk"/>
+        /// </summary>
+        /// <returns>The serialized version of this <see cref="Chunk"/></returns>
+        public string Serialize() => JsonConvert.SerializeObject(this);
+
+        /// <summary>
+        /// Subprogram to deserialized a <see cref="Chunk"/>
+        /// </summary>
+        /// <param name="serializedData">The serialized data</param>
+        /// <returns>The deserialized <see cref="Chunk"/></returns>
+        public static Chunk Deserialize(string serializedData) => JsonConvert.DeserializeObject<Chunk>(serializedData);
     }
 }

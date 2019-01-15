@@ -27,7 +27,7 @@ namespace ISU_Medieval_Odyssey
         public Vector2 Center => Position + SharedData.ScreenCenter;
 
         /// <summary>
-        /// The origin of the camera - defualt center of screen
+        /// The origin of the camera - default center of screen
         /// </summary>
         public Vector2 Origin { get; set; }
 
