@@ -1,4 +1,4 @@
-﻿// Author: Joon Song, Steven Ung
+﻿// Author: Joon Song
 // File Name: Tile.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/17/2018
@@ -17,12 +17,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The horizontal size of the <see cref="Tile"/>, in pixels
         /// </summary>
-        public const byte HORIZONTAL_SIZE = 72; //72
+        public const byte HORIZONTAL_SIZE = 72;
 
         /// <summary>
         /// The vertical size of the <see cref="Tile"/>, in pixels
         /// </summary>
-        public const byte VERTICAL_SIZE = 100; //100
+        public const byte VERTICAL_SIZE = 144;
 
         /// <summary>
         /// The horizontal spacing between adjacent <see cref="Tile"/>s
@@ -35,16 +35,16 @@ namespace ISU_Medieval_Odyssey
         public const byte VERTICAL_SPACING = VERTICAL_SIZE / 2;
 
         /// <summary>
-        /// The type of the <see cref="Tile"/>
+        /// The <see cref="TileType"/> of the <see cref="Tile"/>
         /// </summary>
-        public TileType Type { get; set;  }
+        public TileType Type { get; }
 
         /// <summary>
         /// The position of the tile in the world
         /// </summary>
         public Vector2Int WorldPosition { get; }
         
-        // Variables required for drawing tile at appropraite location
+        // Variables required for drawing tile
         public static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
         private Rectangle rectangle;
 
@@ -67,6 +67,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="worldPosition">The world position of the tile</param>
         public Tile(TileType type, Vector2Int worldPosition)
         {
+            // Assigning tile properties
             Type = type;
             WorldPosition = worldPosition;
             rectangle = new Rectangle(HORIZONTAL_SPACING * worldPosition.X, VERTICAL_SPACING * worldPosition.Y, HORIZONTAL_SIZE, VERTICAL_SIZE);

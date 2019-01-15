@@ -31,6 +31,27 @@ namespace ISU_Medieval_Odyssey
         public bool IsMoving => KeyboardHelper.IsAnyKeyDown(SettingsScreen.Instance.Up, 
             SettingsScreen.Instance.Right, SettingsScreen.Instance.Down, SettingsScreen.Instance.Left);
 
+
+        /// <summary>
+        /// The name of the <see cref="Player"/>
+        /// </summary>
+        public string Name { get; protected set; }
+
+        /// <summary>
+        /// The current level of the <see cref="Player"/>
+        /// </summary>
+        public byte Level { get; protected set; }
+
+        /// <summary>
+        /// The amount of experience that the <see cref="Player"/> has
+        /// </summary>
+        public int Experience
+        {
+            get => experienceBar.CurrentValue;
+            set => experienceBar.CurrentValue = Math.Min(experienceBar.MaxValue, value); //TODO: Add logic to level up
+        }
+        protected NumberBar experienceBar;
+
         // Graphics-related data
         private Rectangle rectangle;
         private MovementType movementType = MovementType.Walk;
@@ -81,13 +102,12 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            colisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
+            CollisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             nonRoundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
             Center = Vector2Int.Zero;
             CurrentTile = Vector2Int.Zero;
-            CurrentChunk = Vector2Int.Zero;
 
             // Setting up name and other attributes
             Name = name;
@@ -235,8 +255,8 @@ namespace ISU_Medieval_Odyssey
             {
                 ++animationCounter;
 
-                // Moving onto next frame every 5 updates
-                if (animationCounter % 5 == 0)
+                // Moving onto next frame every 4 updates
+                if (animationCounter == 4)
                 {
                     animationCounter = 0;
 
@@ -246,7 +266,7 @@ namespace ISU_Medieval_Odyssey
                         // Adding arrow if the animation was a shooting animation 
                         if (currentWeapon is Bow)
                         {
-                            World.Instance.AddProjectile(new Arrow(Direction, Center));
+                            World.Instance.AddProjectile(new Arrow(Direction, Center, this));
                         }
 
                         movementType = MovementType.Walk;
