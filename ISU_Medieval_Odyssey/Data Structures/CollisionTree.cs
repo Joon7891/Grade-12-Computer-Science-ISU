@@ -137,7 +137,7 @@ namespace ISU_Medieval_Odyssey.Data_Structures
 
         private bool CheckCollision(Rectangle x, Rectangle y)
         {
-
+            throw new NotImplementedException();
         }
 
         private List<Projectile> ReturnCollisions(Rectangle hitBox, List<Projectile> collisions)
