@@ -59,29 +59,9 @@ namespace ISU_Medieval_Odyssey
         public int MaxHealth => healthBar.MaxValue;
 
         /// <summary>
-        /// A modifier that increases the attack damage of the <see cref="Entity"/>
-        /// </summary>
-        public int Attack { get; protected set; }
-
-        /// <summary>
-        /// A modifier that reduces damage taken by the <see cref="Entity"/>
-        /// </summary>
-        public int Defense { get; protected set; }
-
-        /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second
         /// </summary>
-        public int Speed { get; protected set; } = 200;
-
-        /// <summary>
-        /// A modifier that increases the speed at which the <see cref="Entity"/> can attack
-        /// </summary>
-        public int Dexterity { get; protected set; }
-
-        /// <summary>
-        /// A modifier that increases the speed at which the <see cref="Entity"/> recovers <see cref="Health"/>
-        /// </summary>
-        public int Vitality { get; protected set; }
+        public int Speed { get; protected set; } = 3;
 
         protected NumberBar healthBar;
 

@@ -101,9 +101,6 @@ namespace ISU_Medieval_Odyssey
             screenDictionary.Add(ScreenMode.Game, new GameScreen());
             screenDictionary.Add(ScreenMode.Settings, new SettingsScreen());
 
-            // TESTING - Use Static constructors Steven plz
-            Projectile.Load(Content);
-
             Console.WriteLine(Assembly.GetExecutingAssembly().CodeBase);
 
         }

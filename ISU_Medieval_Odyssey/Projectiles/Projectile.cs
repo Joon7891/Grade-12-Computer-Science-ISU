@@ -9,54 +9,48 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    class Projectile // TODO: MAKE POSITIONING WORK BY TILE, NOT COORD, UNLOADING
+    public abstract class Projectile // TODO: MAKE POSITIONING WORK BY TILE, NOT COORD, UNLOADING
     {
-        readonly double maxDist;
+        /// <summary>
+        /// Whether this <see cref="Projectile"/> is active
+        /// </summary>
+        public bool Active => true;
 
-        // positions of the projectile in tiles
-        protected Vector2 positionInitial;
-        protected Vector2 position;
-        protected Rectangle hitBox;
+        protected Direction direction;
+        protected Vector2 velocity;
 
-        // in degrees 
-        protected double angleFired;
+        private float distanceTraveled = default(float);
+        private float maxDistance;
+        protected Rectangle rectangle;
+        protected Vector2 nonRoundedLocation;
+        protected Texture2D image;
 
-        protected double velocityInitial;
-
-        protected double acceleration;
-
-        protected double timePassed;
-
-        public Projectile(double angleFired, double velocityInitial, double acceleration, Vector2 positionInitial)
-        {
-            this.angleFired = angleFired;
-            this.velocityInitial = velocityInitial;
-            this.acceleration = acceleration;
-            this.positionInitial = positionInitial;
-            this.position = positionInitial;
-            this.timePassed = 0;
-        }
-
+        /// <summary>
+        /// Update subprogram for <see cref="Projectile"/> object
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
-            double deltaTime = gameTime.ElapsedGameTime.Milliseconds;
-            timePassed += deltaTime;
-            position.X = Convert.ToInt32(positionInitial.X + velocityInitial * Math.Cos(angleFired) * timePassed);
-            position.Y = Convert.ToInt32(positionInitial.Y + velocityInitial * Math.Sin(angleFired) * timePassed);
-
-            Vector2Int coordPos = GameScreen.Instance.World.GetCoord(position);
-            hitBox = new Rectangle(coordPos.X, coordPos.Y, 10, 10);
+            if (Active)
+            {
+                distanceTraveled += velocity.Length() * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                nonRoundedLocation += Tile.VERTICAL_SIZE * velocity * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                rectangle.X = (int)(nonRoundedLocation.X + 0.5);
+                rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
+            }
         }
 
+        /// <summary>
+        /// Draw subprogram for <see cref="Projectile"/> object
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(PLACEHOLDER, hitBox, Color.White);
-        }
-
-        static Texture2D PLACEHOLDER;
-        public static void Load(ContentManager content)
-        {
-            PLACEHOLDER = content.Load<Texture2D>("Images/Sprites/aaa");
+            // Drawing projectile if it is active
+            if (Active)
+            {
+                spriteBatch.Draw(image, rectangle, Color.White);
+            }
         }
     }
 }

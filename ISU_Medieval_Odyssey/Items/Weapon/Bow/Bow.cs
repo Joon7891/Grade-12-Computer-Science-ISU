@@ -20,7 +20,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The number of frames in <see cref="Bow"/> weapon's animation
         /// </summary>
-        public const int NUM_FRAMES = 13;
+        public const int NUM_FRAMES = 10;
 
         // Bow & Arrow specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
