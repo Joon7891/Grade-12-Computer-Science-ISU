@@ -1,9 +1,11 @@
 ﻿// Author: Joon Song, Steven Ung
 // File Name: Entity.cs
 // Project Name: ISU_Medieval_Odyssey
-// Creation Date: 12/31/2018
-// Modified Date: 12/31/2018
+// Creation Date: 12/22/2018
+// Modified Date: 01/05/2019
+// Description: Static class to hold shared entity data
 
+using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework;
 

@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// How many chunks away from the player to render
         /// </summary>
-        public const int RENDERDIST = 20; //TODO: move to settings?
+        public const int RENDERDIST = 5; //TODO: move to settings?
 
         Dictionary<Vector2Int, HashSet<Vector2Int>> adjList = new Dictionary<Vector2Int, HashSet<Vector2Int>>();
 
@@ -93,6 +93,7 @@ namespace ISU_Medieval_Odyssey
 
         public void GetBoundary()
         {
+       
 
         }
     }
