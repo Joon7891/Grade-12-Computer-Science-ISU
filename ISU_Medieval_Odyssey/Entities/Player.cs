@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -31,7 +32,6 @@ namespace ISU_Medieval_Odyssey
         public bool IsMoving => KeyboardHelper.IsAnyKeyDown(SettingsScreen.Instance.Up, 
             SettingsScreen.Instance.Right, SettingsScreen.Instance.Down, SettingsScreen.Instance.Left);
 
-
         /// <summary>
         /// The name of the <see cref="Player"/>
         /// </summary>
@@ -48,7 +48,7 @@ namespace ISU_Medieval_Odyssey
         public int Experience
         {
             get => experienceBar.CurrentValue;
-            set => experienceBar.CurrentValue = Math.Min(experienceBar.MaxValue, value); //TODO: Add logic to level up
+            set => SetExperience(value);
         }
         private NumberBar experienceBar;
 
@@ -71,8 +71,7 @@ namespace ISU_Medieval_Odyssey
         private ItemSlot[] hotbarItems = new ItemSlot[9];
         private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
 
-        // List to hold current projectiles that belong to the player, TODO: THERES PROBABLY A BETTER WAY TO DO THIS
-        private List<Projectile> projectiles = new List<Projectile>();
+        private static SoundEffect levelUpSoundEffect;
 
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
@@ -90,8 +89,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Player()
         {
-            // Loading in movement graphics
+            // Loading in various graphics and audio
             movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Player/", "player");
+            levelUpSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/levelUpSoundEffect");
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace ISU_Medieval_Odyssey
             Name = name;
             Level = 1;
             statisticsLocs[0].X = 100 - SharedData.InformationFonts[0].MeasureString(name).X / 2;
-            experienceBar = new NumberBar(new Rectangle(10, 80, 200, 28), 200, 40, Color.White * 0.5f, 
+            experienceBar = new NumberBar(new Rectangle(10, 80, 200, 28), LevelUpRequirement(), 0, Color.White * 0.5f, 
                 Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
             healthBar = new NumberBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
@@ -132,6 +132,10 @@ namespace ISU_Medieval_Odyssey
             hotbarItems[1].Item = new Sword();
             hotbarItems[2].Item = new Bow();
             hotbarItems[3].Item = new HealthPotion();
+            hotbarItems[4].Item = new AttackPotion();
+            hotbarItems[5].Item = new SpeedPotion();
+            hotbarItems[6].Item = new DefensePotion();
+
             armourItems[0].Item = new MetalShoes();
             armourItems[1].Item = new MetalPants();
             armourItems[2].Item = new LeatherBelt();
@@ -162,6 +166,11 @@ namespace ISU_Medieval_Odyssey
 
             // Calling subprogram to update hotbar
             UpdateInventory(gameTime);
+
+            if (MouseHelper.NewClick())
+            {
+                Experience += 1;
+            }
         }
 
         /// <summary>
@@ -196,6 +205,33 @@ namespace ISU_Medieval_Odyssey
                 UseItem(hotbarItems[hotbarSelectionIndex].Item, gameTime);
             }
         }
+
+        /// <summary>
+        /// Subprogram to set the experience amount for this <see cref="Player"/>
+        /// </summary>
+        /// <param name="newExperience">The new experience amount</param>
+        private void SetExperience(int newExperience)
+        {
+            // If new experience does not overflow, set value, otherwise level up player
+            if (newExperience < experienceBar.MaxValue)
+            {
+                experienceBar.CurrentValue = newExperience;
+            }
+            else
+            {
+                ++Level;
+                newExperience -= experienceBar.MaxValue;
+                experienceBar.CurrentValue = newExperience;
+                experienceBar.MaxValue = LevelUpRequirement();
+                levelUpSoundEffect.CreateInstance().Play();
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to determine the level up requirement for the <see cref="Player"/>
+        /// </summary>
+        /// <returns>The level up requirement for the <see cref="Player"/></returns>
+        private int LevelUpRequirement() => 50 + 50 * Level;
 
         /// <summary>
         /// Subprogram to "use" a certain item

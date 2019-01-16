@@ -89,8 +89,6 @@ namespace ISU_Medieval_Odyssey
         public SplayNode<T> Insert(SplayNode<T> root, T key)
         {
             throw new NotImplementedException();
-
-            return null;
         }
 
         public void Delete(T key)

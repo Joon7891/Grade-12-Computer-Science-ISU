@@ -34,6 +34,7 @@ namespace ISU_Medieval_Odyssey
 
 
         private List<Projectile> projectiles = new List<Projectile>();
+        private List<Enemy> enemies = new List<Enemy>();
         CollisionTree collisionTree;
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace ISU_Medieval_Odyssey
                 if (!projectiles[i].Active)
                 {
                     projectiles.RemoveAt(i);
+                    i--;
                 }
 
                 collisionTree.Update(projectiles);

@@ -47,6 +47,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="y">The y-coordinate</param>
         public Vector2Int(int x, int y)
         {
+            // Setting up coordinates
             X = x;
             Y = y;
         }

@@ -25,6 +25,7 @@ namespace ISU_Medieval_Odyssey
         // Bow & Arrow specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private static DirectionalSpriteSheet arrowSpriteSheet;
+        private new static Texture2D iconImage;
 
         /// <summary>
         /// Static constructor for <see cref="Bow"/> object
@@ -36,6 +37,7 @@ namespace ISU_Medieval_Odyssey
             string weaponTypeName = "bow";
             directionalSpriteSheet = new DirectionalSpriteSheet($"{basePath}Bow/", weaponTypeName, NUM_FRAMES);
             arrowSpriteSheet = new DirectionalSpriteSheet($"{basePath}Arrow/", "arrow", NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/bowIcon");
         }
 
         /// <summary>
@@ -43,8 +45,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Bow()
         {
-            // Setting up Bow
+            // Setting up Bow images
             base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
         }
 
         /// <summary>

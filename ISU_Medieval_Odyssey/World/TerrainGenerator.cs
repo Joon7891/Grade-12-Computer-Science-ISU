@@ -12,9 +12,11 @@ namespace ISU_Medieval_Odyssey
         [JsonProperty]
         private FastNoise NoiseEngine { get; }
 
+        /// <summary>
+        /// The seed for this <see cref="TerrainGenerator"/>
+        /// </summary>
         [JsonProperty]
-        private int Seed { get; }
-
+        public int Seed { get; }
         private const long PRIME_SEED = 4294967295;
 
         // HashSet to hold tile noise maps for all tile types
