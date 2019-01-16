@@ -52,5 +52,10 @@ namespace ISU_Medieval_Odyssey
                 spriteBatch.Draw(image, rectangle, Color.White);
             }
         }
+
+        public Rectangle GetRectangle()
+        {
+            return rectangle;
+        }
     }
 }

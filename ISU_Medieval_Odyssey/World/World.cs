@@ -1,9 +1,9 @@
-﻿// Author: Joon Song
+﻿// Author: Joon Song, Steven Ung
 // File Name: World.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/20/2018
-// Modified Date: 12/24/2018
-// Description: Class to hold World object
+// Modified Date: 1/15/2018
+// Description: Class to hold World object / Information about the current map
 
 using System;
 using System.Linq;
@@ -32,7 +32,9 @@ namespace ISU_Medieval_Odyssey
             new Vector2Int(-2, -2)
         };
 
+
         private List<Projectile> projectiles = new List<Projectile>();
+        CollisionTree collisionTree;
 
         /// <summary>
         /// Constructor for <see cref="World"/> object
@@ -71,10 +73,16 @@ namespace ISU_Medieval_Odyssey
                     AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
                     break;
                 }
+
+                // recreate new collision tree for new bounds
+                Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
+                                                       Tile.HORIZONTAL_SIZE * Chunk.SIZE * LOADED_CHUNK_COUNT,
+                                                       Tile.VERTICAL_SIZE * Chunk.SIZE * LOADED_CHUNK_COUNT);
+                collisionTree = new CollisionTree(0, loadedRegion);
             }
 
-            // Updating the projectiles in the world
-            for (int i = 0; i < projectiles.Count; ++i)
+            // Updating the projectiles and collision info in the world
+            for (int i = projectiles.Count; i >= 0; i--)
             {
                 projectiles[i].Update(gameTime);
 
@@ -82,16 +90,22 @@ namespace ISU_Medieval_Odyssey
                 if (!projectiles[i].Active)
                 {
                     projectiles.RemoveAt(i);
-                    --i;
                 }
+
+                collisionTree.Update(projectiles);
             }
         }
+
+        public List<Projectile> CheckCollisions(Rectangle rectangle)
+        {
+            return collisionTree.ReturnCollisions(rectangle);
+        } 
 
         /// <summary>
         /// Subprogram to adjust the loaded chunk
         /// </summary>
         /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
-        public void AdjustLoadedChunks(Vector2Int centerChunk)
+        public void AdjustLoadedChunks(Vector2Int centerChunk)        
         {
             // Vector to hold chunk location
             Vector2Int newChunkLocation;

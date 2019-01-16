@@ -86,9 +86,17 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public void Insert(T key)
+        public SplayNode<T> Insert(SplayNode<T> root, T key)
         {
+            throw new NotImplementedException();
+     
 
+
+
+            if(root == null)
+            {
+                return; 
+            }
         }
 
         public void Delete(T key)

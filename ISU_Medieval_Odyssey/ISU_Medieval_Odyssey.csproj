@@ -89,6 +89,7 @@
     <Compile Include="Items\Potion\HealthPotion.cs" />
     <Compile Include="Items\Potion\Potion.cs" />
     <Compile Include="Items\Weapon\ThrustWeapon\LongSpear.cs" />
+    <Compile Include="NPC\Enemies\Brute.cs" />
     <Compile Include="NPC\Enemies\Enemy.cs" />
     <Compile Include="NPC\NPC.cs" />
     <Compile Include="Player\Camera.cs" />

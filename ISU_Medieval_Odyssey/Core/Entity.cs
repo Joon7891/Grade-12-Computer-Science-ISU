@@ -7,7 +7,6 @@
 
 using Microsoft.Xna.Framework;
 using System;
-using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -22,6 +21,11 @@ namespace ISU_Medieval_Odyssey
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current tile coordinates
         /// </summary>
         public Vector2Int CurrentTile { get; protected set; }
+
+        /// <summary>
+        /// A cartesian vector representing this <see cref="Entity"/>'s exact position
+        /// </summary>
+        protected Vector2 unroundedLocation;
 
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current chunk coordinates
@@ -62,7 +66,7 @@ namespace ISU_Medieval_Odyssey
         public int Gold { get; set; }
 
         /// <summary>
-        /// The current direction of the player
+        /// The current direction the <see cref="Entity"/> is facing
         /// </summary>
         public Direction Direction { get; protected set; }
     }
