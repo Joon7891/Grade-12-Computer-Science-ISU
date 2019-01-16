@@ -264,7 +264,8 @@ namespace ISU_Medieval_Odyssey
             itemInHandRect.Y = (int)(MouseHelper.Location.Y - ItemSlot.SIZE / 2 + 0.5);
 
             // Updating hotbar selection via scroll
-            hotbarSelectionIndex = (hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (ROW_SIZE) + ROW_SIZE;
+            hotbarSelectionIndex -= (MouseHelper.ScrollAmount() + ARMOUR_SIZE);
+            hotbarSelectionIndex = (hotbarSelectionIndex + ROW_SIZE) % ROW_SIZE + ARMOUR_SIZE;
 
             // Using item if user clicks to use it
             if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
@@ -433,6 +434,8 @@ namespace ISU_Medieval_Odyssey
             // Updating player movement if any of the movement keys are down
             if (IsMoving && currentWeapon == null)
             {
+                isInventoryOpen = false;
+
                 // Moving player in appropraite direction given movement keystroke
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {

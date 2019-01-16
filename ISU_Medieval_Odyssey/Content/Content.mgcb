@@ -43764,18 +43764,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/KeyBindingFont.spritefont
 
-#begin Images/Sprites/Projectiles/Arrow/arrowDown.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Sprites/Projectiles/Arrow/arrowDown.png
-
 #begin Images/Sprites/Projectiles/Arrow/arrowLeft.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -43799,18 +43787,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Projectiles/Arrow/arrowRight.png
-
-#begin Images/Sprites/Projectiles/Arrow/arrowUp.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Sprites/Projectiles/Arrow/arrowUp.png
 
 #begin Images/Sprites/semiCircleImage2.png
 /importer:TextureImporter
@@ -44261,4 +44237,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Enemies/Goblin/Up/goblinUp6.png
+
+#begin Images/Sprites/Projectiles/Arrow/arrowUp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Projectiles/Arrow/arrowUp.png
+
+#begin Images/Sprites/Projectiles/Arrow/arrowDown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Projectiles/Arrow/arrowDown.png
 
