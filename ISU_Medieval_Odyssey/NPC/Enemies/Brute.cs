@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey.NPC
         private static byte PIXEL_SIZE = 70;
         //public static byte VERTICAL_PIXEL_SIZE = 100;
 
-        private const double SPEED = 0.8;
+        private const double SPEED = 1.2;
         static Texture2D sprite;
 
         const int AGGRO_RANGE = int.MaxValue;
@@ -47,10 +47,32 @@ namespace ISU_Medieval_Odyssey.NPC
                     Aggro = true;
                 }
             }
-
+            // chase and attack player
             if (Aggro)
             {
-                // chase and attack player
+                int maxMoveX = (int)(Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+                int maxMoveY = (int)(Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+
+                int diffX = CollisionRectangle.X - GameScreen.Instance.Player.Center.X;
+                int diffY = CollisionRectangle.Y - GameScreen.Instance.Player.Center.Y;
+
+                if (diffX > 0)
+                {
+                    Move(Direction.Left, Math.Max(maxMoveX, Math.Abs(diffX)));
+                }
+                else if(0 > diffX)
+                {
+                    Move(Direction.Right, Math.Max(maxMoveX, Math.Abs(diffX)));
+                }
+
+                if(diffY > 0)
+                {
+                    Move(Direction.Down, Math.Max(maxMoveY, Math.Abs(diffY)));
+                }
+                else if(0 > diffY)
+                {
+                    Move(Direction.Up, Math.Max(maxMoveY, Math.Abs(diffY)));
+                }
             }
 
 
