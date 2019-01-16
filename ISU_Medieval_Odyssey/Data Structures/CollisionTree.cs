@@ -77,10 +77,10 @@ namespace ISU_Medieval_Odyssey
         {
             projectiles.Clear();
 
-            foreach(CollisionTree node in nodes)
+            for (int i = 0; i < 4; i++)
             {
-                node.Clear();
-                nodes = null;
+                nodes[i]?.Clear();
+                nodes[i] = null;
             }
         }
 
