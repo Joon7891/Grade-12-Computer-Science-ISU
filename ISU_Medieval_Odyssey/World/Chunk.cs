@@ -32,6 +32,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int WorldPosition => Position * SIZE;
 
+        // The terrain generator for this Chunk
         [JsonProperty]
         private TerrainGenerator TerrainGenerator { get; }
 

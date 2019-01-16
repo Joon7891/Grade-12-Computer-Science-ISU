@@ -31,6 +31,7 @@ namespace ISU_Medieval_Odyssey
         public NumberBar(Rectangle rectangle, int maxValue, int currentValue, Color backColor, Color progressColor, 
             SpriteFont progressFont, Color textColor) : base(rectangle, maxValue, currentValue, backColor, progressColor)
         {
+            // Setting number bar properties
             this.progressFont = progressFont;
             this.textColor = textColor;
         }
