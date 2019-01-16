@@ -83,7 +83,7 @@ namespace ISU_Medieval_Odyssey
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Updating the projectiles and collision info in the world
-            for (int i = 0; i < projectiles.Count ; i--)
+            for (int i = 0; i < projectiles.Count; i--)
             {
                 projectiles[i].Update(gameTime);
 
@@ -158,7 +158,7 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
             // Drawing the various loaded chunks
-            foreach (Chunk chunk in loadedChunks.Values)
+            foreach (Chunk chunk in loadedChunks.Values.OrderBy(chunk => chunk.Position.Y))
             {
                 chunk.Draw(spriteBatch);
             }
