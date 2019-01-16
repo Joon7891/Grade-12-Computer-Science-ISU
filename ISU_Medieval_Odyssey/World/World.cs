@@ -59,6 +59,11 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            Vector2Int initialChunk = new Vector2Int(0, 0);
+            Rectangle loadedRegion = new Rectangle(loadedChunks[initialChunk].WorldPosition.X, loadedChunks[initialChunk].WorldPosition.Y,
+                                                   Tile.HORIZONTAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
+                                                   Tile.VERTICAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+            collisionTree = new CollisionTree(0, loadedRegion);
             // Setting up singleton
             Instance = this;
         }
@@ -83,7 +88,7 @@ namespace ISU_Medieval_Odyssey
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Updating the projectiles and collision info in the world
-            for (int i = 0; i < projectiles.Count; i--)
+            for (int i = projectiles.Count- 1; i >= 0; i--)
             {
                 projectiles[i].Update(gameTime);
 
