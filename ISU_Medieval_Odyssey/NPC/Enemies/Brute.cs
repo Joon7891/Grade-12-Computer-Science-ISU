@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.NPC
+namespace ISU_Medieval_Odyssey
 {
     class Brute : Enemy
     {
@@ -55,7 +55,6 @@ namespace ISU_Medieval_Odyssey.NPC
 
 
             CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
-            CurrentChunk = CurrentTile / Chunk.SIZE;
         }
     }
 }

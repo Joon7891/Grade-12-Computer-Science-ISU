@@ -73,16 +73,17 @@ namespace ISU_Medieval_Odyssey
                     AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
                     break;
                 }
-
-                // recreate new collision tree for new bounds
-                Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
-                                                       Tile.HORIZONTAL_SIZE * Chunk.SIZE * LOADED_CHUNK_COUNT,
-                                                       Tile.VERTICAL_SIZE * Chunk.SIZE * LOADED_CHUNK_COUNT);
-                collisionTree = new CollisionTree(0, loadedRegion);
             }
 
+            // recreate new collision tree for new bounds
+            Vector2Int playerCenter = GameScreen.Instance.Player.CurrentChunk - new Vector2Int(2, 2);
+            Rectangle loadedRegion = new Rectangle(loadedChunks[playerCenter].WorldPosition.X, loadedChunks[playerCenter].WorldPosition.Y,
+                                                   Tile.HORIZONTAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
+                                                   Tile.VERTICAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+            collisionTree = new CollisionTree(0, loadedRegion);
+
             // Updating the projectiles and collision info in the world
-            for (int i = projectiles.Count; i >= 0; i--)
+            for (int i = projectiles.Count - 1; i >= 0; i--)
             {
                 projectiles[i].Update(gameTime);
 
@@ -132,14 +133,14 @@ namespace ISU_Medieval_Odyssey
                     if (!loadedChunks.ContainsKey(newChunkLocation))
                     {
                         // If it exist in file, load it, otherwise construct it
-                        if (IO.ChunkExists(newChunkLocation))
-                        {
-                            loadedChunks.Add(newChunkLocation, IO.LoadChunk(newChunkLocation));
-                        }
-                        else
-                        {
+                        //if (IO.ChunkExists(newChunkLocation))
+                        //{
+                        //    loadedChunks.Add(newChunkLocation, IO.LoadChunk(newChunkLocation));
+                        //}
+                        //else
+                        //{
                             loadedChunks.Add(newChunkLocation, new Chunk(newChunkLocation, terrainGenerator));
-                        }
+                        //}
                     }
                 }
             }

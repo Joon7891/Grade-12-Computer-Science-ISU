@@ -323,8 +323,8 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating player coordinate-related variables
-            rectangle.X = (int)(nonRoundedLocation.X + 0.5);
-            rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
+            rectangle.X = (int)(unroundedLocation.X + 0.5);
+            rectangle.Y = (int)(unroundedLocation.Y + 0.5);
             CollisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
             CollisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
             Center = rectangle.Location.ToVector2Int() + (PIXEL_SIZE >> 1);

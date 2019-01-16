@@ -91,7 +91,6 @@
     <Compile Include="Items\Weapon\ThrustWeapon\LongSpear.cs" />
     <Compile Include="NPC\Enemies\Brute.cs" />
     <Compile Include="NPC\Enemies\Enemy.cs" />
-    <Compile Include="NPC\NPC.cs" />
     <Compile Include="Player\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
     <Compile Include="Items\Armour\Belt\Belt.cs" />
