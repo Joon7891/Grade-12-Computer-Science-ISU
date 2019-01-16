@@ -11,7 +11,7 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class HealthPotion : Potion
     {
-        // HealthPotion image
+        // HealthPotion icon image
         private new static Texture2D iconImage;
 
         // Variables related to health increase of the potion
@@ -24,6 +24,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static HealthPotion()
         {
+            // Importing HealthPotion image
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/healthPotionIcon");
         }
 

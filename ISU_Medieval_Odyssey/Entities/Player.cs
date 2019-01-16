@@ -132,6 +132,10 @@ namespace ISU_Medieval_Odyssey
             hotbarItems[1].Item = new Sword();
             hotbarItems[2].Item = new Bow();
             hotbarItems[3].Item = new HealthPotion();
+            hotbarItems[4].Item = new AttackPotion();
+            hotbarItems[5].Item = new SpeedPotion();
+            hotbarItems[6].Item = new DefensePotion();
+
             armourItems[0].Item = new MetalShoes();
             armourItems[1].Item = new MetalPants();
             armourItems[2].Item = new LeatherBelt();
