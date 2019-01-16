@@ -51,6 +51,22 @@ namespace ISU_Medieval_Odyssey
             set => SetExperience(value);
         }
         private NumberBar experienceBar;
+        private static SoundEffect levelUpSoundEffect;
+
+        /// <summary>
+        /// The speed boost time of <see cref="Player"/>
+        /// </summary>
+        public double SpeedBoostTime { get; set; }
+
+        /// <summary>
+        /// The attack boost time of <see cref="Player"/>
+        /// </summary>
+        public double AttackBoostTime { get; set; }
+
+        /// <summary>
+        /// The defense boost time of <see cref="Player"/>
+        /// </summary>
+        public double DefenseBoostTime { get; set; }
 
         // Graphics-related data
         private Rectangle rectangle;
@@ -71,8 +87,6 @@ namespace ISU_Medieval_Odyssey
         private ItemSlot[] hotbarItems = new ItemSlot[9];
         private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
 
-        private static SoundEffect levelUpSoundEffect;
-
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
         {
@@ -83,6 +97,14 @@ namespace ISU_Medieval_Odyssey
             new Vector2(80, 115),
             new Vector2(64, 170)
         };
+        private readonly Vector2[] boostsTextLocs =
+        {
+            new Vector2(79, 170),
+            new Vector2(27, 200),
+            new Vector2(10, 230),
+            new Vector2(27, 260)
+        };
+        private readonly Vector2 boostTextBuffer = new Vector2(0, 30);
 
         /// <summary>
         /// Static constructor to setup various Player components
@@ -113,7 +135,7 @@ namespace ISU_Medieval_Odyssey
             Level = 1;
             statisticsLocs[0].X = 100 - SharedData.InformationFonts[0].MeasureString(name).X / 2;
             experienceBar = new NumberBar(new Rectangle(10, 80, 200, 28), LevelUpRequirement(), 0, Color.White * 0.5f, 
-                Color.SkyBlue * 0.6f, SharedData.InformationFonts[0], Color.Black);
+                Color.Blue * 0.6f, SharedData.InformationFonts[0], Color.Black);
             healthBar = new NumberBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
 
@@ -142,6 +164,10 @@ namespace ISU_Medieval_Odyssey
             armourItems[3].Item = new MetalTorso();
             armourItems[4].Item = new MetalShoulders();
             armourItems[5].Item = new MetalHelmet();
+
+            Console.WriteLine(SharedData.InformationFonts[1].MeasureString("Attack"));
+            Console.WriteLine(SharedData.InformationFonts[1].MeasureString("Defense"));
+            Console.WriteLine(SharedData.InformationFonts[1].MeasureString("Speed"));
         }
 
         /// <summary>
@@ -164,13 +190,13 @@ namespace ISU_Medieval_Odyssey
             experienceBar.Update();
             healthBar.Update();
 
+            // Updating boost times - if applicable
+            SpeedBoostTime = Math.Max(0, SpeedBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
+            AttackBoostTime = Math.Max(0, AttackBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
+            DefenseBoostTime = Math.Max(0, DefenseBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
+
             // Calling subprogram to update hotbar
             UpdateInventory(gameTime);
-
-            if (MouseHelper.NewClick())
-            {
-                Experience += 1;
-            }
         }
 
         /// <summary>
@@ -322,29 +348,29 @@ namespace ISU_Medieval_Odyssey
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {
                     Direction = Direction.Up;
-                    unroundedLocation.Y -= Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.Y -= (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
-                    unroundedLocation.Y += Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.Y += (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
-                    unroundedLocation.X -= Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.X -= (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
-                    unroundedLocation.X += Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.X += (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
                 }
                 
                 // Animating movement frames if weapon is not being used
                 if (imagesToAnimate.Count == 0 && currentWeapon == null)
                 {
                     ++animationCounter;
-                    if (animationCounter == 3)
+                    if ((animationCounter == 3) || (animationCounter == 2 && SpeedBoostTime > 0))
                     {
                         animationCounter = 0;
                         frameNumber = (frameNumber + 1) % NUM_WALK_FRAMES;
@@ -448,7 +474,7 @@ namespace ISU_Medieval_Odyssey
                     finalDamageAmount = ((Armour)armourItems[i].Item).Defend(finalDamageAmount);
                 }
             }
-            Health -= finalDamageAmount;
+            Health -= (int)(finalDamageAmount * (DefenseBoostTime > 0 ? 1.0f - DefensePotion.BOOST_AMOUNT : 1) + 0.5);
 
             // Removing broken armour
             for (int i = 0; i < armourItems.Length; ++i)
@@ -470,10 +496,25 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.DrawString(SharedData.InformationFonts[1], Name, statisticsLocs[0], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Level {Level}", statisticsLocs[1], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"{Gold} Gold", statisticsLocs[2], Color.White);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], "Experience", statisticsLocs[3], Color.SkyBlue);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], "Experience", statisticsLocs[3], Color.Blue);
             experienceBar.Draw(spriteBatch);
             spriteBatch.DrawString(SharedData.InformationFonts[0], "Health", statisticsLocs[4], Color.Red);
             healthBar.Draw(spriteBatch);
+
+            // Drawing various boosts, if applicable
+            spriteBatch.DrawString(SharedData.InformationFonts[1], "Boosts", boostsTextLocs[0], Color.White);
+            if (AttackBoostTime > 0)
+            {
+                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Attack (+30%): {Math.Round(AttackBoostTime, 2)}s", boostsTextLocs[1], Color.SpringGreen);
+            }
+            if (DefenseBoostTime > 0)
+            {
+                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Defense (+40%): {Math.Round(DefenseBoostTime, 2)}s", boostsTextLocs[2] - (AttackBoostTime > 0 ? 0 : 1) * boostTextBuffer, Color.SpringGreen);
+            }
+            if (SpeedBoostTime > 0)
+            {
+                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Speed (+50%): {Math.Round(SpeedBoostTime, 2)}s", boostsTextLocs[3] - ((AttackBoostTime > 0 ? 0 : 1) + (DefenseBoostTime > 0 ? 0 : 1)) * boostTextBuffer, Color.SpringGreen);
+            }
         }
 
         /// <summary>
