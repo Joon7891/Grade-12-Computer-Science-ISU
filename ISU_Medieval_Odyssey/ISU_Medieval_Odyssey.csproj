@@ -43,7 +43,11 @@
   <ItemGroup>
     <Compile Include="Building\IBuilding.cs" />
     <Compile Include="Building\Shop.cs" />
-    <Compile Include="Core\Entity.cs" />
+    <Compile Include="Entities\Enemies\Goblin.cs" />
+    <Compile Include="Entities\Enemies\Skeleton.cs" />
+    <Compile Include="Entities\Enemies\SmartEnemy.cs" />
+    <Compile Include="Entities\Enemies\Witch.cs" />
+    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Core\IO.cs" />
     <Compile Include="Core\Main.cs" />
     <Compile Include="Core\Program.cs" />
@@ -89,9 +93,9 @@
     <Compile Include="Items\Potion\HealthPotion.cs" />
     <Compile Include="Items\Potion\Potion.cs" />
     <Compile Include="Items\Weapon\ThrustWeapon\LongSpear.cs" />
-    <Compile Include="NPC\Enemies\Brute.cs" />
-    <Compile Include="NPC\Enemies\Enemy.cs" />
-    <Compile Include="Player\Camera.cs" />
+    <Compile Include="Entities\Enemies\BruteEnemy.cs" />
+    <Compile Include="Entities\Enemies\Enemy.cs" />
+    <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
     <Compile Include="Items\Armour\Belt\Belt.cs" />
     <Compile Include="Items\Armour\Belt\LeatherBelt.cs" />
@@ -114,7 +118,7 @@
     <Compile Include="Items\Weapon\ThrustWeapon\Staff.cs" />
     <Compile Include="Items\Weapon\ThrustWeapon\ThrustWeapon.cs" />
     <Compile Include="Items\Weapon\Weapon.cs" />
-    <Compile Include="Player\Player.cs" />
+    <Compile Include="Entities\Player.cs" />
     <Compile Include="Projectiles\Arrow.cs" />
     <Compile Include="Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

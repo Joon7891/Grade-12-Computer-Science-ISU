@@ -19,6 +19,7 @@ namespace ISU_Medieval_Odyssey
     {
         // Various Sword specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private new static Texture2D iconImage;
 
         /// <summary>
         /// Static constructor for <see cref="Sword"/> object
@@ -27,6 +28,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading in various Sword images
             directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Weapon/Slash/Sword/", "sword", NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/swordIcon");
         }
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up sword
             base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
         }
 
         /// <summary>

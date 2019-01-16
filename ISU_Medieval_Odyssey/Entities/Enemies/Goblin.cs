@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISU_Medieval_Odyssey.Entity.Enemies
+namespace ISU_Medieval_Odyssey
 {
-    class Skeleton
+    class Goblin
     {
     }
 }

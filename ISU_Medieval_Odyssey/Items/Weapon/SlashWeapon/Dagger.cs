@@ -16,19 +16,30 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Dagger : SlashWeapon
     {
+        // Dagger specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private new static Texture2D iconImage;
 
+        /// <summary>
+        /// Static constructor for <see cref="Dagger"/> object
+        /// </summary>
         static Dagger()
         {
-            // Temporary strings to help with file paths
+            // Loading in various Dagger graphics
             string basePath = "Images/Sprites/Weapon/Slash/Dagger/";
             string weaponTypeName = "dagger";
             directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/daggerIcon");
         }
 
+        /// <summary>
+        /// Constructor for <see cref="Dagger"/> object
+        /// </summary>
         public Dagger()
         {
+            // Setting up Dagger
             base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
         }
     }
 }

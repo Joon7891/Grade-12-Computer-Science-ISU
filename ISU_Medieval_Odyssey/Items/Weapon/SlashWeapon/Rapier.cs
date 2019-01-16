@@ -12,19 +12,30 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Rapier : SlashWeapon
     {
+        // Rapier specific graphics
         private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private new static Texture2D iconImage;
 
+        /// <summary>
+        /// Static constructor for <see cref="Rapier"/> object
+        /// </summary>
         static Rapier()
         {
-            // Temporary strings to help with file paths
+            // Loading in various Rapier graphics
             string basePath = "Images/Sprites/Weapon/Slash/Rapier/";
             string weaponTypeName = "rapier";
             directionalSpriteSheet = new DirectionalSpriteSheet(basePath, weaponTypeName, NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/rapierIcon");
         }
 
+        /// <summary>
+        /// Constructor for <see cref="Rapier"/> object
+        /// </summary>
         public Rapier()
         {
+            // Setting up Rapier
             base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
         }
 
         /// <summary>
