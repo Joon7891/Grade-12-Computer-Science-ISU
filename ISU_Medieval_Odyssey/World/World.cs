@@ -2,8 +2,8 @@
 // File Name: World.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/20/2018
-// Modified Date: 12/24/2018
-// Description: Class to hold World object
+// Modified Date: 1/15/2018
+// Description: Class to hold World object / Information about the current map
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

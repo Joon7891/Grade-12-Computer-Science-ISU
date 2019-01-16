@@ -61,7 +61,6 @@ namespace ISU_Medieval_Odyssey
         private float rotation;
         private int frameNumber;
         private int animationCounter;
-        private Vector2 nonRoundedLocation;
         private Queue<MovementImageData> imagesToAnimate = new Queue<MovementImageData>();
 
         // Player item related variables
@@ -103,7 +102,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up player rectangle and camera components
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
             CollisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
-            nonRoundedLocation = rectangle.Location.ToVector2();
+            unroundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
             Center = Vector2Int.Zero;
@@ -288,22 +287,22 @@ namespace ISU_Medieval_Odyssey
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {
                     Direction = Direction.Up;
-                    nonRoundedLocation.Y -= Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.Y -= Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
-                    nonRoundedLocation.Y += Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.Y += Tile.VERTICAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
-                    nonRoundedLocation.X -= Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.X -= Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
-                    nonRoundedLocation.X += Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    unroundedLocation.X += Tile.HORIZONTAL_SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 }
                 
                 // Animating movement frames if weapon is not being used
@@ -325,8 +324,8 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating player coordinate-related variables
-            rectangle.X = (int)(nonRoundedLocation.X + 0.5);
-            rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
+            rectangle.X = (int)(unroundedLocation.X + 0.5);
+            rectangle.Y = (int)(unroundedLocation.Y + 0.5);
             colisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
             colisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
             Center = rectangle.Location.ToVector2Int() + (PIXEL_SIZE >> 1);
@@ -453,8 +452,8 @@ namespace ISU_Medieval_Odyssey
             //Vector2 offsetLoc = new Vector2(MouseHelper.Location.X + Center.X,
             //                                MouseHelper.Location.Y + Center.Y);
             //Vector2 mouseTile = GameScreen.Instance.World.GetTile(offsetLoc);
-            double deltaY = MouseHelper.Location.Y - (nonRoundedLocation.Y - GameScreen.Instance.Camera.Position.Y);
-            double deltaX = MouseHelper.Location.X - (nonRoundedLocation.X - GameScreen.Instance.Camera.Position.X);
+            double deltaY = MouseHelper.Location.Y - (unroundedLocation.Y - GameScreen.Instance.Camera.Position.Y);
+            double deltaX = MouseHelper.Location.X - (unroundedLocation.X - GameScreen.Instance.Camera.Position.X);
 
             return Math.Atan2(deltaY, deltaX);
         }
