@@ -16,7 +16,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The value as indiciated by the <see cref="Slider"/> - [0, 1]
         /// </summary>
-        public float Value { get; private set; }
+        public float Value { get; set; }
 
         // Various graphical for drawing the Slider
         private Color backColor;

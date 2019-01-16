@@ -209,6 +209,8 @@ namespace ISU_Medieval_Odyssey
 
             // Calling subprogram to update inventory
             UpdateInventory(gameTime);
+
+            if (MouseHelper.IsLeftDown()) Experience += 1;
         }
 
         /// <summary>
