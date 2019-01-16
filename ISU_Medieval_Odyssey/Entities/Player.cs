@@ -6,6 +6,7 @@
 // Description: Class to hold Player object
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -220,8 +221,28 @@ namespace ISU_Medieval_Odyssey
             if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Inventory))
             {                
                 isInventoryOpen = !isInventoryOpen;
-            }            
-            
+            }
+
+            // Adding item to inventory if there is room and the pick up button is pressed
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && ArrayHelper<ItemSlot>.GetSubArray(inventory, ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null) > 0)
+            {
+                tempSwapItem = World.Instance.RetrieveItem(this);
+
+                if (tempSwapItem != null)
+                {
+                    for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
+                    {
+                        if (inventory[i].Item == null)
+                        {
+                            inventory[i].Item = tempSwapItem;
+                            break;
+                        }
+                    }
+                }
+
+                tempSwapItem = null;
+            }
+
             // Updating hotbar selection if user clicks a hotbar item
             for (int i = ARMOUR_SIZE; i < ARMOUR_SIZE + ROW_SIZE; ++i)
             {

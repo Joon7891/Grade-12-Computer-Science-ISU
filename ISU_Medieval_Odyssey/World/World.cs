@@ -216,5 +216,22 @@ namespace ISU_Medieval_Odyssey
             rectangle.Height = ItemSlot.SIZE;
             liveItems.Add(new LiveItem(item, rectangle));
         }
+
+        public Item RetrieveItem(Player player)
+        {
+            Item retrievedItem = null;
+
+            for (int i = 0; i < liveItems.Count; ++i)
+            {
+                if (player.CollisionRectangle.Intersects(liveItems[i].Rectangle))
+                {
+                    retrievedItem = liveItems[i].Item;
+                    liveItems.RemoveAt(i);
+                    break;
+                }
+            }
+
+            return retrievedItem;
+        }
     }
 }
