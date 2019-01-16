@@ -35,6 +35,8 @@ namespace ISU_Medieval_Odyssey
 
         private List<Projectile> projectiles = new List<Projectile>();
         private List<Enemy> enemies = new List<Enemy>();
+        private List<LiveItem> liveItems = new List<LiveItem>();
+
         CollisionTree collisionTree;
 
         /// <summary>
@@ -97,10 +99,20 @@ namespace ISU_Medieval_Odyssey
                 if (!projectiles[i].Active)
                 {
                     projectiles.RemoveAt(i);
-                    i--;
                 }
 
                 collisionTree.Update(projectiles);
+            }
+
+            // Updating live items
+            for (int i = liveItems.Count - 1; i >= 0; --i)
+            {
+                liveItems[i].Update(gameTime);
+
+                if (!liveItems[i].Live)
+                {
+                    liveItems.RemoveAt(i);
+                }
             }
         }
 
@@ -176,6 +188,12 @@ namespace ISU_Medieval_Odyssey
                 projectiles[i].Draw(spriteBatch);
             }
 
+            // Drawing live items
+            for (int i = 0; i < liveItems.Count; ++i)
+            {
+                liveItems[i].Draw(spriteBatch);
+            }
+
             // Ending spriteBatch
             spriteBatch.End();
         }
@@ -190,5 +208,13 @@ namespace ISU_Medieval_Odyssey
             projectiles.Add(projectile);
         }
 
+        public void AddItem(Item item, Rectangle rectangle)
+        {
+            rectangle.Y = rectangle.Y + (rectangle.Height - ItemSlot.SIZE) / 2;
+            rectangle.X = rectangle.X + (rectangle.Width - ItemSlot.SIZE) / 2;
+            rectangle.Width = ItemSlot.SIZE;
+            rectangle.Height = ItemSlot.SIZE;
+            liveItems.Add(new LiveItem(item, rectangle));
+        }
     }
 }

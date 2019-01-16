@@ -90,6 +90,7 @@
     <Compile Include="Items\Armour\Torso\RobeShirt.cs" />
     <Compile Include="Items\Armour\Torso\Torso.cs" />
     <Compile Include="Items\ItemSlot.cs" />
+    <Compile Include="Items\LiveItem.cs" />
     <Compile Include="Items\Potion\AttackPotion.cs" />
     <Compile Include="Items\Potion\DefensePotion.cs" />
     <Compile Include="Items\Potion\HealthPotion.cs" />

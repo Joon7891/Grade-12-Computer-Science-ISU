@@ -83,12 +83,15 @@ namespace ISU_Medieval_Odyssey
         private int hotbarSelectionIndex = 0;
         private Weapon currentWeapon;
         private Armour hair = new Hair();
-        private ItemSlot[] armourItems = new ItemSlot[6];
-        private ItemSlot[] hotbarItems = new ItemSlot[9];
-        private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
+        private const int ROW_SIZE = 9;
+        private const int ARMOUR_SIZE = 6;
+        private ItemSlot[] inventory = new ItemSlot[ARMOUR_SIZE + 3 * ROW_SIZE];
 
-        private bool isInventorySlot;
-        private int inventoryIndexer;
+
+        //private static Type[] armourTypes = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
+
+        private bool isInventoryOpen;
+        private int itemInHandIndex;
         private Item itemInHand;
         private Item tempSwapItem;
         private Rectangle itemInHandRect = new Rectangle(0, 0, ItemSlot.SIZE, ItemSlot.SIZE);
@@ -148,34 +151,33 @@ namespace ISU_Medieval_Odyssey
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
 
             // Constructing player inventory
-            for (int i = 0; i < hotbarItems.Length; ++i)
+            for (int i = 0; i < ARMOUR_SIZE; ++i)
             {
-                hotbarItems[i] = new ItemSlot((int)(SharedData.SCREEN_WIDTH / 2 - 5 + (i - 4.5) * 70), 700);
+                inventory[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 630 - 70 * i);
             }
-            for (int i = 0; i < armourItems.Length; ++i)
+            for (int i = 0; i < 3; ++i)
             {
-                armourItems[i] = new ItemSlot(SharedData.SCREEN_WIDTH - 70, 630 - 70 * i);
+                for (int j = 0; j < ROW_SIZE; ++j)
+                {
+                    inventory[i * ROW_SIZE + j + ARMOUR_SIZE] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (j - 3.5) * 70), 700 - 70 * i);
+                }
             }
 
             // To Remove Later
-            hotbarItems[0].Item = new LongSpear();
-            hotbarItems[1].Item = new Sword();
-            hotbarItems[2].Item = new Bow();
-            hotbarItems[3].Item = new HealthPotion();
-            hotbarItems[4].Item = new AttackPotion();
-            hotbarItems[5].Item = new SpeedPotion();
-            hotbarItems[6].Item = new DefensePotion();
+            inventory[6].Item = new LongSpear();
+            inventory[7].Item = new Sword();
+            inventory[8].Item = new Bow();
+            inventory[9].Item = new HealthPotion();
+            inventory[10].Item = new AttackPotion();
+            inventory[11].Item = new SpeedPotion();
+            inventory[12].Item = new DefensePotion();
 
-            armourItems[0].Item = new MetalShoes();
-            armourItems[1].Item = new MetalPants();
-            armourItems[2].Item = new LeatherBelt();
-            armourItems[3].Item = new MetalTorso();
-            armourItems[4].Item = new MetalShoulders();
-            armourItems[5].Item = new MetalHelmet();
-
-            Console.WriteLine(SharedData.InformationFonts[1].MeasureString("Attack"));
-            Console.WriteLine(SharedData.InformationFonts[1].MeasureString("Defense"));
-            Console.WriteLine(SharedData.InformationFonts[1].MeasureString("Speed"));
+            inventory[0].Item = new MetalShoes();
+            inventory[1].Item = new MetalPants();
+            inventory[2].Item = new LeatherBelt();
+            inventory[3].Item = new MetalTorso();
+            inventory[4].Item = new MetalShoulders();
+            inventory[5].Item = new MetalHelmet();
         }
 
         /// <summary>
@@ -204,7 +206,7 @@ namespace ISU_Medieval_Odyssey
             AttackBoostTime = Math.Max(0, AttackBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
             DefenseBoostTime = Math.Max(0, DefenseBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
 
-            // Calling subprogram to update hotbar
+            // Calling subprogram to update inventory
             UpdateInventory(gameTime);
         }
 
@@ -214,27 +216,25 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         private void UpdateInventory(GameTime gameTime)
         {
+            // Opening/closing inventory
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Inventory))
+            {                
+                isInventoryOpen = !isInventoryOpen;
+            }            
+            
             // Updating hotbar selection if user clicks a hotbar item
-            for (byte i = 0; i < hotbarItems.Length; ++i)
+            for (int i = ARMOUR_SIZE; i < ARMOUR_SIZE + ROW_SIZE; ++i)
             {
-                if (MouseHelper.IsRectangleClicked(hotbarItems[i].Rectangle) || KeyboardHelper.IsKeyDown(SettingsScreen.Instance.HotbarShortcut[i]))
+                if (MouseHelper.IsRectangleClicked(inventory[i].Rectangle) || KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.HotbarShortcut[i - ARMOUR_SIZE]))
                 {
                     hotbarSelectionIndex = i;
                     return;
                 }
-                else if (MouseHelper.NewRightClick() && CollisionHelper.PointToRect(MouseHelper.Location, hotbarItems[i].Rectangle))
-                {
-                    tempSwapItem = itemInHand;
-                    itemInHand = hotbarItems[i].Item;
-                    hotbarItems[i].Item = tempSwapItem;
-                    isInventorySlot = true;
-                    inventoryIndexer = i;
-                }
 
                 // Removing item if it is no longer valid
-                if (hotbarItems[i].Item != null && !hotbarItems[i].Item.Valid)
+                if (inventory[i].Item != null && !inventory[i].Item.Valid)
                 {
-                    hotbarItems[i].Item = null;
+                    inventory[i].Item = null;
                 }
             }
 
@@ -243,14 +243,63 @@ namespace ISU_Medieval_Odyssey
             itemInHandRect.Y = (int)(MouseHelper.Location.Y - ItemSlot.SIZE / 2 + 0.5);
 
             // Updating hotbar selection via scroll
-            hotbarSelectionIndex = ((hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (hotbarItems.Length) +
-                hotbarItems.Length) % hotbarItems.Length;
+            hotbarSelectionIndex = (hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (ROW_SIZE) + ROW_SIZE;
 
             // Using item if user clicks to use it
-            if (MouseHelper.NewLeftClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
+            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
             {
-                UseItem(hotbarItems[hotbarSelectionIndex].Item, gameTime);
+                UseItem(inventory[hotbarSelectionIndex].Item, gameTime);
+                isInventoryOpen = false;
             }
+
+            // Updating item in hand
+            for (int i = 0; i < ARMOUR_SIZE + ROW_SIZE * (isInventoryOpen ? 3 : 1); ++i)
+            {
+                if (MouseHelper.NewRightClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
+                {
+                    if ((i < ARMOUR_SIZE && (itemInHand == null || ValidArmourFit(i))) || i >= ARMOUR_SIZE)
+                    {
+                        tempSwapItem = inventory[i].Item;
+                        inventory[i].Item = itemInHand;
+                        itemInHand = tempSwapItem;
+                        itemInHandIndex = i;
+                    }
+
+                    return;
+                }
+            }
+
+            if (MouseHelper.NewRightClick() && itemInHand != null)
+            {
+                World.Instance.AddItem(itemInHand, rectangle);
+                itemInHand = null;
+            }
+        }
+
+        private bool ValidArmourFit(int inventoryIndex)
+        {
+            switch (inventoryIndex)
+            {
+                case 0:
+                    return itemInHand is Shoes;
+
+                case 1:
+                    return itemInHand is Pants;
+
+                case 2:
+                    return itemInHand is Belt;
+
+                case 3:
+                    return itemInHand is Torso;
+
+                case 4:
+                    return itemInHand is Shoulders;
+
+                case 5:
+                    return itemInHand is Head;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -311,10 +360,7 @@ namespace ISU_Medieval_Odyssey
                     for (byte i = 0; i < Bow.NUM_FRAMES; ++i)
                     {
                         imagesToAnimate.Enqueue(new MovementImageData(MovementType.Shoot, i));
-                    }
-
-                    //projectiles.Add(new Projectile(GetAngle(), 0.02, 0, CurrentTile));
-                       
+                    }                       
                 }
                 currentWeapon = (Weapon)item;
                 frameNumber = 0;
@@ -335,6 +381,7 @@ namespace ISU_Medieval_Odyssey
             if (imagesToAnimate.Count != 0 || currentWeapon != null)
             {
                 ++animationCounter;
+                isInventoryOpen = false;
 
                 // Moving onto next frame every 4 updates
                 if (animationCounter == 4)
@@ -439,11 +486,11 @@ namespace ISU_Medieval_Odyssey
             // Drawing player and its corresponding armour and weapon in appropraite sprite batch
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
             movementSpriteSheet.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
-            for (int i = 0; i < armourItems.Length; ++i)
+            for (byte i = 0; i < ARMOUR_SIZE; ++i)
             {
-                ((Armour)armourItems[i].Item)?.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
+                ((Armour)inventory[i].Item)?.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             }
-            if (armourItems[5].Item == null)
+            if (inventory[ARMOUR_SIZE - 1].Item == null)
             {
                 hair.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             }
@@ -469,15 +516,9 @@ namespace ISU_Medieval_Odyssey
         private void DrawInventory(SpriteBatch spriteBatch)
         {
             // Drawing the hotbar
-            for (int i = 0; i < hotbarItems.Length; ++i)
+            for (int i = 0; i < ARMOUR_SIZE + (isInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
             {
-                hotbarItems[i].Draw(spriteBatch, i == hotbarSelectionIndex);
-            }
-
-            // Drawing the armour items
-            for (int i = 0; i < armourItems.Length; ++i)
-            {
-                armourItems[i].Draw(spriteBatch);
+                inventory[i].Draw(spriteBatch, i == hotbarSelectionIndex);
             }
 
             // Drawing item in "hand" - if applicable
@@ -492,23 +533,19 @@ namespace ISU_Medieval_Odyssey
         {
             // Calculating final damage amount and inflicting it on user
             int finalDamageAmount = damageAmount;
-            for (int i = 0; i < armourItems.Length; ++i)
+            for (int i = 0; i < ARMOUR_SIZE; ++i)
             {
-                if (armourItems[i].Item != null)
+                if (inventory[i].Item != null)
                 {
-                    finalDamageAmount = ((Armour)armourItems[i].Item).Defend(finalDamageAmount);
+                    finalDamageAmount = ((Armour)inventory[i].Item).Defend(finalDamageAmount);
+
+                    if (((Armour)inventory[i].Item).IsBroken)
+                    {
+                        inventory[i].Item = null;
+                    }
                 }
             }
             Health -= (int)(finalDamageAmount * (DefenseBoostTime > 0 ? 1.0f - DefensePotion.BOOST_AMOUNT : 1) + 0.5);
-
-            // Removing broken armour
-            for (int i = 0; i < armourItems.Length; ++i)
-            {
-                if (armourItems[i].Item != null && ((Armour)armourItems[i].Item).IsBroken)
-                {
-                    armourItems[i].Item = null;
-                }
-            }
         }
 
         /// <summary>
