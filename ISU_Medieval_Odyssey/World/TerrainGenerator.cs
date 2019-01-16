@@ -12,6 +12,9 @@ namespace ISU_Medieval_Odyssey
         [JsonProperty]
         private FastNoise NoiseEngine { get; }
 
+        [JsonProperty]
+        private int Seed { get; }
+
         private const long PRIME_SEED = 4294967295;
 
         // HashSet to hold tile noise maps for all tile types
@@ -47,7 +50,8 @@ namespace ISU_Medieval_Odyssey
             NoiseEngine = new FastNoise();
             NoiseEngine.SetFractalOctaves(12);
             NoiseEngine.SetFractalLacunarity(2);
-            NoiseEngine.SetSeed((int) seed);
+            Seed = (int)seed;
+            NoiseEngine.SetSeed(Seed);
         }
 
         /// <summary>

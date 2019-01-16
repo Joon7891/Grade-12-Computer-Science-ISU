@@ -32,6 +32,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int WorldPosition => Position * SIZE;
 
+        [JsonProperty]
+        private TerrainGenerator TerrainGenerator { get; }
+
         /// <summary>
         /// Constructor for <see cref="Chunk"/> object
         /// </summary>
@@ -42,11 +45,8 @@ namespace ISU_Medieval_Odyssey
             // Assigning position and generating chunks
             Position = position;
             Tiles = new Tile[SIZE, SIZE];
-
-            if (Tiles[0 ,0] == null)
-            {
-                Tiles = terrainGenerator.GenerateChunkTiles(position);
-            }
+            TerrainGenerator = terrainGenerator;
+            Tiles = TerrainGenerator.GenerateChunkTiles(position); 
         }
 
         /// <summary>

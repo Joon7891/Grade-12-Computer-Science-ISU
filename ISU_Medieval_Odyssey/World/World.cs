@@ -83,7 +83,7 @@ namespace ISU_Medieval_Odyssey
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Updating the projectiles and collision info in the world
-            for (int i = projectiles.Count - 1; i >= 0; i--)
+            for (int i = 0; i < projectiles.Count ; i--)
             {
                 projectiles[i].Update(gameTime);
 
@@ -132,15 +132,16 @@ namespace ISU_Medieval_Odyssey
                     // If this chunk isn't loaded, load it
                     if (!loadedChunks.ContainsKey(newChunkLocation))
                     {
-                        // If it exist in file, load it, otherwise construct it
-                        //if (IO.ChunkExists(newChunkLocation))
-                        //{
-                        //    loadedChunks.Add(newChunkLocation, IO.LoadChunk(newChunkLocation));
-                        //}
-                        //else
-                        //{
+                        // If the chunk is in file, load it, otherwise construct it
+                        if (IO.ChunkExists(newChunkLocation))
+                        {
+                            loadedChunks.Add(newChunkLocation, IO.LoadChunk(newChunkLocation));
+                        }
+                        else
+                        {
                             loadedChunks.Add(newChunkLocation, new Chunk(newChunkLocation, terrainGenerator));
-                        //}
+                            IO.SaveChunk(loadedChunks[newChunkLocation]);
+                        }
                     }
                 }
             }
