@@ -181,7 +181,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Determining selected keybinding
-            if (MouseHelper.NewClick())
+            if (MouseHelper.NewLeftClick())
             {
                 selectedKeyBinding = -1;
 

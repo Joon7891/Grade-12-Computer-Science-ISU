@@ -87,6 +87,12 @@ namespace ISU_Medieval_Odyssey
         private ItemSlot[] hotbarItems = new ItemSlot[9];
         private static Type[] armourTypeIndexer = { typeof(Shoes), typeof(Pants), typeof(Belt), typeof(Torso), typeof(Shoulders), typeof(Head) };
 
+        private bool isInventorySlot;
+        private int inventoryIndexer;
+        private Item itemInHand;
+        private Item tempSwapItem;
+        private Rectangle itemInHandRect = new Rectangle(0, 0, ItemSlot.SIZE, ItemSlot.SIZE);
+
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
         {
@@ -216,6 +222,14 @@ namespace ISU_Medieval_Odyssey
                     hotbarSelectionIndex = i;
                     return;
                 }
+                else if (MouseHelper.NewRightClick() && CollisionHelper.PointToRect(MouseHelper.Location, hotbarItems[i].Rectangle))
+                {
+                    tempSwapItem = itemInHand;
+                    itemInHand = hotbarItems[i].Item;
+                    hotbarItems[i].Item = tempSwapItem;
+                    isInventorySlot = true;
+                    inventoryIndexer = i;
+                }
 
                 // Removing item if it is no longer valid
                 if (hotbarItems[i].Item != null && !hotbarItems[i].Item.Valid)
@@ -224,12 +238,16 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            // Update selected item in hand
+            itemInHandRect.X = (int)(MouseHelper.Location.X - ItemSlot.SIZE / 2 + 0.5);
+            itemInHandRect.Y = (int)(MouseHelper.Location.Y - ItemSlot.SIZE / 2 + 0.5);
+
             // Updating hotbar selection via scroll
             hotbarSelectionIndex = ((hotbarSelectionIndex - MouseHelper.ScrollAmount()) % (hotbarItems.Length) +
                 hotbarItems.Length) % hotbarItems.Length;
 
             // Using item if user clicks to use it
-            if (MouseHelper.NewClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
+            if (MouseHelper.NewLeftClick() && hotbarItems[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
             {
                 UseItem(hotbarItems[hotbarSelectionIndex].Item, gameTime);
             }
@@ -461,6 +479,9 @@ namespace ISU_Medieval_Odyssey
             {
                 armourItems[i].Draw(spriteBatch);
             }
+
+            // Drawing item in "hand" - if applicable
+            itemInHand?.DrawIcon(spriteBatch, itemInHandRect);
         }
 
         /// <summary>

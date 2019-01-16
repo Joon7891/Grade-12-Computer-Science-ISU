@@ -5,6 +5,7 @@
 // Modified Date: 12/18/2018
 // Description: Class to hold Item object
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

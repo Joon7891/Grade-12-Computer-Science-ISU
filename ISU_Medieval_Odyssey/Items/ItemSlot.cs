@@ -28,7 +28,7 @@ namespace ISU_Medieval_Odyssey
         public Rectangle Rectangle { get; private set; }
 
         // The item slot related data
-        private const int SIZE = 60;
+        public const int SIZE = 60;
         private static Texture2D itemSlotImage;
 
         /// <summary>

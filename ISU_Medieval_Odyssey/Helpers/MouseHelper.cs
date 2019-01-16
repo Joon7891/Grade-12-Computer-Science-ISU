@@ -19,10 +19,16 @@ namespace ISU_Medieval_Odyssey
     public static class MouseHelper
     {
         /// <summary>
-        /// Subprogram to check if a mouse click was a new one
+        /// Subprogram to check if a left mouse click was a new one
         /// </summary>
-        /// <returns>Whether or whether not a mouse click was a new one</returns>
-        public static bool NewClick() => Main.NewMouse.LeftButton == ButtonState.Pressed && Main.OldMouse.LeftButton != ButtonState.Pressed;
+        /// <returns>Whether a left mouse click was a new one</returns>
+        public static bool NewLeftClick() => Main.NewMouse.LeftButton == ButtonState.Pressed && Main.OldMouse.LeftButton != ButtonState.Pressed;
+
+        /// <summary>
+        /// Subprogram t check if a right mouse click was a new one
+        /// </summary>
+        /// <returns>Whwther a mouse right click was a new one</returns>
+        public static bool NewRightClick() => Main.NewMouse.RightButton == ButtonState.Pressed && Main.OldMouse.RightButton != ButtonState.Pressed;
 
         /// <summary>
         /// Subprogram to check if the left button of the mouse is down
@@ -41,7 +47,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="rectangle">The rectangle to check if clicked</param>
         /// <returns>Whether the rectangle was clicked</returns>
-        public static bool IsRectangleClicked(Rectangle rectangle) => NewClick() && CollisionHelper.PointToRect(Location, rectangle);
+        public static bool IsRectangleClicked(Rectangle rectangle) => NewLeftClick() && CollisionHelper.PointToRect(Location, rectangle);
 
         /// <summary>
         /// Subprogram to check if a rectangle is selected via left mouse button
