@@ -51,8 +51,8 @@ namespace ISU_Medieval_Odyssey
             if (MouseHelper.IsCircleSelected(bufferCircles[0]) || MouseHelper.IsCircleSelected(bufferCircles[1]) || MouseHelper.IsRectangleSelected(rectangle))
             {
                 Value = Math.Max(Math.Min((MouseHelper.Location.X - rectangle.Left) / rectangle.Width, 1.0f), 0.0f);
-                valueCircle.X = (int)(Value * rectangle.Width + 0.5) + rectangle.Left;
             }
+            valueCircle.X = (int)(Value * rectangle.Width + 0.5) + rectangle.Left;
         }
 
         /// <summary>

@@ -16,16 +16,6 @@ namespace ISU_Medieval_Odyssey
     public sealed class KeyBinding
     {
         /// <summary>
-        /// The allowed <see cref="Keys"/> bindings
-        /// </summary>
-        public static HashSet<Keys> AllowedBindings { get; private set; } = new HashSet<Keys>();
-
-        /// <summary>
-        /// The disallowed <see cref="Keys"/> bindings
-        /// </summary>
-        public static HashSet<Keys> DisallowedBindings { get; private set; } = new HashSet<Keys>();
-
-        /// <summary>
         /// The text describing this <see cref="KeyBinding"/>
         /// </summary>
         public string Text { get; }
@@ -48,7 +38,17 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The <see cref="Rectangle"/> assosiated with this <see cref="KeyBinding"/>
         /// </summary>
-        public Rectangle Rectangle { get;  }
+        public Rectangle Rectangle { get; }
+
+        /// <summary>
+        /// The allowed <see cref="Keys"/> bindings
+        /// </summary>
+        public static HashSet<Keys> AllowedBindings { get; private set; } = new HashSet<Keys>();
+
+        /// <summary>
+        /// The disallowed <see cref="Keys"/> bindings
+        /// </summary>
+        public static HashSet<Keys> DisallowedBindings { get; private set; } = new HashSet<Keys>();
 
         // Various variables required for the drawing of the KeyBinding
         private static Dictionary<Keys, Texture2D> keyImages = new Dictionary<Keys, Texture2D>();
@@ -102,6 +102,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="rectangle">The <see cref="Rectangle"/> in which this <see cref="KeyBinding"/> is to be drawn in</param>
         public KeyBinding(Keys key, string text, Rectangle rectangle)
         {
+            // Assigning Keybinding object properties
             Key = key;
             Text = text;
             Rectangle = rectangle;

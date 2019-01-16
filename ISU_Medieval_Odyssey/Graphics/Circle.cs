@@ -20,6 +20,7 @@ namespace ISU_Medieval_Odyssey
             get => center.X;
             set
             {
+                // Making required x-coordinate updates
                 center.X = value;
                 rectangle.X = center.X - Radius;
             }
@@ -33,6 +34,7 @@ namespace ISU_Medieval_Odyssey
             get => center.Y;
             set
             {
+                // Making required y-coordinate updates
                 center.Y = value;
                 rectangle.Y = center.Y - Radius;
             }

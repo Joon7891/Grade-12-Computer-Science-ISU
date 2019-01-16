@@ -126,12 +126,9 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Allows casting from <see cref="Vector2"/> to <see cref="Vector2Int"/>
         /// </summary>
-        /// <param name="vector"> Vector2 to Convert </param>
-        public static explicit operator Vector2Int(Vector2 vector)
-        {
-            return new Vector2Int(Convert.ToInt32(vector.X), Convert.ToInt32(vector.Y));
-        }
-
+        /// <param name="vector">The <see cref="Vector2"/> to convert</param>
+        public static explicit operator Vector2Int(Vector2 vector) => new Vector2Int(Convert.ToInt32(vector.X), Convert.ToInt32(vector.Y));
+        
         /// <summary>
         /// <see cref="Vector2Int"/> division
         /// </summary>

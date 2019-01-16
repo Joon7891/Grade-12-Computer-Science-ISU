@@ -18,20 +18,9 @@ namespace ISU_Medieval_Odyssey
         public const byte SIZE = 16;
 
         /// <summary>
-        /// A 2D array containing the tiles in the chunk
+        /// The <see cref="Tile"/>s in this <see cref="Chunk"/>
         /// </summary>
-        /// <param name="x">The x-coordinate of the tile (relative to the chunk)</param>
-        /// <param name="y">The y-coordinate of the tile (relative to the chunk)</param>
-        /// <returns>The tile at the given cartesian coordinate</returns>
-        public Tile this[int x, int y]
-        {
-            // Getter for tile
-            get => tiles[x, y];
-
-            // Setter for tile
-            set => tiles[x, y] = value;
-        }
-        private Tile[,] tiles;
+        public Tile[,] Tiles { get; private set; }
 
         /// <summary>
         /// The position of this <see cref="Chunk"/> in chunk-space
@@ -52,8 +41,12 @@ namespace ISU_Medieval_Odyssey
         {
             // Assigning position and generating chunks
             Position = position;
-            tiles = new Tile[SIZE, SIZE];
-            tiles = terrainGenerator.GenerateChunkTiles(position);
+            Tiles = new Tile[SIZE, SIZE];
+
+            if (Tiles[0 ,0] == null)
+            {
+                Tiles = terrainGenerator.GenerateChunkTiles(position);
+            }
         }
 
         /// <summary>
@@ -63,7 +56,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing all 32 x 32 tiles in the chunk
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in Tiles)
             {
                 tile.Draw(spriteBatch);
             }

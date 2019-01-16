@@ -26,12 +26,20 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current chunk coordinates
         /// </summary>
-        public Vector2Int CurrentChunk => CurrentTile / Chunk.SIZE;
+        public Vector2Int CurrentChunk
+        { 
+            get
+            {
+                int x = (int)Math.Floor(CurrentTile.X / (float) Chunk.SIZE);
+                int y = (int)Math.Floor(CurrentTile.Y / (float)Chunk.SIZE);
+                return new Vector2Int(x, y);
+            }
+        }
 
         /// <summary>
         /// This <see cref="Entity"/>'s colission rectangle
         /// </summary>
-        public Rectangle CollisionRectangle { get; protected set; }
+        public Rectangle CollisionRectangle; // Fix...
 
         /// <summary>
         /// The health of the <see cref="Entity"/>

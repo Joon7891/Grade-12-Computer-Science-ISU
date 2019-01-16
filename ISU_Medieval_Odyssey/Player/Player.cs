@@ -35,12 +35,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The name of the <see cref="Player"/>
         /// </summary>
-        public string Name { get; protected set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// The current level of the <see cref="Player"/>
         /// </summary>
-        public byte Level { get; protected set; }
+        public byte Level { get; private set; }
 
         /// <summary>
         /// The amount of experience that the <see cref="Player"/> has
@@ -50,7 +50,7 @@ namespace ISU_Medieval_Odyssey
             get => experienceBar.CurrentValue;
             set => experienceBar.CurrentValue = Math.Min(experienceBar.MaxValue, value); //TODO: Add logic to level up
         }
-        protected NumberBar experienceBar;
+        private NumberBar experienceBar;
 
         // Graphics-related data
         private Rectangle rectangle;
@@ -154,7 +154,6 @@ namespace ISU_Medieval_Odyssey
 
             // Updating current tile and chunk coordinates
             CurrentTile = new Vector2Int(Center.X / Tile.HORIZONTAL_SPACING, Center.Y / Tile.VERTICAL_SPACING);
-            CurrentChunk = CurrentTile / Chunk.SIZE;
 
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
@@ -327,8 +326,8 @@ namespace ISU_Medieval_Odyssey
             // Updating player coordinate-related variables
             rectangle.X = (int)(nonRoundedLocation.X + 0.5);
             rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
-            colisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
-            colisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
+            CollisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
+            CollisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
             Center = rectangle.Location.ToVector2Int() + (PIXEL_SIZE >> 1);
         }
 

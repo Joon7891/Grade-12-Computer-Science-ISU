@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class TerrainGenerator
     {
-        // Noise engine and large prime for reseeding
-        private readonly FastNoise noiseEngine;
+        [JsonProperty]
+        private FastNoise NoiseEngine { get; }
+
         private const long PRIME_SEED = 4294967295;
 
         // HashSet to hold tile noise maps for all tile types
@@ -32,22 +34,20 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Constructor for <see cref="TerrainGenerator"/> object
         /// </summary>
-        public TerrainGenerator() : this((int)(DateTime.UtcNow.Ticks * PRIME_SEED) % int.MaxValue)
-        {
-            // Nothing to add as it calls other constructor
-        }
-
-        /// <summary>
-        /// Constructor for <see cref="TerrainGenerator"/> object
-        /// </summary>
         /// <param name="seed">The seed of the <see cref="TerrainGenerator"/></param>
-        public TerrainGenerator(int seed)
+        public TerrainGenerator(int? seed = null)
         {
+            // If seed was not provided, generate new seed
+            if (seed == null)
+            {
+                seed = (int)(DateTime.UtcNow.Ticks * PRIME_SEED) % int.MaxValue;
+            }
+
             // Setting up noise engine and setting seed
-            noiseEngine = new FastNoise();
-            noiseEngine.SetFractalOctaves(12);
-            noiseEngine.SetFractalLacunarity(2);
-            noiseEngine.SetSeed(seed);
+            NoiseEngine = new FastNoise();
+            NoiseEngine.SetFractalOctaves(12);
+            NoiseEngine.SetFractalLacunarity(2);
+            NoiseEngine.SetSeed((int) seed);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     worldPosition.X = chunkPosition.X * Chunk.SIZE + i;
                     worldPosition.Y = chunkPosition.Y * Chunk.SIZE + j;
-                    tiles[i, j] = new Tile(FloatToTileType(1.0f + noiseEngine.GetPerlinFractal(worldPosition.X, worldPosition.Y)), worldPosition);
+                    tiles[i, j] = new Tile(FloatToTileType(1.0f + NoiseEngine.GetPerlinFractal(worldPosition.X, worldPosition.Y)), worldPosition);
                 }
             }
 

@@ -6,10 +6,6 @@
 // Desription: Class to hold Button object
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
@@ -21,6 +17,10 @@ namespace ISU_Medieval_Odyssey
         // Variables button click related fields
         private static SoundEffect clickSoundEffect;
         private static SoundEffect errorSoundEffect;
+
+        /// <summary>
+        /// The procedure to execute on a <see cref="Button"/>'s click
+        /// </summary>
         public delegate void OnClick();
         private OnClick onClick;
 
@@ -39,7 +39,7 @@ namespace ISU_Medieval_Odyssey
         public bool IsMouseHovering => CollisionHelper.PointToRect(Main.NewMouse.Position.ToVector2(), rect);
 
         /// <summary>
-        /// Static constructor to setup Button components
+        /// Static constructor to setup <see cref="Button"/> components
         /// </summary>
         static Button()
         {

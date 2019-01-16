@@ -5,84 +5,71 @@
 // Modified Date: 12/24/2018
 // Description: Class to hold World object
 
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class World
     {
+        /// <summary>
+        /// Static instance of <see cref="World"/> - see singleton
+        /// </summary>
         public static World Instance { get; set; }
 
-        private TerrainGenerator terrainGenerator;
+        // The world's loaded chunks and loaded chunks
+        private readonly TerrainGenerator terrainGenerator;
         private const int LOADED_CHUNK_COUNT = 5;
-        private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
+        private Dictionary<Vector2Int, Chunk> loadedChunks = new Dictionary<Vector2Int, Chunk>();
+        private static Vector2Int[] borderChunkCoordinate =
+        {
+            new Vector2Int(2, 2),
+            new Vector2Int(2, -2),
+            new Vector2Int(-2, 2),
+            new Vector2Int(-2, -2)
+        };
 
         private List<Projectile> projectiles = new List<Projectile>();
 
-        public Tile this[int x, int y]
+        /// <summary>
+        /// Constructor for <see cref="World"/> object
+        /// </summary>
+        /// <param name="seed">The seed of this <see cref="World"/></param>
+        public World(int? seed = null)
         {
-            get
-            {
-                int tileX = x - loadedChunks[0, 0].Position.X * Chunk.SIZE;
-                int tileY = y - loadedChunks[0, 0].Position.Y * Chunk.SIZE;
-                return loadedChunks[tileX / Chunk.SIZE, tileY / Chunk.SIZE][tileX % Chunk.SIZE, tileY % Chunk.SIZE];
-            }
-        }
-
-        public World()
-        {
-            Vector2Int chunkPosition;
-            terrainGenerator = new TerrainGenerator();
-
-            for (int i = 0; i < 5; ++i)
-            {
-                for (int j = 0; j < 5; ++j)
-                {
-                    chunkPosition = new Vector2Int(i, j);
-                    loadedChunks[i, j] = new Chunk(chunkPosition, terrainGenerator);
-                }
-            }
-
-            Instance = this;
-        }
-
-        public World(int seed)
-        {
-            Vector2Int chunkPosition;
+            // Vector to hold the current chunk location
+            Vector2Int chunkLocation;
+            
+            // If seed was not provided, generate new seed
             terrainGenerator = new TerrainGenerator(seed);
 
+            // Generating chunks around world and adding them to file
             for (int i = 0; i < 5; ++i)
             {
                 for (int j = 0; j < 5; ++j)
                 {
-                    chunkPosition = new Vector2Int(i, j);
-                    loadedChunks[i, j] = new Chunk(chunkPosition, terrainGenerator);
+                    chunkLocation = new Vector2Int(i - 2, j - 2);
+                    loadedChunks.Add(chunkLocation, new Chunk(chunkLocation, terrainGenerator));
+                    IO.SaveChunk(loadedChunks[chunkLocation]);
                 }
             }
 
+            // Setting up singleton
             Instance = this;
         }
 
-        public void AddProjectile(Projectile projectile)
-        {
-            projectiles.Add(projectile);
-        }
-
-        public void Update(GameTime gameTime, Vector2Int currentPosition)
+        public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
-            if (currentPosition != loadedChunks[LOADED_CHUNK_COUNT / 2, LOADED_CHUNK_COUNT / 2].Position)
+            foreach (Vector2Int adjustmentVector in borderChunkCoordinate)
             {
-                for (int i = 0; i < LOADED_CHUNK_COUNT; ++i)
+                if (!loadedChunks.ContainsKey(GameScreen.Instance.Player.CurrentChunk + adjustmentVector))
                 {
-                    for (int j = 0; j < LOADED_CHUNK_COUNT; ++j)
-                    {
-                        Vector2Int newPos = currentPosition + new Vector2Int(i - 2, j - 2);
-                        loadedChunks[i, j] = new Chunk(newPos, terrainGenerator);
-                    }
+                    AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
+                    break;
                 }
             }
 
@@ -100,16 +87,64 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        /// <summary>
+        /// Subprogram to adjust the loaded chunk
+        /// </summary>
+        /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
+        public void AdjustLoadedChunks(Vector2Int centerChunk)
+        {
+            // Vector to hold chunk location
+            Vector2Int newChunkLocation;
+            Vector2Int[] currentChunkLocations = loadedChunks.Keys.ToArray();
+            
+            foreach (Vector2Int chunkLocation in currentChunkLocations)
+            {
+                if (!(centerChunk.X - 2 <= chunkLocation.X && chunkLocation.X <= centerChunk.X + 2 &&
+                      centerChunk.Y - 2 <= chunkLocation.Y && chunkLocation.Y <= centerChunk.Y + 2))
+                {
+                    IO.SaveChunk(loadedChunks[chunkLocation]);
+                    loadedChunks.Remove(chunkLocation);
+                }
+            }
+
+            // Iterating through the chunk locations of the chunks that should be loaded
+            for (int x = centerChunk.X - 2; x <= centerChunk.X + 2; ++x)
+            {
+                for (int y = centerChunk.Y - 2; y <= centerChunk.Y + 2; ++y)
+                {
+                    newChunkLocation = new Vector2Int(x, y);
+                   
+                    // If this chunk isn't loaded, load it
+                    if (!loadedChunks.ContainsKey(newChunkLocation))
+                    {
+                        // If it exist in file, load it, otherwise construct it
+                        if (IO.ChunkExists(newChunkLocation))
+                        {
+                            loadedChunks.Add(newChunkLocation, IO.LoadChunk(newChunkLocation));
+                        }
+                        else
+                        {
+                            loadedChunks.Add(newChunkLocation, new Chunk(newChunkLocation, terrainGenerator));
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to 
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="camera"></param>
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
+            // Beginning spritebatch in adjusted camera
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
-            for (byte i = 0; i < 5; ++i)
+            // Drawing the various loaded chunks
+            foreach (Chunk chunk in loadedChunks.Values)
             {
-                for (byte j = 0; j < 5; ++j)
-                {
-                    loadedChunks[i, j].Draw(spriteBatch);
-                }
+                chunk.Draw(spriteBatch);
             }
 
             // Drawing projectiles
@@ -118,23 +153,19 @@ namespace ISU_Medieval_Odyssey
                 projectiles[i].Draw(spriteBatch);
             }
 
+            // Ending spriteBatch
             spriteBatch.End();
         }
 
-        public Vector2 GetTile(Vector2 coordLoc)
+        /// <summary>
+        /// Subprogram to add a projectile into this <see cref="World"/>
+        /// </summary>
+        /// <param name="projectile">The <see cref="Projectile"/> to be added</param>
+        public void AddProjectile(Projectile projectile)
         {
-            return new Vector2(coordLoc.X / Tile.HORIZONTAL_SIZE, coordLoc.Y / Tile.VERTICAL_SIZE);
+            // Adding projectile
+            projectiles.Add(projectile);
         }
 
-        public Vector2 GetUnroundedCoord(Vector2 tileLoc)
-        {
-            return new Vector2(tileLoc.X * Tile.HORIZONTAL_SIZE, tileLoc.Y * Tile.VERTICAL_SIZE);
-        }
-
-        public Vector2Int GetCoord(Vector2 tileLoc)
-        {
-            return new Vector2Int(Convert.ToInt32(tileLoc.X * Tile.HORIZONTAL_SIZE),
-                                  Convert.ToInt32(tileLoc.Y * Tile.VERTICAL_SIZE));
-        }
     }
 }

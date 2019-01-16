@@ -136,7 +136,6 @@
     <Compile Include="World\TileHeightMap.cs" />
     <Compile Include="World\TileType.cs" />
     <Compile Include="World\World.cs" />
-    <Compile Include="World\WorldTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FastNoise">
