@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    class Brute : Enemy
+    public abstract class BruteEnemy : Enemy
     {
         /// <summary>
         /// The size of the brute, in pixels
@@ -16,26 +16,10 @@ namespace ISU_Medieval_Odyssey
         private static byte PIXEL_SIZE = 70;
         //public static byte VERTICAL_PIXEL_SIZE = 100;
 
-        private const double SPEED = 1.2;
-        static Texture2D sprite;
-
-        const int AGGRO_RANGE = int.MaxValue;
-
-        // this should be constructed by the world
-        public Brute(Vector2 location)
-        {
-            unroundedLocation = location;
-
-            // Setting up hitbox
-            CollisionRectangle = new Rectangle((int)location.X, (int)location.Y, PIXEL_SIZE, PIXEL_SIZE);
-
-            // Constructing world coordinate variables
-            Center = Vector2Int.Zero;
-            CurrentTile = Vector2Int.Zero;
-        }
-
         public void Update(GameTime gameTime)
         {
+            
+            
             //if (!Aggro)
             //{
             //    int deltaX = Math.Abs(CollisionRectangle.X - GameScreen.Instance.Player.Center.X);

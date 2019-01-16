@@ -182,6 +182,12 @@ namespace ISU_Medieval_Odyssey
         public override string ToString() => $"({X}, {Y})";
 
         /// <summary>
+        /// The length of this <see cref="Vector2Int"/>
+        /// </summary>
+        /// <returns>The length of the <see cref="Vector2Int"/></returns>
+        public double Length() => Math.Sqrt(X * X + Y * Y);
+
+        /// <summary>
         /// Converts a <see cref="Vector2Int"/> to a <see cref="Vector2"/>
         /// </summary>
         /// <returns>The <see cref="Vector2"/> representation of a <see cref="Vector2Int"/></returns>

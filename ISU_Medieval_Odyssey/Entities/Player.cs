@@ -127,8 +127,10 @@ namespace ISU_Medieval_Odyssey
             unroundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
-            Center = Vector2Int.Zero;
+            center = Vector2Int.Zero;
             CurrentTile = Vector2Int.Zero;
+
+            Enemy a = new Goblin(new Vector2Int(1, 1));
 
             // Setting up name and other attributes
             Name = name;
@@ -189,6 +191,7 @@ namespace ISU_Medieval_Odyssey
             statisticsLocs[2].X = 160 - SharedData.InformationFonts[0].MeasureString($"{Gold} Gold").X / 2;
             experienceBar.Update();
             healthBar.Update();
+            Speed = 3;
 
             // Updating boost times - if applicable
             SpeedBoostTime = Math.Max(0, SpeedBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
@@ -389,7 +392,8 @@ namespace ISU_Medieval_Odyssey
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
             CollisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
             CollisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
-            Center = rectangle.Location.ToVector2Int() + (PIXEL_SIZE >> 1);
+            X = rectangle.X + (PIXEL_SIZE >> 1);
+            Y = rectangle.Y + (PIXEL_SIZE >> 1);
         }
 
         /// <summary>
@@ -515,23 +519,6 @@ namespace ISU_Medieval_Odyssey
             {
                 spriteBatch.DrawString(SharedData.InformationFonts[0], $"Speed (+50%): {Math.Round(SpeedBoostTime, 2)}s", boostsTextLocs[3] - ((AttackBoostTime > 0 ? 0 : 1) + (DefenseBoostTime > 0 ? 0 : 1)) * boostTextBuffer, Color.SpringGreen);
             }
-        }
-
-        /// <summary>
-        /// Calculates angle from player to the mouse
-        /// </summary>
-        /// <returns> An angle in degrees. </returns>
-        private double GetAngle()
-        {
-            //float offsetX = GameScreen.Instance.cameraOffset.X;
-            //float offsetY = GameScreen.Instance.cameraOffset.Y;
-            //Vector2 offsetLoc = new Vector2(MouseHelper.Location.X + Center.X,
-            //                                MouseHelper.Location.Y + Center.Y);
-            //Vector2 mouseTile = GameScreen.Instance.World.GetTile(offsetLoc);
-            double deltaY = MouseHelper.Location.Y - (unroundedLocation.Y - GameScreen.Instance.Camera.Position.Y);
-            double deltaX = MouseHelper.Location.X - (unroundedLocation.X - GameScreen.Instance.Camera.Position.X);
-
-            return Math.Atan2(deltaY, deltaX);
         }
     }
 }

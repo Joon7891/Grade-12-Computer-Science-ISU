@@ -13,9 +13,28 @@ namespace ISU_Medieval_Odyssey
     public abstract class Entity
     {
         /// <summary>
+        /// The x-coordinate of this <see cref="Entity"/>'s center
+        /// </summary>
+        public int X
+        {
+            get => center.X;
+            set => center.X = value;
+        }
+
+        /// <summary>
+        /// The y-coordinate of this <see cref="Entity"/>'s center
+        /// </summary>
+        public int Y
+        {
+            get => center.Y;
+            set => center.Y = value;
+        }
+
+        /// <summary>
         /// The center of this <see cref="Entity"/>
         /// </summary>
-        public Vector2Int Center { get; protected set; }
+        public Vector2Int Center => center;
+        protected Vector2Int center = Vector2Int.Zero;
 
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current tile coordinates
@@ -35,7 +54,8 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// This <see cref="Entity"/>'s colission rectangle
         /// </summary>
-        public Rectangle CollisionRectangle; // Fix...
+        public Rectangle CollisionRectangle;
+        protected Rectangle rectangle;
 
         /// <summary>
         /// The health of the <see cref="Entity"/>
@@ -50,7 +70,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second
         /// </summary>
-        public int Speed { get; protected set; } = 3;
+        public int Speed { get; protected set; }
 
         /// <summary>
         /// The amount of gold (currency) that the <see cref="Entity"/> has
