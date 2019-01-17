@@ -79,7 +79,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The keybindings for quick HotBar access
         /// </summary>
-        public Keys[] HotbarShortcut => ArrayHelper<KeyBinding>.GetSubArray(keyBindings, 9, 9).Select(keyBinding => keyBinding.Key).ToArray();
+        public Keys[] HotbarShortcut => keyBindings.SubArray(9, 9).Select(keyBinding => keyBinding.Key).ToArray();
 
         // Settings screen background components
         private Song backgroundMusic;

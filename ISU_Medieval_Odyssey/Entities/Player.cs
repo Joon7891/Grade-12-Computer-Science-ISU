@@ -220,7 +220,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Adding item to inventory if there is room and the pick up button is pressed
-            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && ArrayHelper<ItemSlot>.GetSubArray(inventory, ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null) > 0)
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null) > 0)
             {
                 tempSwapItem = World.Instance.RetrieveItem(this);
 

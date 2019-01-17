@@ -158,6 +158,8 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        Shop test = new Shop(new Vector2Int(0, 0));
+
         /// <summary>
         /// Subprogram to 
         /// </summary>
@@ -173,6 +175,8 @@ namespace ISU_Medieval_Odyssey
             {
                 chunk.Draw(spriteBatch);
             }
+
+            test.DrawInside(spriteBatch);
 
             // Drawing projectiles
             for (int i = 0; i < projectiles.Count; ++i)

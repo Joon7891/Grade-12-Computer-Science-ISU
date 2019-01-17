@@ -39,9 +39,14 @@ namespace ISU_Medieval_Odyssey
         public Vector2Int WorldPosition { get; }
 
         /// <summary>
-        /// The callback procedure to execute when the player interacts while on this <see cref="Tile"/>
+        /// Whether the <see cref="Tile"/> is obstructed from a <see cref="Entity"/> from the inside of a <see cref="IBuilding"/>
         /// </summary>
-        public delegate void OnInteract(Direction direction);
+        public bool InsideObstructState { get; set; } = false;
+
+        /// <summary>
+        /// Whether the <see cref="Tile"/> is obstructed from a <see cref="Entity"/> from the outside of a <see cref="IBuilding"/>
+        /// </summary>
+        public bool OutsideObstructState { get; set; } = false;
 
         /// <summary>
         /// The <see cref="OnInteract"/> procedure to execute while on this <see cref="Tile"/>
