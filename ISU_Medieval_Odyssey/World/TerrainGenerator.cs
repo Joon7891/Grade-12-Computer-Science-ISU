@@ -20,7 +20,7 @@ namespace ISU_Medieval_Odyssey
         private const long PRIME_SEED = 4294967295;
 
         // HashSet to hold tile noise maps for all tile types
-        private static readonly List<TileNoiseMap> tileNoiseMaps = new List<TileNoiseMap>()
+        private static readonly TileNoiseMap[] tileNoiseMaps = 
         {
             new TileNoiseMap(0.00f, 0.10f, TileType.DeepWater),
             new TileNoiseMap(0.10f, 0.50f, TileType.Water),
@@ -90,11 +90,11 @@ namespace ISU_Medieval_Odyssey
         private TileType FloatToTileType(float noiseHeight)
         {
             // Returning appropraite tile type
-            foreach (TileNoiseMap tileNoiseMap in tileNoiseMaps)
+            for (byte i = 0; i < tileNoiseMaps.Length; ++i)
             {
-                if (tileNoiseMap.NoiseInterval.Contains(noiseHeight))
+                if (tileNoiseMaps[i].NoiseInterval.Contains(noiseHeight))
                 {
-                    return tileNoiseMap.Type;
+                    return tileNoiseMaps[i].Type;
                 }
             }
 

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class DirectionalSpriteSheet
+    public struct DirectionalSpriteSheet
     {
         // The directional, animational images
         private Dictionary<Direction, AnimationSpriteSheet> directionalImages;
@@ -27,7 +27,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading and setting up directional images
             directionalImages = new Dictionary<Direction, AnimationSpriteSheet>();
-            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
             {
                 directionalImages.Add(direction, new AnimationSpriteSheet($"{filePath}/{direction.ToString()}/{spriteName}{direction.ToString()}", numFrames));
             }

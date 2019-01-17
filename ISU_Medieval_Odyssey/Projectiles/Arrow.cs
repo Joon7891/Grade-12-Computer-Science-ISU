@@ -25,7 +25,7 @@ namespace ISU_Medieval_Odyssey
         static Arrow()
         {
             // Importing arrow graphics
-            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            for (Direction direction = Direction.Up; direction <= Direction.Left; ++direction)
             {
                 images.Add(direction, Main.Content.Load<Texture2D>($"Images/Sprites/Projectiles/Arrow/arrow{direction}"));
             }
@@ -45,7 +45,7 @@ namespace ISU_Medieval_Odyssey
             if (direction == Direction.Up || direction == Direction.Down)
             {
                 velocity = new Vector2(0, direction == Direction.Down ? SPEED : -SPEED);
-                rectangle = new Rectangle(shooter.Center.X - HEIGHT / 2, shooter.Center.Y - (direction == Direction.Down ? 0 : WIDTH), HEIGHT, WIDTH);
+                rectangle = new Rectangle(shooter.Center.X - (HEIGHT >> 1), shooter.Center.Y - (direction == Direction.Down ? 0 : WIDTH), HEIGHT, WIDTH);
             }
             else
             {

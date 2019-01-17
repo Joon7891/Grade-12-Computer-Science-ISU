@@ -45,8 +45,6 @@ namespace ISU_Medieval_Odyssey
 
         Shop test;
 
-        private List<Vector2Int> chunksToLoad = new List<Vector2Int>();
-
         /// <summary>
         /// Constructor for <see cref="World"/> object
         /// </summary>
@@ -87,25 +85,16 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
-            if (chunksToLoad.Count == 0)
+            for (byte i = 0; i < borderChunkCoordinate.Length; ++i)
             {
-                foreach (Vector2Int adjustmentVector in borderChunkCoordinate)
+                if (!loadedChunks.ContainsKey(GameScreen.Instance.Player.CurrentChunk + borderChunkCoordinate[i]))
                 {
-                    if (!loadedChunks.ContainsKey(GameScreen.Instance.Player.CurrentChunk + adjustmentVector))
-                    {
-                        AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
-                        break;
-                    }
+                    AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
+                    break;
                 }
             }
-            else
-            {
-                loadedChunks.Add(chunksToLoad[0], GetChunkAt(chunksToLoad[0]));
-                chunksToLoad.RemoveAt(0);
-            }            
-
+       
             // recreate new collision tree for new bounds
-            Vector2Int playerCenter = GameScreen.Instance.Player.CurrentChunk - new Vector2Int(2, 2);
             int minX = loadedChunks.Values.Select(chunk => chunk.Position.X).ToArray().Min();
             int minY = loadedChunks.Values.Select(chunk => chunk.Position.Y).ToArray().Min();
 
@@ -158,12 +147,12 @@ namespace ISU_Medieval_Odyssey
             Vector2Int newChunkLocation;
             Vector2Int[] currentChunkLocations = loadedChunks.Keys.ToArray();
 
-            foreach (Vector2Int chunkLocation in currentChunkLocations)
+            for (int i = 0; i < currentChunkLocations.Length; ++i)
             {
-                if (!(centerChunk.X - 2 <= chunkLocation.X && chunkLocation.X <= centerChunk.X + 2 &&
-                      centerChunk.Y - 2 <= chunkLocation.Y && chunkLocation.Y <= centerChunk.Y + 2))
+                if (!(centerChunk.X - 2 <= currentChunkLocations[i].X && currentChunkLocations[i].X <= centerChunk.X + 2 &&
+                      centerChunk.Y - 2 <= currentChunkLocations[i].Y && currentChunkLocations[i].Y <= centerChunk.Y + 2))
                 {
-                    loadedChunks.Remove(chunkLocation);
+                    loadedChunks.Remove(currentChunkLocations[i]);
                 }
             }
 
@@ -177,7 +166,7 @@ namespace ISU_Medieval_Odyssey
                     // If this chunk isn't loaded, load it
                     if (!loadedChunks.ContainsKey(newChunkLocation))
                     {
-                        chunksToLoad.Add(newChunkLocation);
+                        loadedChunks.Add(newChunkLocation, GetChunkAt(newChunkLocation));
                     }
                 }
             }

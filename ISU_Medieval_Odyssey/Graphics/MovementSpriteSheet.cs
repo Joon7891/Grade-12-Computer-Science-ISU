@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class MovementSpriteSheet
+    public struct MovementSpriteSheet
     {
         private static Dictionary<MovementType, int> movementNumFrames;
         private Dictionary<MovementType, DirectionalSpriteSheet> movementImages;
@@ -29,9 +29,9 @@ namespace ISU_Medieval_Odyssey
         public MovementSpriteSheet(string filePath, string imageName)
         {
             movementImages = new Dictionary<MovementType, DirectionalSpriteSheet>();
-            foreach (MovementType movementType in Enum.GetValues(typeof(MovementType)))
+            for (MovementType movementType = MovementType.Walk; movementType <= MovementType.Thrust; ++movementType)
             {
-                movementImages.Add(movementType, new DirectionalSpriteSheet($"{filePath}/{movementType.ToString()}", 
+                movementImages.Add(movementType, new DirectionalSpriteSheet($"{filePath}/{movementType.ToString()}",
                     $"{imageName}{movementType.ToString()}", movementNumFrames[movementType]));
             }
         }

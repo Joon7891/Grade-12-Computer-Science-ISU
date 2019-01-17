@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class AnimationSpriteSheet
+    public struct AnimationSpriteSheet
     {
         /// <summary>
         /// The number of frames in the <see cref="AnimationSpriteSheet"/>

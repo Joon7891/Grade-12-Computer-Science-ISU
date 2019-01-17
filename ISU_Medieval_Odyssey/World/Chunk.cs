@@ -68,9 +68,12 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing all 32 x 32 tiles in the chunk
-            foreach (Tile tile in tiles)
+            for (byte i = 0; i < tiles.GetLength(0); ++i)
             {
-                tile.Draw(spriteBatch);
+                for (byte j = 0; j < tiles.GetLength(1); ++j)
+                {
+                    tiles[i, j].Draw(spriteBatch);
+                }
             }
         }
 
