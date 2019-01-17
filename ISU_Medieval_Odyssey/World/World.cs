@@ -27,8 +27,8 @@ namespace ISU_Medieval_Odyssey
 
         // The world's loaded chunks and loaded chunks
         private readonly TerrainGenerator terrainGenerator;
-        private const int LOADED_CHUNK_COUNT = 5;
-        private Dictionary<Vector2Int, Chunk> loadedChunks = new Dictionary<Vector2Int, Chunk>();
+        private const int LOADED_CHUNK_COUNT = 3;
+        private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
         private static Vector2Int[] borderChunkCoordinate =
         {
             new Vector2Int(2, 2),
@@ -43,62 +43,44 @@ namespace ISU_Medieval_Odyssey
 
         CollisionTree collisionTree;
 
-        Shop test;
-
         /// <summary>
         /// Constructor for <see cref="World"/> object
         /// </summary>
         /// <param name="seed">The seed of this <see cref="World"/></param>
         public World(int? seed = null)
         {
-            // Vector to hold the current chunk location
-            Vector2Int chunkLocation;
-
             // Creating terrtain generator
             terrainGenerator = new TerrainGenerator(seed);
 
             // Generating chunks around world and adding them to file
-            for (int i = 0; i < 5; ++i)
+            for (int y = 0; y < LOADED_CHUNK_COUNT; ++y)
             {
-                for (int j = 0; j < 5; ++j)
+                for (int x = 0; x < LOADED_CHUNK_COUNT; ++x)
                 {
-                    chunkLocation = new Vector2Int(i - 2, j - 2);
-                    loadedChunks.Add(chunkLocation, new Chunk(chunkLocation, terrainGenerator));
-                    IO.SaveChunk(loadedChunks[chunkLocation]);
+                    loadedChunks[x, y] = new Chunk(x, y, terrainGenerator);
                 }
             }
 
             Vector2Int initialChunk = new Vector2Int(0, 0);
-            Rectangle loadedRegion = new Rectangle(loadedChunks[initialChunk].WorldPosition.X, loadedChunks[initialChunk].WorldPosition.Y,
+            Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
                                                    Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
                                                    Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Setting up singleton
             Instance = this;
-
-            loadedChunks[new Vector2Int(0, 0)][5, 5].OutsideObstructState = true;
-
-            test = new Shop(new Vector2Int(3, 3));
         }
 
         public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
-            for (byte i = 0; i < borderChunkCoordinate.Length; ++i)
+            if (GameScreen.Instance.Player.CurrentChunk != loadedChunks[LOADED_CHUNK_COUNT / 2, LOADED_CHUNK_COUNT / 2].Position)
             {
-                if (!loadedChunks.ContainsKey(GameScreen.Instance.Player.CurrentChunk + borderChunkCoordinate[i]))
-                {
-                    AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
-                    break;
-                }
+                AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
             }
-       
-            // recreate new collision tree for new bounds
-            int minX = loadedChunks.Values.Select(chunk => chunk.Position.X).ToArray().Min();
-            int minY = loadedChunks.Values.Select(chunk => chunk.Position.Y).ToArray().Min();
+            
 
-            Rectangle loadedRegion = new Rectangle(minX, minY,
+            Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].Position.X, loadedChunks[0, 0].Position.Y,
                                                    Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
                                                    Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
             
@@ -107,7 +89,8 @@ namespace ISU_Medieval_Odyssey
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Updating the projectiles and collision info in the world
-            for (int i = projectiles.Count- 1; i >= 0; i--)
+            int projectileCount = projectiles.Count - 1;
+            for (int i = projectileCount; i >= 0; i--)
             {
                 projectiles[i].Update(gameTime);
 
@@ -121,7 +104,8 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating live items
-            for (int i = liveItems.Count - 1; i >= 0; --i)
+            int liveItemsCount = liveItems.Count - 1;
+            for (int i = liveItemsCount; i >= 0; --i)
             {
                 liveItems[i].Update(gameTime);
 
@@ -143,31 +127,12 @@ namespace ISU_Medieval_Odyssey
         /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
         public void AdjustLoadedChunks(Vector2Int centerChunk)        
         {
-            // Vector to hold chunk location
-            Vector2Int newChunkLocation;
-            Vector2Int[] currentChunkLocations = loadedChunks.Keys.ToArray();
-
-            for (int i = 0; i < currentChunkLocations.Length; ++i)
-            {
-                if (!(centerChunk.X - 2 <= currentChunkLocations[i].X && currentChunkLocations[i].X <= centerChunk.X + 2 &&
-                      centerChunk.Y - 2 <= currentChunkLocations[i].Y && currentChunkLocations[i].Y <= centerChunk.Y + 2))
-                {
-                    loadedChunks.Remove(currentChunkLocations[i]);
-                }
-            }
-
             // Iterating through the chunk locations of the chunks that should be loaded
-            for (int x = centerChunk.X - 2; x <= centerChunk.X + 2; ++x)
+            for (int y = 0; y < LOADED_CHUNK_COUNT; ++y)
             {
-                for (int y = centerChunk.Y - 2; y <= centerChunk.Y + 2; ++y)
+                for (int x = 0; x < LOADED_CHUNK_COUNT; ++x)
                 {
-                    newChunkLocation = new Vector2Int(x, y);
-
-                    // If this chunk isn't loaded, load it
-                    if (!loadedChunks.ContainsKey(newChunkLocation))
-                    {
-                        loadedChunks.Add(newChunkLocation, GetChunkAt(newChunkLocation));
-                    }
+                    loadedChunks[x, y] = new Chunk(centerChunk.X + x - 1, centerChunk.Y + y - 1, terrainGenerator);
                 }
             }
         }
@@ -183,12 +148,13 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
             // Drawing the various loaded chunks
-            foreach (Chunk chunk in loadedChunks.Values.OrderBy(chunk => chunk.Position.Y))
+            for (int y = 0; y < LOADED_CHUNK_COUNT; ++y)
             {
-                chunk.Draw(spriteBatch);
+                for (byte x = 0; x < LOADED_CHUNK_COUNT; ++x)
+                {
+                    loadedChunks[x, y].Draw(spriteBatch);
+                }
             }
-
-            test.DrawInside(spriteBatch);
 
             // Drawing projectiles
             for (int i = 0; i < projectiles.Count; ++i)
@@ -208,23 +174,8 @@ namespace ISU_Medieval_Odyssey
 
         public Chunk GetChunkAt(Vector2Int chunkCoordinate)
         {
-            Chunk newChunk;
-
-            if (loadedChunks.ContainsKey(chunkCoordinate))
-            {
-                newChunk = loadedChunks[chunkCoordinate];
-            }
-            else if (IO.ChunkExists(chunkCoordinate))
-            {
-                newChunk = IO.LoadChunk(chunkCoordinate);
-            }
-            else
-            {
-                newChunk = new Chunk(chunkCoordinate, terrainGenerator);
-                IO.SaveChunk(newChunk);
-            }
-
-            return newChunk;
+            Vector2Int relativeCoordinate = chunkCoordinate - loadedChunks[0, 0].Position;
+            return loadedChunks[relativeCoordinate.X, relativeCoordinate.Y];
         }
 
         public Tile GetTileAt(Vector2Int tileCoordinate)
