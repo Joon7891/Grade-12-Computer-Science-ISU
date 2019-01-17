@@ -105,11 +105,7 @@ namespace ISU_Medieval_Odyssey
             backButton.Update(gameTime);
 
             // Updating character buffer counter
-            ++characterBufferCounter;
-            if (characterBufferCounter == CHARACTER_BUFFER_MAX)
-            {
-                characterBufferCounter = 0;
-            }
+            characterBufferCounter = (characterBufferCounter == CHARACTER_BUFFER_MAX) ? 0 : (characterBufferCounter + 1);
         }
 
         /// <summary>

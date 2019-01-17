@@ -33,6 +33,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="currentValue">The current value of the slider - zero by default</param>
         public Slider(Rectangle rectangle, Color backColor, Color valueColor, float currentValue)
         {
+            // Setting up slider graphical interface
             int circleRadius = rectangle.Height / 2;
             this.rectangle = rectangle;
             bufferCircles[0] = new Circle(new Vector2Int(rectangle.Left, rectangle.Y + circleRadius), circleRadius, backColor);
@@ -48,7 +49,7 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating progress value and circle if slider is clicked
-            if (MouseHelper.IsCircleSelected(bufferCircles[0]) || MouseHelper.IsCircleSelected(bufferCircles[1]) || MouseHelper.IsRectangleSelected(rectangle))
+            if (MouseHelper.IsCircleSelected(bufferCircles[0]) || MouseHelper.IsCircleSelected(bufferCircles[1]) || MouseHelper.IsRectangleLeftSelected(rectangle))
             {
                 Value = Math.Max(Math.Min((MouseHelper.Location.X - rectangle.Left) / rectangle.Width, 1.0f), 0.0f);
             }

@@ -5,13 +5,7 @@
 // Modified Date: 09/20/2018
 // Desription: Class to hold various subprograms to help with mouse functionality
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace ISU_Medieval_Odyssey
@@ -43,18 +37,32 @@ namespace ISU_Medieval_Odyssey
         public static bool IsRightDown() => Main.NewMouse.RightButton == ButtonState.Pressed;
 
         /// <summary>
-        /// Subprogram to check if a rectangle is clicked
+        /// Subprogram to check if a <see cref="Rectangle"/> is clicked via left mouse button
         /// </summary>
-        /// <param name="rectangle">The rectangle to check if clicked</param>
-        /// <returns>Whether the rectangle was clicked</returns>
-        public static bool IsRectangleClicked(Rectangle rectangle) => NewLeftClick() && CollisionHelper.PointToRect(Location, rectangle);
+        /// <param name="rectangle">The <see cref="Rectangle"/> to check if clicked via left mouse button</param>
+        /// <returns>Whether the <see cref="Rectangle"/> was clicked</returns>
+        public static bool IsRectangleLeftClicked(Rectangle rectangle) => NewLeftClick() && CollisionHelper.PointToRect(Location, rectangle);
 
         /// <summary>
-        /// Subprogram to check if a rectangle is selected via left mouse button
+        /// Subprogram to check if a <see cref="Rectangle"/> is selected via left mouse button
         /// </summary>
-        /// <param name="rectangle">The rectangle to check if selected</param>
-        /// <returns>Whether the rectangle is selected</returns>
-        public static bool IsRectangleSelected(Rectangle rectangle) => IsLeftDown() && CollisionHelper.PointToRect(Location, rectangle);
+        /// <param name="rectangle">The <see cref="Rectangle"/> to check if selected via left mouse button</param>
+        /// <returns>Whether the <see cref="Rectangle"/> is selected</returns>
+        public static bool IsRectangleLeftSelected(Rectangle rectangle) => IsLeftDown() && CollisionHelper.PointToRect(Location, rectangle);
+
+        /// <summary>
+        /// Subprogram to check if a <see cref="Rectangle"/> is clicked via right mouse button
+        /// </summary>
+        /// <param name="rectangle">The <see cref="Rectangle"/> to check if clicked via right mouse button</param>
+        /// <returns>Whether the <see cref="Rectangle"/> was clicked</returns>
+        public static bool IsRectangleRightClicked(Rectangle rectangle) => NewRightClick() && CollisionHelper.PointToRect(Location, rectangle);
+
+        /// <summary>
+        /// Subprogram to check if a <see cref="Rectangle"/> is selected via right mouse button
+        /// </summary>
+        /// <param name="rectangle">The <see cref="Rectangle"/> to check if selected via right mouse button</param>
+        /// <returns>Whether the <see cref="Rectangle"/> is selected</returns>
+        public static bool IsRectangleRightSelected(Rectangle rectangle) => IsRightDown() && CollisionHelper.PointToRect(Location, rectangle);
 
         /// <summary>
         /// Subprogram to check if a circle is selected via left mouse button

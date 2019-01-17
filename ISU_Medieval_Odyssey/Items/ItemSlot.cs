@@ -36,6 +36,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static ItemSlot()
         {
+            // Importing item slot graphics
             itemSlotImage = Main.Content.Load<Texture2D>("Images/Sprites/itemSlotImage");
         }
 
@@ -70,7 +71,7 @@ namespace ISU_Medieval_Odyssey
         /// <returns>The <see cref="ItemSlot"/>'s <see cref="Item"/></returns>
         public Item RetrieveItem()
         {
-            // Returning item and removing it
+            // Removing item and returning it
             Item item = Item;
             Item = null;
             return item;

@@ -5,8 +5,10 @@
 // Modified Date: 12/29/2018
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
+using System;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Graphics;
+using static ISU_Medieval_Odyssey.Tile;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -15,26 +17,35 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The horizontal/vertical size of the chunk - a chunk will contain 16 x 16 tiles
         /// </summary>
-        public const byte SIZE = 16;
+        public const int SIZE = 16;
+
+        // The tiles in this chunk
+        [JsonProperty]
+        private Tile[,] tiles;
 
         /// <summary>
-        /// The <see cref="Tile"/>s in this <see cref="Chunk"/>
+        /// The tile at the specificed coordinate
         /// </summary>
-        public Tile[,] Tiles { get; private set; }
+        /// <param name="x">The x-coordinate of the tile, relative to this <see cref="Chunk"/></param>
+        /// <param name="y">The y-coordinate of the tile, relative to this <see cref="Chunk"/></param>
+        /// <returns>The <see cref="Tile"/> at the specified coordinate</returns>
+        public Tile this[int x, int y] => tiles[x, y];
 
         /// <summary>
         /// The position of this <see cref="Chunk"/> in chunk-space
         /// </summary>
+        [JsonProperty]
         public Vector2Int Position { get; private set; }
 
         /// <summary>
         /// The position of this <see cref="Chunk"/> in world/tile-space
         /// </summary>
+        [JsonProperty]
         public Vector2Int WorldPosition => Position * SIZE;
 
         // The terrain generator for this Chunk
         [JsonProperty]
-        private TerrainGenerator TerrainGenerator { get; }
+        private TerrainGenerator terrainGenerator;
 
         /// <summary>
         /// Constructor for <see cref="Chunk"/> object
@@ -45,9 +56,9 @@ namespace ISU_Medieval_Odyssey
         {
             // Assigning position and generating chunks
             Position = position;
-            Tiles = new Tile[SIZE, SIZE];
-            TerrainGenerator = terrainGenerator;
-            Tiles = TerrainGenerator.GenerateChunkTiles(position); 
+            tiles = new Tile[SIZE, SIZE];
+            this.terrainGenerator = terrainGenerator;
+            tiles = terrainGenerator.GenerateChunkTiles(position); 
         }
 
         /// <summary>
@@ -57,10 +68,23 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing all 32 x 32 tiles in the chunk
-            foreach (Tile tile in Tiles)
+            foreach (Tile tile in tiles)
             {
                 tile.Draw(spriteBatch);
             }
+        }
+
+        public void SetTileOnInteract(OnInteract onInteract)
+        {
+
+        }
+
+        public static Vector2Int TileToChunkCoordinate(Vector2Int tileCoordinate)
+        {
+            Vector2Int chunkCoordinate = Vector2Int.Zero;
+            chunkCoordinate.X = (int)Math.Floor(tileCoordinate.X / (float)SIZE);
+            chunkCoordinate.Y = (int)Math.Floor(tileCoordinate.Y / (float)SIZE);
+            return chunkCoordinate;
         }
 
         /// <summary>

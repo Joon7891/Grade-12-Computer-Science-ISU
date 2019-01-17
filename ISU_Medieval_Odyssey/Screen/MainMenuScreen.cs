@@ -62,7 +62,7 @@ namespace ISU_Medieval_Odyssey
         }
         
         /// <summary>
-        /// Update subprogram for MainMenuScreen
+        /// Update subprogram for <see cref="MainMenuScreen"/>
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
@@ -81,7 +81,7 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Draw subprogram for MainMenuScreen
+        /// Draw subprogram for <see cref="MainMenuScreen"/>
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
         public void Draw(SpriteBatch spriteBatch)

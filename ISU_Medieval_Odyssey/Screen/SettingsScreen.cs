@@ -207,7 +207,7 @@ namespace ISU_Medieval_Odyssey
 
                 for (byte i = 0; i < keyBindings.Length; ++i)
                 {
-                    if (MouseHelper.IsRectangleClicked(keyBindings[i].Rectangle))
+                    if (MouseHelper.IsRectangleLeftClicked(keyBindings[i].Rectangle))
                     {
                         selectedKeyBinding = i;
                         break;
@@ -225,7 +225,8 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
-            for (int i = 0; i < settingOptionButtons.Length; ++i)
+            // Updating setting option buttons
+            for (byte i = 0; i < settingOptionButtons.Length; ++i)
             {
                 settingOptionButtons[i].Update(gameTime);
             }
@@ -257,12 +258,13 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing keybindings and corresponding graphics
             spriteBatch.DrawString(textFonts[1], "KeyBindings", textLocations[4], Color.White);
-            for (int i = 0; i < keyBindings.Length; ++i)
+            for (byte i = 0; i < keyBindings.Length; ++i)
             {
                 keyBindings[i].Draw(spriteBatch, i == selectedKeyBinding);
             }
 
-            for (int i = 0; i < settingOptionButtons.Length; ++i)
+            // Drawing setting options buttons
+            for (byte i = 0; i < settingOptionButtons.Length; ++i)
             {
                 settingOptionButtons[i].Draw(spriteBatch);
             }

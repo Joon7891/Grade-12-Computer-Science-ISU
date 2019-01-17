@@ -24,50 +24,50 @@ namespace ISU_Medieval_Odyssey
         public Shop(Vector2Int cornerPosition)
         {
             // Loading and setting up various textures for inside the Shop
-            for (byte i = 0; i < groundTiles.GetLength(0); ++i)
-            {
-                for (byte j = 0; j < groundTiles.GetLength(1); ++j)
-                {
-                    groundTiles[i, j] = new Tile((i + j) % 2 == 0 ? TileType.WoodFloorHorizontal : TileType.WoodFloorVertical,
-                        new Vector2Int(cornerPosition.X + i + 1, cornerPosition.Y + j + 1));
-                }
-                wallSprites[i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/shopWall"),
-                    new Rectangle((cornerPosition.X + i + 1) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + 1) * Tile.VERTICAL_SPACING,
-                    Tile.HORIZONTAL_SIZE, Tile.HORIZONTAL_SIZE));
-            }
-            exitTile = new Tile(TileType.WoodFloorVertical, new Vector2Int(cornerPosition.X + 4, cornerPosition.Y + 8));
-            shelfSprite = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/shopShelf"),
-                new Rectangle((cornerPosition.X + 1) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + 1) * Tile.VERTICAL_SPACING + 5,
-                Tile.HORIZONTAL_SIZE * 7, Tile.HORIZONTAL_SIZE));
+            //for (byte i = 0; i < groundTiles.GetLength(0); ++i)
+            //{
+            //    for (byte j = 0; j < groundTiles.GetLength(1); ++j)
+            //    {
+            //        groundTiles[i, j] = new Tile((i + j) % 2 == 0 ? TileType.WoodFloorHorizontal : TileType.WoodFloorVertical,
+            //            new Vector2Int(cornerPosition.X + i + 1, cornerPosition.Y + j + 1));
+            //    }
+            //    wallSprites[i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/shopWall"),
+            //        new Rectangle((cornerPosition.X + i + 1) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + 1) * Tile.VERTICAL_SPACING,
+            //        Tile.HORIZONTAL_SIZE, Tile.HORIZONTAL_SIZE));
+            //}
+            //exitTile = new Tile(TileType.WoodFloorVertical, new Vector2Int(cornerPosition.X + 4, cornerPosition.Y + 8));
+            //shelfSprite = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/shopShelf"),
+            //    new Rectangle((cornerPosition.X + 1) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + 1) * Tile.VERTICAL_SPACING + 5,
+            //    Tile.HORIZONTAL_SIZE * 7, Tile.HORIZONTAL_SIZE));
    
-            // Setting up the inside shop roof
-            for (byte i = 0; i < roofDownSprites.Length; ++i)
-            {
-                roofDownSprites[i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofDown"),
-                    new Rectangle((cornerPosition.X + i + 1) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y) * Tile.VERTICAL_SPACING,
-                    Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
-            }
-            for (byte i = 0; i < roofUpSprites.Length; ++i)
-            {
-                roofUpSprites[i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofUp"),
-                    new Rectangle((cornerPosition.X + 1 + i + (i > 2 ? 1 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + 9) * Tile.VERTICAL_SPACING,
-                    Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
-            }
-            for (byte i = 0; i < roofVerticalSprites.GetLength(1); ++i)
-            {
-                roofVerticalSprites[0, i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofRight"),
-                    new Rectangle((cornerPosition.X + (i == 8 ? 3 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + i + 1) * Tile.VERTICAL_SPACING,
-                    Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
-                roofVerticalSprites[1, i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofLeft"),
-                    new Rectangle((cornerPosition.X + 8 - (i == 8 ? 3 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + i + 1) * Tile.VERTICAL_SPACING,
-                    Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
-            }
-            for (byte i = 0; i < roofCornerSprites.Length; ++i)
-            {
-                roofCornerSprites[i] = new Sprite(Main.Content.Load<Texture2D>($"Images/Sprites/Buildings/Shop/indoorShopRoofCorner{i + 1}"),
-                    new Rectangle((cornerPosition.X + (i > 1 ? 8 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + i % 2 == 1 ? 9 : 0) * Tile.VERTICAL_SPACING,
-                    Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
-            }
+            //// Setting up the inside shop roof
+            //for (byte i = 0; i < roofDownSprites.Length; ++i)
+            //{
+            //    roofDownSprites[i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofDown"),
+            //        new Rectangle((cornerPosition.X + i + 1) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y) * Tile.VERTICAL_SPACING,
+            //        Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
+            //}
+            //for (byte i = 0; i < roofUpSprites.Length; ++i)
+            //{
+            //    roofUpSprites[i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofUp"),
+            //        new Rectangle((cornerPosition.X + 1 + i + (i > 2 ? 1 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + 9) * Tile.VERTICAL_SPACING,
+            //        Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
+            //}
+            //for (byte i = 0; i < roofVerticalSprites.GetLength(1); ++i)
+            //{
+            //    roofVerticalSprites[0, i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofRight"),
+            //        new Rectangle((cornerPosition.X + (i == 8 ? 3 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + i + 1) * Tile.VERTICAL_SPACING,
+            //        Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
+            //    roofVerticalSprites[1, i] = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/Buildings/Shop/indoorShopRoofLeft"),
+            //        new Rectangle((cornerPosition.X + 8 - (i == 8 ? 3 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + i + 1) * Tile.VERTICAL_SPACING,
+            //        Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
+            //}
+            //for (byte i = 0; i < roofCornerSprites.Length; ++i)
+            //{
+            //    roofCornerSprites[i] = new Sprite(Main.Content.Load<Texture2D>($"Images/Sprites/Buildings/Shop/indoorShopRoofCorner{i + 1}"),
+            //        new Rectangle((cornerPosition.X + (i > 1 ? 8 : 0)) * Tile.HORIZONTAL_SIZE, (cornerPosition.Y + i % 2 == 1 ? 9 : 0) * Tile.VERTICAL_SPACING,
+            //        Tile.HORIZONTAL_SIZE, Tile.VERTICAL_SPACING));
+            //}
         }
 
         public void DrawInside(SpriteBatch spriteBatch)

@@ -30,7 +30,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Subprogram to deserialized and load a <see cref="Chunk"/>
         /// </summary>
-        /// <param name="chunkCoordinate"></param>
+        /// <param name="chunkCoordinate">The chunk coordinate of the <see cref="Chunk"/> to load</param>
         /// <returns>The loaded chunk</returns>
         public static Chunk LoadChunk(Vector2Int chunkCoordinate)
         {
@@ -48,7 +48,7 @@ namespace ISU_Medieval_Odyssey
             }
             catch (Exception exception)
             {
-                // Informing user of exception
+                // Catching and informing user of exception
                 Console.WriteLine(exception.Message);
             }
 
@@ -78,7 +78,7 @@ namespace ISU_Medieval_Odyssey
             }
             catch (Exception exception)
             {
-                // Informing user of exception
+                // Catching and informing user of exception
                 Console.WriteLine(exception.Message);
             }
 
@@ -106,7 +106,7 @@ namespace ISU_Medieval_Odyssey
             }
             catch (Exception exception)
             {
-                // Informing user of exception and closing file
+                // Catching and informing user of exception
                 Console.WriteLine(exception.Message);
             }
 
@@ -130,16 +130,14 @@ namespace ISU_Medieval_Odyssey
             // Try-Catch block for file writing
             try
             {
-                // Creating file
+                // Creating file and serializing data to file
                 outFile = File.CreateText(SETTINGS_PATH);
-
-                // Serializing data and writing it to file
                 serializedData = settings.Serialize();
                 outFile.WriteLine(serializedData);
             }
             catch (Exception exception)
             {
-                // Informing user of exception
+                // Catching and informing user of exception
                 Console.WriteLine(exception.Message);
             }
 

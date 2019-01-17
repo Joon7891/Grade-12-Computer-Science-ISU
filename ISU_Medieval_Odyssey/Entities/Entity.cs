@@ -42,20 +42,14 @@ namespace ISU_Medieval_Odyssey
         public Vector2Int CurrentTile { get; protected set; }
 
         /// <summary>
-        /// A cartesian vector representing this <see cref="Entity"/>'s exact position
-        /// </summary>
-        protected Vector2 unroundedLocation;
-
-        /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current chunk coordinates
         /// </summary>
-        public Vector2Int CurrentChunk => new Vector2Int((int)Math.Floor(CurrentTile.X / (float)Chunk.SIZE), (int)Math.Floor(CurrentTile.Y / (float)Chunk.SIZE));
+        public Vector2Int CurrentChunk => Chunk.TileToChunkCoordinate(CurrentTile);
 
         /// <summary>
         /// This <see cref="Entity"/>'s colission rectangle
         /// </summary>
         public Rectangle CollisionRectangle;
-        protected Rectangle rectangle;
 
         /// <summary>
         /// The health of the <see cref="Entity"/>
@@ -81,5 +75,9 @@ namespace ISU_Medieval_Odyssey
         /// The current direction the <see cref="Entity"/> is facing
         /// </summary>
         public Direction Direction { get; protected set; }
+
+        // The entity's rounded and unrounded location/rectangle
+        protected Vector2 unroundedLocation;
+        protected Rectangle rectangle;
     }
 }

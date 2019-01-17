@@ -43,12 +43,6 @@
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/errorSoundEffect.mp3
 
-#begin Audio/SoundEffects/potionSoundEffect.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/SoundEffects/potionSoundEffect.mp3
-
 #begin Audio/SoundEffects/shootSoundEffect.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -44285,4 +44279,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buttons/saveButton.png
+
+#begin Audio/SoundEffects/potionSoundEffect.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SoundEffects/potionSoundEffect.mp3
 

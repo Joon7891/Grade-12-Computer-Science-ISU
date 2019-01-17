@@ -71,7 +71,7 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // If button is pressed - inoke behavior and click sound if button is active, otherwise error sound
-            if (MouseHelper.NewLeftClick() && IsMouseHovering)
+            if (MouseHelper.IsRectangleLeftClicked(rect))
             {
                 if (Active)
                 {

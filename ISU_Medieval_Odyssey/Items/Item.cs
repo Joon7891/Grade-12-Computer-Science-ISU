@@ -5,7 +5,6 @@
 // Modified Date: 12/18/2018
 // Description: Class to hold Item object
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,14 +22,14 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public bool Valid { get; protected set; } = true;
 
-        // The image the item's icon
-        protected Texture2D iconImage;
-
         /// <summary>
         /// Subprogram to use this <see cref="Item"/>
         /// </summary>
         /// <param name="player">The player using this particular item</param>
         public virtual void Use(Player player) { }
+
+        // The image the item's icon
+        protected Texture2D iconImage;
 
         /// <summary>
         /// Subprogram to draw the <see cref="Item"/>'s icon

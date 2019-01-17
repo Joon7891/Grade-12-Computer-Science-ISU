@@ -9,43 +9,48 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Tile
     {
         /// <summary>
-        /// The horizontal size of the <see cref="Tile"/>, in pixels
+        /// The spacing between adjacent <see cref="Tile"/>s, in pixels
         /// </summary>
-        public const byte HORIZONTAL_SIZE = 72;
+        public const int SPACING = 72;
 
-        /// <summary>
-        /// The vertical size of the <see cref="Tile"/>, in pixels
-        /// </summary>
-        public const byte VERTICAL_SIZE = 144;
-
-        /// <summary>
-        /// The horizontal spacing between adjacent <see cref="Tile"/>s
-        /// </summary>
-        public const byte HORIZONTAL_SPACING = HORIZONTAL_SIZE;
-
-        /// <summary>
-        /// The vertical spacing between adjacent <see cref="Tile"/>s
-        /// </summary>
-        public const byte VERTICAL_SPACING = VERTICAL_SIZE / 2;
+        // Various constants for drawing graphics in appropraite location
+        private const byte HORIZONTAL_SIZE = 72;
+        private const byte VERTICAL_SIZE = 144;
+        private const byte HORIZONTAL_SPACING = HORIZONTAL_SIZE;
+        private const byte VERTICAL_SPACING = VERTICAL_SIZE / 2;
 
         /// <summary>
         /// The <see cref="TileType"/> of the <see cref="Tile"/>
         /// </summary>
+        [JsonProperty]
         public TileType Type { get; }
 
         /// <summary>
         /// The position of the tile in the world
         /// </summary>
+        [JsonProperty]
         public Vector2Int WorldPosition { get; }
-        
+
+        /// <summary>
+        /// The callback procedure to execute when the player interacts while on this <see cref="Tile"/>
+        /// </summary>
+        public delegate void OnInteract(Direction direction);
+
+        /// <summary>
+        /// The <see cref="OnInteract"/> procedure to execute while on this <see cref="Tile"/>
+        /// </summary>
+        [JsonProperty]
+        public OnInteract OnInteractProcedure { get; set; } = null;
+
         // Variables required for drawing tile
-        public static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
+        private static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();
         private Rectangle rectangle;
 
         /// <summary>
