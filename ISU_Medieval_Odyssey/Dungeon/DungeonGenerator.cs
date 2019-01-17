@@ -12,6 +12,7 @@
 */
 
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace ISU_Medieval_Odyssey
@@ -20,9 +21,10 @@ namespace ISU_Medieval_Odyssey
     {
         const int ROOM_ATTEMPTS = 500;
         const int SIZE_MODIFIER = 0;
-        const int MAX_WIDTH = 0;
-        const int MAX_HEIGHT = 0;
+        const int MAX_WIDTH = 501;
+        const int MAX_HEIGHT = 501;
 
+        CollisionTree collisionTree;
         // The rooms of the dungeon
         List<Rectangle> rooms;
 
@@ -34,6 +36,7 @@ namespace ISU_Medieval_Odyssey
 
         public DungeonGenerator()
         {
+            collisionTree = new CollisionTree(0, new Rectangle(0, 0, MAX_WIDTH, MAX_HEIGHT));
             region = new int[MAX_WIDTH, MAX_HEIGHT];
             currentRegion = -1;
 
@@ -45,6 +48,53 @@ namespace ISU_Medieval_Odyssey
         
                 }
             }
+        }
+
+        private void GenerateRooms()
+        {
+            Random rng = new Random();
+            for(int i = 0; i < ROOM_ATTEMPTS; i++)
+            {
+                // ensure room dimensions are odd
+                int size = rng.Next(1, 3) * 2 + 1;
+                int width = size;
+                int height = size;
+
+                // make the room less perfect
+                if(rng.Next(0,2) == 0)
+                {
+                    width += 2 * rng.Next(0, 1 + size / 2);
+                }
+                else
+                {
+                    height += 2 * rng.Next(0, 1 + size / 2);
+                }
+
+                // align room with odd coordinate
+                int x = rng.Next(0, MAX_HEIGHT) * 2 + 1;
+                int y = rng.Next(0, MAX_WIDTH) * 2 + 1;
+
+                Rectangle room = new Rectangle(x, y, width, height);
+
+                foreach(Rectangle rectangle in rooms) // TODO: collision for rooms 
+                {
+                    throw new NotImplementedException();
+                    //collisionTree.Update(rooms);
+
+                    // if overlap, continue
+                }
+
+                currentRegion++;
+
+                for(int j = room.X; j <= room.X + room.Width; j++)
+                {
+                    for(int k = room.Y; k <= room.Y + room.Height; k++)
+                    {
+                        region[i,j] = currentRegion;
+                    }
+                }
+            }
+
         }
     }
 }
