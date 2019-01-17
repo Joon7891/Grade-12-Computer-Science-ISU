@@ -205,6 +205,11 @@ namespace ISU_Medieval_Odyssey
 
             // Calling subprogram to update inventory
             UpdateInventory(gameTime);
+
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Interact) && World.Instance.GetTileAt(CurrentTile).OnInteractProcedure != null)
+            {
+                World.Instance.GetTileAt(CurrentTile).OnInteractProcedure(this);
+            }
         }
 
         /// <summary>
@@ -491,8 +496,8 @@ namespace ISU_Medieval_Odyssey
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
             CollisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
             CollisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
-            X = rectangle.X + (PIXEL_SIZE >> 1);
-            Y = rectangle.Y + (PIXEL_SIZE >> 1);
+            center.X = rectangle.X + (PIXEL_SIZE >> 1);
+            center.Y = rectangle.Y + (PIXEL_SIZE >> 1);
         }
 
         /// <summary>

@@ -10,6 +10,6 @@ namespace ISU_Medieval_Odyssey
     /// <summary>
     /// The procedure to execute when the player chooses to interact on a given tile
     /// </summary>
-    /// <param name="direction">The direction the player is facing</param>
-    public delegate void OnInteract(Direction direction);
+    /// <param name="direction">The <see cref="Player"/> interacting with the tile</param>
+    public delegate void OnInteract(Player player);
 }

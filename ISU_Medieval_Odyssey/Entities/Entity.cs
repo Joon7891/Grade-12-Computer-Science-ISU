@@ -12,22 +12,16 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Entity
     {
-        /// <summary>
-        /// The x-coordinate of this <see cref="Entity"/>'s center
-        /// </summary>
         public int X
         {
-            get => center.X;
-            set => center.X = value;
+            get => rectangle.X;
+            set => rectangle.X = value;
         }
 
-        /// <summary>
-        /// The y-coordinate of this <see cref="Entity"/>'s center
-        /// </summary>
         public int Y
         {
-            get => center.Y;
-            set => center.Y = value;
+            get => rectangle.Y;
+            set => rectangle.Y = value;
         }
 
         /// <summary>

@@ -68,6 +68,45 @@ namespace ISU_Medieval_Odyssey
                     new Rectangle((cornerPosition.X + (i > 1 ? 8 : 0)) * Tile.SPACING, (cornerPosition.Y + i % 2 == 1 ? 9 : 0) * Tile.SPACING,
                     Tile.SPACING, Tile.SPACING));
             }
+
+            // Setting up borders
+            //for (int i = 0; i < 9; ++i)
+            //{
+            //    for (int j = 0; j < 9; ++j)
+            //    {
+            //        World.Instance.GetTileAt(new Vector2Int(i, j) + cornerPosition).InsideObstructState = true;
+            //    }
+            //}
+            //for (int i = 1; i < 8; ++i)
+            //{
+            //    for (int j = 2; j < 10; ++j)
+            //    {
+            //        World.Instance.GetTileAt(new Vector2Int(i, j) + cornerPosition).InsideObstructState = false;
+            //        World.Instance.GetTileAt(new Vector2Int(i, j) + cornerPosition).OutsideObstructState = true;
+            //    }
+            //}
+            //World.Instance.GetTileAt(new Vector2Int(4, 9) + cornerPosition).OnInteractProcedure = (player) =>
+            //{
+            //    if (player.Direction == Direction.Up)
+            //    {
+            //        World.Instance.IsInside = false;
+            //        player.Y += Tile.SPACING;
+            //    }
+            //};
+            //for (int i = 0; i < 9; ++i)
+            //{
+            //    World.Instance.GetTileAt(new Vector2Int(i, 9) + cornerPosition).InsideObstructState = true;
+            //}
+            //World.Instance.GetTileAt(new Vector2Int(4, 9) + cornerPosition).InsideObstructState = false;
+            //World.Instance.GetTileAt(new Vector2Int(4, 10) + cornerPosition).OnInteractProcedure = (player) =>
+            //{
+            //    if (player.Direction == Direction.Down)
+            //    {
+            //        World.Instance.IsInside = true;
+            //        player.Y -= Tile.SPACING;
+            //    }
+            //};
+            //World.Instance.GetTileAt(new Vector2Int(4, 10) + cornerPosition).InsideObstructState = false;
         }
 
         public void DrawInside(SpriteBatch spriteBatch)

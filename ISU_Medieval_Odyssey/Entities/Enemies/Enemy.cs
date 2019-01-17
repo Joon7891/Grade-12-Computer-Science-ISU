@@ -42,8 +42,8 @@ namespace ISU_Medieval_Odyssey
         {
             rectangle.X = (int)((tileCoordinate.X + 0.5) * Tile.SPACING - rectangle.Width);
             rectangle.Y = (int)((tileCoordinate.Y + 0.5) * Tile.SPACING - rectangle.Height);
-            X = rectangle.X + rectangle.Width / 2;
-            Y = rectangle.Y + rectangle.Height / 2;            
+            center.X = rectangle.X + rectangle.Width / 2;
+            center.Y = rectangle.Y + rectangle.Height / 2;            
         }
 
         /// <summary>

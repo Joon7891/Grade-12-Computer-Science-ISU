@@ -43,6 +43,10 @@ namespace ISU_Medieval_Odyssey
 
         CollisionTree collisionTree;
 
+        Shop test;
+
+        private List<Vector2Int> chunksToLoad = new List<Vector2Int>();
+
         /// <summary>
         /// Constructor for <see cref="World"/> object
         /// </summary>
@@ -76,25 +80,41 @@ namespace ISU_Medieval_Odyssey
             Instance = this;
 
             loadedChunks[new Vector2Int(0, 0)][5, 5].OutsideObstructState = true;
+
+            test = new Shop(new Vector2Int(3, 3));
         }
 
         public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
-            foreach (Vector2Int adjustmentVector in borderChunkCoordinate)
+            if (chunksToLoad.Count == 0)
             {
-                if (!loadedChunks.ContainsKey(GameScreen.Instance.Player.CurrentChunk + adjustmentVector))
+                foreach (Vector2Int adjustmentVector in borderChunkCoordinate)
                 {
-                    AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
-                    break;
+                    if (!loadedChunks.ContainsKey(GameScreen.Instance.Player.CurrentChunk + adjustmentVector))
+                    {
+                        AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
+                        break;
+                    }
                 }
             }
+            else
+            {
+                loadedChunks.Add(chunksToLoad[0], GetChunkAt(chunksToLoad[0]));
+                chunksToLoad.RemoveAt(0);
+            }            
 
             // recreate new collision tree for new bounds
             Vector2Int playerCenter = GameScreen.Instance.Player.CurrentChunk - new Vector2Int(2, 2);
-            Rectangle loadedRegion = new Rectangle(loadedChunks[playerCenter].WorldPosition.X, loadedChunks[playerCenter].WorldPosition.Y,
+            int minX = loadedChunks.Values.Select(chunk => chunk.Position.X).ToArray().Min();
+            int minY = loadedChunks.Values.Select(chunk => chunk.Position.Y).ToArray().Min();
+
+            Rectangle loadedRegion = new Rectangle(minX, minY,
                                                    Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
                                                    Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+            
+
+            
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Updating the projectiles and collision info in the world
@@ -143,7 +163,6 @@ namespace ISU_Medieval_Odyssey
                 if (!(centerChunk.X - 2 <= chunkLocation.X && chunkLocation.X <= centerChunk.X + 2 &&
                       centerChunk.Y - 2 <= chunkLocation.Y && chunkLocation.Y <= centerChunk.Y + 2))
                 {
-                    IO.SaveChunk(loadedChunks[chunkLocation]);
                     loadedChunks.Remove(chunkLocation);
                 }
             }
@@ -154,18 +173,15 @@ namespace ISU_Medieval_Odyssey
                 for (int y = centerChunk.Y - 2; y <= centerChunk.Y + 2; ++y)
                 {
                     newChunkLocation = new Vector2Int(x, y);
-                   
+
                     // If this chunk isn't loaded, load it
                     if (!loadedChunks.ContainsKey(newChunkLocation))
                     {
-                        // If the chunk is in file, load it, otherwise construct it
-                        loadedChunks.Add(newChunkLocation, GetChunkAt(newChunkLocation));
+                        chunksToLoad.Add(newChunkLocation);
                     }
                 }
             }
         }
-
-        Shop test = new Shop(new Vector2Int(0, 0));
 
         /// <summary>
         /// Subprogram to 
@@ -224,7 +240,7 @@ namespace ISU_Medieval_Odyssey
 
         public Tile GetTileAt(Vector2Int tileCoordinate)
         {
-            Vector2Int chunkCoordinate = World.TileToChunkCoordinate(tileCoordinate);
+            Vector2Int chunkCoordinate = TileToChunkCoordinate(tileCoordinate);
             Vector2Int newTileCoordinate = tileCoordinate - chunkCoordinate * Chunk.SIZE;
             return GetChunkAt(chunkCoordinate)[newTileCoordinate.X, newTileCoordinate.Y];
         }
