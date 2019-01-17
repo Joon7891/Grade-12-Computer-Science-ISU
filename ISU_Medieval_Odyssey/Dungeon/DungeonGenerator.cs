@@ -23,6 +23,11 @@ namespace ISU_Medieval_Odyssey
         const int SIZE_MODIFIER = 0;
         const int MAX_WIDTH = 501;
         const int MAX_HEIGHT = 501;
+        
+        /// <summary>
+        /// Indicates the extra chance that the maze will continue in the same direction 
+        /// </summary>
+        const int DIRECTION_CHANCE = 0;
 
         /// <summary>
         /// Direction vector2ints that can be added to another vector2int to move in that direction
@@ -36,6 +41,7 @@ namespace ISU_Medieval_Odyssey
             new Vector2Int(-1, 0)
         };
 
+        Random rng;
         CollisionTree collisionTree;
         // The rooms of the dungeon
         List<Rectangle> rooms;
@@ -48,6 +54,7 @@ namespace ISU_Medieval_Odyssey
 
         public DungeonGenerator()
         {
+            rng = new Random();
             collisionTree = new CollisionTree(0, new Rectangle(0, 0, MAX_WIDTH, MAX_HEIGHT));
             region = new int[MAX_WIDTH, MAX_HEIGHT];
             currentRegion = -1;
@@ -64,7 +71,6 @@ namespace ISU_Medieval_Odyssey
 
         private void GenerateRooms()
         {
-            Random rng = new Random();
             for(int i = 0; i < ROOM_ATTEMPTS; i++)
             {
                 // ensure room dimensions are odd
@@ -109,24 +115,61 @@ namespace ISU_Medieval_Odyssey
 
         }
 
+        private void ChangeRegion(Vector2Int cur, Vector2Int offset)
+        {
+            region[(offset + cur).X, (offset + cur).Y] = currentRegion;
+        }
+
         private void ExpandMaze(Vector2Int current) // dfs style path finding to create maze
         {
             currentRegion++;
+
+            region[current.X, current.Y] = currentRegion;
+
+            int lastDirection = -1;
             Stack<Vector2Int> stack = new Stack<Vector2Int>();
             stack.Push(current);
 
             while(stack.Count > 0)
             {
-                //foreach(Direction direction in Direction)
-                //{
+                current = stack.Peek();
+                List<int> openDirections = new List<int>(); 
 
-                //}
-                current = stack.Pop();
-
-                foreach(Vector2Int direction in MoveDirections)
+                for(int i = 0; i < 4; i++)
                 {
-                    throw new NotImplementedException();
-                    //if(current + direction * 3//is in bounds, and not connection regions)
+                    if(region[(MoveDirections[i] * 2 + current).X, (MoveDirections[i] * 2 + current).Y] == -1)
+                    {
+                        openDirections.Add(i);
+                    }
+                }
+
+                if (openDirections.Count > 0)
+                {
+                    int nextDirection = -1;
+
+                    if (openDirections.Contains(lastDirection))
+                    {
+                        if (rng.Next(0, 101) > DIRECTION_CHANCE)
+                        {
+                            nextDirection = lastDirection;
+                        }
+                    }
+                    else
+                    {
+                        nextDirection = openDirections[rng.Next(0, openDirections.Count)];
+                    }
+
+                    // create path twice in the chosen direction, because rooms and initial paths can only be odd-numbered
+                    ChangeRegion(current, MoveDirections[nextDirection]);
+                    ChangeRegion(current, MoveDirections[nextDirection] * 2);
+
+                    stack.Push(current + MoveDirections[nextDirection] * 2);
+                    lastDirection = nextDirection;
+                }
+                else
+                {
+                    lastDirection = -1;
+                    stack.Pop();
                 }
             }
 
@@ -134,11 +177,11 @@ namespace ISU_Medieval_Odyssey
 
         private void CreateMazes()
         {
-            for(int i = 1; i < MAX_WIDTH; i++)
+            for(int i = 1; i < MAX_WIDTH; i+=2)
             {
-                for(int j = 1; j < MAX_HEIGHT; i++)
+                for(int j = 1; j < MAX_HEIGHT; j+=2)
                 {
-                    if (region[i,j] == -1)
+                    if (region[i,j] == -1)  
                     {
                         ExpandMaze(new Vector2Int(i,j));
                     }
