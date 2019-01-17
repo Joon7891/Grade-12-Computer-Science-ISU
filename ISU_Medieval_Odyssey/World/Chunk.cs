@@ -52,13 +52,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="position">The position of the chunk</param>
         /// <param name="terrainGenerator">The terrain generator</param>
-        public Chunk(Vector2Int position, TerrainGenerator terrainGenerator)
+        public Chunk(int x, int y, TerrainGenerator terrainGenerator)
         {
             // Assigning position and generating chunks
-            Position = position;
+            Position = new Vector2Int(x,y);
             tiles = new Tile[SIZE, SIZE];
             this.terrainGenerator = terrainGenerator;
-            tiles = terrainGenerator.GenerateChunkTiles(position); 
+            tiles = terrainGenerator.GenerateChunkTiles(Position); 
         }
 
         /// <summary>
@@ -81,18 +81,5 @@ namespace ISU_Medieval_Odyssey
         {
 
         }
-
-        /// <summary>
-        /// Subprogarm to serialized this <see cref="Chunk"/>
-        /// </summary>
-        /// <returns>The serialized version of this <see cref="Chunk"/></returns>
-        public string Serialize() => JsonConvert.SerializeObject(this);
-
-        /// <summary>
-        /// Subprogram to deserialized a <see cref="Chunk"/>
-        /// </summary>
-        /// <param name="serializedData">The serialized data</param>
-        /// <returns>The deserialized <see cref="Chunk"/></returns>
-        public static Chunk Deserialize(string serializedData) => JsonConvert.DeserializeObject<Chunk>(serializedData);
     }
 }

@@ -136,8 +136,6 @@ namespace ISU_Medieval_Odyssey
             center = Vector2Int.Zero;
             CurrentTile = Vector2Int.Zero;
 
-            Enemy a = new Goblin(new Vector2Int(1, 1));
-
             // Setting up name and other attributes
             Name = name;
             Level = 1;
@@ -206,9 +204,9 @@ namespace ISU_Medieval_Odyssey
             // Calling subprogram to update inventory
             UpdateInventory(gameTime);
 
-            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Interact) && World.Instance.GetTileAt(CurrentTile).OnInteractProcedure != null)
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Interact))// && World.Instance.GetTileAt(CurrentTile).OnInteractProcedure != null)
             {
-                World.Instance.GetTileAt(CurrentTile).OnInteractProcedure(this);
+               // World.Instance.GetTileAt(CurrentTile).OnInteractProcedure(this);
             }
         }
 
