@@ -438,37 +438,37 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Up;
 
-                    if (!IsObstructed(Direction.Up, gameTime))
-                    {
+                    //if (!IsObstructed(Direction.Up, gameTime))
+                    //{
                         unroundedLocation.Y -= GetPixelSpeed(gameTime);
-                    }
+                    //}
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
 
-                    if (!IsObstructed(Direction.Down, gameTime))
-                    {
+                    //if (!IsObstructed(Direction.Down, gameTime))
+                    //{
                         unroundedLocation.Y += GetPixelSpeed(gameTime);
-                    }
+                    //}
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
 
-                    if (!IsObstructed(Direction.Left, gameTime))
-                    {
+                    //if (!IsObstructed(Direction.Left, gameTime))
+                    //{
                         unroundedLocation.X -= GetPixelSpeed(gameTime);
-                    }
+                    //}
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
 
-                    if (!IsObstructed(Direction.Right, gameTime))
-                    {
+                    //if (!IsObstructed(Direction.Right, gameTime))
+                    //{
                         unroundedLocation.X += GetPixelSpeed(gameTime);
-                    }
+                    //}
                 }
                 
                 // Animating movement frames if weapon is not being used
