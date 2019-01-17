@@ -77,9 +77,17 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public void SetTileOnInteract(OnInteract onInteract)
-        {
+        /// <summary>
+        /// Subprogarm to serialized this <see cref="Chunk"/>
+        /// </summary>
+        /// <returns>The serialized version of this <see cref="Chunk"/></returns>
+        public string Serialize() => JsonConvert.SerializeObject(this);
 
-        }
+        /// <summary>
+        /// Subprogram to deserialized a <see cref="Chunk"/>
+        /// </summary>
+        /// <param name="serializedData">The serialized data</param>
+        /// <returns>The deserialized <see cref="Chunk"/></returns>
+        public static Chunk Deserialize(string serializedData) => JsonConvert.DeserializeObject<Chunk>(serializedData);
     }
 }

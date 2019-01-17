@@ -27,8 +27,8 @@ namespace ISU_Medieval_Odyssey
 
         // The world's loaded chunks and loaded chunks
         private readonly TerrainGenerator terrainGenerator;
-        private const int LOADED_CHUNK_COUNT = 3;
-        private Chunk[,] loadedChunks = new Chunk[LOADED_CHUNK_COUNT, LOADED_CHUNK_COUNT];
+        private const int CHUNK_COUNT = 3;
+        private Chunk[,] loadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
         private static Vector2Int[] borderChunkCoordinate =
         {
             new Vector2Int(2, 2),
@@ -53,9 +53,9 @@ namespace ISU_Medieval_Odyssey
             terrainGenerator = new TerrainGenerator(seed);
 
             // Generating chunks around world and adding them to file
-            for (int y = 0; y < LOADED_CHUNK_COUNT; ++y)
+            for (int y = 0; y < CHUNK_COUNT; ++y)
             {
-                for (int x = 0; x < LOADED_CHUNK_COUNT; ++x)
+                for (int x = 0; x < CHUNK_COUNT; ++x)
                 {
                     loadedChunks[x, y] = new Chunk(x, y, terrainGenerator);
                 }
@@ -63,8 +63,8 @@ namespace ISU_Medieval_Odyssey
 
             Vector2Int initialChunk = new Vector2Int(0, 0);
             Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
-                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
-                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT,
+                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Setting up singleton
@@ -74,15 +74,15 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
-            if (GameScreen.Instance.Player.CurrentChunk != loadedChunks[LOADED_CHUNK_COUNT / 2, LOADED_CHUNK_COUNT / 2].Position)
+            if (GameScreen.Instance.Player.CurrentChunk != loadedChunks[CHUNK_COUNT / 2, CHUNK_COUNT / 2].Position)
             {
                 AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
             }
             
 
             Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].Position.X, loadedChunks[0, 0].Position.Y,
-                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
-                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT,
+                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             
 
             
@@ -127,14 +127,18 @@ namespace ISU_Medieval_Odyssey
         /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
         public void AdjustLoadedChunks(Vector2Int centerChunk)        
         {
+            Chunk[,] newLoadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
+            
             // Iterating through the chunk locations of the chunks that should be loaded
-            for (int y = 0; y < LOADED_CHUNK_COUNT; ++y)
+            for (int y = 0; y < CHUNK_COUNT; ++y)
             {
-                for (int x = 0; x < LOADED_CHUNK_COUNT; ++x)
+                for (int x = 0; x < CHUNK_COUNT; ++x)
                 {
-                    loadedChunks[x, y] = new Chunk(centerChunk.X + x - 1, centerChunk.Y + y - 1, terrainGenerator);
+                    newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - 1, centerChunk.Y + y - 1);
                 }
             }
+
+            loadedChunks = newLoadedChunks;
         }
 
         /// <summary>
@@ -148,9 +152,9 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
             // Drawing the various loaded chunks
-            for (int y = 0; y < LOADED_CHUNK_COUNT; ++y)
+            for (int y = 0; y < CHUNK_COUNT; ++y)
             {
-                for (byte x = 0; x < LOADED_CHUNK_COUNT; ++x)
+                for (byte x = 0; x < CHUNK_COUNT; ++x)
                 {
                     loadedChunks[x, y].Draw(spriteBatch);
                 }
@@ -171,6 +175,30 @@ namespace ISU_Medieval_Odyssey
             // Ending spriteBatch
             spriteBatch.End();
         }
+        
+        public Chunk GetChunkAt(int x, int y)
+        {
+            Chunk chunk;
+            int relativeX = x - loadedChunks[0, 0].Position.X;
+            int relativeY = y - loadedChunks[0, 0].Position.Y;
+
+            if (0 <= relativeX && relativeX < CHUNK_COUNT && 0 <= relativeY && relativeY < CHUNK_COUNT)
+            {
+                chunk = loadedChunks[relativeX, relativeY];
+            }
+            else if (IO.ChunkExists(x, y))
+            {
+                chunk = IO.LoadChunk(x, y);
+            }
+            else
+            {
+                chunk = new Chunk(x, y, terrainGenerator);
+                IO.SaveChunk(chunk);
+            }
+
+            return chunk;
+        }
+
 
         public Chunk GetChunkAt(Vector2Int chunkCoordinate)
         {

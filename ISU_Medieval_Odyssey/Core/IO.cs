@@ -17,7 +17,66 @@ namespace ISU_Medieval_Odyssey
         private static StreamReader inFile;
         private static StreamWriter outFile;
         private const string BASE_DIRECTORY = "IO";
+        private const string CHUNK_PATH = BASE_DIRECTORY + "/Chunks";
         private const string SETTINGS_PATH = BASE_DIRECTORY + "/SettingsData.json";
+
+       
+        public static bool ChunkExists(int chunkX, int chunkY) => File.Exists($"{CHUNK_PATH}/Chunk_{chunkX}_{chunkY}.json");
+
+        
+        public static Chunk LoadChunk(int chunkX, int chunkY)
+        {
+            // Raw and serialized chunk
+            Chunk chunk = null;
+            string serializedChunk;
+
+            // Try-Catch block for file reading
+            try
+            {
+                // Opening file and loading chunk
+                inFile = File.OpenText($"{CHUNK_PATH}/Chunk_{chunkX}_{chunkY}.json");
+                serializedChunk = inFile.ReadLine();
+                chunk = Chunk.Deserialize(serializedChunk);
+            }
+            catch (Exception exception)
+            {
+                // Catching and informing user of exception
+                Console.WriteLine(exception.Message);
+            }
+
+            // Closing file and returing chunk
+            inFile.Close();
+            return chunk;
+        }
+
+        /// <summary>
+        /// Subprogram to serialized and save a <see cref="Chunk"/>'s data
+        /// </summary>
+        /// <param name="chunk">The chunk to be serialized</param>
+        public static void SaveChunk(Chunk chunk)
+        {
+            // String to hold serialized data and file path
+            string serializedChunk;
+
+            // Try-Catch block for file writing
+            try
+            {
+                // Creating file
+                outFile = File.CreateText($"{CHUNK_PATH}/Chunk_{chunk.Position.X}_{chunk.Position.Y}.json");
+
+                // Serializing data and writing it to file
+                serializedChunk = chunk.Serialize();
+                outFile.WriteLine(serializedChunk);
+            }
+            catch (Exception exception)
+            {
+                // Catching and informing user of exception
+                Console.WriteLine(exception.Message);
+            }
+
+            // Closing file
+            outFile.Close();
+        }
 
         /// <summary>
         /// Subprogram to deserialize and load various <see cref="SettingsData"/> data
