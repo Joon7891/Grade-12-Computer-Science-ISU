@@ -24,6 +24,18 @@ namespace ISU_Medieval_Odyssey
         const int MAX_WIDTH = 501;
         const int MAX_HEIGHT = 501;
 
+        /// <summary>
+        /// Direction vector2ints that can be added to another vector2int to move in that direction
+        /// Using same numbering as the direction enum.
+        /// </summary>
+        private readonly Vector2Int[] MoveDirections =
+        {
+            new Vector2Int(0, -1),
+            new Vector2Int(1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(-1, 0)
+        };
+
         CollisionTree collisionTree;
         // The rooms of the dungeon
         List<Rectangle> rooms;
@@ -96,5 +108,44 @@ namespace ISU_Medieval_Odyssey
             }
 
         }
+
+        private void ExpandMaze(Vector2Int current) // dfs style path finding to create maze
+        {
+            currentRegion++;
+            Stack<Vector2Int> stack = new Stack<Vector2Int>();
+            stack.Push(current);
+
+            while(stack.Count > 0)
+            {
+                //foreach(Direction direction in Direction)
+                //{
+
+                //}
+                current = stack.Pop();
+
+                foreach(Vector2Int direction in MoveDirections)
+                {
+                    throw new NotImplementedException();
+                    //if(current + direction * 3//is in bounds, and not connection regions)
+                }
+            }
+
+        }
+
+        private void CreateMazes()
+        {
+            for(int i = 1; i < MAX_WIDTH; i++)
+            {
+                for(int j = 1; j < MAX_HEIGHT; i++)
+                {
+                    if (region[i,j] == -1)
+                    {
+                        ExpandMaze(new Vector2Int(i,j));
+                    }
+                }
+            }
+        }
+
+
     }
 }
