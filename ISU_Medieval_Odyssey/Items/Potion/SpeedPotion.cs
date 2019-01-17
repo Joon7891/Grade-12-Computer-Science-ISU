@@ -22,6 +22,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static SpeedPotion()
         {
+            // Importing speed potion icon image
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/speedPotionIcon");
         }
 

@@ -10,10 +10,13 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Arrow : Projectile
     {
+        // Variables related to Arrow graphics
         private static Dictionary<Direction, Texture2D> images = new Dictionary<Direction, Texture2D>();
         private const int WIDTH = 50;
         private const int HEIGHT = 5;
-        private const int SPEED = 12;
+
+        // Movement/speed related consants
+        private const int SPEED = 22;
         private const int MAX_DISTANCE = 10;
 
         /// <summary>
@@ -21,28 +24,36 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Arrow()
         {
+            // Importing arrow graphics
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 images.Add(direction, Main.Content.Load<Texture2D>($"Images/Sprites/Projectiles/Arrow/arrow{direction}"));
             }
         }
 
-        public Arrow(Direction direction, Vector2Int center, Entity shooter)
+        /// <summary>
+        /// Constructor for <see cref="Arrow"/> object
+        /// </summary>
+        /// <param name="direction">The <see cref="Direction"/> the arrow is traveling in</param>
+        /// <param name="shooter">The <see cref="Entity"/> that is shooting this <see cref="Arrow"/></param>
+        public Arrow(Direction direction, Entity shooter)
         {
+            // Settingup arrow image
             image = images[direction];
 
+            // Setting up projectile velocity and rectangle
             if (direction == Direction.Up || direction == Direction.Down)
             {
                 velocity = new Vector2(0, direction == Direction.Down ? SPEED : -SPEED);
-                rectangle = new Rectangle(center.X - HEIGHT / 2, center.Y - (direction == Direction.Down ? 0 : WIDTH), HEIGHT, WIDTH);
+                rectangle = new Rectangle(shooter.Center.X - HEIGHT / 2, shooter.Center.Y - (direction == Direction.Down ? 0 : WIDTH), HEIGHT, WIDTH);
             }
             else
             {
                 velocity = new Vector2(direction == Direction.Right ? SPEED : -SPEED, 0);
-                rectangle = new Rectangle(center.X - (direction == Direction.Left ? WIDTH : 0), center.Y, WIDTH, HEIGHT);
+                rectangle = new Rectangle(shooter.Center.X - (direction == Direction.Left ? WIDTH : 0), shooter.Center.Y, WIDTH, HEIGHT);
             }
-
             nonRoundedLocation = rectangle.Location.ToVector2();
+            maxDistance = MAX_DISTANCE;
         }
     }
 }

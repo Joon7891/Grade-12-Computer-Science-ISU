@@ -88,7 +88,7 @@ namespace ISU_Medieval_Odyssey
         {
             if(nodes[0] != null)
             {
-                int i = Fit(newProjectile.GetRectangle());
+                int i = Fit(newProjectile.Rectangle);
 
                 if (i == -1)
                 {
@@ -112,7 +112,7 @@ namespace ISU_Medieval_Odyssey
                     if (MAX_PROJECTILES > projectiles.Count) {
                         return;
                     }
-                    int i = Fit(projectile.GetRectangle());
+                    int i = Fit(projectile.Rectangle);
                     
                     if(i != -1)
                     {
@@ -164,7 +164,7 @@ namespace ISU_Medieval_Odyssey
 
             for(int i = collisions.Count; i >= 0; i--)
             {
-                if(!CheckCollision(hitBox, collisions[i].GetRectangle()))
+                if(!CheckCollision(hitBox, collisions[i].Rectangle))
                 {
                     collisions.Remove(collisions[i]);
                 }

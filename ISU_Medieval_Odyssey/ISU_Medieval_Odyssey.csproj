@@ -41,8 +41,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Building\IBuilding.cs" />
-    <Compile Include="Building\Shop.cs" />
+    <Compile Include="World\IBuilding.cs" />
+    <Compile Include="World\OnInteract.cs" />
+    <Compile Include="World\Shop.cs" />
     <Compile Include="Entities\Enemies\Goblin.cs" />
     <Compile Include="Entities\Enemies\Skeleton.cs" />
     <Compile Include="Entities\Enemies\SmartEnemy.cs" />

@@ -26,6 +26,28 @@ namespace ISU_Medieval_Odyssey
         /// The keybindings setting
         /// </summary>
         public Keys[] KeyBindings { get; set; }
+        private readonly Keys[] defaultKeyBindings =
+        {
+            Keys.W,
+            Keys.D,
+            Keys.S,
+            Keys.A,
+            Keys.E,
+            Keys.F,
+            Keys.I,
+            Keys.Escape,
+            Keys.F12,
+            Keys.D1,
+            Keys.D2,
+            Keys.D3,
+            Keys.D4,
+            Keys.D5,
+            Keys.D6,
+            Keys.D7,
+            Keys.D8,
+            Keys.D9
+        };
+
         
         /// <summary>
         /// Constructor for wrapper <see cref="Settings"/> object
@@ -33,9 +55,13 @@ namespace ISU_Medieval_Odyssey
         /// <param name="musicVolume">The music volume setting</param>
         /// <param name="soundEffectVolume">The sound effect volume setting</param>
         /// <param name="keyBindings">The keybindings</param>
-        public SettingsData(float musicVolume, float soundEffectVolume, Keys[] keyBindings)
+        public SettingsData(float musicVolume = 1.0f, float soundEffectVolume = 1.0f, Keys[] keyBindings = null)
         {
             // Setting wrapper object properties
+            if (keyBindings == null)
+            {
+                keyBindings = defaultKeyBindings;
+            }
             MusicVolume = musicVolume;
             SoundEffectVolume = soundEffectVolume;
             KeyBindings = keyBindings;

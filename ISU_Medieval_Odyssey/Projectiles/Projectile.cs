@@ -14,15 +14,22 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Whether this <see cref="Projectile"/> is active
         /// </summary>
-        public bool Active => true;
+        public bool Active => distanceTraveled <= maxDistance;
 
-        protected Direction direction;
-        protected Vector2 velocity;
-
-        private float distanceTraveled = default(float);
-        private float maxDistance;
+        /// <summary>
+        /// The <see cref="Rectangle"/> of this <see cref="Projectile"/>
+        /// </summary>
+        public Rectangle Rectangle => rectangle;
         protected Rectangle rectangle;
+
+        // Arrow movement variables
+        protected Vector2 velocity;
+        protected float maxDistance;
+        protected Direction direction;
+        private float distanceTraveled = 0;
         protected Vector2 nonRoundedLocation;
+
+        // The image of the projectile
         protected Texture2D image;
 
         /// <summary>
@@ -31,10 +38,11 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
+            // Moving projectile if the projectile is active
             if (Active)
             {
                 distanceTraveled += velocity.Length() * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-                nonRoundedLocation += Tile.VERTICAL_SIZE * velocity * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                nonRoundedLocation += Tile.SPACING * velocity * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 rectangle.X = (int)(nonRoundedLocation.X + 0.5);
                 rectangle.Y = (int)(nonRoundedLocation.Y + 0.5);
             }
@@ -51,11 +59,6 @@ namespace ISU_Medieval_Odyssey
             {
                 spriteBatch.Draw(image, rectangle, Color.White);
             }
-        }
-
-        public Rectangle GetRectangle()
-        {
-            return rectangle;
         }
     }
 }

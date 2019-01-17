@@ -43,12 +43,6 @@
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/errorSoundEffect.mp3
 
-#begin Audio/SoundEffects/potionSoundEffect.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/SoundEffects/potionSoundEffect.mp3
-
 #begin Audio/SoundEffects/shootSoundEffect.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -44261,4 +44255,34 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Projectiles/Arrow/arrowDown.png
+
+#begin Images/Sprites/Buttons/defaultButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buttons/defaultButton.png
+
+#begin Images/Sprites/Buttons/saveButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buttons/saveButton.png
+
+#begin Audio/SoundEffects/potionSoundEffect.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SoundEffects/potionSoundEffect.mp3
 

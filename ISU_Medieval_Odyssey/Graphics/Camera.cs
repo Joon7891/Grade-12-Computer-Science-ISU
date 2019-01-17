@@ -10,12 +10,7 @@ using Microsoft.Xna.Framework;
 namespace ISU_Medieval_Odyssey
 {
     public class Camera
-    {
-        /// <summary>
-        /// Static instance of <see cref="Camera"/> - singleton
-        /// </summary>
-        public static Camera Instance { get; private set; }
-        
+    {        
         /// <summary>
         /// The orthographic size of the camera
         /// </summary>
@@ -49,7 +44,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Camera()
         {
-            Instance = this;
             // Resets the camera
             Reset();
         }

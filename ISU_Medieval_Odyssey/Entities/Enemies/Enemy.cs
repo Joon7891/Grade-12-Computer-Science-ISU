@@ -40,8 +40,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="tileCoordinate">The initial tile coordinate of this <see cref="Enemy"/></param>
         protected void Setup(Vector2Int tileCoordinate)
         {
-            rectangle.X = (int)((tileCoordinate.X + 0.5) * Tile.HORIZONTAL_SPACING - rectangle.Width);
-            rectangle.Y = (int)((tileCoordinate.Y + 0.5) * Tile.VERTICAL_SPACING - rectangle.Height);
+            rectangle.X = (int)((tileCoordinate.X + 0.5) * Tile.SPACING - rectangle.Width);
+            rectangle.Y = (int)((tileCoordinate.Y + 0.5) * Tile.SPACING - rectangle.Height);
             X = rectangle.X + rectangle.Width / 2;
             Y = rectangle.Y + rectangle.Height / 2;            
         }
@@ -53,7 +53,7 @@ namespace ISU_Medieval_Odyssey
         public virtual void Update(GameTime gameTime, Player player)
         {
             // If enemy is within a tile to the player, attack, otherwise move towards player
-            if ((Center - GameScreen.Instance.Player.Center).Length() <= Tile.HORIZONTAL_SIZE)
+            if ((Center - GameScreen.Instance.Player.Center).Length() <= Tile.SPACING)
             {
                 Attack(gameTime, player);
             }

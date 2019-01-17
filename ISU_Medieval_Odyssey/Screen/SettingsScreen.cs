@@ -79,7 +79,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The keybindings for quick HotBar access
         /// </summary>
-        public Keys[] HotbarShortcut => ArrayHelper<KeyBinding>.GetSubArray(keyBindings, 9, 9).Select(keyBinding => keyBinding.Key).ToArray();
+        public Keys[] HotbarShortcut => keyBindings.SubArray(9, 9).Select(keyBinding => keyBinding.Key).ToArray();
 
         // Settings screen background components
         private Song backgroundMusic;
@@ -119,9 +119,13 @@ namespace ISU_Medieval_Odyssey
             "Inventory 6",
             "Inventory 7",
             "Inventory 8",
-            "Inventory 9",
+            "Inventory 9"
         };
-        
+
+        // Various settings application buttons
+        private readonly SettingsData defaultSettingsData;
+        private Button[] settingOptionButtons = new Button[2];
+
         /// <summary>
         /// Constructor for <see cref="SettingsScreen"/>
         /// </summary>
@@ -130,6 +134,7 @@ namespace ISU_Medieval_Odyssey
             // Loading settings data
             SettingsData settingsData;
             settingsData = IO.LoadSettingsData();
+            defaultSettingsData = new SettingsData();
 
             // Setting up singleton
             Instance = this;
@@ -151,15 +156,30 @@ namespace ISU_Medieval_Odyssey
             // Setting up volume level and keybindings graphical interface
             for (byte i = 0; i < volumeSliders.Length; ++i)
             {
-                volumeSliders[i] = new Slider(new Rectangle(200, 200 + 130 * i, 600, 40), Color.White, Color.Black * 0.8f, i == 0 ? settingsData.MusicVolume : settingsData.SoundEffectVolume);
-                textLocations[2 * i] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString(volumeText[i]).X) / 2, 150 + 130 * i);
-                textLocations[2 * i + 1] = new Vector2(825, 195 + 130 * i);
+                volumeSliders[i] = new Slider(new Rectangle(200, 180 + 125 * i, 600, 40), Color.White, Color.Black * 0.8f, i == 0 ? settingsData.MusicVolume : settingsData.SoundEffectVolume);
+                textLocations[2 * i] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString(volumeText[i]).X) / 2, 130 + 125 * i);
+                textLocations[2 * i + 1] = new Vector2(825, 175 + 125 * i);
             }
-            textLocations[4] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("KeyBindings").X) / 2, 410);
+            textLocations[4] = new Vector2((SharedData.SCREEN_WIDTH - textFonts[1].MeasureString("KeyBindings").X) / 2, 380);
             for (byte i = 0; i < keyBindings.Length; ++i)
             {
-                keyBindings[i] = new KeyBinding(settingsData.KeyBindings[i], keyBindingsText[i], new Rectangle(18 + 168 * (i % 6), 510 + 90 * (i / 6), 130, 35));
+                keyBindings[i] = new KeyBinding(settingsData.KeyBindings[i], keyBindingsText[i], new Rectangle(18 + 168 * (i % 6), 470 + 85 * (i / 6), 130, 35));
             }
+
+            // Setting up various settings buttons
+            settingOptionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/defaultButton"), new Rectangle(10, SharedData.SCREEN_HEIGHT - 90, 240, 80), () =>
+            {
+                volumeSliders[0].Value = defaultSettingsData.MusicVolume;
+                volumeSliders[1].Value = defaultSettingsData.SoundEffectVolume;
+                for (byte i = 0; i < keyBindings.Length; ++i)
+                {
+                    keyBindings[i].Key = defaultSettingsData.KeyBindings[i];
+                }
+            });
+            settingOptionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/saveButton"), new Rectangle(SharedData.SCREEN_WIDTH - 250, SharedData.SCREEN_HEIGHT - 90, 240, 80), () =>
+            {
+                IO.SaveSettingsData(MusicVolume, SoundEffectVolume, keyBindings.Select(keyBinding => keyBinding.Key).ToArray());
+            });
         }
         
         /// <summary>
@@ -187,7 +207,7 @@ namespace ISU_Medieval_Odyssey
 
                 for (byte i = 0; i < keyBindings.Length; ++i)
                 {
-                    if (MouseHelper.IsRectangleClicked(keyBindings[i].Rectangle))
+                    if (MouseHelper.IsRectangleLeftClicked(keyBindings[i].Rectangle))
                     {
                         selectedKeyBinding = i;
                         break;
@@ -203,6 +223,12 @@ namespace ISU_Medieval_Odyssey
                     keyBindings[selectedKeyBinding].Key = KeyboardHelper.SelectedKeyFromSet(KeyBinding.AllowedBindings, KeyBinding.DisallowedBindings);
                     selectedKeyBinding = -1;
                 }
+            }
+
+            // Updating setting option buttons
+            for (byte i = 0; i < settingOptionButtons.Length; ++i)
+            {
+                settingOptionButtons[i].Update(gameTime);
             }
 
             // Updating back button
@@ -232,9 +258,15 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing keybindings and corresponding graphics
             spriteBatch.DrawString(textFonts[1], "KeyBindings", textLocations[4], Color.White);
-            for (int i = 0; i < keyBindings.Length; ++i)
+            for (byte i = 0; i < keyBindings.Length; ++i)
             {
                 keyBindings[i].Draw(spriteBatch, i == selectedKeyBinding);
+            }
+
+            // Drawing setting options buttons
+            for (byte i = 0; i < settingOptionButtons.Length; ++i)
+            {
+                settingOptionButtons[i].Draw(spriteBatch);
             }
 
             // Drawing back button

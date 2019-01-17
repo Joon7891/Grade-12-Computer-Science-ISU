@@ -20,6 +20,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static World Instance { get; set; }
 
+        /// <summary>
+        /// Whether the world is inside a <see cref="IBuilding"/>
+        /// </summary>
+        public bool IsInside { get; set; } = false;
+
         // The world's loaded chunks and loaded chunks
         private readonly TerrainGenerator terrainGenerator;
         private const int LOADED_CHUNK_COUNT = 5;
@@ -31,7 +36,6 @@ namespace ISU_Medieval_Odyssey
             new Vector2Int(-2, 2),
             new Vector2Int(-2, -2)
         };
-
 
         private List<Projectile> projectiles = new List<Projectile>();
         private List<Enemy> enemies = new List<Enemy>();
@@ -47,8 +51,8 @@ namespace ISU_Medieval_Odyssey
         {
             // Vector to hold the current chunk location
             Vector2Int chunkLocation;
-            
-            // If seed was not provided, generate new seed
+
+            // Creating terrtain generator
             terrainGenerator = new TerrainGenerator(seed);
 
             // Generating chunks around world and adding them to file
@@ -64,11 +68,14 @@ namespace ISU_Medieval_Odyssey
 
             Vector2Int initialChunk = new Vector2Int(0, 0);
             Rectangle loadedRegion = new Rectangle(loadedChunks[initialChunk].WorldPosition.X, loadedChunks[initialChunk].WorldPosition.Y,
-                                                   Tile.HORIZONTAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
-                                                   Tile.VERTICAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
+                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
             collisionTree = new CollisionTree(0, loadedRegion);
+
             // Setting up singleton
             Instance = this;
+
+            loadedChunks[new Vector2Int(0, 0)][5, 5].OutsideObstructState = true;
         }
 
         public void Update(GameTime gameTime)
@@ -86,8 +93,8 @@ namespace ISU_Medieval_Odyssey
             // recreate new collision tree for new bounds
             Vector2Int playerCenter = GameScreen.Instance.Player.CurrentChunk - new Vector2Int(2, 2);
             Rectangle loadedRegion = new Rectangle(loadedChunks[playerCenter].WorldPosition.X, loadedChunks[playerCenter].WorldPosition.Y,
-                                                   Tile.HORIZONTAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
-                                                   Tile.VERTICAL_SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
+                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT,
+                                                   Tile.SPACING * Chunk.SIZE * LOADED_CHUNK_COUNT);
             collisionTree = new CollisionTree(0, loadedRegion);
 
             // Updating the projectiles and collision info in the world
@@ -130,7 +137,7 @@ namespace ISU_Medieval_Odyssey
             // Vector to hold chunk location
             Vector2Int newChunkLocation;
             Vector2Int[] currentChunkLocations = loadedChunks.Keys.ToArray();
-            
+
             foreach (Vector2Int chunkLocation in currentChunkLocations)
             {
                 if (!(centerChunk.X - 2 <= chunkLocation.X && chunkLocation.X <= centerChunk.X + 2 &&
@@ -152,19 +159,13 @@ namespace ISU_Medieval_Odyssey
                     if (!loadedChunks.ContainsKey(newChunkLocation))
                     {
                         // If the chunk is in file, load it, otherwise construct it
-                        if (IO.ChunkExists(newChunkLocation))
-                        {
-                            loadedChunks.Add(newChunkLocation, IO.LoadChunk(newChunkLocation));
-                        }
-                        else
-                        {
-                            loadedChunks.Add(newChunkLocation, new Chunk(newChunkLocation, terrainGenerator));
-                            IO.SaveChunk(loadedChunks[newChunkLocation]);
-                        }
+                        loadedChunks.Add(newChunkLocation, GetChunkAt(newChunkLocation));
                     }
                 }
             }
         }
+
+        Shop test = new Shop(new Vector2Int(0, 0));
 
         /// <summary>
         /// Subprogram to 
@@ -182,6 +183,8 @@ namespace ISU_Medieval_Odyssey
                 chunk.Draw(spriteBatch);
             }
 
+            test.DrawInside(spriteBatch);
+
             // Drawing projectiles
             for (int i = 0; i < projectiles.Count; ++i)
             {
@@ -196,6 +199,46 @@ namespace ISU_Medieval_Odyssey
 
             // Ending spriteBatch
             spriteBatch.End();
+        }
+
+        public Chunk GetChunkAt(Vector2Int chunkCoordinate)
+        {
+            Chunk newChunk;
+
+            if (loadedChunks.ContainsKey(chunkCoordinate))
+            {
+                newChunk = loadedChunks[chunkCoordinate];
+            }
+            else if (IO.ChunkExists(chunkCoordinate))
+            {
+                newChunk = IO.LoadChunk(chunkCoordinate);
+            }
+            else
+            {
+                newChunk = new Chunk(chunkCoordinate, terrainGenerator);
+                IO.SaveChunk(newChunk);
+            }
+
+            return newChunk;
+        }
+
+        public Tile GetTileAt(Vector2Int tileCoordinate)
+        {
+            Vector2Int chunkCoordinate = World.TileToChunkCoordinate(tileCoordinate);
+            Vector2Int newTileCoordinate = tileCoordinate - chunkCoordinate * Chunk.SIZE;
+            return GetChunkAt(chunkCoordinate)[newTileCoordinate.X, newTileCoordinate.Y];
+        }
+
+        public bool IsTileObstructed(Vector2Int tileCoordinate)
+        {
+            Tile tile = GetTileAt(tileCoordinate);
+
+            if (IsInside)
+            {
+                return tile.InsideObstructState;
+            }
+
+            return tile.OutsideObstructState;
         }
 
         /// <summary>
@@ -232,6 +275,22 @@ namespace ISU_Medieval_Odyssey
             }
 
             return retrievedItem;
+        }
+
+        public static Vector2Int PixelToTileCoordinate(Vector2Int pixelCoordinate)
+        {
+            Vector2Int tileCoordinate = Vector2Int.Zero;
+            tileCoordinate.X = (int)Math.Floor(pixelCoordinate.X / (float)Tile.SPACING);
+            tileCoordinate.Y = (int)Math.Floor(pixelCoordinate.Y / (float)Tile.SPACING);
+            return tileCoordinate;
+        }
+
+        public static Vector2Int TileToChunkCoordinate(Vector2Int tileCoordinate)
+        {
+            Vector2Int chunkCoordinate = Vector2Int.Zero;
+            chunkCoordinate.X = (int)Math.Floor(tileCoordinate.X / (float)Chunk.SIZE);
+            chunkCoordinate.Y = (int)Math.Floor(tileCoordinate.Y / (float)Chunk.SIZE);
+            return chunkCoordinate;
         }
     }
 }
