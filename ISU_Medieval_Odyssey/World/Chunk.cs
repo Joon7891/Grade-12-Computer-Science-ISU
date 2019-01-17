@@ -79,14 +79,6 @@ namespace ISU_Medieval_Odyssey
 
         }
 
-        public static Vector2Int TileToChunkCoordinate(Vector2Int tileCoordinate)
-        {
-            Vector2Int chunkCoordinate = Vector2Int.Zero;
-            chunkCoordinate.X = (int)Math.Floor(tileCoordinate.X / (float)SIZE);
-            chunkCoordinate.Y = (int)Math.Floor(tileCoordinate.Y / (float)SIZE);
-            return chunkCoordinate;
-        }
-
         /// <summary>
         /// Subprogarm to serialized this <see cref="Chunk"/>
         /// </summary>

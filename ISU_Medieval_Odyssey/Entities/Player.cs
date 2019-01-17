@@ -189,7 +189,7 @@ namespace ISU_Medieval_Odyssey
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating current tile and chunk coordinates
-            CurrentTile = new Vector2Int(Center.X / Tile.SPACING, Center.Y / Tile.SPACING);
+            CurrentTile = World.PixelToTileCoordinate(Center);
 
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
@@ -286,6 +286,7 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            // Dropping item in hand into the world if player clicks on the world
             if ((MouseHelper.NewRightClick() || MouseHelper.NewLeftClick()) && itemInHand != null)
             {
                 World.Instance.AddItem(itemInHand, rectangle);
@@ -312,11 +313,9 @@ namespace ISU_Medieval_Odyssey
                 case 4:
                     return itemInHand is Shoulders;
 
-                case 5:
+                default:
                     return itemInHand is Head;
             }
-
-            return false;
         }
 
         /// <summary>
@@ -435,22 +434,38 @@ namespace ISU_Medieval_Odyssey
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
                 {
                     Direction = Direction.Up;
-                    unroundedLocation.Y -= (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+
+                    if (!IsObstructed(Direction.Up, gameTime))
+                    {
+                        unroundedLocation.Y -= GetPixelSpeed(gameTime);
+                    }
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
-                    unroundedLocation.Y += (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+
+                    if (!IsObstructed(Direction.Down, gameTime))
+                    {
+                        unroundedLocation.Y += GetPixelSpeed(gameTime);
+                    }
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
-                    unroundedLocation.X -= (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+
+                    if (!IsObstructed(Direction.Left, gameTime))
+                    {
+                        unroundedLocation.X -= GetPixelSpeed(gameTime);
+                    }
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
-                    unroundedLocation.X += (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+
+                    if (!IsObstructed(Direction.Right, gameTime))
+                    {
+                        unroundedLocation.X += GetPixelSpeed(gameTime);
+                    }
                 }
                 
                 // Animating movement frames if weapon is not being used
@@ -492,6 +507,61 @@ namespace ISU_Medieval_Odyssey
             if (!IsMoving && currentWeapon == null)
             {
                 Direction = (Direction)(2 * rotation / Math.PI % 4);
+            }
+        }
+
+        private float GetPixelSpeed(GameTime gameTime)
+        {
+            return (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+        }
+
+
+        private bool IsObstructed(Direction direction, GameTime gameTime)
+        {
+            Vector2Int[] newPixelLocations = { Vector2Int.Zero, Vector2Int.Zero };
+            Vector2Int[] newTileLocations = new Vector2Int[2];
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[1].Y = newPixelLocations[0].Y;
+                    newPixelLocations[0].X = CollisionRectangle.Left;
+                    newPixelLocations[1].X = CollisionRectangle.Right;
+
+                    newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
+                    newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
+                    return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
+
+                case Direction.Down:
+                    newPixelLocations[0].Y = (int)(CollisionRectangle.Bottom + GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[1].Y = newPixelLocations[0].Y;
+                    newPixelLocations[0].X = CollisionRectangle.Left;
+                    newPixelLocations[1].X = CollisionRectangle.Right;
+
+                    newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
+                    newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
+                    return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
+
+                case Direction.Left:
+                    newPixelLocations[0].X = (int)(CollisionRectangle.Left - GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[1].X = newPixelLocations[0].X;
+                    newPixelLocations[0].Y = Center.Y + 25;
+                    newPixelLocations[1].Y = CollisionRectangle.Bottom;
+
+                    newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
+                    newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
+                    return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
+
+                default:
+                    newPixelLocations[0].X = (int)(CollisionRectangle.Right + GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[1].X = newPixelLocations[0].X;
+                    newPixelLocations[0].Y = Center.Y + 25;
+                    newPixelLocations[1].Y = CollisionRectangle.Bottom;
+
+                    newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
+                    newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
+                    return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
             }
         }
 

@@ -44,7 +44,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current chunk coordinates
         /// </summary>
-        public Vector2Int CurrentChunk => Chunk.TileToChunkCoordinate(CurrentTile);
+        public Vector2Int CurrentChunk => World.TileToChunkCoordinate(CurrentTile);
 
         /// <summary>
         /// This <see cref="Entity"/>'s colission rectangle

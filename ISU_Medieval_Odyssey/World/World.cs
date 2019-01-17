@@ -20,6 +20,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static World Instance { get; set; }
 
+        /// <summary>
+        /// Whether the world is inside a <see cref="IBuilding"/>
+        /// </summary>
+        public bool IsInside { get; set; } = false;
+
         // The world's loaded chunks and loaded chunks
         private readonly TerrainGenerator terrainGenerator;
         private const int LOADED_CHUNK_COUNT = 5;
@@ -69,6 +74,8 @@ namespace ISU_Medieval_Odyssey
 
             // Setting up singleton
             Instance = this;
+
+            loadedChunks[new Vector2Int(0, 0)][5, 5].OutsideObstructState = true;
         }
 
         public void Update(GameTime gameTime)
@@ -217,9 +224,21 @@ namespace ISU_Medieval_Odyssey
 
         public Tile GetTileAt(Vector2Int tileCoordinate)
         {
-            Vector2Int chunkCoordinate = Chunk.TileToChunkCoordinate(tileCoordinate);
+            Vector2Int chunkCoordinate = World.TileToChunkCoordinate(tileCoordinate);
             Vector2Int newTileCoordinate = tileCoordinate - chunkCoordinate * Chunk.SIZE;
             return GetChunkAt(chunkCoordinate)[newTileCoordinate.X, newTileCoordinate.Y];
+        }
+
+        public bool IsTileObstructed(Vector2Int tileCoordinate)
+        {
+            Tile tile = GetTileAt(tileCoordinate);
+
+            if (IsInside)
+            {
+                return tile.InsideObstructState;
+            }
+
+            return tile.OutsideObstructState;
         }
 
         /// <summary>
@@ -256,6 +275,22 @@ namespace ISU_Medieval_Odyssey
             }
 
             return retrievedItem;
+        }
+
+        public static Vector2Int PixelToTileCoordinate(Vector2Int pixelCoordinate)
+        {
+            Vector2Int tileCoordinate = Vector2Int.Zero;
+            tileCoordinate.X = (int)Math.Floor(pixelCoordinate.X / (float)Tile.SPACING);
+            tileCoordinate.Y = (int)Math.Floor(pixelCoordinate.Y / (float)Tile.SPACING);
+            return tileCoordinate;
+        }
+
+        public static Vector2Int TileToChunkCoordinate(Vector2Int tileCoordinate)
+        {
+            Vector2Int chunkCoordinate = Vector2Int.Zero;
+            chunkCoordinate.X = (int)Math.Floor(tileCoordinate.X / (float)Chunk.SIZE);
+            chunkCoordinate.Y = (int)Math.Floor(tileCoordinate.Y / (float)Chunk.SIZE);
+            return chunkCoordinate;
         }
     }
 }
