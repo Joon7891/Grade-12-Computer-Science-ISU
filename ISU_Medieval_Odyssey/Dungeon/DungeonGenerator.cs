@@ -209,6 +209,12 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            int mainRoom = rng.Next(0, rooms.Count);
+
+
+
+
+
 
 
 

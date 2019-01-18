@@ -72,7 +72,7 @@ namespace ISU_Medieval_Odyssey
                     break;
                 case Direction.Right:
                     break;
-                case Direction.
+                //case Direction
 
             }
 
