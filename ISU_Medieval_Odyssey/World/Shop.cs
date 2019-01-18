@@ -60,7 +60,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cornerTile">The position of the tile <see cref="Tile"/> in the top left corner</param>
         public Shop(Vector2Int cornerTile)
         {
-            
+            insideShopSprite = new Sprite(insideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
 
             // Setting up appropriate
             for (int i = 0; i < insideObstructionLocs.Count; ++i)

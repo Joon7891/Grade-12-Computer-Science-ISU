@@ -45,6 +45,8 @@ namespace ISU_Medieval_Odyssey
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
 
+        Shop test;
+
         private Rectangle worldBoundsRect;
         private CollisionTree collisionTree;
 
@@ -73,6 +75,9 @@ namespace ISU_Medieval_Odyssey
 
             // Setting up singleton
             Instance = this;
+
+            test = new Shop(new Vector2Int(0, 0));
+
         }
 
         public void Update(GameTime gameTime)
@@ -156,6 +161,9 @@ namespace ISU_Medieval_Odyssey
                         loadedChunks[x, y].Draw(spriteBatch);
                     }
                 }
+
+                test.DrawInside(spriteBatch);
+
             }
             else
             {

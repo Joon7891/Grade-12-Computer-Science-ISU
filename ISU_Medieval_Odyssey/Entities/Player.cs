@@ -70,7 +70,6 @@ namespace ISU_Medieval_Odyssey
         public double DefenseBoostTime { get; set; }
 
         // Graphics-related data
-        private Rectangle rectangle;
         private MovementType movementType = MovementType.Walk;
         private static MovementSpriteSheet movementSpriteSheet;
 
@@ -80,17 +79,18 @@ namespace ISU_Medieval_Odyssey
         private int animationCounter;
         private Queue<MovementImageData> imagesToAnimate = new Queue<MovementImageData>();
 
-        // Player item related variables
-        private int hotbarSelectionIndex = 0;
+        // Player inventory
         private Weapon currentWeapon;
         private Armour hair = new Hair();
         private const int ROW_SIZE = 9;
         private const int ARMOUR_SIZE = 6;
         private ItemSlot[] inventory = new ItemSlot[ARMOUR_SIZE + 3 * ROW_SIZE];
 
-        private bool isInventoryOpen;
-        private Item itemInHand;
-        private Item tempSwapItem;
+        // Variables for player inventory interaction
+        private Item itemInHand = null;
+        private Item tempSwapItem = null;
+        private bool isInventoryOpen = false;
+        private int hotbarSelectionIndex = 0;
         private Rectangle itemInHandRect = new Rectangle(0, 0, ItemSlot.SIZE, ItemSlot.SIZE);
 
         // Statistics-related variables
@@ -221,11 +221,13 @@ namespace ISU_Medieval_Odyssey
                 isInventoryOpen = !isInventoryOpen;
             }
 
-            // Adding item to inventory if there is room and the pick up button is pressed
+            // Picking up item when pick up button is pressed and there is room in inventory
             if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null) > 0)
             {
+                // Retrieving item from world
                 tempSwapItem = World.Instance.RetrieveItem(this);
 
+                // Placing item in first open inventory slot
                 if (tempSwapItem != null)
                 {
                     for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
@@ -238,41 +240,20 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
 
+                // Setting item back to null
                 tempSwapItem = null;
             }
 
-            // Updating hotbar selection if user clicks a hotbar item
+            // Updating hotbar selection if user clicks a hotbar item wit h right click
             for (int i = ARMOUR_SIZE; i < ARMOUR_SIZE + ROW_SIZE; ++i)
             {
                 if (MouseHelper.IsRectangleRightClicked(inventory[i].Rectangle) || KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.HotbarShortcut[i - ARMOUR_SIZE]))
                 {
                     hotbarSelectionIndex = i;
-                    return;
-                }
-
-                // Removing item if it is no longer valid
-                if (inventory[i].Item != null && !inventory[i].Item.Valid)
-                {
-                    inventory[i].Item = null;
                 }
             }
 
-            // Update selected item in hand
-            itemInHandRect.X = (int)(MouseHelper.Location.X - ItemSlot.SIZE / 2 + 0.5);
-            itemInHandRect.Y = (int)(MouseHelper.Location.Y - ItemSlot.SIZE / 2 + 0.5);
-
-            // Updating hotbar selection via scroll
-            hotbarSelectionIndex -= (MouseHelper.ScrollAmount() + ARMOUR_SIZE);
-            hotbarSelectionIndex = (hotbarSelectionIndex + ROW_SIZE) % ROW_SIZE + ARMOUR_SIZE;
-
-            // Using item if user clicks to use it
-            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
-            {
-                UseItem(inventory[hotbarSelectionIndex].Item, gameTime);
-                isInventoryOpen = false;
-            }
-
-            // Updating item in hand
+            // Putting item in "hand" if user left clicks the item
             for (int i = 0; i < ARMOUR_SIZE + ROW_SIZE * (isInventoryOpen ? 3 : 1); ++i)
             {
                 if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
@@ -288,17 +269,47 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            // Using item if user left clicks on the world to use it
+            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
+            {
+                UseItem(inventory[hotbarSelectionIndex].Item, gameTime);
+                isInventoryOpen = false;
+            }            
+
+            // Update selected item in hand
+            itemInHandRect.X = (int)(MouseHelper.Location.X - ItemSlot.SIZE / 2 + 0.5);
+            itemInHandRect.Y = (int)(MouseHelper.Location.Y - ItemSlot.SIZE / 2 + 0.5);
+
+            // Updating hotbar selection via scroll
+            hotbarSelectionIndex -= (MouseHelper.ScrollAmount() + ARMOUR_SIZE);
+            hotbarSelectionIndex = (hotbarSelectionIndex + ROW_SIZE) % ROW_SIZE + ARMOUR_SIZE;
+
             // Dropping item in hand into the world if player clicks on the world
             if ((MouseHelper.NewLeftClick() || MouseHelper.NewLeftClick()) && itemInHand != null)
             {
                 World.Instance.AddItem(itemInHand, rectangle);
                 itemInHand = null;
             }
+
+            // Removing broken or used items from inventory
+            for (int i = 0; i < inventory.Length; ++i)
+            {
+                if (inventory[i].Item != null && !inventory[i].Item.Valid)
+                {
+                    inventory[i].Item = null;
+                }
+            }
         }
 
-        private bool ValidArmourFit(int inventoryIndex)
+        /// <summary>
+        /// Subprogram to determine if the <see cref="Item"/> in hand is a valid fit for the <see cref="Armour"/> bar
+        /// </summary>
+        /// <param name="armourIndex">The index <see cref="Armour"/> slot</param>
+        /// <returns>Whether the <see cref="Item"/> is a valid fit for the <see cref="Armour"/> slot</returns>
+        private bool ValidArmourFit(int armourIndex)
         {
-            switch (inventoryIndex)
+            // Returning if the armour is a valid fit given the armour index
+            switch (armourIndex)
             {
                 case 0:
                     return itemInHand is Shoes;
@@ -398,14 +409,12 @@ namespace ISU_Medieval_Odyssey
             // If weapon is still being used, proceed with weapon animation logic
             if (imagesToAnimate.Count != 0 || currentWeapon != null)
             {
-                ++animationCounter;
+                animationCounter = (animationCounter > 4) ? 0 : (animationCounter + 1);
                 isInventoryOpen = false;
 
                 // Moving onto next frame every 4 updates
                 if (animationCounter == 4)
                 {
-                    animationCounter = 0;
-
                     // If there are no more images left to animate, switch to walking graphics, otherwise animate weapon
                     if (imagesToAnimate.Count == 0)
                     {
@@ -415,6 +424,7 @@ namespace ISU_Medieval_Odyssey
                             World.Instance.AddProjectile(new Arrow(Direction, this));
                         }
 
+                        // Switching to movement graphics
                         movementType = MovementType.Walk;
                         currentWeapon = null;
                         frameNumber = 0;
@@ -427,7 +437,7 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
-            // Updating player movement if any of the movement keys are down
+            // Closing inventory and proceeding with movement logic if player is moving
             if (IsMoving && currentWeapon == null)
             {
                 isInventoryOpen = false;
@@ -437,6 +447,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Up;
 
+                    // Only moving if there is no obstruction in the way
                     if (!IsObstructed(Direction.Up, gameTime))
                     {
                         unroundedLocation.Y -= GetPixelSpeed(gameTime);
@@ -446,6 +457,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Down;
 
+                    // Only moving if there is no obstruction in the way
                     if (!IsObstructed(Direction.Down, gameTime))
                     {
                         unroundedLocation.Y += GetPixelSpeed(gameTime);
@@ -455,6 +467,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Left;
 
+                    // Only moving if there is no obstruction in the way
                     if (!IsObstructed(Direction.Left, gameTime))
                     {
                         unroundedLocation.X -= GetPixelSpeed(gameTime);
@@ -464,6 +477,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Right;
 
+                    // Only moving if there is no obstruction in the way
                     if (!IsObstructed(Direction.Right, gameTime))
                     {
                         unroundedLocation.X += GetPixelSpeed(gameTime);
@@ -498,6 +512,13 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// Subprogram to get the pixel speed of the player
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        /// <returns>The <see cref="Player"/>'s speed in pixels</returns>
+        private float GetPixelSpeed(GameTime gameTime) => (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+
+        /// <summary>
         /// Subprogram to update the player's direction
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
@@ -512,55 +533,69 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        private float GetPixelSpeed(GameTime gameTime)
-        {
-            return (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
-        }
-
-
+        /// <summary>
+        /// Subprogram to determine if the <see cref="Player"/> is moving towards an obstructed object
+        /// </summary>
+        /// <param name="direction">The <see cref="Direction"/> the player is moving in</param>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        /// <returns>Whether the <see cref="Player"/> is moving towards an obstruction</returns>
         private bool IsObstructed(Direction direction, GameTime gameTime)
         {
+            // Vectors representing the player's future location
             Vector2Int[] newPixelLocations = { Vector2Int.Zero, Vector2Int.Zero };
             Vector2Int[] newTileLocations = new Vector2Int[2];
 
+            // Switch statement to quickly lookup each direction
             switch (direction)
             {
                 case Direction.Up:
+                    
+                    // Calculating the player's future location from moving up
                     newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
                     newPixelLocations[0].X = CollisionRectangle.Left;
                     newPixelLocations[1].X = CollisionRectangle.Right;
 
+                    // Converting pixel coordinate to tile coordinate and returning if the player can move up
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
                     newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
                     return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
 
                 case Direction.Down:
+
+                    // Calculating the player's future location from moving down
                     newPixelLocations[0].Y = (int)(CollisionRectangle.Bottom + GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
                     newPixelLocations[0].X = CollisionRectangle.Left;
                     newPixelLocations[1].X = CollisionRectangle.Right;
 
+                    // Converting pixel coordinate to tile coordinate and returning if the player can move down
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
                     newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
                     return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
 
                 case Direction.Left:
+
+                    // Calculating the player's future location from moving left
                     newPixelLocations[0].X = (int)(CollisionRectangle.Left - GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
                     newPixelLocations[1].Y = CollisionRectangle.Bottom;
 
+                    // Converting pixel coordinate to tile coordinate and returning if the player can move left
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
                     newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
                     return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
 
                 default:
+
+                    // Calculating the player's future location from moving right
                     newPixelLocations[0].X = (int)(CollisionRectangle.Right + GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
                     newPixelLocations[1].Y = CollisionRectangle.Bottom;
 
+                    // Converting pixel coordinate to tile coordinate and returning if the player can move right
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
                     newTileLocations[1] = World.PixelToTileCoordinate(newPixelLocations[1]);
                     return World.Instance.IsTileObstructed(newTileLocations[0]) || World.Instance.IsTileObstructed(newTileLocations[1]);
@@ -587,12 +622,13 @@ namespace ISU_Medieval_Odyssey
             }
             currentWeapon?.Draw(spriteBatch, rectangle, Direction, frameNumber);
 
+            // Ending spritebatch
             spriteBatch.End();
 
             // Beginning regular sprite batch
             spriteBatch.Begin();
 
-            // Drawing HUD and hobar
+            // Drawing HUD and inventory
             DrawHUD(spriteBatch);
             DrawInventory(spriteBatch);
 
