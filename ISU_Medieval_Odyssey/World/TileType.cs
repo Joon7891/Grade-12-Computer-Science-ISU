@@ -24,8 +24,6 @@ namespace ISU_Medieval_Odyssey
         Stone,
         Snow,
         IcySnow,
-        Ice,
-        WoodFloorHorizontal,
-        WoodFloorVertical
+        Ice
     }
 }

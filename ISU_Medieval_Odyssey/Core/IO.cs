@@ -21,6 +21,41 @@ namespace ISU_Medieval_Odyssey
         private const string SETTINGS_PATH = BASE_DIRECTORY + "/SettingsData.json";
 
         /// <summary>
+        /// Whether a <see cref="World"/> already exists in file
+        /// </summary>
+        /// <returns>Whether a <see cref="World"/> exists in file</returns>
+        public static bool WorldExists() => File.Exists($"{CHUNK_PATH}/Chunk_0_0.json");
+
+        /// <summary>
+        /// Subprogram to delete the previously saved <see cref="World"/>
+        /// </summary>
+        public static void DeleteWorld()
+        {
+            // The file directory and an array of the files
+            DirectoryInfo folderDirectory;
+            FileInfo[] files;
+
+            // Try-Catch block for file reading
+            try
+            {
+                // Going into folder directory and getting directories inside
+                folderDirectory = new DirectoryInfo(CHUNK_PATH);
+                files = folderDirectory.GetFiles();
+
+                // Deleting files
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    files[i].Delete();
+                }
+            }
+            catch (Exception exception)
+            {
+                // Catching and informing user of exception
+                Console.WriteLine(exception.Message);
+            }
+        }
+
+        /// <summary>
         /// Subprogram to check of a certain <see cref="Chunk"/> exists in file
         /// </summary>
         /// <param name="chunkX">The x-coordinate of the chunk</param>

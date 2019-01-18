@@ -17,36 +17,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The <see cref="Rectangle"/> representing the range of this <see cref="CollisionTree"/>
         /// </summary>
-        public Rectangle Range
-        {
-            get => range;
-            set => range = value;
-        }
-        private Rectangle range;
-
-        public int X
-        {
-            get => range.X;
-            set => range.X = value;
-        }
-
-        public int Y
-        {
-            get => range.Y;
-            set => range.Y = value;
-        }
-
-        public int Width
-        {
-            get => range.Width;
-            set => range.Width = value;
-        }
-
-        public int Height
-        {
-            get => range.Height;
-            set => range.Height = value;
-        }
+        public Rectangle Range { get; set; }
 
         // Various constants to help with collision tree logic
         private const int MAX_DEPTH = 5;
@@ -77,14 +48,20 @@ namespace ISU_Medieval_Odyssey
             // Resetting children nodes
             for (int i = 0; i < subtrees.Length; i++)
             {
+                subtrees[i]?.Clear();
                 subtrees[i] = null;
             }
         }
 
+        /// <summary>
+        /// Subprogram to determine the amount of colissions between a hitbox and a list of collidable objects
+        /// </summary>
+        /// <typeparam name="T">The type of the <see cref="ICollidable"/></typeparam>
+        /// <param name="hitBox">A <see cref="Rectangle"/> representing the refernce hitbox</param>
+        /// <param name="collidableObjects">A list of objects the hitbox could collide with</param>
+        /// <returns>The </returns>
         public List<T> GetCollisions<T>(Rectangle hitBox, List<T> collidableObjects) where T : ICollidable
-        {
-            Console.WriteLine(Range + " " + hitBox + " " + collidableObjects.Count);
-            
+        {            
             // A list representing the colissions between a hitbox and the colliable objects
             List<T> collisions = new List<T>();
             Quadrant subTreeQuadrant;
@@ -98,8 +75,8 @@ namespace ISU_Medieval_Odyssey
             // Determining subtree quadrant
             subTreeQuadrant = GetQuadrant(hitBox);
 
-            // If quadrant is valid, traverse down the subtree
-            if (subTreeQuadrant != Quadrant.None)
+            // If quadrant is valid and there are too many collidables
+            if (subTreeQuadrant != Quadrant.None && collidableObjects.Count > MAX_COLLIDABLES)
             {
                 collisions = GetSubtreeContainments(subTreeQuadrant, hitBox, collidableObjects);
                 return subtrees[(int)(subTreeQuadrant)].GetCollisions(hitBox, collisions);

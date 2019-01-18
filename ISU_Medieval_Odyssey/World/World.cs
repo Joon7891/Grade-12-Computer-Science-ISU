@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -18,6 +19,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Static instance of <see cref="World"/> - see singleton
         /// </summary>
+        [JsonIgnore]
         public static World Instance { get; set; }
 
         /// <summary>
@@ -26,6 +28,7 @@ namespace ISU_Medieval_Odyssey
         public bool IsInside { get; set; } = false;
 
         // The world's loaded chunks and loaded chunks
+        [JsonProperty]
         private readonly TerrainGenerator terrainGenerator;
         private const int CHUNK_COUNT = 3;
         private Chunk[,] loadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
@@ -37,10 +40,12 @@ namespace ISU_Medieval_Odyssey
             new Vector2Int(-2, -2)
         };
 
-        private List<Projectile> projectiles = new List<Projectile>();
         private List<Enemy> enemies = new List<Enemy>();
         private List<LiveItem> liveItems = new List<LiveItem>();
+        private List<IBuilding> buildings = new List<IBuilding>();
+        private List<Projectile> projectiles = new List<Projectile>();
 
+        private Rectangle worldBoundsRect;
         private CollisionTree collisionTree;
 
         /// <summary>
@@ -52,20 +57,19 @@ namespace ISU_Medieval_Odyssey
             // Creating terrtain generator
             terrainGenerator = new TerrainGenerator(seed);
 
-            // Generating chunks around world and adding them to file
+            // Generating chunks around world and adding them to file after clearing previously existing world
+            IO.DeleteWorld();
             for (int y = 0; y < CHUNK_COUNT; ++y)
             {
                 for (int x = 0; x < CHUNK_COUNT; ++x)
                 {
-                    loadedChunks[x, y] = new Chunk(x, y, terrainGenerator);
+                    loadedChunks[x, y] = InitializeChunkAt(x, y);
                 }
             }
 
-            Vector2Int initialChunk = new Vector2Int(0, 0);
-            Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
-                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT,
-                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
-            collisionTree = new CollisionTree(1, loadedRegion);
+            worldBoundsRect = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
+                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
+            collisionTree = new CollisionTree(1, worldBoundsRect);
 
             // Setting up singleton
             Instance = this;
@@ -79,8 +83,9 @@ namespace ISU_Medieval_Odyssey
                 AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
             }
 
-            collisionTree.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
-            collisionTree.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
+            worldBoundsRect.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
+            worldBoundsRect.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
+            collisionTree.Range = worldBoundsRect;
 
             // Updating the projectiles and collision info in the world
             int projectileCount = projectiles.Count - 1;
@@ -196,6 +201,22 @@ namespace ISU_Medieval_Odyssey
             return chunk;
         }
 
+        public Chunk InitializeChunkAt(int x, int y)
+        {
+            Chunk chunk = null;
+
+            if (IO.ChunkExists(x, y))
+            {
+                chunk = IO.LoadChunk(x, y);
+            }
+            else
+            {
+                chunk = new Chunk(x, y, terrainGenerator);
+            }
+
+            return chunk;
+        }
+
 
         public Chunk GetChunkAt(Vector2Int chunkCoordinate)
         {
@@ -254,6 +275,8 @@ namespace ISU_Medieval_Odyssey
 
             return retrievedItem;
         }
+
+        public string Serialize() => JsonConvert.SerializeObject(this);
 
         public static Vector2Int PixelToTileCoordinate(Vector2Int pixelCoordinate)
         {

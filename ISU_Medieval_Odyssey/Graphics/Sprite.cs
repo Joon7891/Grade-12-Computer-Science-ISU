@@ -48,6 +48,11 @@ namespace ISU_Medieval_Odyssey
             set => rectangle.Height = value;
         }
 
+        /// <summary>
+        /// The <see cref="rectangle"/> for this <see cref="Sprite"/>
+        /// </summary>
+        public Rectangle Rectangle => rectangle;
+
         // Rectangle and image for Sprite
         private Rectangle rectangle;
         private Texture2D image;

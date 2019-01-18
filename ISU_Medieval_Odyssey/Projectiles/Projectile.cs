@@ -1,15 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿// Author: Steven Ung, Joon Song
+// File Name: Projectile.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 01/01/2019
+// Modified Date: 01/01/2019
+// Description: Class to hold Projectile object
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    public abstract class Projectile // TODO: MAKE POSITIONING WORK BY TILE, NOT COORD, UNLOADING
+    public abstract class Projectile : ICollidable
     {
         /// <summary>
         /// Whether this <see cref="Projectile"/> is active
@@ -17,9 +18,9 @@ namespace ISU_Medieval_Odyssey
         public bool Active => distanceTraveled <= maxDistance;
 
         /// <summary>
-        /// The <see cref="Rectangle"/> of this <see cref="Projectile"/>
+        /// The colission <see cref="Rectangle"/> of this <see cref="Projectile"/>
         /// </summary>
-        public Rectangle Rectangle => rectangle;
+        public Rectangle CollisionRectangle => rectangle;
         protected Rectangle rectangle;
 
         // Arrow movement variables
