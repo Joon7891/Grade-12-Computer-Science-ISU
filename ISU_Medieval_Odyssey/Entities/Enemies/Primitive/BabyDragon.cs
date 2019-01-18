@@ -7,7 +7,7 @@
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class BabyDragon : BruteEnemy
+    public sealed class BabyDragon : PrimitiveEnemy
     {
     }
 }

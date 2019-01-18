@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Goblin : BruteEnemy
+    public sealed class Goblin : PrimitiveEnemy
     {
         private static new DirectionalSpriteSheet directionalSpriteSheet;
 
@@ -23,14 +23,6 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading in various Goblin specific images
             directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Enemies/Goblin", "goblin", NUM_FRAMES);
-        }
-
-        public Goblin(Vector2Int tileCoordinate)
-        {
-            numFrames = NUM_FRAMES;
-            counterMax = COUNTER_MAX;
-            rectangle = new Rectangle(0, 0, WIDTH, HEIGHT);
-            base.directionalSpriteSheet = directionalSpriteSheet;
         }
     }
 }

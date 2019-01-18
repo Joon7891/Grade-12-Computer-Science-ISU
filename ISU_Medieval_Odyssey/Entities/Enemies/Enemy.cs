@@ -17,93 +17,74 @@ using System.Threading.Tasks;
 namespace ISU_Medieval_Odyssey
 {
     public abstract class Enemy : Entity
-    {
-        /// <summary>
-        /// Possible loot drops for this enemy
-        /// </summary>
-        public List<Item> LootTable { get; set; }
-
-        protected DirectionalSpriteSheet directionalSpriteSheet;
-        protected int numFrames;
-        private int currentFrame = 0;
-        protected int counterMax;
-        private int animationCounter = 0;
-
-
-        private float attackSpeed = 1.5f;
-        private float timeToAttack = 0;
-        private int attackAmount = 10;
+    {       
 
         /// <summary>
-        /// Subprogram to setup various <see cref="Enemy"/> components - used in derived constructors
+        /// Possible loot drops for this <see cref="Enemy"/>
         /// </summary>
-        /// <param name="tileCoordinate">The initial tile coordinate of this <see cref="Enemy"/></param>
-        protected void Setup(Vector2Int tileCoordinate)
+        public List<Item> LootTable { get; }
+
+        /// <summary>
+        /// The amount of experience this <see cref="Enemy"/> drops/gives to <see cref="Player"/>
+        /// </summary>
+        public short Experience { get; }
+
+        private Queue<Vector2Int> futureTiles;
+        private Vector2Int nextTile;
+        private float reevaluateTime;
+        private float timeToReevaluate;
+
+        public Enemy()
         {
-            rectangle.X = (int)((tileCoordinate.X + 0.5) * Tile.SPACING - rectangle.Width);
-            rectangle.Y = (int)((tileCoordinate.Y + 0.5) * Tile.SPACING - rectangle.Height);
-            center.X = rectangle.X + rectangle.Width / 2;
-            center.Y = rectangle.Y + rectangle.Height / 2;            
+            futureTiles = new Queue<Vector2Int>();
         }
 
         /// <summary>
-        /// Update subprogram for <see cref="Enemy"/> object
+        /// Update subprogram for <see cref="Enemy"/> objecy
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
-        public virtual void Update(GameTime gameTime, Player player)
+        public void Update(GameTime gameTime)
         {
-            // If enemy is within a tile to the player, attack, otherwise move towards player
-            if ((Center - Player.Instance.Center).Length() <= Tile.SPACING)
+            // Updating time to reevaluate and reevaluating movement when approriate
+            timeToReevaluate += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if (timeToReevaluate >= reevaluateTime || futureTiles.Count == 0)
             {
-                Attack(gameTime, player);
+                timeToReevaluate = 0;
+                ReevaluateMovement();
             }
-            else
+
+            // Calling subprogram to update movement
+            UpdateMovement(gameTime);
+        }
+
+        protected virtual void ReevaluateMovement() { }
+
+        /// <summary>
+        /// Subprogram to update this <see cref="Enemy"/>'s movement
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        protected virtual void UpdateMovement(GameTime gameTime)
+        {
+            // Moving enemy in appropriate direction
+            switch (Direction)
             {
-                UpdateMovement(gameTime, player);
+                case Direction.Up:
+                    break;
+                case Direction.Right:
+                    break;
+                case Direction.
+
             }
+
         }
 
         /// <summary>
         /// Draw subprogram for <see cref="Enemy"/> object
         /// </summary>
-        /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            // Drawing enemy at in appropriate direction and frame
-            directionalSpriteSheet.Draw(spriteBatch, Direction, currentFrame, rectangle);
-        }
-
-        /// <summary>
-        /// Subprogram to update the <see cref="Enemy"/>'s movement
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values</param>
-        /// <param name="player">The player the <see cref="Enemy"/> is suppose to target</param>
-        protected virtual void UpdateMovement(GameTime gameTime, Player player)
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        public void Draw(SpriteBatch spriteBatch)
         {
 
-        }
-
-        protected virtual Queue<Vector2Int> PathFinding()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Subprogram for this <see cref="Enemy"/> to attack a <see cref="Plane"/>
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values</param>
-        /// <param name="player">The <see cref="Player"/> to attack</param>
-        protected virtual void Attack(GameTime gameTime, Player player)
-        {
-            // Updating the time left for the enemy to attack
-            timeToAttack += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            
-            // Inflicting damage at the enemy's attack speed
-            if (timeToAttack > attackSpeed)
-            {
-                player.Health -= attackAmount;
-                timeToAttack = 0;
-            }
         }
     }
 }

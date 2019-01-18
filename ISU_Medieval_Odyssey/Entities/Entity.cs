@@ -12,12 +12,18 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Entity : ICollidable
     {
+        /// <summary>
+        /// The x-coordinate of this <see cref="Entity"/>
+        /// </summary>
         public int X
         {
             get => rectangle.X;
             set => unroundedLocation.X = value;
         }
 
+        /// <summary>
+        /// The y-coordinate of this <see cref="Entity"/>
+        /// </summary>
         public int Y
         {
             get => rectangle.Y;
@@ -56,6 +62,11 @@ namespace ISU_Medieval_Odyssey
             set => healthBar.CurrentValue = (short) Math.Max(Math.Min(healthBar.MaxValue, value), 0);
         }
         protected NumberBar healthBar;
+
+        /// <summary>
+        /// Whether this <see cref="Entity"/> is alive
+        /// </summary>
+        public bool Alive => Health > 0;
 
         /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second

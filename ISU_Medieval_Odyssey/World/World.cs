@@ -128,9 +128,20 @@ namespace ISU_Medieval_Odyssey
             worldBoundsRect.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
             collisionTree.Range = worldBoundsRect;
 
+            // Updating enemies
+            for (int i = enemies.Count - 1; i >= 0; --i)
+            {
+                enemies[i].Update(gameTime);
+
+                // Removing enemies if they are dead
+                if (!enemies[i].Alive)
+                {
+                    enemies.RemoveAt(i);
+                }
+            }
+
             // Updating the projectiles and collision info in the world
-            int projectileCount = projectiles.Count - 1;
-            for (int i = projectileCount; i >= 0; i--)
+            for (int i = projectiles.Count - 1; i >= 0; --i)
             {
                 projectiles[i].Update(gameTime);
 
@@ -142,8 +153,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating live items
-            int liveItemsCount = liveItems.Count - 1;
-            for (int i = liveItemsCount; i >= 0; --i)
+            for (int i = liveItems.Count - 1; i >= 0; --i)
             {
                 liveItems[i].Update(gameTime);
 
@@ -206,6 +216,12 @@ namespace ISU_Medieval_Odyssey
                 CurrentBuilding.DrawInside(spriteBatch);
             }
             
+
+            // Drawing enemies
+            for (int i = 0; i < enemies.Count; ++i)
+            {
+                enemies[i].Draw(spriteBatch);
+            }
 
             // Drawing projectiles
             for (int i = 0; i < projectiles.Count; ++i)

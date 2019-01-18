@@ -43,13 +43,18 @@
   <ItemGroup>
     <Compile Include="Data Structures\ICollidable.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
+    <Compile Include="Entities\Enemies\Primitive\BabyDragon.cs" />
+    <Compile Include="Entities\Enemies\Advanced\Dragon.cs" />
+    <Compile Include="Entities\Enemies\Advanced\Knight.cs" />
+    <Compile Include="Entities\Enemies\Advanced\RangedEnemy.cs" />
+    <Compile Include="Entities\Enemies\Advanced\Wizard.cs" />
     <Compile Include="World\IBuilding.cs" />
     <Compile Include="World\Interaction.cs" />
     <Compile Include="World\Shop.cs" />
-    <Compile Include="Entities\Enemies\Goblin.cs" />
-    <Compile Include="Entities\Enemies\Skeleton.cs" />
-    <Compile Include="Entities\Enemies\SmartEnemy.cs" />
-    <Compile Include="Entities\Enemies\Witch.cs" />
+    <Compile Include="Entities\Enemies\Primitive\Goblin.cs" />
+    <Compile Include="Entities\Enemies\Primitive\Skeleton.cs" />
+    <Compile Include="Entities\Enemies\Advanced\AdvancedEnemy.cs" />
+    <Compile Include="Entities\Enemies\Advanced\Witch.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Core\IO.cs" />
     <Compile Include="Core\Main.cs" />
@@ -100,7 +105,7 @@
     <Compile Include="Items\Potion\Potion.cs" />
     <Compile Include="Items\Potion\SpeedPotion.cs" />
     <Compile Include="Items\Weapon\ThrustWeapon\LongSpear.cs" />
-    <Compile Include="Entities\Enemies\BruteEnemy.cs" />
+    <Compile Include="Entities\Enemies\Primitive\PrimitiveEnemy.cs" />
     <Compile Include="Entities\Enemies\Enemy.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Items\Armour\Armour.cs" />
