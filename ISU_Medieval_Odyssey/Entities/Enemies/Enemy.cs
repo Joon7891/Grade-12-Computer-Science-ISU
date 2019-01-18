@@ -78,10 +78,7 @@ namespace ISU_Medieval_Odyssey
                     break;
                 case Direction.Right:
                     break;
-                case Direction.Down:
-                    break;
-                case Direction.Left:
-                    break;
+                //case Direction
 
             }
 
