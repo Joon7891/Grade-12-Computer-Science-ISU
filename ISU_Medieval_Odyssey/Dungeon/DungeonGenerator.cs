@@ -30,6 +30,11 @@ namespace ISU_Medieval_Odyssey
         const int DIRECTION_CHANCE = 0;
 
         /// <summary>
+        /// Indicates the extra chance that the maze will have more than one connector for any two+ regions
+        /// </summary>
+        const int CONNECTION_CHANCE = 30;
+
+        /// <summary>
         /// Direction vector2ints that can be added to another vector2int to move in that direction
         /// Using same numbering as the direction enum.
         /// </summary>
@@ -172,6 +177,40 @@ namespace ISU_Medieval_Odyssey
                     stack.Pop();
                 }
             }
+
+        }
+
+        private void ConnectRegions()
+        {
+            // List of all tiles that are currently impassible and touch 2+ regions
+            List<Vector2Int> connectors = new List<Vector2Int>();
+            for(int i = 1; i < MAX_WIDTH-1; i++)
+            {
+                for(int j = 1; j < MAX_HEIGHT-1; j++)
+                {
+                    if (region[i, j] == -1)
+                    {
+                        List<int> regions = new List<int>();
+                        Vector2Int current = new Vector2Int(i, j);
+                        
+                        for(int k = 0; k < 4; k++)
+                        {
+                            Vector2Int check = current + MoveDirections[k];
+                            if(!regions.Contains(region[check.X, check.Y])){
+                                regions.Add(region[check.X, check.Y]);
+                            }
+                        }
+
+                        if(regions.Count >= 2)
+                        {
+                            connectors.Add(current);
+                        }
+                    }
+                }
+            }
+
+
+
 
         }
 
