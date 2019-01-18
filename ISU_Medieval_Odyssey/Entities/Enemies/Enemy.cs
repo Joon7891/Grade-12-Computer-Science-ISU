@@ -29,6 +29,10 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public short Experience { get; }
 
+        protected int collisionBufferVertical;
+        protected int collisionBUfferHorizontal;
+
+
         private Queue<Vector2Int> futureTiles;
         private Vector2Int nextTile;
         private float reevaluateTime;
@@ -69,10 +73,15 @@ namespace ISU_Medieval_Odyssey
             switch (Direction)
             {
                 case Direction.Up:
+                    
+
                     break;
                 case Direction.Right:
                     break;
-                case Direction.
+                case Direction.Down:
+                    break;
+                case Direction.Left:
+                    break;
 
             }
 

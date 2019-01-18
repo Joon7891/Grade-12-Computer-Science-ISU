@@ -9,8 +9,8 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Goblin : PrimitiveEnemy
     {
+        // Goblin specific graphics and consants
         private static new DirectionalSpriteSheet directionalSpriteSheet;
-
         private const int NUM_FRAMES = 7;
         private const int COUNTER_MAX = 5;
         private const int WIDTH = 100;
