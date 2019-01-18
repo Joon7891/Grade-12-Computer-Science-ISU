@@ -83,6 +83,11 @@ namespace ISU_Medieval_Odyssey
 
         }
 
+        protected virtual Queue<Vector2Int> PathFinding()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Subprogram for this <see cref="Enemy"/> to attack a <see cref="Plane"/>
         /// </summary>
