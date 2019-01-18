@@ -28,7 +28,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="progressColor">The progress rectangle color</param>
         /// <param name="progressFont">The progress text font</param>
         /// <param name="textColor">The progress text color</param>
-        public NumberBar(Rectangle rectangle, int maxValue, int currentValue, Color backColor, Color progressColor, 
+        public NumberBar(Rectangle rectangle, short maxValue, short currentValue, Color backColor, Color progressColor, 
             SpriteFont progressFont, Color textColor) : base(rectangle, maxValue, currentValue, backColor, progressColor)
         {
             // Setting number bar properties

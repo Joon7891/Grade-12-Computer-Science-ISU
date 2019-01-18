@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class LiveItem
+    public sealed class LiveItem : ICollidable
     {
         /// <summary>
         /// Whether the <see cref="LiveItem"/> is still Live/has not despawned
@@ -23,9 +23,9 @@ namespace ISU_Medieval_Odyssey
         public Item Item { get; }
 
         /// <summary>
-        /// The <see cref="Rectangle"/> to draw this <see cref="LiveItem"/> in
+        /// The <see cref="Rectangle"/> that this <see cref="LiveItem"/> collides in
         /// </summary>
-        public Rectangle Rectangle { get; }
+        public Rectangle CollisionRectangle { get; }
 
         // Time variables to keep track of despawn times
         private const int DESPAWN_TIME = 300;
@@ -40,7 +40,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up object properties
             Item = item;
-            Rectangle = rectangle;
+            CollisionRectangle = rectangle;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing the icon of the item
-            Item.DrawIcon(spriteBatch, Rectangle);
+            Item.DrawIcon(spriteBatch, CollisionRectangle);
         }
     }
 }

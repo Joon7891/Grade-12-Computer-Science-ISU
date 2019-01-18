@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Audio;
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Player : Entity
-    {
+    {        
         /// <summary>
         /// The size of the player, in pixels
         /// </summary>
@@ -46,7 +46,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The amount of experience that the <see cref="Player"/> has
         /// </summary>
-        public int Experience
+        public short Experience
         {
             get => experienceBar.CurrentValue;
             set => SetExperience(value);
@@ -127,9 +127,10 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Player(string name)
         {
-            // Setting up player rectangle and camera components
+            // Setting up player speed, rectangle, and camera components
+            Speed = 3;
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            CollisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
+            collisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             unroundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
@@ -182,31 +183,29 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
-            // Calling subprograms to update movement and direction
+            // Calling subprograms to update movement, inventory, and direction
             UpdateMovement(gameTime);
+            UpdateInventory(gameTime);
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating current tile and chunk coordinates
             CurrentTile = World.PixelToTileCoordinate(Center);
 
             // Updating status bars
+            healthBar.Update();
+            experienceBar.Update();
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
             statisticsLocs[2].X = 160 - SharedData.InformationFonts[0].MeasureString($"{Gold} Gold").X / 2;
-            experienceBar.Update();
-            healthBar.Update();
-            Speed = 3;
 
             // Updating boost times - if applicable
             SpeedBoostTime = Math.Max(0, SpeedBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
             AttackBoostTime = Math.Max(0, AttackBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
             DefenseBoostTime = Math.Max(0, DefenseBoostTime - gameTime.ElapsedGameTime.Milliseconds / 1000.0);
 
-            // Calling subprogram to update inventory
-            UpdateInventory(gameTime);
-
-            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Interact))// && World.Instance.GetTileAt(CurrentTile).OnInteractProcedure != null)
+            // Invoking callback procedure on current tile if player chooses to interact with the tile 
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Interact) && World.Instance.GetTileAt(CurrentTile).OnInteractProcedure != null)
             {
-               // World.Instance.GetTileAt(CurrentTile).OnInteractProcedure(this);
+                World.Instance.GetTileAt(CurrentTile).OnInteractProcedure(this);
             }
         }
 
@@ -245,7 +244,7 @@ namespace ISU_Medieval_Odyssey
             // Updating hotbar selection if user clicks a hotbar item
             for (int i = ARMOUR_SIZE; i < ARMOUR_SIZE + ROW_SIZE; ++i)
             {
-                if (MouseHelper.IsRectangleLeftClicked(inventory[i].Rectangle) || KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.HotbarShortcut[i - ARMOUR_SIZE]))
+                if (MouseHelper.IsRectangleRightClicked(inventory[i].Rectangle) || KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.HotbarShortcut[i - ARMOUR_SIZE]))
                 {
                     hotbarSelectionIndex = i;
                     return;
@@ -276,7 +275,7 @@ namespace ISU_Medieval_Odyssey
             // Updating item in hand
             for (int i = 0; i < ARMOUR_SIZE + ROW_SIZE * (isInventoryOpen ? 3 : 1); ++i)
             {
-                if (MouseHelper.NewRightClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
+                if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
                 {
                     if ((i < ARMOUR_SIZE && (itemInHand == null || ValidArmourFit(i))) || i >= ARMOUR_SIZE)
                     {
@@ -290,7 +289,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Dropping item in hand into the world if player clicks on the world
-            if ((MouseHelper.NewRightClick() || MouseHelper.NewLeftClick()) && itemInHand != null)
+            if ((MouseHelper.NewLeftClick() || MouseHelper.NewLeftClick()) && itemInHand != null)
             {
                 World.Instance.AddItem(itemInHand, rectangle);
                 itemInHand = null;
@@ -325,7 +324,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to set the experience amount for this <see cref="Player"/>
         /// </summary>
         /// <param name="newExperience">The new experience amount</param>
-        private void SetExperience(int newExperience)
+        private void SetExperience(short newExperience)
         {
             // If new experience does not overflow, set value, otherwise level up player
             if (newExperience < experienceBar.MaxValue)
@@ -346,7 +345,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to determine the level up requirement for the <see cref="Player"/>
         /// </summary>
         /// <returns>The level up requirement for the <see cref="Player"/></returns>
-        private int LevelUpRequirement() => 50 + 50 * Level;
+        private short LevelUpRequirement() => (short)(50 + 50 * Level);
 
         /// <summary>
         /// Subprogram to "use" a certain item
@@ -438,37 +437,37 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Up;
 
-                    //if (!IsObstructed(Direction.Up, gameTime))
-                    //{
+                    if (!IsObstructed(Direction.Up, gameTime))
+                    {
                         unroundedLocation.Y -= GetPixelSpeed(gameTime);
-                    //}
+                    }
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down))
                 {
                     Direction = Direction.Down;
 
-                    //if (!IsObstructed(Direction.Down, gameTime))
-                    //{
+                    if (!IsObstructed(Direction.Down, gameTime))
+                    {
                         unroundedLocation.Y += GetPixelSpeed(gameTime);
-                    //}
+                    }
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left))
                 {
                     Direction = Direction.Left;
 
-                    //if (!IsObstructed(Direction.Left, gameTime))
-                    //{
+                    if (!IsObstructed(Direction.Left, gameTime))
+                    {
                         unroundedLocation.X -= GetPixelSpeed(gameTime);
-                    //}
+                    }
                 }
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right))
                 {
                     Direction = Direction.Right;
 
-                    //if (!IsObstructed(Direction.Right, gameTime))
-                    //{
+                    if (!IsObstructed(Direction.Right, gameTime))
+                    {
                         unroundedLocation.X += GetPixelSpeed(gameTime);
-                    //}
+                    }
                 }
                 
                 // Animating movement frames if weapon is not being used
@@ -492,8 +491,8 @@ namespace ISU_Medieval_Odyssey
             // Updating player coordinate-related variables
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
-            CollisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
-            CollisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
+            collisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
+            collisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
             center.X = rectangle.X + (PIXEL_SIZE >> 1);
             center.Y = rectangle.Y + (PIXEL_SIZE >> 1);
         }

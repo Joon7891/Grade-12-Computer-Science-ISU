@@ -12,13 +12,13 @@ namespace ISU_Medieval_Odyssey
     public interface IBuilding
     {
         /// <summary>
-        /// Subprogram to draw the outside of the building
+        /// Subprogram to draw the outside of the <see cref="IBuilding"/>
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         void DrawOutside(SpriteBatch spriteBatch);
 
         /// <summary>
-        /// Subprogram to draw the inside of the building
+        /// Subprogram to draw the inside of the <see cref="IBuilding"/>
         /// </summary>
         /// <param name="spriteBatch">SprieBatch to draw sprites</param>
         void DrawInside(SpriteBatch spriteBatch);

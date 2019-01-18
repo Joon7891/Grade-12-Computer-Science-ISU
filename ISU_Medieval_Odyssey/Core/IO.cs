@@ -20,10 +20,20 @@ namespace ISU_Medieval_Odyssey
         private const string CHUNK_PATH = BASE_DIRECTORY + "/Chunks";
         private const string SETTINGS_PATH = BASE_DIRECTORY + "/SettingsData.json";
 
-       
+        /// <summary>
+        /// Subprogram to check of a certain <see cref="Chunk"/> exists in file
+        /// </summary>
+        /// <param name="chunkX">The x-coordinate of the chunk</param>
+        /// <param name="chunkY">The y-coordinate of the chunk</param>
+        /// <returns>Whether the <see cref="Chunk"/> exists in file</returns>
         public static bool ChunkExists(int chunkX, int chunkY) => File.Exists($"{CHUNK_PATH}/Chunk_{chunkX}_{chunkY}.json");
 
-        
+        /// <summary>
+        /// Subprogram to load a <see cref="Chunk"/>
+        /// </summary>
+        /// <param name="chunkX">The x-coordinate of the <see cref="Chunk"/></param>
+        /// <param name="chunkY">The y-coordinate of the <see cref="Chunk"/></param>
+        /// <returns>The loaded <see cref="Chunk"/></returns>
         public static Chunk LoadChunk(int chunkX, int chunkY)
         {
             // Raw and serialized chunk

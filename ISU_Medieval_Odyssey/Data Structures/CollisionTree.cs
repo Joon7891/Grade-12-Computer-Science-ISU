@@ -1,176 +1,228 @@
-﻿// Author: Steven Ung
+﻿// Author: Steven Ung, Joon Song
 // File Name: CollisionTree.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 1/15/2018
 // Modified Date: 1/15//2018
 // Description: Tree that holds projectiles and effciently checks for collisions with rectangles
-using Microsoft.Xna.Framework;
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+
 
 namespace ISU_Medieval_Odyssey
 {
-    class CollisionTree
+    public sealed class CollisionTree
     {
-        private const int MAX_DEPTH = 5;
-        private const int MAX_PROJECTILES = 5;
-
-        private int depth;
+        /// <summary>
+        /// The <see cref="Rectangle"/> representing the range of this <see cref="CollisionTree"/>
+        /// </summary>
+        public Rectangle Range
+        {
+            get => range;
+            set => range = value;
+        }
         private Rectangle range;
-        private List<Projectile> projectiles;
-        private CollisionTree[] nodes;
 
-        public CollisionTree(int level, Rectangle range)
+        public int X
         {
-            this.depth = level;
-            this.range = range;
-            nodes = new CollisionTree[4];
-            projectiles = new List<Projectile>();
+            get => range.X;
+            set => range.X = value;
         }
 
-        private int Fit(Rectangle hitBox)
+        public int Y
         {
-            double halfWidth = range.X + range.Width / 2.0;
-            double halfHeight = range.Y + range.Height / 2.0;
-
-            bool fitLeft = halfWidth > hitBox.X + hitBox.Width;
-            bool fitRight = halfWidth < hitBox.X;
-            bool fitUp = halfHeight > hitBox.Y + hitBox.Height;
-            bool fitDown = halfHeight < hitBox.Y;
-
-            if(fitLeft && fitUp)
-            {
-                return 0;
-            }
-            if(fitLeft && fitDown)
-            {
-                return 3;
-            }
-            if (fitRight && fitUp)
-            {
-                return 1;
-            }
-            if (fitRight && fitDown)
-            {
-                return 2;
-            }
-            return -1;
+            get => range.Y;
+            set => range.Y = value;
         }
 
-        private void Split() 
+        public int Width
         {
-            int x = range.X;
-            int y = range.Y;
-            int halfWidth = range.Width / 2;
-            int halfHeight = range.Height / 2;
-
-            nodes[0] = new CollisionTree(depth + 1, new Rectangle(x, y, halfWidth, halfHeight));
-            nodes[1] = new CollisionTree(depth + 1, new Rectangle(x + halfWidth, y, halfWidth, halfHeight));
-            nodes[2] = new CollisionTree(depth + 1, new Rectangle(x, y + halfHeight, halfWidth, halfHeight));
-            nodes[3] = new CollisionTree(depth + 1, new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight));
+            get => range.Width;
+            set => range.Width = value;
         }
 
+        public int Height
+        {
+            get => range.Height;
+            set => range.Height = value;
+        }
+
+        // Various constants to help with collision tree logic
+        private const int MAX_DEPTH = 5;
+        private const int MAX_COLLIDABLES = 5;
+
+        // Various variables regarding the tree's position in the tree and what its searching for
+        private int depth;
+        private CollisionTree[] subtrees;
+
+        /// <summary>
+        /// Constructor for <see cref="CollisionTree"/> object
+        /// </summary>
+        /// <param name="depth">The current depth of this <see cref="CollisionTree"/> with respect to the root</param>
+        /// <param name="range">The <see cref="Rectangle"/></param>
+        public CollisionTree(int depth, Rectangle range)
+        {
+            // Setting up class attribites
+            Range = range;
+            this.depth = depth;
+            subtrees = new CollisionTree[4];
+        }
+
+        /// <summary>
+        /// Subprogarm to clear/reset this <see cref="CollisionTree"/>
+        /// </summary>
         private void Clear()
         {
-            projectiles.Clear();
-
-            for (int i = 0; i < 4; i++)
+            // Resetting children nodes
+            for (int i = 0; i < subtrees.Length; i++)
             {
-                nodes[i]?.Clear();
-                nodes[i] = null;
+                subtrees[i] = null;
             }
         }
 
-        private void Insert(Projectile newProjectile)
+        public List<T> GetCollisions<T>(Rectangle hitBox, List<T> collidableObjects) where T : ICollidable
         {
-            if(nodes[0] != null)
-            {
-                int i = Fit(newProjectile.Rectangle);
+            Console.WriteLine(Range + " " + hitBox + " " + collidableObjects.Count);
+            
+            // A list representing the colissions between a hitbox and the colliable objects
+            List<T> collisions = new List<T>();
+            Quadrant subTreeQuadrant;
 
-                if (i == -1)
-                {
-                    projectiles.Add(newProjectile);
-                }
-                else
-                {
-                    nodes[i].Insert(newProjectile);
-                    return;
-                }
+            // Base-case - there are no objects to check for collision
+            if (collidableObjects.Count == 0)
+            {
+                return collidableObjects;
             }
 
-            if(MAX_PROJECTILES < projectiles.Count && MAX_DEPTH > depth)
+            // Determining subtree quadrant
+            subTreeQuadrant = GetQuadrant(hitBox);
+
+            // If quadrant is valid, traverse down the subtree
+            if (subTreeQuadrant != Quadrant.None)
             {
-                if (nodes[0] == null)
+                collisions = GetSubtreeContainments(subTreeQuadrant, hitBox, collidableObjects);
+                return subtrees[(int)(subTreeQuadrant)].GetCollisions(hitBox, collisions);
+            }
+            else
+            {
+                // Adding collidable to collided objects if it collides with hitbox
+                for (int i = 0; i < collidableObjects.Count; ++i)
                 {
-                    Split();
-                }
-                foreach(Projectile projectile in projectiles)
-                {
-                    if (MAX_PROJECTILES > projectiles.Count) {
-                        return;
-                    }
-                    int i = Fit(projectile.Rectangle);
-                    
-                    if(i != -1)
+                    if (collidableObjects[i].CollisionRectangle.Intersects(hitBox))
                     {
-                        nodes[i].Insert(projectile);
-                        projectiles.Remove(projectile);
+                        collisions.Add(collidableObjects[i]);
                     }
                 }
-                    
-            }
 
-        }
-
-        public void Update(List<Projectile> projectiles)
-        {
-            Clear();
-
-            foreach(Projectile projectile in projectiles)
-            {
-                Insert(projectile);
+                // Returning the collisions and clearing subtrees
+                Clear();
+                return collisions;
             }
         }
 
-        private bool CheckCollision(Rectangle x, Rectangle y)
+        private List<T> GetSubtreeContainments<T>(Quadrant subTreeQuadrant, Rectangle hitBox, List<T> collidableObjects) where T : ICollidable
         {
-            return (Math.Abs(x.X - y.X) * 2 < (x.Width + y.Width)) &&
-                   (Math.Abs(x.Y - y.Y) * 2 < (x.Height + y.Height));
-        }
-
-        private List<Projectile> ReturnCollisions(Rectangle hitBox, List<Projectile> collisions)
-        {
-            int i = Fit(hitBox);
-                                                                                                                  
-            if(nodes[0] != null && i != 0)
+            // List of the collidable objects that are contained in a givne quadrant
+            List<T> subTreeContainments = new List<T>();
+            
+            // Switch-Case to add appropriate 
+            switch (subTreeQuadrant)
             {
-                nodes[i].ReturnCollisions(hitBox, collisions);
+                case Quadrant.TopRight:
+
+                    // Adding collidables in top right quadrant
+                    for (int i = 0; i < collidableObjects.Count; ++i)
+                    {
+                        if (subtrees[0].Range.Left <= collidableObjects[i].CollisionRectangle.Right && subtrees[0].Range.Bottom >= collidableObjects[i].CollisionRectangle.Top)
+                        {
+                            subTreeContainments.Add(collidableObjects[i]);
+                        }
+                    }
+
+                    break;
+
+                case Quadrant.TopLeft:
+
+                    // Adding collidables in top left quadrant
+                    for (int i = 0; i < collidableObjects.Count; ++i)
+                    {
+                        if (subtrees[1].Range.Right >= collidableObjects[i].CollisionRectangle.Left && subtrees[1].Range.Bottom >= collidableObjects[i].CollisionRectangle.Top)
+                        {
+                            subTreeContainments.Add(collidableObjects[i]);
+                        }
+                    }
+
+                    break;
+
+                case Quadrant.BottomLeft:
+
+                    // Adding collidables in bottom left quadrant
+                    for (int i = 0; i < collidableObjects.Count; ++i)
+                    {
+                        if (subtrees[2].Range.Top <= collidableObjects[i].CollisionRectangle.Bottom && subtrees[2].Range.Right >= collidableObjects[i].CollisionRectangle.Left)
+                        {
+                            subTreeContainments.Add(collidableObjects[i]);
+                        }
+                    }
+                    break;
+
+                case Quadrant.BottomRight:
+
+                    // Adding collidables in bottom right quadrant
+                    for (int i = 0; i < collidableObjects.Count; ++i)
+                    {
+                        if (subtrees[3].Range.Left <= collidableObjects[i].CollisionRectangle.Right && subtrees[3].Range.Top <= collidableObjects[i].CollisionRectangle.Bottom)
+                        {
+                            subTreeContainments.Add(collidableObjects[i]);
+                        }
+                    }
+
+                    break;
             }
 
-            foreach(Projectile projectile in projectiles)
-            {
-                collisions.Add(projectile);
-            }
-
-            return collisions;
+            return subTreeContainments;
         }
-                                                                                                                                                   
-        public List<Projectile> ReturnCollisions(Rectangle hitBox)
-        {
-            List<Projectile> collisions = ReturnCollisions(hitBox, new List<Projectile>());
 
-            for(int i = collisions.Count; i >= 0; i--)
+        /// <summary>
+        /// Subprogram to obtain the <see cref="Quadrant"/> that the hitbox is contained in
+        /// </summary>
+        /// <param name="hitBox">The hitbox of the collision tree</param>
+        /// <returns>The <see cref="Quadrant"/> that the hotbox is in</returns>
+        private Quadrant GetQuadrant(Rectangle hitBox)
+        {
+            // Building subtrees
+            BuildSubtrees();
+
+            // Returning quadrant in which rectangle is contained
+            for (byte i = 0; i < subtrees.Length; ++i)
             {
-                if(!CheckCollision(hitBox, collisions[i].Rectangle))
+                if (subtrees[i].Range.Contains(hitBox))
                 {
-                    collisions.Remove(collisions[i]);
+                    return (Quadrant)i;
                 }
             }
 
-            return collisions;
-        }                     
+            // Otherwise return none
+            return Quadrant.None;
+        }
+
+        /// <summary>
+        /// Subprogram to setup this <see cref="CollisionTree"/>'s subtrees
+        /// </summary>
+        private void BuildSubtrees()
+        {
+            // Various rectangle/related variables
+            int x = Range.X;
+            int y = Range.Y;
+            int halfWidth = Range.Width / 2;
+            int halfHeight = Range.Height / 2;
+
+            // Setting up subtrees
+            subtrees[0] = new CollisionTree(depth + 1, new Rectangle(x + halfWidth, y, halfWidth, halfHeight));
+            subtrees[1] = new CollisionTree(depth + 1, new Rectangle(x, y, halfWidth, halfHeight));
+            subtrees[2] = new CollisionTree(depth + 1, new Rectangle(x, y + halfHeight, halfWidth, halfHeight));
+            subtrees[3] = new CollisionTree(depth + 1, new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight));
+        }        
     }                                                                
 }

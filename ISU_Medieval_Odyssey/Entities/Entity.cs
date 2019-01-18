@@ -10,7 +10,7 @@ using System;
 
 namespace ISU_Medieval_Odyssey
 {
-    public abstract class Entity
+    public abstract class Entity : ICollidable
     {
         public int X
         {
@@ -43,7 +43,8 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// This <see cref="Entity"/>'s colission rectangle
         /// </summary>
-        public Rectangle CollisionRectangle;
+        public Rectangle CollisionRectangle => collisionRectangle;
+        protected Rectangle collisionRectangle;
 
         /// <summary>
         /// The health of the <see cref="Entity"/>
@@ -51,7 +52,7 @@ namespace ISU_Medieval_Odyssey
         public int Health
         {
             get => healthBar.CurrentValue;
-            set => healthBar.CurrentValue = Math.Max(Math.Min(healthBar.MaxValue, value), 0);
+            set => healthBar.CurrentValue = (short) Math.Max(Math.Min(healthBar.MaxValue, value), 0);
         }
         protected NumberBar healthBar;
 

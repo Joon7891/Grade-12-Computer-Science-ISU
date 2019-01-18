@@ -41,7 +41,7 @@ namespace ISU_Medieval_Odyssey
         private List<Enemy> enemies = new List<Enemy>();
         private List<LiveItem> liveItems = new List<LiveItem>();
 
-        CollisionTree collisionTree;
+        private CollisionTree collisionTree;
 
         /// <summary>
         /// Constructor for <see cref="World"/> object
@@ -65,7 +65,7 @@ namespace ISU_Medieval_Odyssey
             Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT,
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
-            collisionTree = new CollisionTree(0, loadedRegion);
+            collisionTree = new CollisionTree(1, loadedRegion);
 
             // Setting up singleton
             Instance = this;
@@ -78,15 +78,9 @@ namespace ISU_Medieval_Odyssey
             {
                 AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
             }
-            
 
-            Rectangle loadedRegion = new Rectangle(loadedChunks[0, 0].Position.X, loadedChunks[0, 0].Position.Y,
-                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT,
-                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
-            
-
-            
-            collisionTree = new CollisionTree(0, loadedRegion);
+            collisionTree.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
+            collisionTree.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
 
             // Updating the projectiles and collision info in the world
             int projectileCount = projectiles.Count - 1;
@@ -99,8 +93,6 @@ namespace ISU_Medieval_Odyssey
                 {
                     projectiles.RemoveAt(i);
                 }
-
-                collisionTree.Update(projectiles);
             }
 
             // Updating live items
@@ -116,28 +108,25 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        public List<Projectile> CheckCollisions(Rectangle rectangle)
-        {
-            return collisionTree.ReturnCollisions(rectangle);
-        } 
-
         /// <summary>
         /// Subprogram to adjust the loaded chunk
         /// </summary>
         /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
         public void AdjustLoadedChunks(Vector2Int centerChunk)        
         {
+            // The newly loaded chunks
             Chunk[,] newLoadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
             
-            // Iterating through the chunk locations of the chunks that should be loaded
+            // Iterating through chunks that should be loaded and setting it
             for (int y = 0; y < CHUNK_COUNT; ++y)
             {
                 for (int x = 0; x < CHUNK_COUNT; ++x)
                 {
-                    newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - 1, centerChunk.Y + y - 1);
+                    newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - CHUNK_COUNT / 2, centerChunk.Y + y - CHUNK_COUNT / 2);
                 }
             }
 
+            // Setting the newly loaded chunks as current loaded chunks
             loadedChunks = newLoadedChunks;
         }
 
@@ -151,13 +140,21 @@ namespace ISU_Medieval_Odyssey
             // Beginning spritebatch in adjusted camera
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
-            // Drawing the various loaded chunks
-            for (int y = 0; y < CHUNK_COUNT; ++y)
+            // Drawing chunks and outside of buildings if player is outside, otherwise draw building insides
+            if (!IsInside)
             {
-                for (byte x = 0; x < CHUNK_COUNT; ++x)
+                // Drawing the various loaded chunks
+                for (int y = 0; y < CHUNK_COUNT; ++y)
                 {
-                    loadedChunks[x, y].Draw(spriteBatch);
+                    for (byte x = 0; x < CHUNK_COUNT; ++x)
+                    {
+                        loadedChunks[x, y].Draw(spriteBatch);
+                    }
                 }
+            }
+            else
+            {
+
             }
 
             // Drawing projectiles
@@ -247,15 +244,12 @@ namespace ISU_Medieval_Odyssey
         public Item RetrieveItem(Player player)
         {
             Item retrievedItem = null;
-
-            for (int i = 0; i < liveItems.Count; ++i)
+            List<LiveItem> hitItems = collisionTree.GetCollisions(player.CollisionRectangle, liveItems);
+            
+            if (hitItems.Count > 0)
             {
-                if (player.CollisionRectangle.Intersects(liveItems[i].Rectangle))
-                {
-                    retrievedItem = liveItems[i].Item;
-                    liveItems.RemoveAt(i);
-                    break;
-                }
+                retrievedItem = hitItems[0].Item;
+                liveItems.Remove(hitItems[0]);
             }
 
             return retrievedItem;

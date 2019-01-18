@@ -1,23 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿// Author: Joon Song
+// File Name: TerrainGenerator.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 12/20/2018
+// Modified Date: 12/20/2018
+// Description: Class to hold TerrainGeneator object
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class TerrainGenerator
     {
-        [JsonProperty]
-        private FastNoise NoiseEngine { get; }
-
         /// <summary>
         /// The seed for this <see cref="TerrainGenerator"/>
         /// </summary>
         [JsonProperty]
         public int Seed { get; }
         private const long PRIME_SEED = 4294967295;
+
+        // The noise engine to generate terrain
+        [JsonProperty]
+        private FastNoise noiseEngine;
 
         // HashSet to hold tile noise maps for all tile types
         private static readonly TileNoiseMap[] tileNoiseMaps = 
@@ -49,11 +53,11 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Setting up noise engine and setting seed
-            NoiseEngine = new FastNoise();
-            NoiseEngine.SetFractalOctaves(12);
-            NoiseEngine.SetFractalLacunarity(2);
+            noiseEngine = new FastNoise();
+            noiseEngine.SetFractalOctaves(12);
+            noiseEngine.SetFractalLacunarity(2);
             Seed = (int)seed;
-            NoiseEngine.SetSeed(Seed);
+            noiseEngine.SetSeed(Seed);
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     worldPosition.X = chunkPosition.X * Chunk.SIZE + i;
                     worldPosition.Y = chunkPosition.Y * Chunk.SIZE + j;
-                    tiles[i, j] = new Tile(FloatToTileType(1.0f + NoiseEngine.GetPerlinFractal(worldPosition.X, worldPosition.Y)), worldPosition);
+                    tiles[i, j] = new Tile(FloatToTileType(1.0f + noiseEngine.GetPerlinFractal(worldPosition.X, worldPosition.Y)), worldPosition);
                 }
             }
 

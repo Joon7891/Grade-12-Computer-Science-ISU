@@ -17,26 +17,26 @@ using Microsoft.Xna.Framework.Input;
 namespace ISU_Medieval_Odyssey
 {
     public static class KeyboardHelper
-    {        
+    {
         /// <summary>
         /// Subprogram to check if a keystroke was a new one
         /// </summary>
-        /// <param name="key">The key to check for new keystroke</param>
+        /// <param name="key">The <see cref="Keys"/> to check for new keystroke</param>
         /// <returns>Whether the keystroke was a new one</returns>
         public static bool NewKeyStroke(Keys key) => Main.NewKeyboard.IsKeyDown(key) && !Main.OldKeyboard.IsKeyDown(key);
 
         /// <summary>
         /// Subprogram to check if a keystroke is currently pressed/down
         /// </summary>
-        /// <param name="key">The key to check if it is down</param>
-        /// <returns>Whether or whether not the key is currently down</returns>
+        /// <param name="key">The <see cref="Keys"/> to check if it is down</param>
+        /// <returns>Whether or whether not the <see cref="Keys"/> is currently down</returns>
         public static bool IsKeyDown(Keys key) => Main.NewKeyboard.IsKeyDown(key);
 
         /// <summary>
-        /// Subprogram to determine if any keys in an array of keys are down
+        /// Subprogram to determine if any <see cref="Keys"/> in an array of keys are down
         /// </summary>
-        /// <param name="keys"></param>
-        /// <returns></returns>
+        /// <param name="keys">The <see cref="Keys"/> to check if are down</param>
+        /// <returns>Whether any of the parameter <see cref="Keys"/> are down</returns>
         public static bool IsAnyKeyDown(params Keys[] keys)
         {
             // Returning true of any of the keys are down

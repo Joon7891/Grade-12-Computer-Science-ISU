@@ -5,7 +5,6 @@
 // Modified Date: 01/09/2019
 // Description: Class to hold DirectionalSpriteSheet object
 
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

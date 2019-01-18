@@ -15,12 +15,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The maximum possible value for the progress bar
         /// </summary>
-        public int MaxValue { get; set; }
+        public short MaxValue { get; set; }
 
         /// <summary>
         /// The current value on the progress bar
         /// </summary>
-        public int CurrentValue { get; set; }
+        public short CurrentValue { get; set; }
 
         /// <summary>
         /// The x coordinate of the top left corner of this <see cref="ProgressBar"/>
@@ -62,7 +62,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="currentValue">The current value of the <see cref="ProgressBar"/></param>
         /// <param name="backColor">The back rectangle color</param>
         /// <param name="progressColor">The progress rectangle color</param>
-        public ProgressBar(Rectangle rectangle, int maxValue, int currentValue, Color backColor, Color progressColor)
+        public ProgressBar(Rectangle rectangle, short maxValue, short currentValue, Color backColor, Color progressColor)
         {
             // Assigning constructor parameters as object properties and fields
             backRectangle = rectangle;
