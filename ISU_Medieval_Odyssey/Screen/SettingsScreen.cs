@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -200,6 +201,15 @@ namespace ISU_Medieval_Odyssey
                 volumeSliders[i].Update(gameTime);
             }
 
+            // Updating volume levels if sliders are selected
+            for (byte i = 0; i < volumeSliders.Length; ++i)
+            {
+                if (volumeSliders[i].IsSelected)
+                {
+                    ApplyVolumeChanges();
+                }
+            }
+
             // Determining selected keybinding
             if (MouseHelper.NewLeftClick())
             {
@@ -233,6 +243,16 @@ namespace ISU_Medieval_Odyssey
 
             // Updating back button
             backButton.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Subprogram to apply various volume changes
+        /// </summary>
+        public void ApplyVolumeChanges()
+        {
+            // Setting changes for music and soundeffects 
+            MediaPlayer.Volume = volumeSliders[0].Value;
+            SoundEffect.MasterVolume = volumeSliders[1].Value;
         }
 
         /// <summary>

@@ -60,7 +60,7 @@ namespace ISU_Medieval_Odyssey
         public DungeonGenerator()
         {
             rng = new Random();
-            collisionTree = new CollisionTree(0, new Rectangle(0, 0, MAX_WIDTH, MAX_HEIGHT));
+            collisionTree = new CollisionTree(new Rectangle(0, 0, MAX_WIDTH, MAX_HEIGHT));
             region = new int[MAX_WIDTH, MAX_HEIGHT];
             currentRegion = -1;
 

@@ -19,24 +19,17 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Rectangle Range { get; set; }
 
-        // Various constants to help with collision tree logic
-        private const int MAX_DEPTH = 5;
-        private const int MAX_COLLIDABLES = 5;
-
-        // Various variables regarding the tree's position in the tree and what its searching for
-        private int depth;
+        // The colission tree's subtrees
         private CollisionTree[] subtrees;
 
         /// <summary>
         /// Constructor for <see cref="CollisionTree"/> object
         /// </summary>
-        /// <param name="depth">The current depth of this <see cref="CollisionTree"/> with respect to the root</param>
-        /// <param name="range">The <see cref="Rectangle"/></param>
-        public CollisionTree(int depth, Rectangle range)
+        /// <param name="range">The <see cref="Rectangle"/> of which to scan for colissions</param>
+        public CollisionTree(Rectangle range)
         {
             // Setting up class attribites
             Range = range;
-            this.depth = depth;
             subtrees = new CollisionTree[4];
         }
 
@@ -56,7 +49,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Subprogram to determine the amount of colissions between a hitbox and a list of collidable objects
         /// </summary>
-        /// <typeparam name="T">The type of the <see cref="ICollidable"/></typeparam>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="ICollidable"/></typeparam>
         /// <param name="hitBox">A <see cref="Rectangle"/> representing the refernce hitbox</param>
         /// <param name="collidableObjects">A list of objects the hitbox could collide with</param>
         /// <returns>The </returns>
@@ -75,10 +68,10 @@ namespace ISU_Medieval_Odyssey
             // Determining subtree quadrant
             subTreeQuadrant = GetQuadrant(hitBox);
 
-            // If quadrant is valid and there are too many collidables
-            if (subTreeQuadrant != Quadrant.None && collidableObjects.Count > MAX_COLLIDABLES)
+            // If quadrant is valid
+            if (subTreeQuadrant != Quadrant.None)
             {
-                collisions = GetSubtreeContainments(subTreeQuadrant, hitBox, collidableObjects);
+                collisions = GetSubtreeContainments(subTreeQuadrant, collidableObjects);
                 return subtrees[(int)(subTreeQuadrant)].GetCollisions(hitBox, collisions);
             }
             else
@@ -98,7 +91,14 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        private List<T> GetSubtreeContainments<T>(Quadrant subTreeQuadrant, Rectangle hitBox, List<T> collidableObjects) where T : ICollidable
+        /// <summary>
+        /// Subprogram to get the <see cref="ICollidable"/> objects contained in the specified subtree
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="ICollidable"/></typeparam>
+        /// <param name="subTreeQuadrant">The subtree quadrant that the subprogram will check against</param>
+        /// <param name="collidableObjects">The objects that may be within the subtree</param>
+        /// <returns>A list of <see cref="ICollidable"/> objects inside the specified quadrant</returns>
+        private List<T> GetSubtreeContainments<T>(Quadrant subTreeQuadrant, List<T> collidableObjects) where T : ICollidable
         {
             // List of the collidable objects that are contained in a givne quadrant
             List<T> subTreeContainments = new List<T>();
@@ -158,6 +158,7 @@ namespace ISU_Medieval_Odyssey
                     break;
             }
 
+            // Returning the ICollidables contained in the specified subtree
             return subTreeContainments;
         }
 
@@ -196,10 +197,10 @@ namespace ISU_Medieval_Odyssey
             int halfHeight = Range.Height / 2;
 
             // Setting up subtrees
-            subtrees[0] = new CollisionTree(depth + 1, new Rectangle(x + halfWidth, y, halfWidth, halfHeight));
-            subtrees[1] = new CollisionTree(depth + 1, new Rectangle(x, y, halfWidth, halfHeight));
-            subtrees[2] = new CollisionTree(depth + 1, new Rectangle(x, y + halfHeight, halfWidth, halfHeight));
-            subtrees[3] = new CollisionTree(depth + 1, new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight));
+            subtrees[0] = new CollisionTree(new Rectangle(x + halfWidth, y, halfWidth, halfHeight));
+            subtrees[1] = new CollisionTree(new Rectangle(x, y, halfWidth, halfHeight));
+            subtrees[2] = new CollisionTree(new Rectangle(x, y + halfHeight, halfWidth, halfHeight));
+            subtrees[3] = new CollisionTree(new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight));
         }        
     }                                                                
 }

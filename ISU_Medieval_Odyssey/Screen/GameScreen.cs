@@ -88,9 +88,11 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Drawing player and world
-            World.Draw(spriteBatch, Camera);
-            Player.Draw(spriteBatch, Camera);
+            // Drawing player and world in adjusted camera
+            spriteBatch.Begin(transformMatrix: Camera.ViewMatrix, samplerState: SamplerState.PointClamp);
+            World.Draw(spriteBatch);
+            Player.Draw(spriteBatch);
+            spriteBatch.End();
 
             // Beginning regular sprite batch
             spriteBatch.Begin();
@@ -99,6 +101,7 @@ namespace ISU_Medieval_Odyssey
             {
                 DrawStatistics(spriteBatch);
             }
+            Player.DrawHUD(spriteBatch);
 
             // Ending regular sprite batch
             spriteBatch.End();

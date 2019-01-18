@@ -83,10 +83,37 @@ namespace ISU_Medieval_Odyssey
             // Setting up world boundaries and quadtree
             worldBoundsRect = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
-            collisionTree = new CollisionTree(1, worldBoundsRect);
+            collisionTree = new CollisionTree(worldBoundsRect);
 
             test = new Shop(new Vector2Int(1, 1));
 
+        }
+
+        /// <summary>
+        /// Subprogram to initialize a <see cref="Chunk"/>
+        /// </summary>
+        /// <param name="x">The x-coordinate of the <see cref="Chunk"/></param>
+        /// <param name="y">The y-coordinate of the <see cref="Chunk"/></param>
+        /// <returns>The initalized chunk</returns>
+        private Chunk InitializeChunkAt(int x, int y)
+        {
+            // The chunk being initlaized
+            Chunk chunk = null;
+
+            // Reading chunk from file, if it exists
+            if (IO.ChunkExists(x, y))
+            {
+                chunk = IO.LoadChunk(x, y);
+            }
+            else
+            {
+                // Otherwise, creating it and saving it to file
+                chunk = new Chunk(x, y, terrainGenerator);
+                IO.SaveChunk(chunk);
+            }
+
+            // Returning initialized chunk
+            return chunk;
         }
 
         public void Update(GameTime gameTime)
@@ -150,16 +177,12 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Subprogram to 
+        /// Draw subprogram for <see cref="World"/> object
         /// </summary>
-        /// <param name="spriteBatch"></param>
-        /// <param name="camera"></param>
-        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        public void Draw(SpriteBatch spriteBatch)
         {
-            // Beginning spritebatch in adjusted camera
-            spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
-
-            // Drawing chunks and outside of buildings if player is outside, otherwise draw current building inside
+            // Drawing appropriate data, depending whether the player is inside or outside
             if (!IsInside)
             {
                 // Drawing the various loaded chunks
@@ -170,7 +193,8 @@ namespace ISU_Medieval_Odyssey
                         loadedChunks[x, y].Draw(spriteBatch);
                     }
                 }
-
+                
+                // Drawing the outsides of various buildings
                 for (int i = 0; i < buildings.Count; ++i)
                 {
                     buildings[i].DrawOutside(spriteBatch);
@@ -178,10 +202,10 @@ namespace ISU_Medieval_Odyssey
             }
             else
             {
-                CurrentBuilding?.DrawInside(spriteBatch);
+                // Drawing the current building the player is in
+                CurrentBuilding.DrawInside(spriteBatch);
             }
-
-            test.DrawInside(spriteBatch);
+            
 
             // Drawing projectiles
             for (int i = 0; i < projectiles.Count; ++i)
@@ -195,10 +219,64 @@ namespace ISU_Medieval_Odyssey
                 liveItems[i].Draw(spriteBatch);
             }
 
-            // Ending spriteBatch
-            spriteBatch.End();
+            test.DrawOutside(spriteBatch);
         }
-        
+
+        /// <summary>
+        /// Subprogram to add a projectile into this <see cref="World"/>
+        /// </summary>
+        /// <param name="projectile">The <see cref="Projectile"/> to be added</param>
+        public void AddProjectile(Projectile projectile)
+        {
+            // Adding projectile
+            projectiles.Add(projectile);
+        }
+
+        /// <summary>
+        /// Subprogram to add an <see cref="Item"/> to the <see cref="World"/>
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to be added</param>
+        /// <param name="playerRectangle">The <see cref="Rectangle"/> of the <see cref="Player"/> who is adding the item</param>
+        public void AddItem(Item item, Rectangle playerRectangle)
+        {
+            // Adjusting rectangle and adding item as a LiveItem
+            playerRectangle.Y = playerRectangle.Y + (playerRectangle.Height - ItemSlot.SIZE) / 2;
+            playerRectangle.X = playerRectangle.X + (playerRectangle.Width - ItemSlot.SIZE) / 2;
+            playerRectangle.Width = ItemSlot.SIZE;
+            playerRectangle.Height = ItemSlot.SIZE;
+            liveItems.Add(new LiveItem(item, playerRectangle));
+        }
+
+        /// <summary>
+        /// Subprogram to add a <see cref="IBuilding"/> to the world
+        /// </summary>
+        /// <param name="building">The <see cref="IBuilding"/> to be added</param>
+        public void AddBuilding(IBuilding building)
+        {
+            // Adding building
+            buildings.Add(building);
+        }
+
+        /// <summary>
+        /// Subprogram to retrieve an <see cref="Item"/> that the <see cref="Player"/> is on top of
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public Item RetrieveItem(Player player)
+        {
+            Item retrievedItem = null;
+            List<LiveItem> hitItems = collisionTree.GetCollisions(player.CollisionRectangle, liveItems);
+            
+            if (hitItems.Count > 0)
+            {
+                retrievedItem = hitItems[0].Item;
+                liveItems.Remove(hitItems[0]);
+            }
+
+            return retrievedItem;
+        }
+
+
         public Chunk GetChunkAt(int x, int y)
         {
             Chunk chunk;
@@ -222,97 +300,61 @@ namespace ISU_Medieval_Odyssey
             return chunk;
         }
 
-        public Chunk InitializeChunkAt(int x, int y)
-        {
-            Chunk chunk = null;
-
-            if (IO.ChunkExists(x, y))
-            {
-                chunk = IO.LoadChunk(x, y);
-            }
-            else
-            {
-                chunk = new Chunk(x, y, terrainGenerator);
-            }
-
-            return chunk;
-        }
-
-
-        public Chunk GetChunkAt(Vector2Int chunkCoordinate)
-        {
-            Vector2Int relativeCoordinate = chunkCoordinate - loadedChunks[0, 0].Position;
-            return loadedChunks[relativeCoordinate.X, relativeCoordinate.Y];
-        }
-
         public Tile GetTileAt(Vector2Int tileCoordinate)
         {
             Vector2Int chunkCoordinate = TileToChunkCoordinate(tileCoordinate);
             Vector2Int newTileCoordinate = tileCoordinate - chunkCoordinate * Chunk.SIZE;
-            return GetChunkAt(chunkCoordinate)[newTileCoordinate.X, newTileCoordinate.Y];
+            return GetChunkAt(chunkCoordinate.X, chunkCoordinate.Y)[newTileCoordinate.X, newTileCoordinate.Y];
         }
 
+        /// <summary>
+        /// Subprogram to determine if a certain tile is obstructed
+        /// </summary>
+        /// <param name="tileCoordinate"></param>
+        /// <returns></returns>
         public bool IsTileObstructed(Vector2Int tileCoordinate)
         {
+            // The tile thaty may be obstructed
             Tile tile = GetTileAt(tileCoordinate);
 
+            // If the player is inside a building return the inside obstruct state
             if (IsInside)
             {
                 return tile.InsideObstructState;
             }
 
+            // Otherwise return the outside obstruct state
             return tile.OutsideObstructState;
         }
 
         /// <summary>
-        /// Subprogram to add a projectile into this <see cref="World"/>
+        /// Subprogram to convert a pixel coordinate into a <see cref="Tile"/> coordinate
         /// </summary>
-        /// <param name="projectile">The <see cref="Projectile"/> to be added</param>
-        public void AddProjectile(Projectile projectile)
-        {
-            // Adding projectile
-            projectiles.Add(projectile);
-        }
-
-        public void AddItem(Item item, Rectangle rectangle)
-        {
-            rectangle.Y = rectangle.Y + (rectangle.Height - ItemSlot.SIZE) / 2;
-            rectangle.X = rectangle.X + (rectangle.Width - ItemSlot.SIZE) / 2;
-            rectangle.Width = ItemSlot.SIZE;
-            rectangle.Height = ItemSlot.SIZE;
-            liveItems.Add(new LiveItem(item, rectangle));
-        }
-
-        public Item RetrieveItem(Player player)
-        {
-            Item retrievedItem = null;
-            List<LiveItem> hitItems = collisionTree.GetCollisions(player.CollisionRectangle, liveItems);
-            
-            if (hitItems.Count > 0)
-            {
-                retrievedItem = hitItems[0].Item;
-                liveItems.Remove(hitItems[0]);
-            }
-
-            return retrievedItem;
-        }
-
-        public string Serialize() => JsonConvert.SerializeObject(this);
-
+        /// <param name="pixelCoordinate">The pixel coordinate to be converted</param>
+        /// <returns>The converted <see cref="Tile"/> coordinate</returns>
         public static Vector2Int PixelToTileCoordinate(Vector2Int pixelCoordinate)
         {
+            // Calculating tile coordinate and returning it
             Vector2Int tileCoordinate = Vector2Int.Zero;
             tileCoordinate.X = (int)Math.Floor(pixelCoordinate.X / (float)Tile.SPACING);
             tileCoordinate.Y = (int)Math.Floor(pixelCoordinate.Y / (float)Tile.SPACING);
             return tileCoordinate;
         }
 
+        /// <summary>
+        /// Subprogram to convert a <see cref="Tile"/> coordinate to a <see cref="Chunk"/> coordinate
+        /// </summary>
+        /// <param name="tileCoordinate">The <see cref="Tile"/> coordinate to be converted</param>
+        /// <returns>The converted <see cref="Chunk"/> coordinate</returns>
         public static Vector2Int TileToChunkCoordinate(Vector2Int tileCoordinate)
         {
+            // Calculating chunk coordinate and returning it
             Vector2Int chunkCoordinate = Vector2Int.Zero;
             chunkCoordinate.X = (int)Math.Floor(tileCoordinate.X / (float)Chunk.SIZE);
             chunkCoordinate.Y = (int)Math.Floor(tileCoordinate.Y / (float)Chunk.SIZE);
             return chunkCoordinate;
         }
+
+        public string Serialize() => JsonConvert.SerializeObject(this);
     }
 }

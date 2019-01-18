@@ -18,6 +18,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public float Value { get; set; }
 
+        /// <summary>
+        /// Whether the <see cref="Slider"/> is selected
+        /// </summary>
+        public bool IsSelected => MouseHelper.IsCircleSelected(bufferCircles[0]) || MouseHelper.IsCircleSelected(bufferCircles[1]) || MouseHelper.IsRectangleLeftSelected(rectangle);
+
         // Various graphical for drawing the Slider
         private Color backColor;
         private Circle valueCircle;
@@ -40,6 +45,7 @@ namespace ISU_Medieval_Odyssey
             bufferCircles[1] = new Circle(new Vector2Int(rectangle.Right, rectangle.Y + circleRadius), circleRadius, backColor);
             valueCircle = new Circle(new Vector2Int((int)(currentValue * rectangle.Width + 0.5) + rectangle.Left, rectangle.Y + circleRadius), circleRadius, valueColor);
             this.backColor = backColor;
+            Value = currentValue;
         }
 
         /// <summary>
@@ -49,7 +55,7 @@ namespace ISU_Medieval_Odyssey
         public void Update(GameTime gameTime)
         {
             // Updating progress value and circle if slider is clicked
-            if (MouseHelper.IsCircleSelected(bufferCircles[0]) || MouseHelper.IsCircleSelected(bufferCircles[1]) || MouseHelper.IsRectangleLeftSelected(rectangle))
+            if (IsSelected)
             {
                 Value = Math.Max(Math.Min((MouseHelper.Location.X - rectangle.Left) / rectangle.Width, 1.0f), 0.0f);
             }

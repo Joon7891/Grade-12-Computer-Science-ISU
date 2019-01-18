@@ -47,6 +47,15 @@ namespace ISU_Medieval_Odyssey
         [JsonProperty]
         private TerrainGenerator terrainGenerator;
 
+        public bool HasShop { get; } = false;
+
+        public bool HasBuilding { get; } = false;
+
+        // Variables required for randomly setting a shop or a safe house in this chunk
+        private const int SHOP_CHANCE = 3;
+        private const int SAFE_HOUSE_CHANCE = 50;
+        private IBuilding building;
+
         /// <summary>
         /// Constructor for <see cref="Chunk"/> object
         /// </summary>
@@ -59,6 +68,13 @@ namespace ISU_Medieval_Odyssey
             tiles = new Tile[SIZE, SIZE];
             this.terrainGenerator = terrainGenerator;
             tiles = terrainGenerator.GenerateChunkTiles(Position); 
+
+            //// Radnomly generating a shop in this chunk if applicable
+            //if (SharedData.RNG.Next(SHOP_CHANCE) == 0 && !Shop.IsChunkAllowed(Position))
+            //{
+            //    building = new Shop(WorldPosition); // Add some random stuff here...
+            //    World.Instance.AddBuilding(building);
+            //}
         }
 
         /// <summary>

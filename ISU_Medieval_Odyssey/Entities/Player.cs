@@ -278,7 +278,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Using item if user left clicks on the world to use it
-            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null)
+            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null && itemInHand == null)
             {
                 UseItem(inventory[hotbarSelectionIndex].Item, gameTime);
                 isInventoryOpen = false;
@@ -616,11 +616,9 @@ namespace ISU_Medieval_Odyssey
         /// Draw subprogram for <see cref="Player"/> object
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        /// <param name="camera">The camaera currently pointed at the player</param>
-        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            // Drawing player and its corresponding armour and weapon in appropraite sprite batch
-            spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
+            // Drawing player and its corresponding armour and weapon
             movementSpriteSheet.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             for (byte i = 0; i < ARMOUR_SIZE; ++i)
             {
@@ -631,35 +629,6 @@ namespace ISU_Medieval_Odyssey
                 hair.Draw(spriteBatch, movementType, Direction, frameNumber, rectangle);
             }
             currentWeapon?.Draw(spriteBatch, rectangle, Direction, frameNumber);
-
-            // Ending spritebatch
-            spriteBatch.End();
-
-            // Beginning regular sprite batch
-            spriteBatch.Begin();
-
-            // Drawing HUD and inventory
-            DrawHUD(spriteBatch);
-            DrawInventory(spriteBatch);
-
-            // Ending regular sprite batch
-            spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Subprogram to draw the <see cref="Player"/>'s inventory
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        private void DrawInventory(SpriteBatch spriteBatch)
-        {
-            // Drawing the hotbar
-            for (int i = 0; i < ARMOUR_SIZE + (isInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
-            {
-                inventory[i].Draw(spriteBatch, i == hotbarSelectionIndex);
-            }
-
-            // Drawing item in "hand" - if applicable
-            itemInHand?.DrawIcon(spriteBatch, itemInHandRect);
         }
 
         /// <summary>
@@ -689,8 +658,17 @@ namespace ISU_Medieval_Odyssey
         /// Draw subprogram for the <see cref="Player"/>'s heads up display
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        private void DrawHUD(SpriteBatch spriteBatch)
+        public void DrawHUD(SpriteBatch spriteBatch)
         {
+            // Drawing the hotbar
+            for (int i = 0; i < ARMOUR_SIZE + (isInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
+            {
+                inventory[i].Draw(spriteBatch, i == hotbarSelectionIndex);
+            }
+
+            // Drawing item in "hand" - if applicable
+            itemInHand?.DrawIcon(spriteBatch, itemInHandRect);
+
             // Drawing primitive player properties
             spriteBatch.DrawString(SharedData.InformationFonts[1], Name, statisticsLocs[0], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Level {Level}", statisticsLocs[1], Color.White);
