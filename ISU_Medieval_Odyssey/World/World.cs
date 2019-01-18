@@ -55,8 +55,6 @@ namespace ISU_Medieval_Odyssey
         private Rectangle worldBoundsRect;
         private CollisionTree collisionTree;
 
-        private Shop test;
-
         /// <summary>
         /// Constructor for <see cref="World"/> object
         /// </summary>
@@ -84,9 +82,6 @@ namespace ISU_Medieval_Odyssey
             worldBoundsRect = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             collisionTree = new CollisionTree(worldBoundsRect);
-
-            test = new Shop(new Vector2Int(1, 1));
-
         }
 
         /// <summary>
@@ -234,8 +229,6 @@ namespace ISU_Medieval_Odyssey
             {
                 liveItems[i].Draw(spriteBatch);
             }
-
-            test.DrawOutside(spriteBatch);
         }
 
         /// <summary>

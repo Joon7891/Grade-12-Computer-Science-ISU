@@ -39,7 +39,7 @@ namespace ISU_Medieval_Odyssey
         {
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
-            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+            InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
         }
     }
 }

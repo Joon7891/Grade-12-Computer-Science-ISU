@@ -44,7 +44,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up MetalHelmet
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
-            SetArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
+            InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
         }
     }
 }

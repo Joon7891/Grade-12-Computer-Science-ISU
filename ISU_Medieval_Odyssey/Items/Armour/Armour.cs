@@ -50,7 +50,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="maxDefense">The maximum allowed defense on this <see cref="Armour"/></param>
         /// <param name="minDurability">The minimum allowed durability on this <see cref="Armour"/></param>
         /// <param name="maxDurability"><The minimum allowed durability on this <see cref="Armour"/>/param>
-        protected void SetArmourStatistics(short minDefense, short maxDefense, short minDurability, short maxDurability)
+        protected void InitializeArmourStatistics(short minDefense, short maxDefense, short minDurability, short maxDurability)
         {
             // Calculating and assigning various armour statistics
             short durability = (short)SharedData.RNG.Next(minDurability, maxDurability + 1);

@@ -57,7 +57,6 @@ namespace ISU_Medieval_Odyssey
             set => SetExperience(value);
         }
         private NumberBar experienceBar;
-        private static SoundEffect levelUpSoundEffect;
 
         /// <summary>
         /// The speed boost time of <see cref="Player"/>
@@ -77,6 +76,11 @@ namespace ISU_Medieval_Odyssey
         // Graphics-related data
         private MovementType movementType = MovementType.Walk;
         private static MovementSpriteSheet movementSpriteSheet;
+
+        // Various player sound effects
+        private static SoundEffect levelUpSoundEffect;
+        private static SoundEffect dropItemSoundEffect;
+        private static SoundEffect pickupItemSoundEffect;
 
         // Animation & movement related data
         private float rotation;
@@ -125,6 +129,8 @@ namespace ISU_Medieval_Odyssey
             // Loading in various graphics and audio
             movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Player/", "player");
             levelUpSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/levelUpSoundEffect");
+            dropItemSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/dropItemSoundEffect");
+            pickupItemSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/pickupItemSoundEffect");
         }
 
         /// <summary>
@@ -235,7 +241,7 @@ namespace ISU_Medieval_Odyssey
                 // Retrieving item from world
                 tempSwapItem = World.Instance.RetrieveItem(this);
 
-                // Placing item in first open inventory slot
+                // Placing item in first open inventory slot and playing pick up item sound effect
                 if (tempSwapItem != null)
                 {
                     for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
@@ -247,6 +253,7 @@ namespace ISU_Medieval_Odyssey
                         }
                     }
                 }
+                pickupItemSoundEffect.CreateInstance().Play();
 
                 // Setting item back to null
                 tempSwapItem = null;
@@ -292,10 +299,11 @@ namespace ISU_Medieval_Odyssey
             hotbarSelectionIndex -= (MouseHelper.ScrollAmount() + ARMOUR_SIZE);
             hotbarSelectionIndex = (hotbarSelectionIndex + ROW_SIZE) % ROW_SIZE + ARMOUR_SIZE;
 
-            // Dropping item in hand into the world if player clicks on the world
+            // Dropping item in hand into world and playing sound effect if player clicks on the world
             if ((MouseHelper.NewLeftClick() || MouseHelper.NewLeftClick()) && itemInHand != null)
             {
                 World.Instance.AddItem(itemInHand, rectangle);
+                dropItemSoundEffect.CreateInstance().Play();
                 itemInHand = null;
             }
 

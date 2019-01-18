@@ -29,18 +29,27 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public short Experience { get; }
 
+        protected float attackSpeed;
+        protected short damageAmount;
+
         protected int collisionBufferVertical;
         protected int collisionBUfferHorizontal;
 
 
-        private Queue<Vector2Int> futureTiles;
+        private Queue<Vector2Int> futureTiles = new Queue<Vector2Int>();
         private Vector2Int nextTile;
         private float reevaluateTime;
         private float timeToReevaluate;
 
-        public Enemy()
+        // Graphics-realted data
+        protected byte maxFrames;
+        protected byte currentFrame = 0;
+        protected byte animationCounter = 0;
+        protected DirectionalSpriteSheet directionalSpriteSheet;
+
+        protected void Initialize(Vector2Int tileCoordinate)
         {
-            futureTiles = new Queue<Vector2Int>();
+
         }
 
         /// <summary>
@@ -90,7 +99,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            // Drawing enemy
+            directionalSpriteSheet.Draw(spriteBatch, Direction.Down, 0, new Rectangle(0, 0, 80, 80));
         }
     }
 }
