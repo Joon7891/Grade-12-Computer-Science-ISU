@@ -2,7 +2,7 @@
 // File Name: Sprite.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 09/11/2018
-// Modified Date: 01/11/2019
+// Modified Date: 01/17/2019
 // Description: Class to hold Sprite object - implements IGraphic
 
 using Microsoft.Xna.Framework;

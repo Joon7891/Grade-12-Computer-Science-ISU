@@ -2,7 +2,7 @@
 // File Name: ArrayHelper.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 01/13/2019
-// Modified Date: 01/13/2019
+// Modified Date: 01/17/2019
 // Description: Class to hold various subprograms to help with array functionality
 
 namespace ISU_Medieval_Odyssey

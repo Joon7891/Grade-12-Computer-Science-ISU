@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -18,16 +19,20 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Rectangle Rectangle => insideShopSprite.Rectangle;
 
+        // Shop graphics, images, and important coordinates
         private static Texture2D insideShopImage;
+        private static Texture2D outsideShopImage;
+        private static SoundEffect doorSoundEffect;
+        private static Vector2Int exitLocation = new Vector2Int(4, 9);
+        private static Vector2Int enterLocation = new Vector2Int(4, 10);
         private static List<Vector2Int> insideObstructionLocs = new List<Vector2Int>();
         private static List<Vector2Int> outsideObstructionLocs = new List<Vector2Int>();
 
         // Various constants representing dimensions of the Shop
-        private const int OUTSIDE_WIDTH = 9;
         private const int INSIDE_WIDTH = 7;
         private const int INSIDE_HEIGHT = 6;
+        private const int OUTSIDE_WIDTH = 9;
         private const int OUTSIDE_HEIGHT = 10;
-
         private const int PIXEL_WIDTH = Tile.SPACING * OUTSIDE_WIDTH;
         private const int PIXEL_HEIGHT = Tile.SPACING * OUTSIDE_HEIGHT;
 
@@ -39,10 +44,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Shop()
         {
-            // Importing shop images
-            insideShopImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopInsideImage"); 
+            // Importing shop images and audio
+            insideShopImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopInsideImage");
+            doorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/doorSoundEffect");
 
-            // Setting up obstruction tiles
+            // Setting up inside obstruction tiles
             for (int i = 0; i < INSIDE_WIDTH; ++i)
             {
                 insideObstructionLocs.Add(new Vector2Int(1 + i, 2));
@@ -51,6 +57,24 @@ namespace ISU_Medieval_Odyssey
             {
                 insideObstructionLocs.Add(new Vector2Int(0, 3 + i));
                 insideObstructionLocs.Add(new Vector2Int(INSIDE_WIDTH + 1, 3 + i));
+            }
+            for (int i = 0; i < INSIDE_WIDTH / 2; ++i)
+            {
+                insideObstructionLocs.Add(new Vector2Int(1 + i, 9));
+                insideObstructionLocs.Add(new Vector2Int(5 + i, 9));
+            }
+            insideObstructionLocs.Add(new Vector2Int(4, 10));
+
+            // Setting up outside obstruction tiles
+            for (int i = 0; i < INSIDE_WIDTH; ++i)
+            {
+                outsideObstructionLocs.Add(new Vector2Int(1 + i, 1));
+                outsideObstructionLocs.Add(new Vector2Int(1 + i, 9));
+            }
+            for (int i = 0; i < OUTSIDE_HEIGHT - 1; ++i)
+            {
+                outsideObstructionLocs.Add(new Vector2Int(1, 1 + i));
+                outsideObstructionLocs.Add(new Vector2Int(INSIDE_WIDTH, 1 + i));
             }
         }
 
@@ -62,7 +86,7 @@ namespace ISU_Medieval_Odyssey
         {
             insideShopSprite = new Sprite(insideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
 
-            // Setting up appropriate
+            // Setting up appropriate obstructions and functions for certain locations
             for (int i = 0; i < insideObstructionLocs.Count; ++i)
             {
                 World.Instance.GetTileAt(cornerTile + insideObstructionLocs[i]).InsideObstructState = true;
@@ -71,6 +95,18 @@ namespace ISU_Medieval_Odyssey
             {
                 World.Instance.GetTileAt(cornerTile + outsideObstructionLocs[i]).OutsideObstructState = true;
             }
+            World.Instance.GetTileAt(cornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
+            {
+                World.Instance.IsInside = false;
+                player.Y += Tile.SPACING;
+                doorSoundEffect.CreateInstance().Play();
+            });
+            World.Instance.GetTileAt(cornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
+            {               
+                World.Instance.IsInside = true;
+                player.Y -= Tile.SPACING;
+                doorSoundEffect.CreateInstance().Play();
+            });
         }
 
         /// <summary>

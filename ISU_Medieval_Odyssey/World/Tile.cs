@@ -54,7 +54,7 @@ namespace ISU_Medieval_Odyssey
         /// The <see cref="OnInteract"/> procedure to execute while on this <see cref="Tile"/>
         /// </summary>
         [JsonProperty]
-        public OnInteract OnInteractProcedure { get; set; } = null;
+        public Interaction OnInteractProcedure { get; set; }
 
         // Variables required for drawing tile
         private static Dictionary<TileType, Texture2D> tileImageDictionary = new Dictionary<TileType, Texture2D>();

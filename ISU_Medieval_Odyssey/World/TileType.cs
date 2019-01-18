@@ -2,7 +2,7 @@
 // File Name: TileType.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/17/2018
-// Modified Date: 12/20/2018
+// Modified Date: 01/17/2018
 // Description: Class to hold TileType enum
 
 namespace ISU_Medieval_Odyssey

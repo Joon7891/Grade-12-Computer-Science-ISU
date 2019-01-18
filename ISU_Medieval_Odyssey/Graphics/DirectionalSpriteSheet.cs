@@ -36,9 +36,9 @@ namespace ISU_Medieval_Odyssey
         /// Draw subprogarm for <see cref="DirectionalSpriteSheet"/>
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        /// <param name="direction">The direction in which to draw the image</param>
+        /// <param name="direction">The <see cref="Direction"/> in which to draw the image</param>
         /// <param name="frameNumber">The frame number of the image</param>
-        /// <param name="rectangle">The rectangle to draw the image in</param>
+        /// <param name="rectangle">The <see cref="Rectangle"/> to draw the image in</param>
         public void Draw(SpriteBatch spriteBatch, Direction direction, int frameNumber, Rectangle rectangle)
         {
             // Drawing corresponding image

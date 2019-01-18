@@ -1,10 +1,13 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using System;
+﻿// Author: Joon Song, Steven Ung
+// File Name: Arrow.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 01/02/2019
+// Modified Date: 01/17/2019
+// Description: Class to hold Arrow object
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {

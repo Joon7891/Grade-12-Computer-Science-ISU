@@ -16,7 +16,12 @@ using Microsoft.Xna.Framework.Audio;
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Player : Entity
-    {        
+    {
+        /// <summary>
+        /// Static instance of <see cref="Player"/> - singleton
+        /// </summary>
+        public static Player Instance { get; set; }
+        
         /// <summary>
         /// The size of the player, in pixels
         /// </summary>
@@ -127,6 +132,9 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Player(string name)
         {
+            // Setting up singleton
+            Instance = this;
+
             // Setting up player speed, rectangle, and camera components
             Speed = 3;
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
@@ -189,7 +197,7 @@ namespace ISU_Medieval_Odyssey
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating current tile and chunk coordinates
-            CurrentTile = World.PixelToTileCoordinate(Center);
+            CurrentTile = World.PixelToTileCoordinate(groundCoordinate);
 
             // Updating status bars
             healthBar.Update();
@@ -205,7 +213,7 @@ namespace ISU_Medieval_Odyssey
             // Invoking callback procedure on current tile if player chooses to interact with the tile 
             if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Interact) && World.Instance.GetTileAt(CurrentTile).OnInteractProcedure != null)
             {
-                World.Instance.GetTileAt(CurrentTile).OnInteractProcedure(this);
+                World.Instance.GetTileAt(CurrentTile).OnInteractProcedure.Invoke(this);
             }
         }
 
@@ -409,11 +417,11 @@ namespace ISU_Medieval_Odyssey
             // If weapon is still being used, proceed with weapon animation logic
             if (imagesToAnimate.Count != 0 || currentWeapon != null)
             {
-                animationCounter = (animationCounter > 4) ? 0 : (animationCounter + 1);
+                animationCounter = (animationCounter > 2) ? 0 : (animationCounter + 1);
                 isInventoryOpen = false;
 
                 // Moving onto next frame every 4 updates
-                if (animationCounter == 4)
+                if (animationCounter == 2)
                 {
                     // If there are no more images left to animate, switch to walking graphics, otherwise animate weapon
                     if (imagesToAnimate.Count == 0)
@@ -509,6 +517,8 @@ namespace ISU_Medieval_Odyssey
             collisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
             center.X = rectangle.X + (PIXEL_SIZE >> 1);
             center.Y = rectangle.Y + (PIXEL_SIZE >> 1);
+            groundCoordinate.X = center.X;
+            groundCoordinate.Y = rectangle.Bottom - 1;
         }
 
         /// <summary>
@@ -577,7 +587,7 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Left:
 
                     // Calculating the player's future location from moving left
-                    newPixelLocations[0].X = (int)(CollisionRectangle.Left - GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[0].X = (int)(CollisionRectangle.Left - GetPixelSpeed(gameTime) - 0.5);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
                     newPixelLocations[1].Y = CollisionRectangle.Bottom;

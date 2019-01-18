@@ -44,7 +44,7 @@
     <Compile Include="Data Structures\ICollidable.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
     <Compile Include="World\IBuilding.cs" />
-    <Compile Include="World\OnInteract.cs" />
+    <Compile Include="World\Interaction.cs" />
     <Compile Include="World\Shop.cs" />
     <Compile Include="Entities\Enemies\Goblin.cs" />
     <Compile Include="Entities\Enemies\Skeleton.cs" />

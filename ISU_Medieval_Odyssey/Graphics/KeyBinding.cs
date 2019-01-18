@@ -2,7 +2,7 @@
 // File Name: KeyBinding.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 01/12/2019
-// Modified Date: 01/12/2019
+// Modified Date: 01/18/2019
 // Description: Class to hold KeyBinding object
 
 using System;

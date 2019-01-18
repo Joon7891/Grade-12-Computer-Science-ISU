@@ -27,6 +27,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public bool IsInside { get; set; } = false;
 
+        /// <summary>
+        /// The current <see cref="IBuilding"/> the <see cref="Player"/> is in
+        /// </summary>
+        public IBuilding CurrentBuilding { get; set; }
+
         // The world's loaded chunks and loaded chunks
         [JsonProperty]
         private readonly TerrainGenerator terrainGenerator;
@@ -39,16 +44,18 @@ namespace ISU_Medieval_Odyssey
             new Vector2Int(-2, 2),
             new Vector2Int(-2, -2)
         };
-
+        
+        // List of various entities drawn above the world tilemap
         private List<Enemy> enemies = new List<Enemy>();
         private List<LiveItem> liveItems = new List<LiveItem>();
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
 
-        Shop test;
-
+        // The world bounds and a quadtree for collision detection
         private Rectangle worldBoundsRect;
         private CollisionTree collisionTree;
+
+        private Shop test;
 
         /// <summary>
         /// Constructor for <see cref="World"/> object
@@ -56,6 +63,9 @@ namespace ISU_Medieval_Odyssey
         /// <param name="seed">The seed of this <see cref="World"/></param>
         public World(int? seed = null)
         {
+            // Setting up singleton
+            Instance = this;
+
             // Creating terrtain generator
             terrainGenerator = new TerrainGenerator(seed);
 
@@ -68,24 +78,23 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[x, y] = InitializeChunkAt(x, y);
                 }
             }
+            AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
+            // Setting up world boundaries and quadtree
             worldBoundsRect = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             collisionTree = new CollisionTree(1, worldBoundsRect);
 
-            // Setting up singleton
-            Instance = this;
-
-            test = new Shop(new Vector2Int(0, 0));
+            test = new Shop(new Vector2Int(1, 1));
 
         }
 
         public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
-            if (GameScreen.Instance.Player.CurrentChunk != loadedChunks[CHUNK_COUNT / 2, CHUNK_COUNT / 2].Position)
+            if (Player.Instance.CurrentChunk != loadedChunks[CHUNK_COUNT / 2, CHUNK_COUNT / 2].Position)
             {
-                AdjustLoadedChunks(GameScreen.Instance.Player.CurrentChunk);
+                AdjustLoadedChunks(Player.Instance.CurrentChunk);
             }
 
             worldBoundsRect.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
@@ -150,7 +159,7 @@ namespace ISU_Medieval_Odyssey
             // Beginning spritebatch in adjusted camera
             spriteBatch.Begin(transformMatrix: camera.ViewMatrix, samplerState: SamplerState.PointClamp);
 
-            // Drawing chunks and outside of buildings if player is outside, otherwise draw building insides
+            // Drawing chunks and outside of buildings if player is outside, otherwise draw current building inside
             if (!IsInside)
             {
                 // Drawing the various loaded chunks
@@ -162,13 +171,17 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
 
-                test.DrawInside(spriteBatch);
-
+                for (int i = 0; i < buildings.Count; ++i)
+                {
+                    buildings[i].DrawOutside(spriteBatch);
+                }
             }
             else
             {
-
+                CurrentBuilding?.DrawInside(spriteBatch);
             }
+
+            test.DrawInside(spriteBatch);
 
             // Drawing projectiles
             for (int i = 0; i < projectiles.Count; ++i)

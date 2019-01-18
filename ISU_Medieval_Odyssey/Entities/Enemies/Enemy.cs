@@ -53,7 +53,7 @@ namespace ISU_Medieval_Odyssey
         public virtual void Update(GameTime gameTime, Player player)
         {
             // If enemy is within a tile to the player, attack, otherwise move towards player
-            if ((Center - GameScreen.Instance.Player.Center).Length() <= Tile.SPACING)
+            if ((Center - Player.Instance.Center).Length() <= Tile.SPACING)
             {
                 Attack(gameTime, player);
             }

@@ -15,13 +15,13 @@ namespace ISU_Medieval_Odyssey
         public int X
         {
             get => rectangle.X;
-            set => rectangle.X = value;
+            set => unroundedLocation.X = value;
         }
 
         public int Y
         {
             get => rectangle.Y;
-            set => rectangle.Y = value;
+            set => unroundedLocation.Y = value;
         }
 
         /// <summary>
@@ -29,6 +29,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Vector2Int Center => center;
         protected Vector2Int center = Vector2Int.Zero;
+        protected Vector2Int groundCoordinate = Vector2Int.Zero;
 
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current tile coordinates
