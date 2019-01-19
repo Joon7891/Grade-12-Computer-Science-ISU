@@ -44,9 +44,14 @@ namespace ISU_Medieval_Odyssey
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
 
+        /// <summary>
+        /// The rectangle representing the bounds of this <see cref="World"/>
+        /// </summary>
+        public Rectangle WorldBoundsRect => worldBoundsRect;
+
         // The world bounds and a quadtree for collision detection
-        private Rectangle worldBoundsRect;
         private CollisionTree collisionTree;
+        private Rectangle worldBoundsRect;
 
         /// <summary>
         /// Constructor for <see cref="World"/> object
@@ -215,15 +220,9 @@ namespace ISU_Medieval_Odyssey
             // Drawing appropriate data, depending whether the player is inside or outside
             if (!IsInside)
             {
-                // Drawing the various loaded chunks
-                for (int y = 0; y < CHUNK_COUNT; ++y)
-                {
-                    for (byte x = 0; x < CHUNK_COUNT; ++x)
-                    {
-                        loadedChunks[x, y].Draw(spriteBatch);
-                    }
-                }
-                
+                // Drawing the various loaded chunks of the world
+                DrawChunks(spriteBatch);
+
                 // Drawing the outsides of various buildings
                 for (int i = 0; i < buildings.Count; ++i)
                 {
@@ -253,6 +252,22 @@ namespace ISU_Medieval_Odyssey
             for (short i = 0; i < liveItems.Count; ++i)
             {
                 liveItems[i].Draw(spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to draw the various loaded <see cref="Chunk"/>s of this <see cref="World"/>
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        public void DrawChunks(SpriteBatch spriteBatch)
+        {
+            // Drawing the various loaded chunks
+            for (int y = 0; y < CHUNK_COUNT; ++y)
+            {
+                for (byte x = 0; x < CHUNK_COUNT; ++x)
+                {
+                    loadedChunks[x, y].Draw(spriteBatch);
+                }
             }
         }
 

@@ -35,6 +35,14 @@ namespace ISU_Medieval_Odyssey
         public Camera Camera { get; set; } = new Camera();
         private Vector2 cameraOffset;
 
+        // Minimap-related variables
+        private Camera miniMapCamera = new Camera();
+        private const int MINI_MAP_SIZE = 200;
+        private Vector2 adjustmentVector = new Vector2(895, 11);
+        private Vector2 cameraVerticalShift = new Vector2(0, MINI_MAP_SIZE / 2);
+        private Sprite miniMapBorder;
+        private Circle playerDot;
+
         // Statistics display-related variables
         private bool showStatistics = false;
         private Vector2[] statisticsLoc = new Vector2[4];
@@ -50,8 +58,15 @@ namespace ISU_Medieval_Odyssey
             // Setting up statistics locations
             for (byte i = 0; i < statisticsLoc.Length; ++i)
             {
-                statisticsLoc[i] = new Vector2(720, 15 + 30 * i);
+                statisticsLoc[i] = new Vector2(215, 15 + 30 * i);
             }
+
+            // Setting up minimap
+            miniMapCamera.OrthographicSize = 0.057f;
+            miniMapBorder = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/miniMapBorder"), 
+                new Rectangle(SharedData.SCREEN_WIDTH - MINI_MAP_SIZE - 10, 10, MINI_MAP_SIZE, MINI_MAP_SIZE));
+            miniMapCamera.Position = miniMapBorder.Rectangle.Location.ToVector2();
+            playerDot = new Circle(new Vector2Int(0, 0), 50, Color.Red);
         }
         
         /// <summary>
@@ -79,7 +94,13 @@ namespace ISU_Medieval_Odyssey
             if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Statistics))
             {
                 showStatistics = !showStatistics;
-            }            
+            }
+
+            // Updating logic for minimap camera
+            playerDot.X = Player.X;
+            playerDot.Y = Player.Y;
+            miniMapCamera.Position = -World.WorldBoundsRect.Location.ToVector2() + adjustmentVector;
+            miniMapCamera.Origin = miniMapCamera.Position - World.WorldBoundsRect.Location.ToVector2() * miniMapCamera.OrthographicSize / 2.0f;
         }
 
         /// <summary>
@@ -94,14 +115,22 @@ namespace ISU_Medieval_Odyssey
             Player.Draw(spriteBatch);
             spriteBatch.End();
 
+            // Drawing player minimap components
+            spriteBatch.Begin(transformMatrix: miniMapCamera.ViewMatrix, samplerState: SamplerState.PointClamp);
+            World.DrawChunks(spriteBatch);
+            playerDot.Draw(spriteBatch);
+            spriteBatch.End();
+              
             // Beginning regular sprite batch
             spriteBatch.Begin();
 
+            // Drawing statistics and player HUD
             if (showStatistics)
             {
                 DrawStatistics(spriteBatch);
             }
             Player.DrawHUD(spriteBatch);
+            miniMapBorder.Draw(spriteBatch);
 
             // Ending regular sprite batch
             spriteBatch.End();
