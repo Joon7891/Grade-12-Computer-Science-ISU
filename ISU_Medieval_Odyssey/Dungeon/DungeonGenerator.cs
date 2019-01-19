@@ -186,8 +186,13 @@ namespace ISU_Medieval_Odyssey
             DisjointSet disjointSet = new DisjointSet(rooms.Count);
 
             // List of all tiles that are currently impassible and touch 2+ regions
-            List<Vector2Int> connectors = new List<Vector2Int>();
-            for(int i = 1; i < MAX_WIDTH-1; i++)
+            // These are stored as edges between two of the regions, and used to construct an imperfect spanning tree
+            List<Tuple<Vector2Int, int, int>> connectors = new List<Tuple<Vector2Int, int, int>>();
+
+            // the connectors that are used
+            List<Tuple<Vector2Int, int, int>> connections = new List<Tuple<Vector2Int, int, int>>();
+
+            for (int i = 1; i < MAX_WIDTH-1; i++)
             {
                 for(int j = 1; j < MAX_HEIGHT-1; j++)
                 {
@@ -206,17 +211,24 @@ namespace ISU_Medieval_Odyssey
 
                         if(regions.Count >= 2)
                         {
-                            connectors.Add(current);
-                            // add disjoint set connections here //////////////////////////////////////////////////////
+                            connectors.Add(new Tuple<Vector2Int, int, int> (current, regions[0], regions[1]));
                         }
                     }
                 }
             }
 
             int mainRoom = rng.Next(0, rooms.Count);
-            
-            //foreach()
-            
+
+            // construct connected graph from the connectors
+            foreach (Tuple<Vector2Int, int, int> connector in connectors)
+            {
+                if (disjointSet.Find(connector.Item2) != disjointSet.Find(connector.Item3))
+                {
+                    disjointSet.Union(connector.Item2, connector.Item3);
+                    connections.Add(connector);
+                }
+            }
+
 
 
 
