@@ -182,6 +182,9 @@ namespace ISU_Medieval_Odyssey
 
         private void ConnectRegions()
         {
+            // create disjoint set for spanning tree
+            DisjointSet disjointSet = new DisjointSet(rooms.Count);
+
             // List of all tiles that are currently impassible and touch 2+ regions
             List<Vector2Int> connectors = new List<Vector2Int>();
             for(int i = 1; i < MAX_WIDTH-1; i++)
@@ -204,13 +207,16 @@ namespace ISU_Medieval_Odyssey
                         if(regions.Count >= 2)
                         {
                             connectors.Add(current);
+                            // add disjoint set connections here //////////////////////////////////////////////////////
                         }
                     }
                 }
             }
 
             int mainRoom = rng.Next(0, rooms.Count);
-
+            
+            //foreach()
+            
 
 
 
