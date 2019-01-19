@@ -5,6 +5,7 @@
 // Modified Date: 01/17/2019
 // Description: Class to hold Shop object
 
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -46,9 +47,11 @@ namespace ISU_Medieval_Odyssey
         private readonly float profitCut;
         private const int ROW_SIZE = 9;
         private const int INVENTORY_SIZE = 3 * ROW_SIZE;
+        private Button[] transactionButton = new Button[2];
+        private ItemSlot[] transactionItemSlot = new ItemSlot[2];
         private ItemSlot[] inventory = new ItemSlot[INVENTORY_SIZE];
-        private ItemSlot sellItemSlot;
-        private ItemSlot buyItemSlot;
+        private static SoundEffect errorSoundEffect;
+        private static SoundEffect transactionSoundEffect;
 
         /// <summary>
         /// Static constructor for <see cref="Shop"/> object
@@ -88,6 +91,10 @@ namespace ISU_Medieval_Odyssey
                 outsideObstructionLocs.Add(new Vector2Int(1, 1 + i));
                 outsideObstructionLocs.Add(new Vector2Int(INSIDE_WIDTH, 1 + i));
             }
+
+            // Importing various sound effects
+            errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
+            transactionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/transactionSoundEffect");
         }
 
         /// <summary>
@@ -99,18 +106,38 @@ namespace ISU_Medieval_Odyssey
             // Setting up shop inventory and buying/selling function
             Item[] shopItems = new Item[SharedData.RNG.Next(INVENTORY_SIZE)];
             profitCut = (float)(SharedData.RNG.NextDouble() * MAX_PROFIT_CUT);
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < shopItems.Length; ++i)
             {
-                for (int j = 0; j < ROW_SIZE; ++j)
-                {
-                    inventory[i * ROW_SIZE + j] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (j - 3.5) * 70), 210 + 70 * i, null, Color.Yellow);
-                }
+                shopItems[i] = Item.RandomItem();
             }
-            buyItemSlot = new ItemSlot(710, 455, null, Color.Green);
-            sellItemSlot = new ItemSlot(150, 455, null, Color.Red);
+            for (int i = 0; i < INVENTORY_SIZE; ++i)
+            {
+                inventory[i] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (i % ROW_SIZE - 3.5) * 70), 
+                    210 + 70 * (i / ROW_SIZE), i < shopItems.Length ? shopItems[i] : null, Color.White);
+            }
+            transactionItemSlot[0] = new ItemSlot(710, 455, null, Color.Green); // Buy
+            transactionItemSlot[1] = new ItemSlot(150, 455, null, Color.Red); // Sell
 
-            //toSellItemSlot = new Item((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (j - 3.5) * 70))
+            // Setting up transaction buttons
+            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(), () =>
+            {
 
+            });
+            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(230, 455, 70, 28), () =>
+            {
+                // Making transaction if possible, otherwise error
+                if (transactionItemSlot[1] != null && (inventory.Count(itemSlot => itemSlot.Item == null) + 1 > 0))
+                {
+                    Player.Instance.Gold += GetOffer(transactionItemSlot[1].Item);
+                    AddToInventory(transactionItemSlot[1].Item);
+                    transactionItemSlot[1].Item = null;
+                    transactionSoundEffect.CreateInstance().Play();
+                }
+                else
+                {
+                    errorSoundEffect.CreateInstance().Play();
+                }
+            });
 
             // Setting up inside and outside shop images
             insideShopSprite = new Sprite(insideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
@@ -159,15 +186,40 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
+            // Item to help with "swapping" items
             Item tempSwapItem = null;
             
             // Swapping "Sell Item"-item use drops an item in it
-            if (MouseHelper.IsRectangleLeftClicked(sellItemSlot.Rectangle) && Player.Instance.ItemInHand != null)
+            if (MouseHelper.IsRectangleLeftClicked(transactionItemSlot[1].Rectangle) && (Player.Instance.ItemInHand == null || 
+                (Player.Instance.ItemInHand != null && Player.Instance.ItemInHand.IsPlayerItem)))
             {
-                tempSwapItem = sellItemSlot.Item;
-                Player.Instance.ItemInHand = tempSwapItem;
-                sellItemSlot.Item = tempSwapItem;
+                tempSwapItem = Player.Instance.ItemInHand;
+                Player.Instance.ItemInHand = transactionItemSlot[1].Item;
+                transactionItemSlot[1].Item = tempSwapItem;
                 tempSwapItem = null;
+            }
+
+            // Updating transaction buttons
+            for (byte i = 0; i < transactionButton.Length; ++i)
+            {
+                transactionButton[i].Update(gameTime);
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to add an <see cref="Item"/> to this <see cref="Shop"/>'s inventory
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to be added</param>
+        private void AddToInventory(Item item)
+        {
+            // Adding item in first available space
+            for (byte i = 0; i < inventory.Length; ++i)
+            {
+                if (inventory[i].Item == null)
+                {
+                    inventory[i].Item = item;
+                    break;
+                }
             }
         }
 
@@ -192,8 +244,11 @@ namespace ISU_Medieval_Odyssey
             {
                 inventory[i].Draw(spriteBatch);
             }
-            buyItemSlot.Draw(spriteBatch);
-            sellItemSlot.Draw(spriteBatch);
+            for (byte i = 0; i < transactionItemSlot.Length; ++i)
+            {
+                transactionItemSlot[i].Draw(spriteBatch);
+                transactionButton[i].Draw(spriteBatch);
+            }
         }
 
         /// <summary>

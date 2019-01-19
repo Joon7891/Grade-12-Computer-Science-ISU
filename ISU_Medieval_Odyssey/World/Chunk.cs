@@ -54,7 +54,6 @@ namespace ISU_Medieval_Odyssey
         // Variables required for randomly setting a shop or a safe house in this chunk
         private const int SHOP_CHANCE = 3;
         private const int SAFE_HOUSE_CHANCE = 50;
-        private IBuilding building;
 
         /// <summary>
         /// Constructor for <see cref="Chunk"/> object

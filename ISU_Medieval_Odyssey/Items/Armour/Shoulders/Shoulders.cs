@@ -9,5 +9,26 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Shoulders : Armour
     {
+        /// <summary>
+        /// Subprogram to generate a random <see cref="Shoulders"/>
+        /// </summary>
+        /// <returns>The random <see cref="Shoulders"/></returns>
+        public static Shoulders RandomShoulders()
+        {
+            // Randomly picking a Shoulders type
+            int randomShouldersType = SharedData.RNG.Next(2);
+
+            // Returning new instace of Shoulders
+            switch (randomShouldersType)
+            {
+                // Type-0 returning leather shoulders
+                case 0:
+                    return new LeatherShoulders();
+
+                // Otherwise returning mteal shoulders
+                default:
+                    return new MetalShoulders();
+            }
+        }
     }
 }

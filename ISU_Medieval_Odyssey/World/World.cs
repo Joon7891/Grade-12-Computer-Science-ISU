@@ -80,7 +80,7 @@ namespace ISU_Medieval_Odyssey
             }
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
-            buildings.Add(new Shop(new Vector2Int(2, 2)));
+           buildings.Add(new Shop(new Vector2Int(2, 2)));
         }
 
         /// <summary>
