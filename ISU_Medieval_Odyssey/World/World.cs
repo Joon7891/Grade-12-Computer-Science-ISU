@@ -37,14 +37,7 @@ namespace ISU_Medieval_Odyssey
         private readonly TerrainGenerator terrainGenerator;
         private const int CHUNK_COUNT = 3;
         private Chunk[,] loadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
-        private static Vector2Int[] borderChunkCoordinate =
-        {
-            new Vector2Int(2, 2),
-            new Vector2Int(2, -2),
-            new Vector2Int(-2, 2),
-            new Vector2Int(-2, -2)
-        };
-        
+
         // List of various entities drawn above the world tilemap
         private List<Enemy> enemies = new List<Enemy>();
         private List<LiveItem> liveItems = new List<LiveItem>();
@@ -82,7 +75,7 @@ namespace ISU_Medieval_Odyssey
             }
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
-            enemies.Add(new Witch(new Vector2Int(-2, -2)));
+            enemies.Add(new Knight(new Vector2Int(-2, -2)));
         }
 
         /// <summary>
@@ -192,8 +185,8 @@ namespace ISU_Medieval_Odyssey
             loadedChunks = newLoadedChunks;
 
             // Setting the newly loaded chunks as current loaded chunks
-            worldBoundsRect.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
-            worldBoundsRect.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
+            worldBoundsRect.X = loadedChunks[0, 0].Position.X * Tile.SPACING;
+            worldBoundsRect.Y = loadedChunks[0, 0].Position.Y * Tile.SPACING;
             collisionTree.Range = worldBoundsRect;
 
             // Removing enemies and items no longer in chunk

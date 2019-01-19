@@ -24,6 +24,8 @@ namespace ISU_Medieval_Odyssey
         private SpriteFont titleFont;
         private string[] titleText = { "Medieval", "Odyssey" };
         private Vector2[] titleLocation = new Vector2[2];
+        private const int BUTTON_INITIAL_Y = 400;
+        private const int BUTTON_SPACING = 110;
         private Button[] optionButtons = new Button[4];
         
         /// <summary>
@@ -44,27 +46,28 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Setting up option buttons
-            optionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 400, 300, 100), () =>
+            optionButtons[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, BUTTON_INITIAL_Y, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.NewGame;
                 MediaPlayer.Stop();
             });
-            optionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/loadGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 510, 300, 100), () =>
+            optionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/loadGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, BUTTON_INITIAL_Y + BUTTON_SPACING, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.Game;
                 MediaPlayer.Stop();
             });
             optionButtons[1].Active = IO.WorldExists();
-            optionButtons[2] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/settingsButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 620, 300, 100), () =>
+            optionButtons[2] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/howToPlayButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, BUTTON_INITIAL_Y + 2 * BUTTON_SPACING, 300, 100), () =>
+            {
+                Main.CurrentScreen = ScreenMode.HowToPlay;
+                MediaPlayer.Stop();
+            });
+            optionButtons[3] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/settingButton"), new Rectangle(SharedData.SCREEN_WIDTH - 130, SharedData.SCREEN_HEIGHT - 90, 120, 80), () =>
             {
                 Main.CurrentScreen = ScreenMode.Settings;
                 MediaPlayer.Stop();
             });
-            optionButtons[3] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/howToPlayButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 710, 300, 100), () =>
-            {
-                Main.CurrentScreen = ScreenMode.Settings;
-                MediaPlayer.Stop();
-            });
+            
         }
         
         /// <summary>

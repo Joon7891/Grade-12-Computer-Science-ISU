@@ -182,10 +182,9 @@ namespace ISU_Medieval_Odyssey
         public override string ToString() => $"({X}, {Y})";
 
         /// <summary>
-        /// The squared length of this <see cref="Vector2Int"/>
+        /// The manhattan length of this <see cref="Vector2Int"/>
         /// </summary>
-        /// <returns>The squared length of the <see cref="Vector2Int"/></returns>
-        public int LengthSquared => X * X + Y * Y;
+        public int ManhattanLength => Math.Abs(X) + Math.Abs(Y);
 
         /// <summary>
         /// Converts a <see cref="Vector2Int"/> to a <see cref="Vector2"/>

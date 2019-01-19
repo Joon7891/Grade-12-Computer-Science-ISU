@@ -119,7 +119,7 @@ namespace ISU_Medieval_Odyssey
                 tileDelta = currentTile.Coordinate - currentTile.PreviousNode.Coordinate; //what you add to p -> c
 
                 // If the move is non-diagonal, add the path
-                if (tileDelta.LengthSquared == 1)
+                if (tileDelta.ManhattanLength == 1)
                 {
                     pathTiles.Enqueue(currentTile.Coordinate);
                 }

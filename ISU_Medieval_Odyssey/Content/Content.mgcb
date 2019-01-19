@@ -37338,18 +37338,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buttons/newGameButton.png
 
-#begin Images/Sprites/Buttons/settingsButton.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Sprites/Buttons/settingsButton.png
-
 #begin Images/Sprites/IconImages/chainHelmetIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -45342,4 +45330,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buttons/howToPlayButton.png
+
+#begin Audio/Music/howToPlayBackgroundMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/howToPlayBackgroundMusic.mp3
+
+#begin Images/Sprites/Buttons/settingButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buttons/settingButton.png
 
