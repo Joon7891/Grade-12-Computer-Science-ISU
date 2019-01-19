@@ -67,6 +67,10 @@ namespace ISU_Medieval_Odyssey
             // Creating terrtain generator
             terrainGenerator = new TerrainGenerator(seed);
 
+            // Setting up quadtree and search range
+            worldBoundsRect = new Rectangle(0, 0, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
+            collisionTree = new CollisionTree(worldBoundsRect);
+
             // Generating chunks around world and adding them to file after clearing previously existing world
             IO.DeleteWorld();
             for (int y = 0; y < CHUNK_COUNT; ++y)
@@ -78,12 +82,7 @@ namespace ISU_Medieval_Odyssey
             }
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
-            // Setting up world boundaries and quadtree
-            worldBoundsRect = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
-                                                   Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
-            collisionTree = new CollisionTree(worldBoundsRect);
-
-            enemies.Add(new Wizard(new Vector2Int(-2, -2)));
+            enemies.Add(new Witch(new Vector2Int(-2, -2)));
         }
 
         /// <summary>
@@ -120,10 +119,6 @@ namespace ISU_Medieval_Odyssey
             {
                 AdjustLoadedChunks(Player.Instance.CurrentChunk);
             }
-
-            worldBoundsRect.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
-            worldBoundsRect.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
-            collisionTree.Range = worldBoundsRect;
 
             // Updating enemies
             for (int i = enemies.Count - 1; i >= 0; --i)
@@ -187,16 +182,35 @@ namespace ISU_Medieval_Odyssey
             Chunk[,] newLoadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
             
             // Iterating through chunks that should be loaded and setting it
-            for (int y = 0; y < CHUNK_COUNT; ++y)
+            for (short y = 0; y < CHUNK_COUNT; ++y)
             {
-                for (int x = 0; x < CHUNK_COUNT; ++x)
+                for (short x = 0; x < CHUNK_COUNT; ++x)
                 {
                     newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - CHUNK_COUNT / 2, centerChunk.Y + y - CHUNK_COUNT / 2);
                 }
             }
+            loadedChunks = newLoadedChunks;
 
             // Setting the newly loaded chunks as current loaded chunks
-            loadedChunks = newLoadedChunks;
+            worldBoundsRect.X = loadedChunks[0, 0].WorldPosition.X * Tile.SPACING;
+            worldBoundsRect.Y = loadedChunks[0, 0].WorldPosition.Y * Tile.SPACING;
+            collisionTree.Range = worldBoundsRect;
+
+            // Removing enemies and items no longer in chunk
+            for (int i = enemies.Count - 1; i >= 0; --i)
+            {
+                if (!worldBoundsRect.Intersects(enemies[i].HitBox))
+                {
+                    enemies.RemoveAt(i);
+                }
+            }
+            for (int i = liveItems.Count - 1; i >= 0; --i)
+            {
+                if (!worldBoundsRect.Intersects(liveItems[i].HitBox))
+                {
+                    liveItems.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -231,19 +245,19 @@ namespace ISU_Medieval_Odyssey
             
 
             // Drawing enemies
-            for (int i = 0; i < enemies.Count; ++i)
+            for (short i = 0; i < enemies.Count; ++i)
             {
                 enemies[i].Draw(spriteBatch);
             }
 
             // Drawing projectiles
-            for (int i = 0; i < projectiles.Count; ++i)
+            for (byte i = 0; i < projectiles.Count; ++i)
             {
                 projectiles[i].Draw(spriteBatch);
             }
 
             // Drawing live items
-            for (int i = 0; i < liveItems.Count; ++i)
+            for (short i = 0; i < liveItems.Count; ++i)
             {
                 liveItems[i].Draw(spriteBatch);
             }

@@ -55,7 +55,6 @@ namespace ISU_Medieval_Odyssey
             // Calculating and assigning various armour statistics
             short durability = (short)SharedData.RNG.Next(minDurability, maxDurability + 1);
             durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 5), durability, durability, Color.White * 0.6f, Color.Green * 0.6f);
-            durabilityBar.Update();
             defence = SharedData.RNG.Next(minDefense, maxDefense + 1);
         }
 
@@ -72,7 +71,6 @@ namespace ISU_Medieval_Odyssey
                 breakSoundEffect.CreateInstance().Play();
                 IsBroken = true;
             }
-            durabilityBar.Update();
 
             // Returning the adjusted damage amount - player must take at least 1 HP in damage
             return Math.Max(1, damageAmount - defence);

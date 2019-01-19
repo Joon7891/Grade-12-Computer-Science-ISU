@@ -20,7 +20,16 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The current value on the progress bar
         /// </summary>
-        public short CurrentValue { get; set; }
+        public short CurrentValue
+        {
+            get => currentValue;
+            set
+            {
+                currentValue = value;
+                progressRectangle.Width = (int)(backRectangle.Width * (((float)CurrentValue) / MaxValue) + 0.5);
+            }
+        }
+        private short currentValue;
 
         /// <summary>
         /// The x coordinate of the top left corner of this <see cref="ProgressBar"/>
@@ -71,16 +80,6 @@ namespace ISU_Medieval_Odyssey
             CurrentValue = currentValue;
             this.backColor = backColor;
             this.progressColor = progressColor;
-        }
-
-        /// <summary>
-        /// Update subprogram for <see cref="ProgressBar"/> object
-        /// </summary>
-        public virtual void Update()
-        {
-            // Updating various progress bar components to ensure smooth drawing
-            progressRectangle.Location = backRectangle.Location;
-            progressRectangle.Width = (int)(backRectangle.Width * (((float)CurrentValue) / MaxValue) + 0.5);        
         }
 
         /// <summary>

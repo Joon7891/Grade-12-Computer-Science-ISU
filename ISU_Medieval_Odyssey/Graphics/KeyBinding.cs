@@ -54,6 +54,7 @@ namespace ISU_Medieval_Odyssey
         private static Dictionary<Keys, Texture2D> keyImages = new Dictionary<Keys, Texture2D>();
         private static SpriteFont textFont;
         private readonly Vector2 textLocation;
+        private readonly bool showText;
 
         /// <summary>
         /// Static constructor for <see cref="KeyBinding"/> object
@@ -100,12 +101,14 @@ namespace ISU_Medieval_Odyssey
         /// <param name="key">The <see cref="Keys"/> assosiated with this <see cref="KeyBinding"/></param>
         /// <param name="text">The text to be draw alongside this <see cref="KeyBinding"/></param>
         /// <param name="rectangle">The <see cref="Rectangle"/> in which this <see cref="KeyBinding"/> is to be drawn in</param>
-        public KeyBinding(Keys key, string text, Rectangle rectangle)
+        /// <param name="showText">Whether to show the text on this <see cref="KeyBinding"/></param>
+        public KeyBinding(Keys key, string text, Rectangle rectangle, bool showText = true)
         {
             // Assigning Keybinding object properties
             Key = key;
             Text = text;
             Rectangle = rectangle;
+            this.showText = showText;
             DisallowedBindings.Add(key);
             textLocation = new Vector2(rectangle.X + (rectangle.Width - textFont.MeasureString(text).X) / 2, rectangle.Y - 30);
         }
@@ -115,11 +118,14 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         /// <param name="isSelected">Whether the <see cref="KeyBinding"/> is selected for modification</param>
-        public void Draw(SpriteBatch spriteBatch, bool isSelected)
+        public void Draw(SpriteBatch spriteBatch, bool isSelected = false)
         {
             // Drawing key image and corresponding text
             spriteBatch.Draw(keyImages[key], Rectangle, !isSelected ? Color.White : Color.Yellow);
-            spriteBatch.DrawString(textFont, Text, textLocation, !isSelected ? Color.White : Color.Yellow);
+            if (showText)
+            {
+                spriteBatch.DrawString(textFont, Text, textLocation, !isSelected ? Color.White : Color.Yellow);
+            }
         }
     }
 }

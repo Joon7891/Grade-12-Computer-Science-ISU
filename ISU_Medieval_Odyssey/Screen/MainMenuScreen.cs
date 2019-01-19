@@ -24,7 +24,7 @@ namespace ISU_Medieval_Odyssey
         private SpriteFont titleFont;
         private string[] titleText = { "Medieval", "Odyssey" };
         private Vector2[] titleLocation = new Vector2[2];
-        private Button[] optionButtons = new Button[3];
+        private Button[] optionButtons = new Button[4];
         
         /// <summary>
         /// Constructor for <see cref="MainMenuScreen"/>
@@ -40,7 +40,7 @@ namespace ISU_Medieval_Odyssey
             titleFont = Main.Content.Load<SpriteFont>("Fonts/TitleFont");
             for (byte i = 0; i < titleLocation.Length; ++i)
             {
-                titleLocation[i] = new Vector2((SharedData.SCREEN_WIDTH - titleFont.MeasureString(titleText[i]).X) / 2, 30 + 150 * i);
+                titleLocation[i] = new Vector2((SharedData.SCREEN_WIDTH - titleFont.MeasureString(titleText[i]).X) / 2, 30 + 135 * i);
             }
 
             // Setting up option buttons
@@ -56,6 +56,11 @@ namespace ISU_Medieval_Odyssey
             });
             optionButtons[1].Active = IO.WorldExists();
             optionButtons[2] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/settingsButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 620, 300, 100), () =>
+            {
+                Main.CurrentScreen = ScreenMode.Settings;
+                MediaPlayer.Stop();
+            });
+            optionButtons[3] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/howToPlayButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, 710, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.Settings;
                 MediaPlayer.Stop();

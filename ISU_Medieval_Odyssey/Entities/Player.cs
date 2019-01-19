@@ -202,8 +202,6 @@ namespace ISU_Medieval_Odyssey
             UpdateDirection(gameTime, cameraCenter);
 
             // Updating status bars
-            healthBar.Update();
-            experienceBar.Update();
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
             statisticsLocs[2].X = 160 - SharedData.InformationFonts[0].MeasureString($"{Gold} Gold").X / 2;
 
@@ -683,7 +681,10 @@ namespace ISU_Medieval_Odyssey
             healthBar.Draw(spriteBatch);
 
             // Drawing various boosts, if applicable
-            spriteBatch.DrawString(SharedData.InformationFonts[1], "Boosts", boostsTextLocs[0], Color.White);
+            if (AttackBoostTime > 0 || DefenseBoostTime > 0 || SpeedBoostTime > 0)
+            {
+                spriteBatch.DrawString(SharedData.InformationFonts[1], "Boosts", boostsTextLocs[0], Color.White);
+            }
             if (AttackBoostTime > 0)
             {
                 spriteBatch.DrawString(SharedData.InformationFonts[0], $"Attack (+30%): {Math.Round(AttackBoostTime, 2)}s", boostsTextLocs[1], Color.SpringGreen);

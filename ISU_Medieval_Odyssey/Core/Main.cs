@@ -100,6 +100,7 @@ namespace ISU_Medieval_Odyssey
             screenDictionary.Add(ScreenMode.NewGame, new NewGameScreen());
             screenDictionary.Add(ScreenMode.Game, new GameScreen());
             screenDictionary.Add(ScreenMode.Settings, new SettingsScreen());
+            screenDictionary.Add(ScreenMode.HowToPlay, new HowToPlayScreen());
 
             // Applying volume changes
             SettingsScreen.Instance.ApplyVolumeChanges();

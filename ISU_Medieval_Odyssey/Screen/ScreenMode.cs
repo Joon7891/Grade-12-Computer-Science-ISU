@@ -21,6 +21,7 @@ namespace ISU_Medieval_Odyssey
         MainMenu = 0,
         NewGame = 1,
         Game = 2,
-        Settings = 3
+        Settings = 3,
+        HowToPlay = 4
     };
 }

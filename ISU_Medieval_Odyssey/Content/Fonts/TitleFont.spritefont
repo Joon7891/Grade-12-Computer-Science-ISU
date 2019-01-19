@@ -14,7 +14,7 @@ with.
     <!--
     <FontName>Monotype Corsiva</FontName>
     -->
-    <FontName>Candara</FontName>
+    <FontName>Monotype Corsiva</FontName>
 
     <!--
     Size is a float value, measured in points. Modify this value to change

@@ -45331,3 +45331,15 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Enemies/Knight/Up/knightUp3.png
 
+#begin Images/Sprites/Buttons/howToPlayButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buttons/howToPlayButton.png
+

@@ -22,7 +22,7 @@ namespace ISU_Medieval_Odyssey
             {
                 backRectangle.X = value;
                 progressRectangle.X = backRectangle.X;
-                textLocation.X = backRectangle.X + (backRectangle.Width - progressFont.MeasureString(text).X) / 2;
+                textLocation.X = backRectangle.X + (backRectangle.Width - progressFont.MeasureString(Text).X) / 2;
             }
         }
 
@@ -36,12 +36,16 @@ namespace ISU_Medieval_Odyssey
             {
                 backRectangle.Y = value;
                 progressRectangle.Y = backRectangle.Y;
-                textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 3;
+                textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(Text).Y) / 2 + 3;
             }
         }
 
+        /// <summary>
+        /// The <see cref="string"/> representing the <see cref="NumberBar"/> text
+        /// </summary>
+        private string Text => $"{CurrentValue}/{MaxValue}";
+
         // Variables required to draw NumberBar text
-        private string text = string.Empty;
         private Vector2 textLocation;
         private readonly Color textColor;
         private readonly SpriteFont progressFont;
@@ -62,20 +66,8 @@ namespace ISU_Medieval_Odyssey
             // Setting number bar properties
             this.progressFont = progressFont;
             this.textColor = textColor;
-        }
-
-        /// <summary>
-        /// Update subprogram for <see cref="NumberBar"/> object
-        /// </summary>
-        public override void Update()
-        {
-            // Updating number text and its location 
-            text = $"{CurrentValue} / {MaxValue}";
-            textLocation.X = backRectangle.X + (backRectangle.Width - progressFont.MeasureString(text).X) / 2;
-            textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 3;
-
-            // Calling ProgressBar update subprogram
-            base.Update();            
+            X = rectangle.X;
+            Y = rectangle.Y;
         }
 
         /// <summary>
@@ -88,7 +80,7 @@ namespace ISU_Medieval_Odyssey
             base.Draw(spriteBatch);
 
             // Drawing number text
-            spriteBatch.DrawString(progressFont, text, textLocation, textColor);
+            spriteBatch.DrawString(progressFont, Text, textLocation, textColor);
         }
     }
 }

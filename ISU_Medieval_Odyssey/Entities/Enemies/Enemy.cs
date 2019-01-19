@@ -73,6 +73,7 @@ namespace ISU_Medieval_Odyssey
             unroundedLocation = rectangle.Location.ToVector2();
             groundCoordinate.X = rectangle.X + rectangle.Width;
             groundCoordinate.Y = rectangle.Bottom - 1;
+            Direction = (Direction)SharedData.RNG.Next(Enum.GetValues(typeof(Direction)).Length);
 
             // Setting animation-related statistics
             this.numFrames = numFrames;
@@ -107,6 +108,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public virtual void Update(GameTime gameTime)
         {
+            // Scanning 
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (timeToScan >= MAX_SCAN_INTERVAL)
             {
@@ -118,8 +120,6 @@ namespace ISU_Medieval_Odyssey
                     currentTarget = pathToPlayer.Dequeue();
                 }
             }
-
-            healthBar.Update();
 
             // Calling subprogram to update movement
             UpdateMovement(gameTime);
