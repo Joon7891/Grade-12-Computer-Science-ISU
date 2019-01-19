@@ -29,7 +29,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up movement images dictionary
             movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Armour/Head/LeatherHat/", "leatherHat");
-            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/leahterHatIcon");
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/leatherHatIcon");
         }
 
         /// <summary>

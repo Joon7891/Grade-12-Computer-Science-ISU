@@ -59,7 +59,7 @@ namespace ISU_Medieval_Odyssey
             // Returning new instance of item
             switch (randomItemType)
             {
-                // Type-0 -< returning a potion 
+                // Type-0 -> returning a potion 
                 case 0:
                     return Potion.RandomPotion();
 

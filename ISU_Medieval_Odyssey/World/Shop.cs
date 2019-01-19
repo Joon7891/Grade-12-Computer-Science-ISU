@@ -99,12 +99,14 @@ namespace ISU_Medieval_Odyssey
             // Setting up shop inventory and buying/selling function
             Item[] shopItems = new Item[SharedData.RNG.Next(INVENTORY_SIZE)];
             profitCut = (float)(SharedData.RNG.NextDouble() * MAX_PROFIT_CUT);
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < shopItems.Length; ++i)
             {
-                for (int j = 0; j < ROW_SIZE; ++j)
-                {
-                    inventory[i * ROW_SIZE + j] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (j - 3.5) * 70), 210 + 70 * i, null, Color.Yellow);
-                }
+                shopItems[i] = Item.RandomItem();
+            }
+            for (int i = 0; i < INVENTORY_SIZE; ++i)
+            {
+                inventory[i] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (i % ROW_SIZE - 3.5) * 70), 
+                    210 + 70 * (i / ROW_SIZE), i < shopItems.Length ? shopItems[i] : null, Color.White);
             }
             buyItemSlot = new ItemSlot(710, 455, null, Color.Green);
             sellItemSlot = new ItemSlot(150, 455, null, Color.Red);
@@ -159,13 +161,15 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
+            // Item to help with "swapping" items
             Item tempSwapItem = null;
             
             // Swapping "Sell Item"-item use drops an item in it
-            if (MouseHelper.IsRectangleLeftClicked(sellItemSlot.Rectangle) && Player.Instance.ItemInHand != null)
+            if (MouseHelper.IsRectangleLeftClicked(sellItemSlot.Rectangle) && (Player.Instance.ItemInHand == null || 
+                (Player.Instance.ItemInHand != null && Player.Instance.ItemInHand.IsPlayerItem)))
             {
-                tempSwapItem = sellItemSlot.Item;
-                Player.Instance.ItemInHand = tempSwapItem;
+                tempSwapItem = Player.Instance.ItemInHand;
+                Player.Instance.ItemInHand = sellItemSlot.Item;
                 sellItemSlot.Item = tempSwapItem;
                 tempSwapItem = null;
             }

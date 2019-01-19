@@ -112,7 +112,36 @@ namespace ISU_Medieval_Odyssey
         /// <returns>The random <see cref="Armour"/></returns>
         public static Armour RandomArmour()
         {
-            throw new NotImplementedException();
+            // Randomly picking an armour type
+            int randomArmourType = SharedData.RNG.Next(6);
+
+            // Returning new instace of item
+            switch (randomArmourType)
+            {
+                // Type-0 -> returning a belt
+                case 0:
+                    return Belt.RandomBelt();
+
+                // Type-1 -> returning a head
+                case 1:
+                    return Head.RandomHead();
+
+                // Type-2 -> returning a pants
+                case 2:
+                    return Pants.RandomPants();
+
+                // Type-3 -> returning a shoes
+                case 3:
+                    return Shoes.RandomShoes();
+
+                // Type-4 -> returning a shoulders
+                case 4:
+                    return Shoulders.RandomShoulders();
+
+                // Otherwise returning a pants
+                default:
+                    return Torso.RandomTorso();
+            }
         }
     }
 }
