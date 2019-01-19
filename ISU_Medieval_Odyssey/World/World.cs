@@ -80,7 +80,8 @@ namespace ISU_Medieval_Odyssey
             }
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
-           buildings.Add(new Shop(new Vector2Int(2, 2)));
+            enemies.Add(new Witch(new Vector2Int(1, 1)));
+            buildings.Add(new Shop(new Vector2Int(2, 2)));
         }
 
         /// <summary>
@@ -110,6 +111,10 @@ namespace ISU_Medieval_Odyssey
             return chunk;
         }
 
+        /// <summary>
+        /// Update subprogram for <see cref="World"/>
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
             // Shifting chunk and loading chunks if needed, if current chunk is not centered
@@ -199,22 +204,6 @@ namespace ISU_Medieval_Odyssey
             worldBoundsRect.X = loadedChunks[0, 0].Position.X * Tile.SPACING;
             worldBoundsRect.Y = loadedChunks[0, 0].Position.Y * Tile.SPACING;
             collisionTree.Range = worldBoundsRect;
-
-            // Removing enemies and items no longer in chunk
-            for (int i = enemies.Count - 1; i >= 0; --i)
-            {
-                if (!worldBoundsRect.Intersects(enemies[i].HitBox))
-                {
-                    enemies.RemoveAt(i);
-                }
-            }
-            for (int i = liveItems.Count - 1; i >= 0; --i)
-            {
-                if (!worldBoundsRect.Intersects(liveItems[i].HitBox))
-                {
-                    liveItems.RemoveAt(i);
-                }
-            }
         }
 
         /// <summary>
@@ -287,6 +276,12 @@ namespace ISU_Medieval_Odyssey
             {
                 enemies[i].DrawMini(spriteBatch);
             }
+
+            // Drawing the various buildings
+            for (int i = 0; i < buildings.Count; ++i)
+            {
+                buildings[i].DrawOutside(spriteBatch);
+            }
         }
 
         /// <summary>
@@ -325,31 +320,24 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Subprogram to add a <see cref="IBuilding"/> to the world
-        /// </summary>
-        /// <param name="building">The <see cref="IBuilding"/> to be added</param>
-        public void AddBuilding(IBuilding building)
-        {
-            // Adding building
-            buildings.Add(building);
-        }
-
-        /// <summary>
         /// Subprogram to retrieve an <see cref="Item"/> that the <see cref="Player"/> is on top of
         /// </summary>
-        /// <param name="player"></param>
-        /// <returns></returns>
+        /// <param name="player">The <see cref="Player"/> retrieving the <see cref="Item"/></param>
+        /// <returns>The retrieved <see cref="Item"/> if it exists</returns>
         public Item RetrieveItem(Player player)
         {
+            // The items the player is on top of
             Item retrievedItem = null;
             List<LiveItem> hitItems = collisionTree.GetCollisions(player.HitBox, liveItems);
             
+            // Retrieving item if the player is on top of one
             if (hitItems.Count > 0)
             {
                 retrievedItem = hitItems[0].Item;
                 liveItems.Remove(hitItems[0]);
             }
 
+            // Returning the retrieved item
             return retrievedItem;
         }
 
@@ -370,6 +358,7 @@ namespace ISU_Medieval_Odyssey
             }
             else
             {
+                //AddBuildingAt(x, y);
                 chunk = new Chunk(x, y, terrainGenerator);
                 IO.SaveChunk(chunk);
             }
@@ -377,8 +366,14 @@ namespace ISU_Medieval_Odyssey
             return chunk;
         }
 
+        /// <summary>
+        /// Subprogram to return the <see cref="Tile"/> at a specified <see cref="Tile"/> coordinate
+        /// </summary>
+        /// <param name="tileCoordinate">The coordinate of the <see cref="Tile"/> to retrieve</param>
+        /// <returns>The <see cref="Tile"/> at the specified coordinate</returns>
         public Tile GetTileAt(Vector2Int tileCoordinate)
         {
+            // Calculating other relevant coordinates and returning corresponding tile
             Vector2Int chunkCoordinate = TileToChunkCoordinate(tileCoordinate);
             Vector2Int newTileCoordinate = tileCoordinate - chunkCoordinate * Chunk.SIZE;
             return GetChunkAt(chunkCoordinate.X, chunkCoordinate.Y)[newTileCoordinate.X, newTileCoordinate.Y];
@@ -432,6 +427,10 @@ namespace ISU_Medieval_Odyssey
             return chunkCoordinate;
         }
 
+        /// <summary>
+        /// Subprogram to serialize this <see cref="World"/>
+        /// </summary>
+        /// <returns>A <see cref="string"/> representing this <see cref="World"/>'s data</returns>
         public string Serialize() => JsonConvert.SerializeObject(this);
     }
 }

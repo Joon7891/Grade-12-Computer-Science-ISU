@@ -66,14 +66,7 @@ namespace ISU_Medieval_Odyssey
             Position = new Vector2Int(x,y);
             tiles = new Tile[SIZE, SIZE];
             this.terrainGenerator = terrainGenerator;
-            tiles = terrainGenerator.GenerateChunkTiles(Position); 
-
-            //// Radnomly generating a shop in this chunk if applicable
-            //if (SharedData.RNG.Next(SHOP_CHANCE) == 0 && !Shop.IsChunkAllowed(Position))
-            //{
-            //    building = new Shop(WorldPosition); // Add some random stuff here...
-            //    World.Instance.AddBuilding(building);
-            //}
+            tiles = terrainGenerator.GenerateChunkTiles(Position);
         }
 
         /// <summary>

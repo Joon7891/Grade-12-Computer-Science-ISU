@@ -5,11 +5,6 @@
 // Modified Date: 12/19/2018
 // Description: Class to hold Spear object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -18,6 +13,7 @@ namespace ISU_Medieval_Odyssey
     {
         // Spear specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private new static Texture2D iconImage;
 
         /// <summary>
         /// Static constructor for <see cref="Spear"/> object
@@ -26,6 +22,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading in various Spear images
             directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Weapon/Thrust/Spear/", "spear", NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/spearIcon");
         }
 
         /// <summary>
@@ -35,6 +32,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up Spear
             base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
         }
     }
 }

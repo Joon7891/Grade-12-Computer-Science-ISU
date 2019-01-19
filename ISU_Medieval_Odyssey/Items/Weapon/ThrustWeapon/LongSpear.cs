@@ -1,4 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Author: Joon Song
+// File Name: LongSpear.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 12/27/2018
+// Modified Date: 12/27/2018
+// Description: Class to hold LongSpear object
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -7,6 +14,7 @@ namespace ISU_Medieval_Odyssey
     {
         // LongSpear specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private new static Texture2D iconImage;
 
         /// <summary>
         /// Static constructor for <see cref="LongSpear"/> object
@@ -15,6 +23,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading in various LongSpear images            
             directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Weapon/Thrust/LongSpear/", "longSpear", NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/spearIcon");
         }
 
         /// <summary>
@@ -24,6 +33,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up LongSpear
             base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
         }
 
         /// <summary>

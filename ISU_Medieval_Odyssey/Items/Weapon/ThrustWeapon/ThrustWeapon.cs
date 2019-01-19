@@ -30,18 +30,15 @@ namespace ISU_Medieval_Odyssey
             // Randomly picking a thrust weapon type
             int randomThrustWeaponType = SharedData.RNG.Next(3);
 
-            // Returning new instnace of random thrust weapon
+            // Returning new instnace of the random thrust weapon
             switch (randomThrustWeaponType)
             {
-                // Type-0 -> return a new staff
                 case 0:
                     return new Staff();
 
-                // Type-1 -> return a new spear
                 case 1:
                     return new Spear();
 
-                // Otherwise return a new long spear
                 default:
                     return new LongSpear();
             }

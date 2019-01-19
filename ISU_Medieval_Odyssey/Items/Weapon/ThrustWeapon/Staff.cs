@@ -16,5 +16,6 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Staff : ThrustWeapon
     {
+        private static Texture2D iconImage;
     }
 }

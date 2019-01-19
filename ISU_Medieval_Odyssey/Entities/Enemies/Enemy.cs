@@ -39,7 +39,7 @@ namespace ISU_Medieval_Odyssey
         private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
 
         private float timeToScan = 0;
-        private const float MAX_SCAN_INTERVAL = 0.5f;
+        private const float MAX_SCAN_INTERVAL = 0.25f; // May chance if lag becomes an issue
 
         private const int HEALTH_BAR_BUFFER_Y = 25;
         private const int HEALTH_BAR_WIDTH = 90;
@@ -116,7 +116,7 @@ namespace ISU_Medieval_Odyssey
                 timeToScan = 0;
                 pathToPlayer = FindPathToPlayer();
 
-                if (pathToPlayer != null)
+                if (pathToPlayer != null && pathToPlayer.Count > 0)
                 {
                     currentTarget = pathToPlayer.Dequeue();
                 }

@@ -18,18 +18,15 @@ namespace ISU_Medieval_Odyssey
             // Randomly picking a Pants type
             int randomPantsType = SharedData.RNG.Next(3);
 
-            // Returning new instace of Pants
+            // Returning new instace of the random Pants
             switch (randomPantsType)
             {
-                // Type-0 -> return leather pants
                 case 0:
                     return new LeatherPants();
 
-                // Type-1 -> return metal pants
                 case 1:
                     return new MetalPants();
 
-                // Otherwise return a robe skirt
                 default:
                     return new RobeSkirt();
             }

@@ -257,11 +257,11 @@ namespace ISU_Medieval_Odyssey
                         if (inventory[i].Item == null)
                         {
                             inventory[i].Item = tempSwapItem;
+                            pickupItemSoundEffect.CreateInstance().Play();
                             break;
                         }
                     }
                 }
-                pickupItemSoundEffect.CreateInstance().Play();
 
                 // Setting item back to null
                 tempSwapItem = null;

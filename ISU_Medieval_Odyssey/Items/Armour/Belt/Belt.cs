@@ -18,14 +18,12 @@ namespace ISU_Medieval_Odyssey
             // Randomly picking a Belt type
             int randomBeltType = SharedData.RNG.Next(2);
 
-            // Returning new instace of Belt
+            // Returning new instace of the random Belt
             switch (randomBeltType)
             {
-                // Type 1 -> returning a leather belt
                 case 0:
                     return new LeatherBelt();
 
-                // Otherwise returning a rope belt
                 default:
                     return new RopeBelt();
             }            

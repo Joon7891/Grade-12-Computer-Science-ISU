@@ -43,18 +43,15 @@ namespace ISU_Medieval_Odyssey
             // Randomly picking a weapon type
             int randomWeaponType = SharedData.RNG.Next(3);
 
-            // Returning new instance of weapon
+            // Returning new instance of the random weapon
             switch (randomWeaponType)
             {
-                // Type-0 -> return a bow
                 case 0:
                     return new Bow();
 
-                // Type-1 -> return a SlashWeapon
                 case 1:
                     return SlashWeapon.RandomSlashWeapon();
 
-                // Default -> return a ThrustWeapon
                 default:
                     return ThrustWeapon.RandomThrustWeapon();
             }
