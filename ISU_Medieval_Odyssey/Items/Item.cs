@@ -23,13 +23,18 @@ namespace ISU_Medieval_Odyssey
         public bool Valid { get; protected set; } = true;
 
         /// <summary>
+        /// Whether the item is the <see cref="Player"/>'s item
+        /// </summary>
+        public bool IsPlayerItem { get; set; } = true;
+
+        // The image the item's icon
+        protected Texture2D iconImage;
+
+        /// <summary>
         /// Subprogram to use this <see cref="Item"/>
         /// </summary>
         /// <param name="player">The player using this particular item</param>
         public virtual void Use(Player player) { }
-
-        // The image the item's icon
-        protected Texture2D iconImage;
 
         /// <summary>
         /// Subprogram to draw the <see cref="Item"/>'s icon
@@ -40,6 +45,32 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing icon
             if (iconImage != null) spriteBatch.Draw(iconImage, rectangle, Color.White);
+        }
+
+        /// <summary>
+        /// Subprogram to generate and return a random <see cref="Item"/>
+        /// </summary>
+        /// <returns>The random <see cref="Item"/></returns>
+        public static Item RandomItem()
+        {
+            // Randomly picking an item type
+            int randomItemType = SharedData.RNG.Next(3);
+
+            // Returning new instance of item
+            switch (randomItemType)
+            {
+                // Type-0 -< returning a potion 
+                case 0:
+                    return Potion.RandomPotion();
+
+                // Type-1 -> returning a weapon
+                case 1:
+                    return Weapon.RandomWeapon();
+
+                // Otherwise, returning an armour
+                default:
+                    return Armour.RandomArmour();
+            }
         }
     }
 }

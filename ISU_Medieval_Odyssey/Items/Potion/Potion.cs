@@ -33,5 +33,36 @@ namespace ISU_Medieval_Odyssey
             Valid = false;
             potionSoundEffect.CreateInstance().Play();
         }
+
+        /// <summary>
+        /// Subprogram to generate a random <see cref="Potion"/>
+        /// </summary>
+        /// <returns></returns>
+        public static Potion RandomPotion()
+        {
+            // Randomly picking a potion type
+            int potionType = SharedData.RNG.Next(4);
+
+            // Returning a new instance of the potion
+            switch (potionType)
+            {
+                // Type-0 -> return a new health potion
+                case 0:
+                    return new HealthPotion();
+
+                // Type-1 -> return a new defense potion
+                case 1:
+                    return new DefensePotion();
+            
+                // Type-2 -> return a new attack potion
+                case 2:
+                    return new AttackPotion();
+
+                // Otherwise return a new speed potion
+                default:
+                    return new SpeedPotion();
+            }
+
+        }
     }
 }

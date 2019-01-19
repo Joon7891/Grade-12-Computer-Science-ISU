@@ -96,11 +96,14 @@ namespace ISU_Medieval_Odyssey
         private ItemSlot[] inventory = new ItemSlot[ARMOUR_SIZE + 3 * ROW_SIZE];
 
         // Variables for player inventory interaction
-        private Item itemInHand = null;
         private Item tempSwapItem = null;
-        private bool isInventoryOpen = false;
         private int hotbarSelectionIndex = 0;
         private Rectangle itemInHandRect = new Rectangle(0, 0, ItemSlot.SIZE, ItemSlot.SIZE);
+
+        // Variables for player shop interaction
+        public Item ItemInHand { get; set; } = null;
+        public bool InTransaction { get; set; } = false;
+        public bool IsInventoryOpen { get; set; } = false;
 
         // Statistics-related variables
         private readonly Vector2[] statisticsLocs =
@@ -144,8 +147,9 @@ namespace ISU_Medieval_Odyssey
             // Setting up player speed, rectangle, and camera components
             Speed = 3;
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            hitBox = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             unroundedLocation = rectangle.Location.ToVector2();
+            hitBox = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
+            miniIcon = new Circle(new Vector2Int(), MINI_ICON_RADIUS, Color.Red);
 
             // Constructing world coordinate variables
             center = Vector2Int.Zero;
@@ -196,10 +200,20 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
-            // Calling subprograms to update movement, inventory, and direction
-            UpdateMovement(gameTime);
+            // Calling subprograms to update movement if player is not in a shop
+            if (!InTransaction)
+            {
+                UpdateMovement(gameTime);
+                UpdateDirection(gameTime, cameraCenter);
+            }
+            else
+            {
+                movementType = MovementType.Walk;
+                frameNumber = 0;
+            }
+
+            // Calling subprograms to update inventory
             UpdateInventory(gameTime);
-            UpdateDirection(gameTime, cameraCenter);
 
             // Updating status bars
             statisticsLocs[1].X = 60 - SharedData.InformationFonts[0].MeasureString($"Level {Level}").X / 2;
@@ -225,8 +239,8 @@ namespace ISU_Medieval_Odyssey
         {
             // Opening/closing inventory
             if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Inventory))
-            {                
-                isInventoryOpen = !isInventoryOpen;
+            {
+                IsInventoryOpen = !IsInventoryOpen;
             }
 
             // Picking up item when pick up button is pressed and there is room in inventory
@@ -263,15 +277,15 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Putting item in "hand" if user left clicks the item
-            for (int i = 0; i < ARMOUR_SIZE + ROW_SIZE * (isInventoryOpen ? 3 : 1); ++i)
+            for (int i = 0; i < ARMOUR_SIZE + ROW_SIZE * (IsInventoryOpen ? 3 : 1); ++i)
             {
                 if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
                 {
-                    if ((i < ARMOUR_SIZE && (itemInHand == null || ValidArmourFit(i))) || i >= ARMOUR_SIZE)
+                    if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || i >= ARMOUR_SIZE)
                     {
                         tempSwapItem = inventory[i].Item;
-                        inventory[i].Item = itemInHand;
-                        itemInHand = tempSwapItem;
+                        inventory[i].Item = ItemInHand;
+                        ItemInHand = tempSwapItem;
                     }
 
                     return;
@@ -279,10 +293,10 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Using item if user left clicks on the world to use it
-            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null && itemInHand == null)
+            if (MouseHelper.NewLeftClick() && inventory[hotbarSelectionIndex].HasItem && imagesToAnimate.Count == 0 && currentWeapon == null && ItemInHand == null && !InTransaction)
             {
                 UseItem(inventory[hotbarSelectionIndex].Item, gameTime);
-                isInventoryOpen = false;
+                IsInventoryOpen = false;
             }            
 
             // Update selected item in hand
@@ -294,11 +308,11 @@ namespace ISU_Medieval_Odyssey
             hotbarSelectionIndex = (hotbarSelectionIndex + ROW_SIZE) % ROW_SIZE + ARMOUR_SIZE;
 
             // Dropping item in hand into world and playing sound effect if player clicks on the world
-            if ((MouseHelper.NewLeftClick() || MouseHelper.NewLeftClick()) && itemInHand != null)
+            if ((MouseHelper.NewLeftClick() || MouseHelper.NewLeftClick()) && ItemInHand != null && !InTransaction)
             {
-                World.Instance.AddItem(itemInHand, rectangle);
+                World.Instance.AddItem(ItemInHand, rectangle);
                 dropItemSoundEffect.CreateInstance().Play();
-                itemInHand = null;
+                ItemInHand = null;
             }
 
             // Removing broken or used items from inventory
@@ -322,22 +336,22 @@ namespace ISU_Medieval_Odyssey
             switch (armourIndex)
             {
                 case 0:
-                    return itemInHand is Shoes;
+                    return ItemInHand is Shoes;
 
                 case 1:
-                    return itemInHand is Pants;
+                    return ItemInHand is Pants;
 
                 case 2:
-                    return itemInHand is Belt;
+                    return ItemInHand is Belt;
 
                 case 3:
-                    return itemInHand is Torso;
+                    return ItemInHand is Torso;
 
                 case 4:
-                    return itemInHand is Shoulders;
+                    return ItemInHand is Shoulders;
 
                 default:
-                    return itemInHand is Head;
+                    return ItemInHand is Head;
             }
         }
 
@@ -420,7 +434,7 @@ namespace ISU_Medieval_Odyssey
             if (imagesToAnimate.Count != 0 || currentWeapon != null)
             {
                 animationCounter = (animationCounter > 2) ? 0 : (animationCounter + 1);
-                isInventoryOpen = false;
+                IsInventoryOpen = false;
 
                 // Moving onto next frame every 4 updates
                 if (animationCounter == 2)
@@ -450,7 +464,7 @@ namespace ISU_Medieval_Odyssey
             // Closing inventory and proceeding with movement logic if player is moving
             if (IsMoving && currentWeapon == null)
             {
-                isInventoryOpen = false;
+                IsInventoryOpen = false;
 
                 // Moving player in appropraite direction given movement keystroke
                 if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up))
@@ -521,6 +535,8 @@ namespace ISU_Medieval_Odyssey
             center.Y = rectangle.Y + (PIXEL_SIZE >> 1);
             groundCoordinate.X = center.X;
             groundCoordinate.Y = rectangle.Bottom - 1;
+            miniIcon.X = X;
+            miniIcon.Y = Y;
         }
 
         /// <summary>
@@ -663,13 +679,13 @@ namespace ISU_Medieval_Odyssey
         public void DrawHUD(SpriteBatch spriteBatch)
         {
             // Drawing the hotbar
-            for (int i = 0; i < ARMOUR_SIZE + (isInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
+            for (int i = 0; i < ARMOUR_SIZE + (IsInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
             {
                 inventory[i].Draw(spriteBatch, i == hotbarSelectionIndex);
             }
 
             // Drawing item in "hand" - if applicable
-            itemInHand?.DrawIcon(spriteBatch, itemInHandRect);
+            ItemInHand?.DrawIcon(spriteBatch, itemInHandRect);
 
             // Drawing primitive player properties
             spriteBatch.DrawString(SharedData.InformationFonts[1], Name, statisticsLocs[0], Color.White);

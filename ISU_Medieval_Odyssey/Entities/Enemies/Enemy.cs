@@ -100,6 +100,7 @@ namespace ISU_Medieval_Odyssey
                 Color.Red * 0.6f, SharedData.InformationFonts[4], Color.Black);
             Speed = speed;
             Experience = (short)(damageAmount + health + 10 * speed + 0.5);
+            miniIcon = new Circle(new Vector2Int(), MINI_ICON_RADIUS, Color.Black);
         }
 
         /// <summary>
@@ -133,6 +134,8 @@ namespace ISU_Medieval_Odyssey
             center.Y = rectangle.Y + (rectangle.Height >> 1);
             groundCoordinate.X = center.X;
             groundCoordinate.Y = rectangle.Bottom - 1;
+            miniIcon.X = center.X;
+            miniIcon.Y = center.Y;
         }
 
         /// <summary>

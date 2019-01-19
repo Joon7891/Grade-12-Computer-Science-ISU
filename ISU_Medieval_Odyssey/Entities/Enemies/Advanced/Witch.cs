@@ -63,6 +63,12 @@ namespace ISU_Medieval_Odyssey
             base.Update(gameTime);
 
             // Spawning a Skeleton every 5 seconds
+            timeToSpawn += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if (timeToSpawn >= SPAWN_TIME)
+            {
+                World.Instance.AddEnemy(new Skeleton(CurrentTile));
+                timeToSpawn = 0;
+            }
         }
     }
 }

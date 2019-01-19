@@ -28,6 +28,7 @@ namespace ISU_Medieval_Odyssey
         public Rectangle Rectangle { get; private set; }
 
         // The item slot related data
+        private Color color;
         public const int SIZE = 60;
         private static Texture2D itemSlotImage;
 
@@ -46,11 +47,16 @@ namespace ISU_Medieval_Odyssey
         /// <param name="x">The x-component of the item slot's location</param>
         /// <param name="y">The y-component of the item slot's </param>
         /// <param name="item">The item that is to be held in the item slot - default is null</param>
-        public ItemSlot(int x, int y, Item item = null)
+        public ItemSlot(int x, int y, Item item = null, Color? color = null)
         {
             // Setting up class attributes
             Rectangle = new Rectangle(x, y, SIZE, SIZE);
             Item = item;
+            if (color == null)
+            {
+                color = Color.White;
+            }
+            this.color = (Color)color;
         }
 
         /// <summary>
@@ -61,7 +67,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch, bool isSelected = false)
         {
             // Drawing item slot and item
-            spriteBatch.Draw(itemSlotImage, Rectangle, (isSelected ? Color.SkyBlue : Color.White) * 0.65f);
+            spriteBatch.Draw(itemSlotImage, Rectangle, (isSelected ? Color.SkyBlue : color) * 0.65f);
             Item?.DrawIcon(spriteBatch, Rectangle);
         }
 

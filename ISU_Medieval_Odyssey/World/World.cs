@@ -80,7 +80,7 @@ namespace ISU_Medieval_Odyssey
             }
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
-            enemies.Add(new Knight(new Vector2Int(-2, -2)));
+            buildings.Add(new Shop(new Vector2Int(2, 2)));
         }
 
         /// <summary>
@@ -129,6 +129,12 @@ namespace ISU_Medieval_Odyssey
                     Player.Instance.Experience += enemies[i].Experience;
                     enemies.RemoveAt(i);
                 }
+            }
+
+            // Updating current building if inside a building 
+            if (IsInside)
+            {
+                CurrentBuilding.Update(gameTime);
             }
 
             List<Enemy> projectileHits = new List<Enemy>();
@@ -221,7 +227,13 @@ namespace ISU_Medieval_Odyssey
             if (!IsInside)
             {
                 // Drawing the various loaded chunks of the world
-                DrawChunks(spriteBatch);
+                for (int y = 0; y < CHUNK_COUNT; ++y)
+                {
+                    for (byte x = 0; x < CHUNK_COUNT; ++x)
+                    {
+                        loadedChunks[x, y].Draw(spriteBatch);
+                    }
+                }
 
                 // Drawing the outsides of various buildings
                 for (int i = 0; i < buildings.Count; ++i)
@@ -259,7 +271,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to draw the various loaded <see cref="Chunk"/>s of this <see cref="World"/>
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
-        public void DrawChunks(SpriteBatch spriteBatch)
+        public void DrawMini(SpriteBatch spriteBatch)
         {
             // Drawing the various loaded chunks
             for (int y = 0; y < CHUNK_COUNT; ++y)
@@ -268,6 +280,12 @@ namespace ISU_Medieval_Odyssey
                 {
                     loadedChunks[x, y].Draw(spriteBatch);
                 }
+            }
+
+            // Drawing enemies in mini form
+            for (short i = 0; i < enemies.Count; ++i)
+            {
+                enemies[i].DrawMini(spriteBatch);
             }
         }
 
@@ -294,6 +312,16 @@ namespace ISU_Medieval_Odyssey
             playerRectangle.Width = ItemSlot.SIZE;
             playerRectangle.Height = ItemSlot.SIZE;
             liveItems.Add(new LiveItem(item, playerRectangle));
+        }
+
+        /// <summary>
+        /// Subprogram to add a <see cref="Enemy"/>
+        /// </summary>
+        /// <param name="enemy">The <see cref="Enemy"/> to be added</param>
+        public void AddEnemy(Enemy enemy)
+        {
+            // Adding enemies to world
+            enemies.Add(enemy);
         }
 
         /// <summary>

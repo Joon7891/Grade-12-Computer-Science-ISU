@@ -23,6 +23,7 @@ namespace ISU_Medieval_Odyssey
         private static Texture2D insideShopImage;
         private static Texture2D outsideShopImage;
         private static SoundEffect doorSoundEffect;
+        private static Vector2Int shopLocation = new Vector2Int(4, 3);
         private static Vector2Int exitLocation = new Vector2Int(4, 5);
         private static Vector2Int enterLocation = new Vector2Int(4, 6);
         private static List<Vector2Int> insideObstructionLocs = new List<Vector2Int>();
@@ -36,8 +37,18 @@ namespace ISU_Medieval_Odyssey
         private const int PIXEL_WIDTH = Tile.SPACING * OUTSIDE_WIDTH;
         private const int PIXEL_HEIGHT = Tile.SPACING * OUTSIDE_HEIGHT;
 
+        // Sprites for this Shop's inside and outside images
         private Sprite insideShopSprite;
         private Sprite outsideShopSprite;
+
+        // Shop buying/selling function related data
+        private const float MAX_PROFIT_CUT = 0.95f;
+        private readonly float profitCut;
+        private const int ROW_SIZE = 9;
+        private const int INVENTORY_SIZE = 3 * ROW_SIZE;
+        private ItemSlot[] inventory = new ItemSlot[INVENTORY_SIZE];
+        private ItemSlot sellItemSlot;
+        private ItemSlot buyItemSlot;
 
         /// <summary>
         /// Static constructor for <see cref="Shop"/> object
@@ -69,7 +80,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up outside obstruction tiles
             for (int i = 0; i < INSIDE_WIDTH; ++i)
             {
-                outsideObstructionLocs.Add(new Vector2Int(1 + i, 2));
+                outsideObstructionLocs.Add(new Vector2Int(1 + i, 1));
                 outsideObstructionLocs.Add(new Vector2Int(1 + i, 5));
             }
             for (int i = 1; i < OUTSIDE_HEIGHT - 1; ++i)
@@ -85,6 +96,22 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cornerTile">The position of the tile <see cref="Tile"/> in the top left corner</param>
         public Shop(Vector2Int cornerTile)
         {
+            // Setting up shop inventory and buying/selling function
+            Item[] shopItems = new Item[SharedData.RNG.Next(INVENTORY_SIZE)];
+            profitCut = (float)(SharedData.RNG.NextDouble() * MAX_PROFIT_CUT);
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < ROW_SIZE; ++j)
+                {
+                    inventory[i * ROW_SIZE + j] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (j - 3.5) * 70), 210 + 70 * i, null, Color.Yellow);
+                }
+            }
+            buyItemSlot = new ItemSlot(710, 455, null, Color.Green);
+            sellItemSlot = new ItemSlot(150, 455, null, Color.Red);
+
+            //toSellItemSlot = new Item((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (j - 3.5) * 70))
+
+
             // Setting up inside and outside shop images
             insideShopSprite = new Sprite(insideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
             outsideShopSprite = new Sprite(outsideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
@@ -103,15 +130,45 @@ namespace ISU_Medieval_Odyssey
                 World.Instance.IsInside = false;
                 World.Instance.CurrentBuilding = null;
                 player.Y += Tile.SPACING;
-                doorSoundEffect.CreateInstance().Play();
+              //  doorSoundEffect.CreateInstance().Play();
             });
             World.Instance.GetTileAt(cornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
             {               
                 World.Instance.IsInside = true;
                 World.Instance.CurrentBuilding = this;
                 player.Y -= Tile.SPACING;
-                doorSoundEffect.CreateInstance().Play();
+                //doorSoundEffect.CreateInstance().Play(); // ??
             });
+            World.Instance.GetTileAt(cornerTile + shopLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
+            {
+                player.InTransaction = !player.InTransaction;
+                player.IsInventoryOpen = true;
+            });
+        }
+
+        /// <summary>
+        /// Subprogram to get this <see cref="Shop"/>'s offer for a given <see cref="Item"/>
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to get an offer from</param>
+        /// <returns>The offer for the <see cref="Item"/></returns>
+        public int GetOffer(Item item) => (int)(item.Value * profitCut);
+
+        /// <summary>
+        /// Update subprogram for this <see cref="Shop"/>
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        public void Update(GameTime gameTime)
+        {
+            Item tempSwapItem = null;
+            
+            // Swapping "Sell Item"-item use drops an item in it
+            if (MouseHelper.IsRectangleLeftClicked(sellItemSlot.Rectangle) && Player.Instance.ItemInHand != null)
+            {
+                tempSwapItem = sellItemSlot.Item;
+                Player.Instance.ItemInHand = tempSwapItem;
+                sellItemSlot.Item = tempSwapItem;
+                tempSwapItem = null;
+            }
         }
 
         /// <summary>
@@ -122,6 +179,21 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing the inside of the shop
             insideShopSprite.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// Subprogram to draw this <see cref="Shop"/>'s inventory
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        public void DrawInventory(SpriteBatch spriteBatch)
+        {
+            // Drawing inventory items for shop
+            for (byte i = 0; i < inventory.Length; ++i)
+            {
+                inventory[i].Draw(spriteBatch);
+            }
+            buyItemSlot.Draw(spriteBatch);
+            sellItemSlot.Draw(spriteBatch);
         }
 
         /// <summary>

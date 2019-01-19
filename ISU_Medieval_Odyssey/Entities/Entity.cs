@@ -6,6 +6,7 @@
 // Description: Static class to hold shared entity data
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace ISU_Medieval_Odyssey
@@ -86,5 +87,19 @@ namespace ISU_Medieval_Odyssey
         // The entity's rounded and unrounded location/rectangle
         protected Vector2 unroundedLocation;
         protected Rectangle rectangle;
+
+        // Objects/variables related to the entity's mini-icon
+        protected Circle miniIcon;
+        protected const int MINI_ICON_RADIUS = 50;
+
+        /// <summary>
+        /// Subprogram to draw the mini-version of this <see cref="Entity"/> for the minimap
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
+        public void DrawMini(SpriteBatch spriteBatch)
+        {
+            // Drawing mini version of entity
+            miniIcon.Draw(spriteBatch);
+        }
     }
 }

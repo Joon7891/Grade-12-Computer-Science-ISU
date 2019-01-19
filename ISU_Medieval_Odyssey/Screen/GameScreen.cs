@@ -41,7 +41,6 @@ namespace ISU_Medieval_Odyssey
         private Vector2 adjustmentVector = new Vector2(895, 11);
         private Vector2 cameraVerticalShift = new Vector2(0, MINI_MAP_SIZE / 2);
         private Sprite miniMapBorder;
-        private Circle playerDot;
 
         // Statistics display-related variables
         private bool showStatistics = false;
@@ -66,7 +65,6 @@ namespace ISU_Medieval_Odyssey
             miniMapBorder = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/miniMapBorder"), 
                 new Rectangle(SharedData.SCREEN_WIDTH - MINI_MAP_SIZE - 10, 10, MINI_MAP_SIZE, MINI_MAP_SIZE));
             miniMapCamera.Position = miniMapBorder.Rectangle.Location.ToVector2();
-            playerDot = new Circle(new Vector2Int(0, 0), 50, Color.Red);
         }
         
         /// <summary>
@@ -97,8 +95,6 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating logic for minimap camera
-            playerDot.X = Player.X;
-            playerDot.Y = Player.Y;
             miniMapCamera.Position = -World.WorldBoundsRect.Location.ToVector2() + adjustmentVector;
             miniMapCamera.Origin = miniMapCamera.Position - World.WorldBoundsRect.Location.ToVector2() * miniMapCamera.OrthographicSize / 2.0f;
         }
@@ -117,12 +113,18 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing player minimap components
             spriteBatch.Begin(transformMatrix: miniMapCamera.ViewMatrix, samplerState: SamplerState.PointClamp);
-            World.DrawChunks(spriteBatch);
-            playerDot.Draw(spriteBatch);
+            World.DrawMini(spriteBatch);
+            Player.DrawMini(spriteBatch);
             spriteBatch.End();
               
             // Beginning regular sprite batch
             spriteBatch.Begin();
+
+            // Drawing shop inventory, if appropriate
+            if (World.Instance.CurrentBuilding is Shop && Player.Instance.InTransaction)
+            {
+                ((Shop)World.Instance.CurrentBuilding).DrawInventory(spriteBatch);
+            }
 
             // Drawing statistics and player HUD
             if (showStatistics)

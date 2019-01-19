@@ -5,12 +5,19 @@
 // Modified Date: 12/27/2018
 // Description: Interface to hold IBuilding
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public interface IBuilding
     {
+        /// <summary>
+        /// Update subprogram for this <see cref="IBuilding"/>
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        void Update(GameTime gameTime);
+        
         /// <summary>
         /// Subprogram to draw the outside of the <see cref="IBuilding"/>
         /// </summary>

@@ -105,5 +105,14 @@ namespace ISU_Medieval_Odyssey
             durabilityBar.Y = rectangle.Y + 47;
             durabilityBar.Draw(spriteBatch);
         }
+
+        /// <summary>
+        /// Subprogram to generate a random <see cref="Armour"/>
+        /// </summary>
+        /// <returns>The random <see cref="Armour"/></returns>
+        public static Armour RandomArmour()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
