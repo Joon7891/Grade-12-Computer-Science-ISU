@@ -182,6 +182,7 @@ namespace ISU_Medieval_Odyssey
 
         private void ConnectRegions()
         {
+            currentRegion++;
             // create disjoint set for spanning tree
             DisjointSet disjointSet = new DisjointSet(rooms.Count);
 
@@ -229,13 +230,93 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            // carve out connectors
+            foreach(Tuple<Vector2Int, int, int> connector in connections)
+            {
+                region[connector.Item1.X, connector.Item1.Y] = currentRegion;
+            }
 
+            // remove connectors that no longer connect
+            foreach(Tuple<Vector2Int, int, int> connector in connectors)
+            {
+                int x = connector.Item1.X;
+                int y = connector.Item1.Y;
 
+                if (region[x, y] == -1)
+                {
+                    List<int> regions = new List<int>();
+                    Vector2Int current = new Vector2Int(x, y);
 
+                    for (int k = 0; k < 4; k++)
+                    {
+                        Vector2Int check = current + MoveDirections[k];
+                        if (!regions.Contains(region[check.X, check.Y]))
+                        {
+                            regions.Add(region[check.X, check.Y]);
+                        }
+                    }
 
+                    if (regions.Count < 2 || region[x, y] != -1)
+                    {
+                        connectors.Remove(connector);
+                    }
+                }
+            }
 
+            // add extra connectors
+            foreach(Tuple<Vector2Int, int, int> connector in connectors)
+            {
+                if(rng.Next(0,101) <= CONNECTION_CHANCE)
+                {
+                    region[connector.Item1.X, connector.Item1.Y] = currentRegion;
+                }
+            }
+        }
 
+        /// <summary>
+        /// Fills in all tiles that have walls on 3 sides
+        /// </summary>
+        private void FillDeadEnds()
+        {
+            for (int i = 1; i < MAX_WIDTH - 1; i++)
+            {
+                for (int j = 1; j < MAX_HEIGHT - 1; j++)
+                {
+                    if(region[i,j] == -1)
+                    {
+                        continue;
+                    }
 
+                    Queue<Vector2Int> queue = new Queue<Vector2Int>();
+                    queue.Enqueue(new Vector2Int(i, j));
+
+                    while (queue.Count > 0)
+                    {
+                        Vector2Int current = queue.Dequeue();
+                        int walls = 0;
+
+                        for (int k = 0; k < 4; k++)
+                        {
+                            Vector2Int check = current + MoveDirections[k];
+                            if (region[check.X, check.Y] == -1)
+                            {
+                                walls++;
+                            }
+                        }
+
+                        if(walls >= 3)
+                        {
+                            region[current.X, current.Y] = -1;
+                            for (int k = 0; k < 4; k++)
+                            {
+                                Vector2Int check = current + MoveDirections[k];
+                                queue.Enqueue(check);
+                            }
+                        }
+
+                    }
+                }
+            }
         }
 
         private void CreateMazes()
