@@ -82,6 +82,8 @@ namespace ISU_Medieval_Odyssey
             worldBoundsRect = new Rectangle(loadedChunks[0, 0].WorldPosition.X, loadedChunks[0, 0].WorldPosition.Y,
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             collisionTree = new CollisionTree(worldBoundsRect);
+
+            enemies.Add(new Dragon(new Vector2Int(-2, -2)));
         }
 
         /// <summary>

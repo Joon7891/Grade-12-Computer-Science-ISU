@@ -149,7 +149,6 @@ namespace ISU_Medieval_Odyssey
 
             // Constructing world coordinate variables
             center = Vector2Int.Zero;
-            CurrentTile = Vector2Int.Zero;
 
             // Setting up name and other attributes
             Name = name;
@@ -201,9 +200,6 @@ namespace ISU_Medieval_Odyssey
             UpdateMovement(gameTime);
             UpdateInventory(gameTime);
             UpdateDirection(gameTime, cameraCenter);
-
-            // Updating current tile and chunk coordinates
-            CurrentTile = World.PixelToTileCoordinate(groundCoordinate);
 
             // Updating status bars
             healthBar.Update();

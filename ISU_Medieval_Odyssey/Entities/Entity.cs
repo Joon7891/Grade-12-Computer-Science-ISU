@@ -40,7 +40,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current tile coordinates
         /// </summary>
-        public Vector2Int CurrentTile { get; protected set; }
+        public Vector2Int CurrentTile => World.PixelToTileCoordinate(groundCoordinate);
 
         /// <summary>
         /// A cartesian intergral vector representing this <see cref="Entity"/>'s current chunk coordinates

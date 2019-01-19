@@ -6,11 +6,13 @@
 // Description: Class to hold BruteEnemy object
 
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace ISU_Medieval_Odyssey
 {
     public abstract class PrimitiveEnemy : Enemy
     {
-        
+
+
     }
 }

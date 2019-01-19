@@ -16,8 +16,9 @@ namespace ISU_Medieval_Odyssey
     /// <summary>
     /// Direction enum to hold various directions
     /// </summary>
-    public enum Direction : byte
+    public enum Direction : sbyte
     {
+        None = -1,
         Up = 0,
         Right = 1,
         Down = 2,

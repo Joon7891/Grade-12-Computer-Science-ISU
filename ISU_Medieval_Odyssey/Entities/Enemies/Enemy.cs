@@ -27,7 +27,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The amount of experience this <see cref="Enemy"/> drops/gives to <see cref="Player"/>
         /// </summary>
-        public short Experience { get; }
+        public short Experience { get; private set; }
 
         protected float attackSpeed;
         protected short damageAmount;
@@ -38,18 +38,32 @@ namespace ISU_Medieval_Odyssey
 
         private Queue<Vector2Int> futureTiles = new Queue<Vector2Int>();
         private Vector2Int nextTile;
-        private float reevaluateTime;
+
+        private const float EVALUATE_TIME = 1;
         private float timeToReevaluate;
+        protected int scanRange;
 
         // Graphics-realted data
-        protected byte maxFrames;
-        protected byte currentFrame = 0;
-        protected byte animationCounter = 0;
+        protected int numFrames;
+        protected int currentFrame = 0;
+        protected int animationCounter = 0;
+        protected int maxAnimationCounter;
         protected DirectionalSpriteSheet directionalSpriteSheet;
 
-        protected void Initialize(Vector2Int tileCoordinate)
+        protected void Initialize(Vector2Int tileCoordinate, int width, int height, int hitBoxBufferX, int hitBoxBufferY, 
+            int minHealth, int maxHealth, int minDamage, int maxDamage, byte numFrames, byte maxAnimationCounter, byte scanRange)
         {
+            rectangle = new Rectangle(0, 0, width, height);
+            rectangle.X = tileCoordinate.X * Tile.SPACING - width / 2;
+            rectangle.Y = tileCoordinate.Y * Tile.SPACING - height / 2;
+            unroundedLocation = rectangle.Location.ToVector2();
 
+            // Hitbox shit...
+            //Health = SharedData.RNG.Next(minHealth, maxHealth);
+            damageAmount = (short) SharedData.RNG.Next(minDamage, maxDamage);
+            this.numFrames = numFrames;
+            this.maxAnimationCounter = maxAnimationCounter;
+            this.scanRange = scanRange;
         }
 
         /// <summary>
@@ -60,17 +74,31 @@ namespace ISU_Medieval_Odyssey
         {
             // Updating time to reevaluate and reevaluating movement when approriate
             timeToReevaluate += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (timeToReevaluate >= reevaluateTime || futureTiles.Count == 0)
+            if (timeToReevaluate >= EVALUATE_TIME || futureTiles.Count == 0)
             {
                 timeToReevaluate = 0;
-                ReevaluateMovement();
+                futureTiles = EvaluateTarget();
+                nextTile.X = int.MinValue;
+                nextTile.Y = int.MinValue;
             }
+            Speed = 1;
 
             // Calling subprogram to update movement
             UpdateMovement(gameTime);
+
+            // Calculating the enemy's locations
+            rectangle.X = (int)(unroundedLocation.X + 0.5);
+            rectangle.Y = (int)(unroundedLocation.Y + 0.5);
+            center.X = rectangle.X + (rectangle.Width >> 1);
+            center.Y = rectangle.Y + (rectangle.Height >> 1);
+            groundCoordinate.X = center.X;
+            groundCoordinate.Y = rectangle.Bottom - 1;
         }
 
-        protected virtual void ReevaluateMovement() { }
+        protected virtual Queue<Vector2Int> EvaluateTarget()
+        {
+            return null;
+        }
 
         /// <summary>
         /// Subprogram to update this <see cref="Enemy"/>'s movement
@@ -78,20 +106,62 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         protected virtual void UpdateMovement(GameTime gameTime)
         {
+            // Updating animation/frame counter
+            animationCounter = (animationCounter == maxAnimationCounter) ? 0 : (animationCounter + 1);
+            if (animationCounter == 0)
+            {
+                currentFrame = (currentFrame + 1) % numFrames;
+            }
+
+
+            if (nextTile == CurrentTile || (nextTile.X == int.MinValue && nextTile.Y == int.MinValue))
+            {
+                nextTile = futureTiles.Dequeue();
+
+                if (nextTile.X - CurrentTile.X == 1)
+                {
+                    Direction = Direction.Right;
+                }
+                else if (nextTile.X - CurrentTile.X == -1)
+                {
+                    Direction = Direction.Left;
+                }
+                else if (nextTile.Y - CurrentTile.Y == 1)
+                {
+                    Direction = Direction.Down;
+                }
+                else if (nextTile.Y - CurrentTile.Y == -1)
+                {
+                    Direction = Direction.Up;
+                }
+            }
+            
             // Moving enemy in appropriate direction
             switch (Direction)
             {
                 case Direction.Up:
-                    
+                    unroundedLocation.Y -= GetPixelSpeed(gameTime);
 
                     break;
                 case Direction.Right:
-                    break;
-                //case Direction
+                    unroundedLocation.X += GetPixelSpeed(gameTime);
 
+                    break;
+
+                case Direction.Down:
+                    unroundedLocation.Y += GetPixelSpeed(gameTime);
+
+                    break;
+
+                case Direction.Left:
+                    unroundedLocation.X -= GetPixelSpeed(gameTime);
+
+                    break;
             }
 
         }
+
+        private float GetPixelSpeed(GameTime gameTime) => Speed * Tile.SPACING * gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
 
         /// <summary>
         /// Draw subprogram for <see cref="Enemy"/> object
@@ -100,7 +170,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing enemy
-            directionalSpriteSheet.Draw(spriteBatch, Direction.Down, 0, new Rectangle(0, 0, 80, 80));
+            directionalSpriteSheet.Draw(spriteBatch, Direction, currentFrame, rectangle);
         }
     }
 }
