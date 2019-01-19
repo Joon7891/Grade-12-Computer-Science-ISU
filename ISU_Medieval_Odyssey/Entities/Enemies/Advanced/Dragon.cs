@@ -5,9 +5,11 @@
 // Modified Date: 01/18/2019
 // Description: Class to hold Dragon object
 
+using System.Collections.Generic;
+
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Dragon : SmartEnemy
+    public sealed class Dragon : AdvancedEnemy
     {
         // Dragon specific graphics
         private static new DirectionalSpriteSheet directionalSpriteSheet;
@@ -22,7 +24,7 @@ namespace ISU_Medieval_Odyssey
         private const int MAX_HEALTH = 100;
         private const int MIN_DAMAGE = 50;
         private const int MAX_DAMAGE = 200;
-        private const int SCAN_RANGE = 4;
+        private const int SCAN_RANGE = 6;
 
         static Dragon()
         {

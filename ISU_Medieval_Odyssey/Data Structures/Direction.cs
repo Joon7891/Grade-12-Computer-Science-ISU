@@ -18,7 +18,6 @@ namespace ISU_Medieval_Odyssey
     /// </summary>
     public enum Direction : sbyte
     {
-        None = -1,
         Up = 0,
         Right = 1,
         Down = 2,

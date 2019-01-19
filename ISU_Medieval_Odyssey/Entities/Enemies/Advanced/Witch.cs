@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Witch : SmartEnemy
+    public sealed class Witch : RangedEnemy
     {
         private static new DirectionalSpriteSheet directionalSpriteSheet;
         private const int NUM_FRAMES = 4;

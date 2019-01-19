@@ -7,7 +7,7 @@
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Knight : SmartEnemy
+    public sealed class Knight : AdvancedEnemy
     {
 
         public Knight(Vector2Int tileCoordinate)

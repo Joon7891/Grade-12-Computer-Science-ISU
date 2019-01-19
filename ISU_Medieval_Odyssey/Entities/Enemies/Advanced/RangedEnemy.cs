@@ -7,7 +7,7 @@
 
 namespace ISU_Medieval_Odyssey
 {
-    public abstract class RangedEnemy : SmartEnemy
+    public abstract class RangedEnemy : AdvancedEnemy
     {
     }
 }

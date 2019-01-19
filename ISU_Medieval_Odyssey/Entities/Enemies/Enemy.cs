@@ -35,12 +35,12 @@ namespace ISU_Medieval_Odyssey
         protected int collisionBufferVertical;
         protected int collisionBUfferHorizontal;
 
+        private Vector2Int currentTarget;
+        private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
 
-        private Queue<Vector2Int> futureTiles = new Queue<Vector2Int>();
-        private Vector2Int nextTile;
+        private float timeToScan = 0;
+        private const float MAX_SCAN_INTERVAL = 1;
 
-        private const float EVALUATE_TIME = 1;
-        private float timeToReevaluate;
         protected int scanRange;
 
         // Graphics-realted data
@@ -57,6 +57,8 @@ namespace ISU_Medieval_Odyssey
             rectangle.X = tileCoordinate.X * Tile.SPACING - width / 2;
             rectangle.Y = tileCoordinate.Y * Tile.SPACING - height / 2;
             unroundedLocation = rectangle.Location.ToVector2();
+            groundCoordinate.X = rectangle.X + rectangle.Width;
+            groundCoordinate.Y = rectangle.Bottom - 1;
 
             // Hitbox shit...
             //Health = SharedData.RNG.Next(minHealth, maxHealth);
@@ -72,15 +74,18 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
-            // Updating time to reevaluate and reevaluating movement when approriate
-            timeToReevaluate += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (timeToReevaluate >= EVALUATE_TIME || futureTiles.Count == 0)
+            timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if (timeToScan >= MAX_SCAN_INTERVAL)
             {
-                timeToReevaluate = 0;
-                futureTiles = EvaluateTarget();
-                nextTile.X = int.MinValue;
-                nextTile.Y = int.MinValue;
+                timeToScan = 0;
+                pathToPlayer = FindPathToPlayer();
+
+                if (pathToPlayer != null)
+                {
+                    currentTarget = pathToPlayer.Dequeue();
+                }
             }
+
             Speed = 1;
 
             // Calling subprogram to update movement
@@ -95,7 +100,7 @@ namespace ISU_Medieval_Odyssey
             groundCoordinate.Y = rectangle.Bottom - 1;
         }
 
-        protected virtual Queue<Vector2Int> EvaluateTarget()
+        protected virtual Queue<Vector2Int> FindPathToPlayer()
         {
             return null;
         }
@@ -113,28 +118,27 @@ namespace ISU_Medieval_Odyssey
                 currentFrame = (currentFrame + 1) % numFrames;
             }
 
-
-            if (nextTile == CurrentTile || (nextTile.X == int.MinValue && nextTile.Y == int.MinValue))
+            if (pathToPlayer != null && currentTarget == CurrentTile && pathToPlayer.Count > 0)
             {
-                nextTile = futureTiles.Dequeue();
+                currentTarget = pathToPlayer.Dequeue();
 
-                if (nextTile.X - CurrentTile.X == 1)
+                if (currentTarget.X - CurrentTile.X == 1)
                 {
                     Direction = Direction.Right;
                 }
-                else if (nextTile.X - CurrentTile.X == -1)
+                else if (currentTarget.X - CurrentTile.X == -1)
                 {
                     Direction = Direction.Left;
                 }
-                else if (nextTile.Y - CurrentTile.Y == 1)
-                {
-                    Direction = Direction.Down;
-                }
-                else if (nextTile.Y - CurrentTile.Y == -1)
+                else if (currentTarget.Y - CurrentTile.Y == -1)
                 {
                     Direction = Direction.Up;
                 }
-            }
+                else if (currentTarget.Y - CurrentTile.Y == 1)
+                {
+                    Direction = Direction.Down;
+                }
+            }            
             
             // Moving enemy in appropriate direction
             switch (Direction)
@@ -161,7 +165,7 @@ namespace ISU_Medieval_Odyssey
 
         }
 
-        private float GetPixelSpeed(GameTime gameTime) => Speed * Tile.SPACING * gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
+        private float GetPixelSpeed(GameTime gameTime) => Speed * Tile.SPACING * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
         /// <summary>
         /// Draw subprogram for <see cref="Enemy"/> object
