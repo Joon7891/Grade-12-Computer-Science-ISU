@@ -12,6 +12,34 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class NumberBar : ProgressBar
     {
+        /// <summary>
+        /// The x coordinate of the top left corner of this <see cref="NumberBar"/>
+        /// </summary>
+        public override int X
+        {
+            get => backRectangle.X;
+            set
+            {
+                backRectangle.X = value;
+                progressRectangle.X = backRectangle.X;
+                textLocation.X = backRectangle.X + (backRectangle.Width - progressFont.MeasureString(text).X) / 2;
+            }
+        }
+
+        /// <summary>
+        /// The y coordinate of the top left corner of this <see cref="NumberBar"/>
+        /// </summary>
+        public override int Y
+        {
+            get => backRectangle.Y;
+            set
+            {
+                backRectangle.Y = value;
+                progressRectangle.Y = backRectangle.Y;
+                textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 3;
+            }
+        }
+
         // Variables required to draw NumberBar text
         private string text = string.Empty;
         private Vector2 textLocation;
@@ -41,13 +69,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public override void Update()
         {
-            // Calling ProgressBar update subprogram
-            base.Update();
-
             // Updating number text and its location 
             text = $"{CurrentValue} / {MaxValue}";
             textLocation.X = backRectangle.X + (backRectangle.Width - progressFont.MeasureString(text).X) / 2;
             textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 3;
+
+            // Calling ProgressBar update subprogram
+            base.Update();            
         }
 
         /// <summary>

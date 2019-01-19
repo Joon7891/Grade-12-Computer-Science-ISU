@@ -41,8 +41,10 @@ namespace ISU_Medieval_Odyssey
         private float timeToScan = 0;
         private const float MAX_SCAN_INTERVAL = 0.5f;
 
-        private const int HEALTH_BAR_BUFFER = 25;
+        private const int HEALTH_BAR_BUFFER_Y = 25;
+        private const int HEALTH_BAR_WIDTH = 90;
         private const int HEALTH_BAR_HEIGHT = 20;
+        private int healthBarBufferX;
 
         protected int scanRange;
 
@@ -81,24 +83,29 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to set various statistics for this <see cref="Enemy"/>
         /// </summary>
         /// <param name="scanRange">The scan range of this <see cref="Enemy"/></param>
-        /// <param name="minHealth"></param>
-        /// <param name="maxHealth"></param>
-        /// <param name="minDamage"></param>
-        /// <param name="maxDamage"></param>
-        protected void InitializeStatistics(byte scanRange, int minHealth, int maxHealth, int minDamage, int maxDamage)
+        /// <param name="minHealth">The min health for this <see cref="Enemy"/></param>
+        /// <param name="maxHealth">The max health for this <see cref="Enemy"/></param>
+        /// <param name="minDamage">The min damage for this <see cref="Enemy"/></param>
+        /// <param name="maxDamage">The max damage for this <see cref="Enemy"/></param>
+        /// <param name="speed">The speed of this <see cref="Enemy"/></param>
+        protected void InitializeStatistics(byte scanRange, int minHealth, int maxHealth, int minDamage, int maxDamage, float speed)
         {
+            // Setting up various statistics for enemy 
             short health = (short) SharedData.RNG.Next(minHealth, maxHealth + 1);
             this.scanRange = scanRange;
             damageAmount = (short) SharedData.RNG.Next(minDamage, maxDamage + 1);
-            healthBar = new NumberBar(new Rectangle(rectangle.X, rectangle.Y - HEALTH_BAR_BUFFER, rectangle.Width, HEALTH_BAR_HEIGHT), health, health, Color.White * 0.5f,
+            healthBarBufferX = (HEALTH_BAR_WIDTH - rectangle.Width) >> 1;
+            healthBar = new NumberBar(new Rectangle(rectangle.X + healthBarBufferX, rectangle.Y - HEALTH_BAR_BUFFER_Y, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT), health, health, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[4], Color.Black);
+            Speed = speed;
+            Experience = (short)(damageAmount + health + 10 * speed + 0.5);
         }
 
         /// <summary>
         /// Update subprogram for <see cref="Enemy"/> objecy
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (timeToScan >= MAX_SCAN_INTERVAL)
@@ -114,22 +121,24 @@ namespace ISU_Medieval_Odyssey
 
             healthBar.Update();
 
-            Speed = 1;
-
             // Calling subprogram to update movement
             UpdateMovement(gameTime);
 
             // Calculating the enemy's locations
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
-            healthBar.X = rectangle.X;
-            healthBar.Y = rectangle.Y - HEALTH_BAR_BUFFER;
+            healthBar.X = rectangle.X - healthBarBufferX;
+            healthBar.Y = rectangle.Y - HEALTH_BAR_BUFFER_Y;
             center.X = rectangle.X + (rectangle.Width >> 1);
             center.Y = rectangle.Y + (rectangle.Height >> 1);
             groundCoordinate.X = center.X;
             groundCoordinate.Y = rectangle.Bottom - 1;
         }
 
+        /// <summary>
+        /// Subprogram to determine the <see cref="AdvancedEnemy"/>'s path to the <see cref="Player"/>, if it exists
+        /// </summary>
+        /// <returns>The path to <see cref="Player"/>, if it exists</returns>
         protected virtual Queue<Vector2Int> FindPathToPlayer()
         {
             return null;

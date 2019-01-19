@@ -83,7 +83,7 @@ namespace ISU_Medieval_Odyssey
                                                    Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             collisionTree = new CollisionTree(worldBoundsRect);
 
-            enemies.Add(new Dragon(new Vector2Int(-2, -2)));
+            enemies.Add(new Wizard(new Vector2Int(-2, -2)));
         }
 
         /// <summary>
@@ -130,9 +130,10 @@ namespace ISU_Medieval_Odyssey
             {
                 enemies[i].Update(gameTime);
 
-                // Removing enemies if they are dead
+                // Removing enemies and giving player loot
                 if (!enemies[i].Alive)
                 {
+                    Player.Instance.Experience += enemies[i].Experience;
                     enemies.RemoveAt(i);
                 }
             }

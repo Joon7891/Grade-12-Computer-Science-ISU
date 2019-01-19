@@ -71,7 +71,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second
         /// </summary>
-        public int Speed { get; protected set; }
+        public float Speed { get; protected set; }
 
         /// <summary>
         /// The amount of gold (currency) that the <see cref="Entity"/> has

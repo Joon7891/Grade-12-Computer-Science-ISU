@@ -25,7 +25,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The x coordinate of the top left corner of this <see cref="ProgressBar"/>
         /// </summary>
-        public int X
+        public virtual int X
         {
             get => backRectangle.X;
             set
@@ -38,7 +38,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The y coordinate of the top left corner of this <see cref="ProgressBar"/>
         /// </summary>
-        public int Y
+        public virtual int Y
         {
             get => backRectangle.Y;
             set
@@ -52,7 +52,7 @@ namespace ISU_Medieval_Odyssey
         private readonly Color backColor;
         private readonly Color progressColor;
         protected Rectangle backRectangle;
-        private Rectangle progressRectangle;
+        protected Rectangle progressRectangle;
 
         /// <summary>
         /// Constructor for <see cref="ProgressBar"/> object
