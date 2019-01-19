@@ -81,8 +81,6 @@ namespace ISU_Medieval_Odyssey
             TileNode currentTile = endTile;
             Vector2Int tileDelta;
 
-            pathTiles.Enqueue(endTile.Coordinate);
-
             while (currentTile.PreviousNode != null)
             {
                 tileDelta = currentTile.Coordinate - currentTile.PreviousNode.Coordinate; //what you add to p -> c
@@ -103,6 +101,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Reversing and returning the path
+            pathTiles.Enqueue(CurrentTile);
             pathTiles = new Queue<Vector2Int>(pathTiles.Reverse());
             return pathTiles;
         }
