@@ -47,7 +47,7 @@ namespace ISU_Medieval_Odyssey
             // Updating number text and its location 
             text = $"{CurrentValue} / {MaxValue}";
             textLocation.X = backRectangle.X + (backRectangle.Width - progressFont.MeasureString(text).X) / 2;
-            textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 5;
+            textLocation.Y = backRectangle.Y + (backRectangle.Height - progressFont.MeasureString(text).Y) / 2 + 3;
         }
 
         /// <summary>
@@ -62,6 +62,5 @@ namespace ISU_Medieval_Odyssey
             // Drawing number text
             spriteBatch.DrawString(progressFont, text, textLocation, textColor);
         }
-
     }
 }

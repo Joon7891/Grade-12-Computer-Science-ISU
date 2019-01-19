@@ -137,6 +137,8 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            List<Enemy> projectileHits = new List<Enemy>();
+
             // Updating the projectiles and collision info in the world
             for (int i = projectiles.Count - 1; i >= 0; --i)
             {
@@ -144,6 +146,19 @@ namespace ISU_Medieval_Odyssey
 
                 // Removing projectiles if they are not active
                 if (!projectiles[i].Active)
+                {
+                    projectiles.RemoveAt(i);
+                    continue;
+                }
+
+                projectileHits = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
+
+                for (int j = 0; j < projectileHits.Count; ++j)
+                {
+                    projectileHits[j].Health -= projectiles[i].DamageAmount;
+                }
+
+                if (projectileHits.Count > 0)
                 {
                     projectiles.RemoveAt(i);
                 }
@@ -276,7 +291,7 @@ namespace ISU_Medieval_Odyssey
         public Item RetrieveItem(Player player)
         {
             Item retrievedItem = null;
-            List<LiveItem> hitItems = collisionTree.GetCollisions(player.CollisionRectangle, liveItems);
+            List<LiveItem> hitItems = collisionTree.GetCollisions(player.HitBox, liveItems);
             
             if (hitItems.Count > 0)
             {

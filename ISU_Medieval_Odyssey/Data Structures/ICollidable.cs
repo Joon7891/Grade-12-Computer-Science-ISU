@@ -12,8 +12,8 @@ namespace ISU_Medieval_Odyssey
     public interface ICollidable
     {
         /// <summary>
-        /// The collision rectangle of this <see cref="ICollidable"/>
+        /// The hit box of this <see cref="ICollidable"/>
         /// </summary>
-        Rectangle CollisionRectangle { get; }
+        Rectangle HitBox { get; }
     }
 }

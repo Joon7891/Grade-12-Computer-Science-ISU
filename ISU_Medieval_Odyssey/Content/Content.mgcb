@@ -45132,3 +45132,10 @@
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/pickupItemSoundEffect.mp3
 
+#begin Fonts/InformationFont4.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/InformationFont4.spritefont
+

@@ -144,7 +144,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up player speed, rectangle, and camera components
             Speed = 3;
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
-            collisionRectangle = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
+            hitBox = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             unroundedLocation = rectangle.Location.ToVector2();
 
             // Constructing world coordinate variables
@@ -433,7 +433,7 @@ namespace ISU_Medieval_Odyssey
                         // Adding arrow if the animation was a shooting animation 
                         if (currentWeapon is Bow)
                         {
-                            World.Instance.AddProjectile(new Arrow(Direction, this));
+                            World.Instance.AddProjectile(new Arrow(Direction, this, 50));
                         }
 
                         // Switching to movement graphics
@@ -517,8 +517,8 @@ namespace ISU_Medieval_Odyssey
             // Updating player coordinate-related variables
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
-            collisionRectangle.X = rectangle.X + (PIXEL_SIZE >> 2);
-            collisionRectangle.Y = rectangle.Y + PIXEL_SIZE / 5;
+            hitBox.X = rectangle.X + (PIXEL_SIZE >> 2);
+            hitBox.Y = rectangle.Y + PIXEL_SIZE / 5;
             center.X = rectangle.X + (PIXEL_SIZE >> 1);
             center.Y = rectangle.Y + (PIXEL_SIZE >> 1);
             groundCoordinate.X = center.X;
@@ -567,8 +567,8 @@ namespace ISU_Medieval_Odyssey
                     // Calculating the player's future location from moving up
                     newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
-                    newPixelLocations[0].X = CollisionRectangle.Left;
-                    newPixelLocations[1].X = CollisionRectangle.Right;
+                    newPixelLocations[0].X = HitBox.Left;
+                    newPixelLocations[1].X = HitBox.Right;
 
                     // Converting pixel coordinate to tile coordinate and returning if the player can move up
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
@@ -578,10 +578,10 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Down:
 
                     // Calculating the player's future location from moving down
-                    newPixelLocations[0].Y = (int)(CollisionRectangle.Bottom + GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[0].Y = (int)(HitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
-                    newPixelLocations[0].X = CollisionRectangle.Left;
-                    newPixelLocations[1].X = CollisionRectangle.Right;
+                    newPixelLocations[0].X = HitBox.Left;
+                    newPixelLocations[1].X = HitBox.Right;
 
                     // Converting pixel coordinate to tile coordinate and returning if the player can move down
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
@@ -591,10 +591,10 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Left:
 
                     // Calculating the player's future location from moving left
-                    newPixelLocations[0].X = (int)(CollisionRectangle.Left - GetPixelSpeed(gameTime) - 0.5);
+                    newPixelLocations[0].X = (int)(HitBox.Left - GetPixelSpeed(gameTime) - 0.5);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
-                    newPixelLocations[1].Y = CollisionRectangle.Bottom;
+                    newPixelLocations[1].Y = HitBox.Bottom;
 
                     // Converting pixel coordinate to tile coordinate and returning if the player can move left
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);
@@ -604,10 +604,10 @@ namespace ISU_Medieval_Odyssey
                 default:
 
                     // Calculating the player's future location from moving right
-                    newPixelLocations[0].X = (int)(CollisionRectangle.Right + GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[0].X = (int)(HitBox.Right + GetPixelSpeed(gameTime) + 0.5);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
-                    newPixelLocations[1].Y = CollisionRectangle.Bottom;
+                    newPixelLocations[1].Y = HitBox.Bottom;
 
                     // Converting pixel coordinate to tile coordinate and returning if the player can move right
                     newTileLocations[0] = World.PixelToTileCoordinate(newPixelLocations[0]);

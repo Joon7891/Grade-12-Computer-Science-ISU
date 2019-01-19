@@ -39,33 +39,59 @@ namespace ISU_Medieval_Odyssey
         private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
 
         private float timeToScan = 0;
-        private const float MAX_SCAN_INTERVAL = 1;
+        private const float MAX_SCAN_INTERVAL = 0.5f;
+
+        private const int HEALTH_BAR_BUFFER = 25;
+        private const int HEALTH_BAR_HEIGHT = 20;
 
         protected int scanRange;
 
         // Graphics-realted data
         protected int numFrames;
         protected int currentFrame = 0;
-        protected int animationCounter = 0;
-        protected int maxAnimationCounter;
+        protected int counterMax;
+        protected int frameCounter = 0;
         protected DirectionalSpriteSheet directionalSpriteSheet;
 
-        protected void Initialize(Vector2Int tileCoordinate, int width, int height, int hitBoxBufferX, int hitBoxBufferY, 
-            int minHealth, int maxHealth, int minDamage, int maxDamage, byte numFrames, byte maxAnimationCounter, byte scanRange)
+        /// <summary>
+        /// Subprogram to initialize various graphical components of this <see cref="Enemy"/>
+        /// </summary>
+        /// <param name="tileCoordinate">The coordinate of the <see cref="Tile"/> this <see cref="Enemy"/> is to be created at</param>
+        /// <param name="width">The width of this <see cref="Enemy"/>, in pixels</param>
+        /// <param name="height">The height of this <see cref="Enemy"/>, in pixels</param>
+        /// <param name="hitBoxBufferX">The horizontal buffer between this <see cref="Enemy"/>'s rectangle and its hitbox</param>
+        /// <param name="hitBoxBufferY">The vertical buffer between this <see cref="Enemy"/>'s rectangle and its hitbox</param>
+        /// <param name="numFrames">The number of frames in this <see cref="Enemy"/>'s animation</param>
+        /// <param name="counterMax">The maximum value allowed for </param>
+        protected void InitializeGraphics(Vector2Int tileCoordinate, int width, int height, int hitBoxBufferX, int hitBoxBufferY, int numFrames, int counterMax)
         {
-            rectangle = new Rectangle(0, 0, width, height);
-            rectangle.X = tileCoordinate.X * Tile.SPACING - width / 2;
-            rectangle.Y = tileCoordinate.Y * Tile.SPACING - height / 2;
+            // Setting up various rectangle and coordinates
+            rectangle = new Rectangle(tileCoordinate.X * Tile.SPACING - width / 2, tileCoordinate.Y * Tile.SPACING - height / 2, width, height);
+            hitBox = new Rectangle(rectangle.X + hitBoxBufferX, rectangle.Y + hitBoxBufferY, rectangle.Width - (hitBoxBufferX << 1), rectangle.Height - hitBoxBufferY);
             unroundedLocation = rectangle.Location.ToVector2();
             groundCoordinate.X = rectangle.X + rectangle.Width;
             groundCoordinate.Y = rectangle.Bottom - 1;
 
-            // Hitbox shit...
-            //Health = SharedData.RNG.Next(minHealth, maxHealth);
-            damageAmount = (short) SharedData.RNG.Next(minDamage, maxDamage);
+            // Setting animation-related statistics
             this.numFrames = numFrames;
-            this.maxAnimationCounter = maxAnimationCounter;
+            this.counterMax = counterMax;
+        }
+
+        /// <summary>
+        /// Subprogram to set various statistics for this <see cref="Enemy"/>
+        /// </summary>
+        /// <param name="scanRange">The scan range of this <see cref="Enemy"/></param>
+        /// <param name="minHealth"></param>
+        /// <param name="maxHealth"></param>
+        /// <param name="minDamage"></param>
+        /// <param name="maxDamage"></param>
+        protected void InitializeStatistics(byte scanRange, int minHealth, int maxHealth, int minDamage, int maxDamage)
+        {
+            short health = (short) SharedData.RNG.Next(minHealth, maxHealth + 1);
             this.scanRange = scanRange;
+            damageAmount = (short) SharedData.RNG.Next(minDamage, maxDamage + 1);
+            healthBar = new NumberBar(new Rectangle(rectangle.X, rectangle.Y - HEALTH_BAR_BUFFER, rectangle.Width, HEALTH_BAR_HEIGHT), health, health, Color.White * 0.5f,
+                Color.Red * 0.6f, SharedData.InformationFonts[4], Color.Black);
         }
 
         /// <summary>
@@ -86,6 +112,8 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
+            healthBar.Update();
+
             Speed = 1;
 
             // Calling subprogram to update movement
@@ -94,6 +122,8 @@ namespace ISU_Medieval_Odyssey
             // Calculating the enemy's locations
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
+            healthBar.X = rectangle.X;
+            healthBar.Y = rectangle.Y - HEALTH_BAR_BUFFER;
             center.X = rectangle.X + (rectangle.Width >> 1);
             center.Y = rectangle.Y + (rectangle.Height >> 1);
             groundCoordinate.X = center.X;
@@ -112,8 +142,8 @@ namespace ISU_Medieval_Odyssey
         protected virtual void UpdateMovement(GameTime gameTime)
         {
             // Updating animation/frame counter
-            animationCounter = (animationCounter == maxAnimationCounter) ? 0 : (animationCounter + 1);
-            if (animationCounter == 0)
+            frameCounter = (frameCounter == counterMax) ? 0 : (frameCounter + 1);
+            if (frameCounter == 0)
             {
                 currentFrame = (currentFrame + 1) % numFrames;
             }
@@ -173,8 +203,9 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Drawing enemy
+            // Drawing enemy and healthbar
             directionalSpriteSheet.Draw(spriteBatch, Direction, currentFrame, rectangle);
+            healthBar.Draw(spriteBatch);
         }
     }
 }

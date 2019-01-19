@@ -25,7 +25,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The <see cref="Rectangle"/> that this <see cref="LiveItem"/> collides in
         /// </summary>
-        public Rectangle CollisionRectangle { get; }
+        public Rectangle HitBox { get; }
 
         // Time variables to keep track of despawn times
         private const int DESPAWN_TIME = 300;
@@ -40,7 +40,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up object properties
             Item = item;
-            CollisionRectangle = rectangle;
+            HitBox = rectangle;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing the icon of the item
-            Item.DrawIcon(spriteBatch, CollisionRectangle);
+            Item.DrawIcon(spriteBatch, HitBox);
         }
     }
 }

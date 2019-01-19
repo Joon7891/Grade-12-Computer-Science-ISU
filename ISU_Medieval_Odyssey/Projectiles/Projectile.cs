@@ -18,9 +18,14 @@ namespace ISU_Medieval_Odyssey
         public bool Active => distanceTraveled <= maxDistance;
 
         /// <summary>
+        /// The amount of damage this <see cref="Projectile"/> inflicts on its target
+        /// </summary>
+        public int DamageAmount { get; protected set; }
+
+        /// <summary>
         /// The colission <see cref="Rectangle"/> of this <see cref="Projectile"/>
         /// </summary>
-        public Rectangle CollisionRectangle => rectangle;
+        public Rectangle HitBox => rectangle;
         protected Rectangle rectangle;
 
         // Arrow movement variables

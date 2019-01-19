@@ -59,6 +59,8 @@ namespace ISU_Medieval_Odyssey
             List<T> collisions = new List<T>();
             Quadrant subTreeQuadrant;
 
+            Console.WriteLine(hitBox + " " + Range);
+
             // Base-case - there are no objects to check for collision
             if (collidableObjects.Count == 0)
             {
@@ -72,14 +74,14 @@ namespace ISU_Medieval_Odyssey
             if (subTreeQuadrant != Quadrant.None)
             {
                 collisions = GetSubtreeContainments(subTreeQuadrant, collidableObjects);
-                return subtrees[(int)(subTreeQuadrant)].GetCollisions(hitBox, collisions);
+                return subtrees[(int)subTreeQuadrant].GetCollisions(hitBox, collisions);
             }
             else
             {
                 // Adding collidable to collided objects if it collides with hitbox
                 for (int i = 0; i < collidableObjects.Count; ++i)
                 {
-                    if (collidableObjects[i].CollisionRectangle.Intersects(hitBox))
+                    if (collidableObjects[i].HitBox.Intersects(hitBox))
                     {
                         collisions.Add(collidableObjects[i]);
                     }
@@ -111,7 +113,7 @@ namespace ISU_Medieval_Odyssey
                     // Adding collidables in top right quadrant
                     for (int i = 0; i < collidableObjects.Count; ++i)
                     {
-                        if (subtrees[0].Range.Left <= collidableObjects[i].CollisionRectangle.Right && subtrees[0].Range.Bottom >= collidableObjects[i].CollisionRectangle.Top)
+                        if (subtrees[0].Range.Left <= collidableObjects[i].HitBox.Right && subtrees[0].Range.Bottom >= collidableObjects[i].HitBox.Top)
                         {
                             subTreeContainments.Add(collidableObjects[i]);
                         }
@@ -124,7 +126,7 @@ namespace ISU_Medieval_Odyssey
                     // Adding collidables in top left quadrant
                     for (int i = 0; i < collidableObjects.Count; ++i)
                     {
-                        if (subtrees[1].Range.Right >= collidableObjects[i].CollisionRectangle.Left && subtrees[1].Range.Bottom >= collidableObjects[i].CollisionRectangle.Top)
+                        if (subtrees[1].Range.Right >= collidableObjects[i].HitBox.Left && subtrees[1].Range.Bottom >= collidableObjects[i].HitBox.Top)
                         {
                             subTreeContainments.Add(collidableObjects[i]);
                         }
@@ -137,7 +139,7 @@ namespace ISU_Medieval_Odyssey
                     // Adding collidables in bottom left quadrant
                     for (int i = 0; i < collidableObjects.Count; ++i)
                     {
-                        if (subtrees[2].Range.Top <= collidableObjects[i].CollisionRectangle.Bottom && subtrees[2].Range.Right >= collidableObjects[i].CollisionRectangle.Left)
+                        if (subtrees[2].Range.Top <= collidableObjects[i].HitBox.Bottom && subtrees[2].Range.Right >= collidableObjects[i].HitBox.Left)
                         {
                             subTreeContainments.Add(collidableObjects[i]);
                         }
@@ -149,7 +151,7 @@ namespace ISU_Medieval_Odyssey
                     // Adding collidables in bottom right quadrant
                     for (int i = 0; i < collidableObjects.Count; ++i)
                     {
-                        if (subtrees[3].Range.Left <= collidableObjects[i].CollisionRectangle.Right && subtrees[3].Range.Top <= collidableObjects[i].CollisionRectangle.Bottom)
+                        if (subtrees[3].Range.Left <= collidableObjects[i].HitBox.Right && subtrees[3].Range.Top <= collidableObjects[i].HitBox.Bottom)
                         {
                             subTreeContainments.Add(collidableObjects[i]);
                         }

@@ -42,8 +42,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Data Structures\ICollidable.cs" />
-    <Compile Include="Data Structures\PriorityQueue.cs" />
-    <Compile Include="Data Structures\PriorityQueueNode.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
     <Compile Include="World\TileNode.cs" />
     <Compile Include="Entities\Enemies\Advanced\Dragon.cs" />

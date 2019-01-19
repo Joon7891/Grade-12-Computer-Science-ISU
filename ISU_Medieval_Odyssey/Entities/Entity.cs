@@ -50,8 +50,8 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// This <see cref="Entity"/>'s colission rectangle
         /// </summary>
-        public Rectangle CollisionRectangle => collisionRectangle;
-        protected Rectangle collisionRectangle;
+        public Rectangle HitBox => hitBox;
+        protected Rectangle hitBox;
 
         /// <summary>
         /// The health of the <see cref="Entity"/>
@@ -66,7 +66,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Whether this <see cref="Entity"/> is alive
         /// </summary>
-        public bool Alive => true; //Health > 0;
+        public bool Alive => Health > 0;
 
         /// <summary>
         /// An integer value that represents the speed at which the <see cref="Entity"/> can move, in tiles/second

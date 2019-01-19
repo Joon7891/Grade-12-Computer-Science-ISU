@@ -39,7 +39,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="direction">The <see cref="Direction"/> the arrow is traveling in</param>
         /// <param name="shooter">The <see cref="Entity"/> that is shooting this <see cref="Arrow"/></param>
-        public Arrow(Direction direction, Entity shooter)
+        /// <param name="damageAmount">The amount of damage that this <see cref="Arrow"/> inflicts on its target</param>
+        public Arrow(Direction direction, Entity shooter, int damageAmount)
         {
             // Settingup arrow image
             image = images[direction];
@@ -57,6 +58,9 @@ namespace ISU_Medieval_Odyssey
             }
             nonRoundedLocation = rectangle.Location.ToVector2();
             maxDistance = MAX_DISTANCE;
+
+            // Setting the damage amount of this projectile
+            DamageAmount = damageAmount;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The diameter of the <see cref="Circle"/>
         /// </summary>
-        public int Diameter => Radius * 2;
+        public int Diameter => Radius << 1;
 
         // Various graphical variables for the circle
         private static Texture2D image;
