@@ -2,7 +2,7 @@
 // File Name: DungeonGenerator.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 01/15/2019
-// Modified Date: 01/15/2019
+// Modified Date: 01/20/2019
 // Description: Room and passage-dungeon generation using the following steps:
 1) Place x rooms with random size and position - with no overlaps
 2) Fill remaining space with mazes
@@ -20,7 +20,16 @@ namespace ISU_Medieval_Odyssey
     class DungeonGenerator
     {
         const int ROOM_ATTEMPTS = 500;
+
+        /// <summary>
+        /// Higher = bigger rooms
+        /// </summary>
+        /// 
         const int SIZE_MODIFIER = 0;
+
+        /// <summary>
+        /// Max dimentions of the dungeon.
+        /// </summary>
         const int MAX_WIDTH = 501;
         const int MAX_HEIGHT = 501;
         
@@ -47,7 +56,9 @@ namespace ISU_Medieval_Odyssey
         };
 
         Random rng;
+
         CollisionTree collisionTree;
+
         // The rooms of the dungeon
         List<Rectangle> rooms;
 
@@ -74,6 +85,9 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        /// <summary>
+        /// Creates randomly sized and positioned rooms with no overlaps. Rooms are odd sized and odd centered.
+        /// </summary>
         private void GenerateRooms()
         {
             List<CollisionRectangle> roomRectangles = new List<CollisionRectangle>();
@@ -121,11 +135,20 @@ namespace ISU_Medieval_Odyssey
 
         }
 
+        /// <summary>
+        /// Changes the region in the tile some offset away from the given tile to the current region
+        /// </summary>
+        /// <param name="cur"> the initial tile </param>
+        /// <param name="offset"> an offset that determines the tile to change </param>
         private void ChangeRegion(Vector2Int cur, Vector2Int offset)
         {
             region[(offset + cur).X, (offset + cur).Y] = currentRegion;
         }
 
+        /// <summary>
+        /// Expands on a maze path
+        /// </summary>
+        /// <param name="current"> the tile to start on </param>
         private void ExpandMaze(Vector2Int current) // dfs style path finding to create maze
         {
             currentRegion++;
@@ -181,6 +204,9 @@ namespace ISU_Medieval_Odyssey
 
         }
 
+        /// <summary>
+        /// Connects all the rooms and mazes such that there are multiple paths between rooms
+        /// </summary>
         private void ConnectRegions()
         {
             currentRegion++;
@@ -320,6 +346,9 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        /// <summary>
+        /// Generates mazes around the entire dungeon
+        /// </summary>
         private void CreateMazes()
         {
             for(int i = 1; i < MAX_WIDTH; i+=2)
@@ -334,6 +363,18 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
+        /// <summary>
+        /// Generates a tile based dungeon
+        /// </summary>
+        /// <returns> Returns a 2d array that contains dungeon data. -1 indicates impassible tiles and any other number indicates a seperate room </returns>
+        public int[,] GenerateDungeon()
+        {
+            GenerateRooms();
+            CreateMazes();
+            ConnectRegions();
+            FillDeadEnds();
+            return region;
+        }
 
     }
 }
