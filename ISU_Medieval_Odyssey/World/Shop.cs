@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -18,7 +19,13 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The graphical <see cref="Rectangle"/> for this <see cref="Shop"/>
         /// </summary>
-        public Rectangle Rectangle => insideShopSprite.Rectangle;
+        [JsonProperty]
+        public Rectangle Rectangle { get; set; }
+
+        /// <summary>
+        /// The corner position of this <see cref="IBuilding"/>
+        /// </summary>
+        public Vector2Int CornerTile { get; }
 
         // Shop graphics, images, and important coordinates
         private static Texture2D insideShopImage;
@@ -50,10 +57,13 @@ namespace ISU_Medieval_Odyssey
         private const int INVENTORY_SIZE = 3 * ROW_SIZE;
         private Button[] transactionButton = new Button[2];
         private ItemSlot[] transactionItemSlot = new ItemSlot[2];
-        private ItemSlot[] inventory = new ItemSlot[INVENTORY_SIZE];
         private static SoundEffect errorSoundEffect;
         private static SoundEffect transactionSoundEffect;
         private static Vector2[] priceOfferLocations = new Vector2[2];
+
+        // The shop's inventory
+        [JsonProperty]
+        private ItemSlot[] inventory = new ItemSlot[INVENTORY_SIZE];
 
         /// <summary>
         /// Static constructor for <see cref="Shop"/> object
@@ -158,10 +168,17 @@ namespace ISU_Medieval_Odyssey
             });
 
             // Setting up inside and outside shop images
-            insideShopSprite = new Sprite(insideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
-            outsideShopSprite = new Sprite(outsideShopImage, new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT));
+            Rectangle = new Rectangle(cornerTile.X * Tile.SPACING, cornerTile.Y * Tile.SPACING, PIXEL_WIDTH, PIXEL_HEIGHT);
+            insideShopSprite = new Sprite(insideShopImage, Rectangle);
+            outsideShopSprite = new Sprite(outsideShopImage, Rectangle);
 
             // Setting up appropriate obstructions and functions for certain locations
+            CornerTile = cornerTile;
+            SetTiles(CornerTile);
+        }
+
+        public void SetTiles(Vector2Int cornerTile)
+        {
             for (int i = 0; i < insideObstructionLocs.Count; ++i)
             {
                 World.Instance.GetTileAt(cornerTile + insideObstructionLocs[i]).InsideObstructState = true;
@@ -175,14 +192,12 @@ namespace ISU_Medieval_Odyssey
                 World.Instance.IsInside = false;
                 World.Instance.CurrentBuilding = null;
                 player.Y += Tile.SPACING;
-              //  doorSoundEffect.CreateInstance().Play();
             });
             World.Instance.GetTileAt(cornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
-            {               
+            {
                 World.Instance.IsInside = true;
                 World.Instance.CurrentBuilding = this;
                 player.Y -= Tile.SPACING;
-                //doorSoundEffect.CreateInstance().Play(); // ??
             });
             World.Instance.GetTileAt(cornerTile + shopLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
             {
@@ -194,7 +209,6 @@ namespace ISU_Medieval_Odyssey
                     AddToInventory(player.ItemInHand);
                     player.ItemInHand = null;
                 }
-
             });
         }
 

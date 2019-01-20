@@ -47,10 +47,6 @@ namespace ISU_Medieval_Odyssey
         [JsonProperty]
         private TerrainGenerator terrainGenerator;
 
-        public bool HasShop { get; } = false;
-
-        public bool HasBuilding { get; } = false;
-
         // Variables required for randomly setting a shop or a safe house in this chunk
         private const int SHOP_CHANCE = 3;
         private const int SAFE_HOUSE_CHANCE = 50;

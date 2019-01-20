@@ -24,7 +24,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The player in the world
         /// </summary>
-        public Player Player { get; set; } = new Player("");
+        public Player Player { get; set; } = new Player("Test");
 
         /// <summary>
         /// The world of the game

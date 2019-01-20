@@ -16,7 +16,12 @@ namespace ISU_Medieval_Odyssey
         /// The <see cref="Rectangle"/> that this building is drawn in
         /// </summary>
         Rectangle Rectangle { get; }
-        
+
+        /// <summary>
+        /// The corner tile position of this building
+        /// </summary>
+        Vector2Int CornerTile { get; }
+
         /// <summary>
         /// Update subprogram for this <see cref="IBuilding"/>
         /// </summary>
@@ -34,5 +39,10 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="spriteBatch">SprieBatch to draw sprites</param>
         void DrawInside(SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// Subprogram to set properties of various <see cref="Tile"/> that the <see cref="IBuilding"/> affects
+        /// </summary>
+        void SetTiles(Vector2Int cornerTile);
     }
 }

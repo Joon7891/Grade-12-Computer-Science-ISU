@@ -51,6 +51,10 @@ namespace ISU_Medieval_Odyssey
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
 
+        // A set of cached buildings
+        [JsonProperty]
+        private HashSet<IBuilding> cachedBuildings = new HashSet<IBuilding>();
+
         /// <summary>
         /// The rectangle representing the bounds of this <see cref="World"/>
         /// </summary>
@@ -97,9 +101,10 @@ namespace ISU_Medieval_Odyssey
                     loadedChunks[x, y] = InitializeChunkAt(x, y);
                 }
             }
-            AdjustLoadedChunks(Player.Instance.CurrentChunk);
+            AdjustLoadedChunks(new Vector2Int(0, 0));//  Player.Instance.CurrentChunk);
 
             buildings.Add(new Shop(new Vector2Int(2, 2)));
+            cachedBuildings.Add(buildings[0]);
 
             enemies.Add(new Zombie(new Vector2Int(-1, -1)));
         }
@@ -249,6 +254,16 @@ namespace ISU_Medieval_Odyssey
                 if (!worldBoundsRect.Contains(buildings[i].Rectangle))
                 {
                     buildings.RemoveAt(i);
+                }
+            }
+
+            // Adding buildings that are now in the world
+            foreach (IBuilding building in cachedBuildings)
+            {
+                if (worldBoundsRect.Contains(building.Rectangle) && !buildings.Contains(building))
+                {
+                    buildings.Add(building);
+                    building.SetTiles(building.CornerTile);
                 }
             }
         }

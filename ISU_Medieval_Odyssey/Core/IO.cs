@@ -18,13 +18,15 @@ namespace ISU_Medieval_Odyssey
         private static StreamWriter outFile;
         private const string BASE_DIRECTORY = "IO";
         private const string CHUNK_PATH = BASE_DIRECTORY + "/Chunks";
+        private const string PLAYER_PATH = BASE_DIRECTORY + "/Player.json";
+        private const string WORLD_PATH = BASE_DIRECTORY + "/World.json";
         private const string SETTINGS_PATH = BASE_DIRECTORY + "/SettingsData.json";
 
         /// <summary>
         /// Whether a <see cref="World"/> already exists in file
         /// </summary>
         /// <returns>Whether a <see cref="World"/> exists in file</returns>
-        public static bool WorldExists() => File.Exists($"{CHUNK_PATH}/Chunk_0_0.json");
+        public static bool WorldExists() => File.Exists(PLAYER_PATH);
 
         /// <summary>
         /// Subprogram to delete the previously saved <see cref="World"/>
@@ -53,6 +55,62 @@ namespace ISU_Medieval_Odyssey
                 // Catching and informing user of exception
                 Console.WriteLine(exception.Message);
             }
+        }
+
+        /// <summary>
+        /// Subprogram to load a <see cref="Player"/>
+        /// </summary>
+        /// <returns>The loaded <see cref="Player"/></returns>
+        public static Player LoadPlayer()
+        {
+            // Raw and serialized player
+            Player player = null;
+            string serializedPlayer;
+
+            // Try-Catch block for file reading
+            try
+            {
+                // Opening file and loading player
+                inFile = File.OpenText(PLAYER_PATH);
+                serializedPlayer = inFile.ReadLine();
+                player = Player.Deserialize(serializedPlayer);
+            }
+            catch (Exception exception)
+            {
+                // Catching exception and informing user
+                Console.WriteLine(exception.Message);
+            }
+
+            // Closing file and returning loaded player
+            inFile.Close();
+            return player;
+        }
+
+        /// <summary>
+        /// Subprogram to save a <see cref="Player"/> to file
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to be saved</param>
+        public static void SavePlayer(Player player)
+        {
+            // String to hold player serialized data
+            string serializedPlayer;
+
+            // Try-Catch block for file writing
+            try
+            {
+                // Creating file and serializing data
+                outFile = File.CreateText(PLAYER_PATH);
+                serializedPlayer = player.Serialize();
+                outFile.WriteLine(serializedPlayer);
+            }
+            catch (Exception exception)
+            {
+                // Catching and informing user of exception
+                Console.WriteLine(exception.Message);
+            }
+
+            // Closing file
+            outFile.Close();
         }
 
         /// <summary>
@@ -106,10 +164,8 @@ namespace ISU_Medieval_Odyssey
             // Try-Catch block for file writing
             try
             {
-                // Creating file
+                // Creating file and serializing data
                 outFile = File.CreateText($"{CHUNK_PATH}/Chunk_{chunk.Position.X}_{chunk.Position.Y}.json");
-
-                // Serializing data and writing it to file
                 serializedChunk = chunk.Serialize();
                 outFile.WriteLine(serializedChunk);
             }

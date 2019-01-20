@@ -54,6 +54,7 @@ namespace ISU_Medieval_Odyssey
             optionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/loadGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, BUTTON_INITIAL_Y + BUTTON_SPACING, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.Game;
+             //   GameScreen.Instance.Player = IO.LoadPlayer();
                 MediaPlayer.Stop();
             });
             optionButtons[1].Active = IO.WorldExists();

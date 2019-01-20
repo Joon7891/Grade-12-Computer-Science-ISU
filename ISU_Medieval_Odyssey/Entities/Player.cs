@@ -21,21 +21,25 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Static instance of <see cref="Player"/> - singleton
         /// </summary>
+        [JsonIgnore]
         public static Player Instance { get; set; }
-        
+
         /// <summary>
         /// The size of the player, in pixels
         /// </summary>
+        [JsonIgnore]
         public static byte PIXEL_SIZE = 100;
 
         /// <summary>
         /// The number of frames in player walk animation
         /// </summary>
+        [JsonIgnore]
         public static int NUM_WALK_FRAMES = 9;
 
         /// <summary>
         /// Whether the <see cref="Player"/> is moving
         /// </summary>
+        [JsonIgnore]
         public bool IsMoving => KeyboardHelper.IsAnyKeyDown(SettingsScreen.Instance.Up, 
             SettingsScreen.Instance.Right, SettingsScreen.Instance.Down, SettingsScreen.Instance.Left);
 
@@ -107,6 +111,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The amount of <see cref="ItemSlot"/>s available for this <see cref="Player"/>
         /// </summary>
+        [JsonIgnore]
         public int ItemSlotsAvailable => inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null);
 
         // Graphics-related data
@@ -121,8 +126,8 @@ namespace ISU_Medieval_Odyssey
 
         // Animation & movement related data
         private float rotation;
-        private int frameNumber;
-        private int animationCounter;
+        private int frameNumber = 0;
+        private int animationCounter = 0;
         private Queue<MovementImageData> imagesToAnimate = new Queue<MovementImageData>();
 
         // Player inventory
@@ -138,9 +143,22 @@ namespace ISU_Medieval_Odyssey
         private int hotbarSelectionIndex = 0;
         private Rectangle itemInHandRect = new Rectangle(0, 0, ItemSlot.SIZE, ItemSlot.SIZE);
 
-        // Variables for player shop interaction
+        /// <summary>
+        /// The <see cref="Item"/> in this <see cref="Player"/>'s hand
+        /// </summary>
+        [JsonProperty]
         public Item ItemInHand { get; set; } = null;
+
+        /// <summary>
+        /// Whether or whether not this <see cref="Player"/> is undergoing a transaction
+        /// </summary>
+        [JsonIgnore]
         public bool InTransaction { get; set; } = false;
+
+        /// <summary>
+        /// Whether or whether not this <see cref="Player"/> has a transaction
+        /// </summary>
+        [JsonIgnore]
         public bool IsInventoryOpen { get; set; } = false;
 
         // Statistics-related variables
@@ -230,6 +248,9 @@ namespace ISU_Medieval_Odyssey
             inventory[3].Item = new MetalTorso();
             inventory[4].Item = new MetalShoulders();
             inventory[5].Item = new MetalHelmet();
+
+            // Serializing player data
+            // IO.SavePlayer(this);
         }
 
         /// <summary>
@@ -629,7 +650,7 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Up:
                     
                     // Calculating the player's future location from moving up
-                    newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 1.5);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
                     newPixelLocations[0].X = HitBox.Left;
                     newPixelLocations[1].X = HitBox.Right;
@@ -642,7 +663,7 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Down:
 
                     // Calculating the player's future location from moving down
-                    newPixelLocations[0].Y = (int)(HitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[0].Y = (int)(HitBox.Bottom + GetPixelSpeed(gameTime) - 0.5);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
                     newPixelLocations[0].X = HitBox.Left;
                     newPixelLocations[1].X = HitBox.Right;
@@ -668,7 +689,7 @@ namespace ISU_Medieval_Odyssey
                 default:
 
                     // Calculating the player's future location from moving right
-                    newPixelLocations[0].X = (int)(HitBox.Right + GetPixelSpeed(gameTime) + 0.5);
+                    newPixelLocations[0].X = (int)(HitBox.Right + GetPixelSpeed(gameTime) + 1.5);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
                     newPixelLocations[1].Y = HitBox.Bottom;
@@ -782,5 +803,18 @@ namespace ISU_Medieval_Odyssey
                 spriteBatch.DrawString(SharedData.InformationFonts[0], $"Speed (+50%): {Math.Round(SpeedBoostTime, 2)}s", boostsTextLocs[3] - ((AttackBoostTime > 0 ? 0 : 1) + (DefenseBoostTime > 0 ? 0 : 1)) * boostTextBuffer, Color.SpringGreen);
             }
         }
+
+        /// <summary>
+        /// Subprogram to serialize this <see cref="Player"/>'s data
+        /// </summary>
+        /// <returns>A <see cref="string"/> containing the serialized data</returns>
+        public string Serialize() => JsonConvert.SerializeObject(this);
+
+        /// <summary>
+        /// Subprogram to deserialize a <see cref="Player"/>
+        /// </summary>
+        /// <param name="serializedData">A <see cref="string"/> containing the <see cref="Player"/>'s data</param>
+        /// <returns>The deserialized <see cref="Player"/></returns>
+        public static Player Deserialize(string serializedData) => JsonConvert.DeserializeObject<Player>(serializedData);
     }
 }
