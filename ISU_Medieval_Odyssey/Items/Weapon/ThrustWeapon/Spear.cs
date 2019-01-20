@@ -5,15 +5,18 @@
 // Modified Date: 12/19/2018
 // Description: Class to hold Spear object
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Spear : ThrustWeapon
     {
-        // Spear specific images
+        // Spear specific images and rectangles
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private new static Texture2D iconImage;
+        private new static Rectangle verticalHitBox = new Rectangle(0, 0, 20, 50);
+        private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 50, 20);
 
         /// <summary>
         /// Static constructor for <see cref="Spear"/> object
@@ -33,6 +36,8 @@ namespace ISU_Medieval_Odyssey
             // Setting up Spear
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            base.verticalHitBox = verticalHitBox;
+            base.horizontalHitBox = horizontalHitBox;
         }
     }
 }

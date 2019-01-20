@@ -21,10 +21,11 @@ namespace ISU_Medieval_Odyssey
         // Various constants regarding the Goblin's attributes
         private const int MIN_HEALTH = 10;
         private const int MAX_HEALTH = 15;
-        private const int MIN_DAMAGE = 10;
-        private const int MAX_DAMAGE = 15;
+        private const int MIN_DAMAGE = 5;
+        private const int MAX_DAMAGE = 10;
         private const int SCAN_RANGE = 8;
         private const float SPEED = 4.5f;
+        private const float ATTACK_SPEED = 1.0f;
 
         /// <summary>
         /// Static constructor for <see cref="Goblin"/>
@@ -44,7 +45,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up various components of Goblin
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
-            InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED);
+            InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
         }
     }
 }
