@@ -73,11 +73,17 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public double DefenseBoostTime { get; set; }
 
+        /// <summary>
+        /// The amount of <see cref="ItemSlot"/>s available for this <see cref="Player"/>
+        /// </summary>
+        public int ItemSlotsAvailable => inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null);
+
         // Graphics-related data
         private MovementType movementType = MovementType.Walk;
         private static MovementSpriteSheet movementSpriteSheet;
 
         // Various player sound effects
+        private static SoundEffect errorSoundEffect;
         private static SoundEffect levelUpSoundEffect;
         private static SoundEffect dropItemSoundEffect;
         private static SoundEffect pickupItemSoundEffect;
@@ -131,6 +137,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading in various graphics and audio
             movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Player/", "player");
+            errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
             levelUpSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/levelUpSoundEffect");
             dropItemSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/dropItemSoundEffect");
             pickupItemSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/pickupItemSoundEffect");
@@ -244,7 +251,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Picking up item when pick up button is pressed and there is room in inventory
-            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null) > 0)
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && ItemSlotsAvailable > 0)
             {
                 // Retrieving item from world
                 tempSwapItem = World.Instance.RetrieveItem(this);
@@ -252,15 +259,7 @@ namespace ISU_Medieval_Odyssey
                 // Placing item in first open inventory slot and playing pick up item sound effect
                 if (tempSwapItem != null)
                 {
-                    for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
-                    {
-                        if (inventory[i].Item == null)
-                        {
-                            inventory[i].Item = tempSwapItem;
-                            pickupItemSoundEffect.CreateInstance().Play();
-                            break;
-                        }
-                    }
+                    AddToInventory(tempSwapItem);
                 }
 
                 // Setting item back to null
@@ -281,11 +280,16 @@ namespace ISU_Medieval_Odyssey
             {
                 if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
                 {
-                    if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || i >= ARMOUR_SIZE)
+                    if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || 
+                        (i >= ARMOUR_SIZE && (ItemInHand == null || ItemInHand.IsPlayerItem)))
                     {
                         tempSwapItem = inventory[i].Item;
                         inventory[i].Item = ItemInHand;
                         ItemInHand = tempSwapItem;
+                    }
+                    else
+                    {
+                        errorSoundEffect.CreateInstance().Play();
                     }
 
                     return;
@@ -670,6 +674,19 @@ namespace ISU_Medieval_Odyssey
                 }
             }
             Health -= (int)(finalDamageAmount * (DefenseBoostTime > 0 ? 1.0f - DefensePotion.BOOST_AMOUNT : 1) + 0.5);
+        }
+
+        public void AddToInventory(Item item)
+        {
+            for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
+            {
+                if (inventory[i].Item == null)
+                {
+                    inventory[i].Item = item;
+                    pickupItemSoundEffect.CreateInstance().Play();
+                    break;
+                }
+            }
         }
 
         /// <summary>

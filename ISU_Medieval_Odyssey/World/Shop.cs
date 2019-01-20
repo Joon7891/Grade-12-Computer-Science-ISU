@@ -43,6 +43,7 @@ namespace ISU_Medieval_Odyssey
         private Sprite outsideShopSprite;
 
         // Shop buying/selling function related data
+        private const float MIN_PROFIT_CUT = 0.60f;
         private const float MAX_PROFIT_CUT = 0.95f;
         private readonly float profitCut;
         private const int ROW_SIZE = 9;
@@ -52,6 +53,7 @@ namespace ISU_Medieval_Odyssey
         private ItemSlot[] inventory = new ItemSlot[INVENTORY_SIZE];
         private static SoundEffect errorSoundEffect;
         private static SoundEffect transactionSoundEffect;
+        private static Vector2[] priceOfferLocations = new Vector2[2];
 
         /// <summary>
         /// Static constructor for <see cref="Shop"/> object
@@ -62,6 +64,12 @@ namespace ISU_Medieval_Odyssey
             insideShopImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopInsideImage");
             outsideShopImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopOutsideImage");
             doorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/doorSoundEffect");
+            errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
+            transactionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/transactionSoundEffect");
+
+            // Setting up price offer text locations
+            priceOfferLocations[0] = new Vector2(613, 490);
+            priceOfferLocations[1] = new Vector2(235, 490); //80, 32
 
             // Setting up inside obstruction tiles
             for (int i = 0; i < INSIDE_WIDTH; ++i)
@@ -90,11 +98,7 @@ namespace ISU_Medieval_Odyssey
             {
                 outsideObstructionLocs.Add(new Vector2Int(1, 1 + i));
                 outsideObstructionLocs.Add(new Vector2Int(INSIDE_WIDTH, 1 + i));
-            }
-
-            // Importing various sound effects
-            errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
-            transactionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/transactionSoundEffect");
+            }            
         }
 
         /// <summary>
@@ -104,11 +108,12 @@ namespace ISU_Medieval_Odyssey
         public Shop(Vector2Int cornerTile)
         {
             // Setting up shop inventory and buying/selling function
-            Item[] shopItems = new Item[SharedData.RNG.Next(INVENTORY_SIZE)];
-            profitCut = (float)(SharedData.RNG.NextDouble() * MAX_PROFIT_CUT);
+            Item[] shopItems = new Item[SharedData.RNG.Next(2 * ROW_SIZE)];
+            profitCut = (float)(SharedData.RNG.NextDouble() * (MAX_PROFIT_CUT - MIN_PROFIT_CUT)) + MIN_PROFIT_CUT;
             for (int i = 0; i < shopItems.Length; ++i)
             {
                 shopItems[i] = Item.RandomItem();
+                shopItems[i].IsPlayerItem = false;
             }
             for (int i = 0; i < INVENTORY_SIZE; ++i)
             {
@@ -119,16 +124,29 @@ namespace ISU_Medieval_Odyssey
             transactionItemSlot[1] = new ItemSlot(150, 455, null, Color.Red); // Sell
 
             // Setting up transaction buttons
-            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(), () =>
+            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(608, 455, 80, 32), () =>
             {
-
+                // Making tranaction, if possible
+                if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value)
+                {
+                    transactionItemSlot[0].Item.IsPlayerItem = true;
+                    Player.Instance.Gold -= transactionItemSlot[0].Item.Value;
+                    Player.Instance.AddToInventory(transactionItemSlot[0].Item);
+                    transactionItemSlot[0].Item = null;
+                    transactionSoundEffect.CreateInstance().Play();
+                }
+                else
+                {
+                    errorSoundEffect.CreateInstance().Play();
+                }
             });
-            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(230, 455, 70, 28), () =>
+            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(230, 455, 80, 32), () =>
             {
                 // Making transaction if possible, otherwise error
-                if (transactionItemSlot[1] != null && (inventory.Count(itemSlot => itemSlot.Item == null) + 1 > 0))
+                if (transactionItemSlot[1].Item != null && (inventory.Count(itemSlot => itemSlot.Item == null) + 1 > 0))
                 {
                     Player.Instance.Gold += GetOffer(transactionItemSlot[1].Item);
+                    transactionItemSlot[1].Item.IsPlayerItem = false;
                     AddToInventory(transactionItemSlot[1].Item);
                     transactionItemSlot[1].Item = null;
                     transactionSoundEffect.CreateInstance().Play();
@@ -170,6 +188,13 @@ namespace ISU_Medieval_Odyssey
             {
                 player.InTransaction = !player.InTransaction;
                 player.IsInventoryOpen = true;
+
+                if (!player.InTransaction && player.ItemInHand != null && !player.ItemInHand.IsPlayerItem)
+                {
+                    AddToInventory(player.ItemInHand);
+                    player.ItemInHand = null;
+                }
+
             });
         }
 
@@ -189,14 +214,53 @@ namespace ISU_Medieval_Odyssey
             // Item to help with "swapping" items
             Item tempSwapItem = null;
             
-            // Swapping "Sell Item"-item use drops an item in it
-            if (MouseHelper.IsRectangleLeftClicked(transactionItemSlot[1].Rectangle) && (Player.Instance.ItemInHand == null || 
-                (Player.Instance.ItemInHand != null && Player.Instance.ItemInHand.IsPlayerItem)))
+            // Swapping "Sell Item" and "Buy Item" - item if user drops an item in it
+            if (MouseHelper.IsRectangleLeftClicked(transactionItemSlot[1].Rectangle))
             {
-                tempSwapItem = Player.Instance.ItemInHand;
-                Player.Instance.ItemInHand = transactionItemSlot[1].Item;
-                transactionItemSlot[1].Item = tempSwapItem;
-                tempSwapItem = null;
+                if (Player.Instance.ItemInHand == null || Player.Instance.ItemInHand.IsPlayerItem)
+                {
+                    tempSwapItem = Player.Instance.ItemInHand;
+                    Player.Instance.ItemInHand = transactionItemSlot[1].Item;
+                    transactionItemSlot[1].Item = tempSwapItem;
+                    tempSwapItem = null;
+                }
+                else
+                {
+                    errorSoundEffect.CreateInstance().Play();
+                }
+            }
+            else if (MouseHelper.IsRectangleLeftClicked(transactionItemSlot[0].Rectangle))
+            {
+                if (Player.Instance.ItemInHand == null || !Player.Instance.ItemInHand.IsPlayerItem)
+                {
+                    tempSwapItem = Player.Instance.ItemInHand;
+                    Player.Instance.ItemInHand = transactionItemSlot[0].Item;
+                    transactionItemSlot[0].Item = tempSwapItem;
+                    tempSwapItem = null;
+                }
+                else
+                {
+                    errorSoundEffect.CreateInstance().Play();
+                }
+            }
+
+            // Picking up the shop's items if user has an empty hand and decides to click on it
+            for (byte i = 0; i < inventory.Length; ++i)
+            {
+                if (MouseHelper.IsRectangleLeftClicked(inventory[i].Rectangle))
+                {
+                    if (Player.Instance.ItemInHand == null || !Player.Instance.ItemInHand.IsPlayerItem)
+                    {
+                        tempSwapItem = Player.Instance.ItemInHand;
+                        Player.Instance.ItemInHand = inventory[i].Item;
+                        inventory[i].Item = tempSwapItem;
+                        tempSwapItem = null;
+                    }
+                    else
+                    {
+                        errorSoundEffect.CreateInstance().Play();
+                    }
+                }
             }
 
             // Updating transaction buttons
@@ -248,6 +312,16 @@ namespace ISU_Medieval_Odyssey
             {
                 transactionItemSlot[i].Draw(spriteBatch);
                 transactionButton[i].Draw(spriteBatch);
+            }
+
+            // Drawing price offers
+            for (byte i = 0; i < priceOfferLocations.Length; ++i)
+            {
+                if (transactionItemSlot[i].Item != null)
+                {
+                    spriteBatch.DrawString(SharedData.InformationFonts[2], $"${(i == 0 ? transactionItemSlot[i].Item.Value : GetOffer(transactionItemSlot[i].Item))}", 
+                        priceOfferLocations[i], Color.White);
+                }
             }
         }
 
