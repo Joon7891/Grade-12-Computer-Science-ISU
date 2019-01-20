@@ -96,7 +96,7 @@ namespace ISU_Medieval_Odyssey
 
 
         /// <summary>
-        /// Update subprogram for this <see cref="Shop"/>
+        /// Update subprogram for this <see cref="Dungeon"/>
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
@@ -119,10 +119,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch"> Spritebatch to draw sprites </param>
         public void DrawInside(SpriteBatch spriteBatch)
         {
-            Console.WriteLine("in");
+            Console.WriteLine(exitLocation.X + " " + exitLocation.Y);
         }
-
-
-
     }
 }
