@@ -67,7 +67,7 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch, bool isSelected = false)
         {
             // Drawing item slot and item
-            spriteBatch.Draw(itemSlotImage, Rectangle, (isSelected ? Color.SkyBlue : color) * 0.65f);
+            spriteBatch.Draw(itemSlotImage, Rectangle, (isSelected ? Color.SkyBlue : color) * 0.9f);
             Item?.DrawIcon(spriteBatch, Rectangle);
         }
 

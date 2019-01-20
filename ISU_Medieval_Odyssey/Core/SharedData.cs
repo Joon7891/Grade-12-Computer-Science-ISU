@@ -34,7 +34,7 @@ namespace ISU_Medieval_Odyssey
         public static Random RNG { get; } = new Random();
 
         /// <summary>
-        /// Array of information fonts 0-index is smallest, 3-index is largest
+        /// Array of information fonts 0-index is smallest, 4-index is largest
         /// </summary>
         public static SpriteFont[] InformationFonts { get; private set; }
 

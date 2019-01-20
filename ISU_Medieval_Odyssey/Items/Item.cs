@@ -44,7 +44,7 @@ namespace ISU_Medieval_Odyssey
         public virtual void DrawIcon(SpriteBatch spriteBatch, Rectangle rectangle)
         {
             // Drawing icon
-            if (iconImage != null) spriteBatch.Draw(iconImage, rectangle, Color.White);
+            spriteBatch.Draw(iconImage, rectangle, Color.White);
         }
 
         /// <summary>

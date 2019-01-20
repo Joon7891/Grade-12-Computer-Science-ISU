@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -41,11 +42,13 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The name of the <see cref="Player"/>
         /// </summary>
+        [JsonProperty]
         public string Name { get; private set; }
 
         /// <summary>
         /// The current level of the <see cref="Player"/>
         /// </summary>
+        [JsonProperty]
         public byte Level { get; private set; }
 
         /// <summary>
@@ -56,28 +59,62 @@ namespace ISU_Medieval_Odyssey
             get => experienceBar.CurrentValue;
             set => SetExperience(value);
         }
+        [JsonProperty]
         private NumberBar experienceBar;
 
         /// <summary>
         /// The speed boost time of <see cref="Player"/>
         /// </summary>
+        [JsonProperty]
         public double SpeedBoostTime { get; set; }
 
         /// <summary>
         /// The attack boost time of <see cref="Player"/>
         /// </summary>
+        [JsonProperty]
         public double AttackBoostTime { get; set; }
 
         /// <summary>
         /// The defense boost time of <see cref="Player"/>
         /// </summary>
+        [JsonProperty]
         public double DefenseBoostTime { get; set; }
+
+        /// <summary>
+        /// The amount of attributes this <see cref="Player"/> has
+        /// </summary>
+        [JsonProperty]
+        public int AttributePoints { get; private set; } = 0;
+
+        /// <summary>
+        /// The level of the health attribute
+        /// </summary>
+        [JsonProperty]
+        public int HealthAttributeLevel { get; private set; } = 0;
+
+        /// <summary>
+        /// The level of the attack attribute
+        /// </summary>
+        [JsonProperty]
+        public int AttackAttributeLevel { get; private set; } = 0;
+
+        [JsonProperty]
+        public int DefenseAttributeLevel { get; private set; } = 0;
+
+        [JsonProperty]
+        public int SpeedAttributeLevel { get; private set; } = 0;
+
+        /// <summary>
+        /// The amount of <see cref="ItemSlot"/>s available for this <see cref="Player"/>
+        /// </summary>
+        public int ItemSlotsAvailable => inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null);
 
         // Graphics-related data
         private MovementType movementType = MovementType.Walk;
         private static MovementSpriteSheet movementSpriteSheet;
 
         // Various player sound effects
+        private static SoundEffect errorSoundEffect;
         private static SoundEffect levelUpSoundEffect;
         private static SoundEffect dropItemSoundEffect;
         private static SoundEffect pickupItemSoundEffect;
@@ -93,6 +130,7 @@ namespace ISU_Medieval_Odyssey
         private Armour hair = new Hair();
         private const int ROW_SIZE = 9;
         private const int ARMOUR_SIZE = 6;
+        [JsonProperty]
         private ItemSlot[] inventory = new ItemSlot[ARMOUR_SIZE + 3 * ROW_SIZE];
 
         // Variables for player inventory interaction
@@ -131,6 +169,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Loading in various graphics and audio
             movementSpriteSheet = new MovementSpriteSheet("Images/Sprites/Player/", "player");
+            errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
             levelUpSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/levelUpSoundEffect");
             dropItemSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/dropItemSoundEffect");
             pickupItemSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/pickupItemSoundEffect");
@@ -244,7 +283,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Picking up item when pick up button is pressed and there is room in inventory
-            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null) > 0)
+            if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pickup) && ItemSlotsAvailable > 0)
             {
                 // Retrieving item from world
                 tempSwapItem = World.Instance.RetrieveItem(this);
@@ -252,15 +291,7 @@ namespace ISU_Medieval_Odyssey
                 // Placing item in first open inventory slot and playing pick up item sound effect
                 if (tempSwapItem != null)
                 {
-                    for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
-                    {
-                        if (inventory[i].Item == null)
-                        {
-                            inventory[i].Item = tempSwapItem;
-                            pickupItemSoundEffect.CreateInstance().Play();
-                            break;
-                        }
-                    }
+                    AddToInventory(tempSwapItem);
                 }
 
                 // Setting item back to null
@@ -281,11 +312,16 @@ namespace ISU_Medieval_Odyssey
             {
                 if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
                 {
-                    if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || i >= ARMOUR_SIZE)
+                    if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || 
+                        (i >= ARMOUR_SIZE && (ItemInHand == null || ItemInHand.IsPlayerItem)))
                     {
                         tempSwapItem = inventory[i].Item;
                         inventory[i].Item = ItemInHand;
                         ItemInHand = tempSwapItem;
+                    }
+                    else
+                    {
+                        errorSoundEffect.CreateInstance().Play();
                     }
 
                     return;
@@ -369,6 +405,7 @@ namespace ISU_Medieval_Odyssey
             else
             {
                 ++Level;
+                AttributePoints += 5;
                 newExperience -= experienceBar.MaxValue;
                 experienceBar.CurrentValue = newExperience;
                 experienceBar.MaxValue = LevelUpRequirement();
@@ -381,6 +418,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <returns>The level up requirement for the <see cref="Player"/></returns>
         private short LevelUpRequirement() => (short)(50 + 50 * Level);
+
+        /// <summary>
+        /// Subprogram to determine the amount of attribute points the <see cref="Player"/> needs to level up a certain attribute
+        /// </summary>
+        /// <param name="level">The current level of the attribute</param>
+        /// <returns>The amount of attrbiute points required to level up the attribute</returns>
+        private int AttributeLevelUpRequirement(int currentLevel) => currentLevel + 1;
 
         /// <summary>
         /// Subprogram to "use" a certain item
@@ -433,7 +477,7 @@ namespace ISU_Medieval_Odyssey
             // If weapon is still being used, proceed with weapon animation logic
             if (imagesToAnimate.Count != 0 || currentWeapon != null)
             {
-                animationCounter = (animationCounter > 2) ? 0 : (animationCounter + 1);
+                animationCounter = (animationCounter == 2) ? 0 : (animationCounter + 1);
                 IsInventoryOpen = false;
 
                 // Moving onto next frame every 4 updates
@@ -670,6 +714,24 @@ namespace ISU_Medieval_Odyssey
                 }
             }
             Health -= (int)(finalDamageAmount * (DefenseBoostTime > 0 ? 1.0f - DefensePotion.BOOST_AMOUNT : 1) + 0.5);
+        }
+
+        /// <summary>
+        /// Subprogram to add an <see cref="Item"/> to this <see cref="Player"/>'s inventory
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to be added</param>
+        public void AddToInventory(Item item)
+        {
+            // Adding the item where there is an opening
+            for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
+            {
+                if (inventory[i].Item == null)
+                {
+                    inventory[i].Item = item;
+                    pickupItemSoundEffect.CreateInstance().Play();
+                    break;
+                }
+            }
         }
 
         /// <summary>
