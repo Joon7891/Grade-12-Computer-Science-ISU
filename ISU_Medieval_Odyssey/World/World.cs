@@ -54,6 +54,7 @@ namespace ISU_Medieval_Odyssey
         // A set of cached buildings
         [JsonProperty]
         private HashSet<IBuilding> cachedBuildings = new HashSet<IBuilding>();
+        private Dictionary<Vector2Int, Chunk> cachedChunks = new Dictionary<Vector2Int, Chunk>();
 
         /// <summary>
         /// The rectangle representing the bounds of this <see cref="World"/>
@@ -66,7 +67,7 @@ namespace ISU_Medieval_Odyssey
 
         // Variables related to enemy generation throughout the world
         private float enemyGenerationTimer = 0;
-        private const int ENEMY_GENERATE_TIME = 5;
+        private const int ENEMY_GENERATE_TIME = 3;
         private int chunkBounaryID;
         private Vector2Int[] chunkBoundaries =
         {
@@ -93,7 +94,6 @@ namespace ISU_Medieval_Odyssey
             collisionTree = new CollisionTree(worldBoundsRect);
 
             // Generating chunks around world and adding them to file after clearing previously existing world
-            IO.DeleteWorld();
             for (int y = 0; y < CHUNK_COUNT; ++y)
             {
                 for (int x = 0; x < CHUNK_COUNT; ++x)
@@ -118,20 +118,13 @@ namespace ISU_Medieval_Odyssey
         private Chunk InitializeChunkAt(int x, int y)
         {
             // The chunk being initlaized
+            Vector2Int coordinate = new Vector2Int(x, y);
             Chunk chunk = null;
 
-            // Reading chunk from file, if it exists
-            if (IO.ChunkExists(x, y))
-            {
-                chunk = IO.LoadChunk(x, y);
-            }
-            else
-            {
-                // Otherwise, creating it and saving it to file
-                chunk = new Chunk(x, y, terrainGenerator);
-                IO.SaveChunk(chunk);
-            }
-
+            // Creating chunk and caching it
+            chunk = new Chunk(x, y, terrainGenerator);
+            cachedChunks.Add(coordinate, chunk);
+            
             // Returning initialized chunk
             return chunk;
         }
@@ -166,6 +159,7 @@ namespace ISU_Medieval_Odyssey
                 if (!enemies[i].Alive)
                 {
                     Player.Instance.Experience += enemies[i].Experience;
+                    Player.Instance.Gold += enemies[i].Gold;
                     enemies.RemoveAt(i);
                 }
             }
@@ -407,6 +401,7 @@ namespace ISU_Medieval_Odyssey
         public Chunk GetChunkAt(int x, int y)
         {
             Chunk chunk;
+            Vector2Int chunkCoordinate = new Vector2Int(x, y);
             int relativeX = x - loadedChunks[0, 0].Position.X;
             int relativeY = y - loadedChunks[0, 0].Position.Y;
 
@@ -414,15 +409,14 @@ namespace ISU_Medieval_Odyssey
             {
                 chunk = loadedChunks[relativeX, relativeY];
             }
-            else if (IO.ChunkExists(x, y))
+            else if (cachedChunks.ContainsKey(chunkCoordinate))
             {
-                chunk = IO.LoadChunk(x, y);
+                chunk = cachedChunks[chunkCoordinate];
             }
             else
             {
-                //AddBuildingAt(x, y);
                 chunk = new Chunk(x, y, terrainGenerator);
-                IO.SaveChunk(chunk);
+                cachedChunks.Add(chunkCoordinate, chunk);
             }
 
             return chunk;
