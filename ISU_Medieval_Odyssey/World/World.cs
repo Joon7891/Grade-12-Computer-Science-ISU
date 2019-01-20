@@ -452,8 +452,8 @@ namespace ISU_Medieval_Odyssey
             // Retrieving item if the player is on top of one
             if (hitItems.Count > 0)
             {
-                retrievedItem = hitItems[0].Item;
-                liveItems.Remove(hitItems[0]);
+                retrievedItem = hitItems[hitItems.Count - 1].Item;
+                liveItems.Remove(hitItems[hitItems.Count - 1]);
             }
 
             // Returning the retrieved item

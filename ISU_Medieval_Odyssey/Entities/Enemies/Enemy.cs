@@ -18,6 +18,23 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class Enemy : Entity
     {
+        // Various coordinates needed for the advance enemy's movement
+        private readonly static Vector2Int[] adjacentMoves =
+        {
+            new Vector2Int(0, -1),
+            new Vector2Int(1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(-1, 0),
+        };
+        private readonly static Vector2Int[] diagonalMoves =
+        {
+            new Vector2Int(1, 1),
+            new Vector2Int(-1, 1),
+            new Vector2Int(-1, -1),
+            new Vector2Int(-1, 1)
+        };
+        private static Dictionary<Vector2Int, Vector2Int[]> diagonalMoveSequence;
+
 
         /// <summary>
         /// Possible loot drops for this <see cref="Enemy"/>
@@ -71,6 +88,19 @@ namespace ISU_Medieval_Odyssey
         private const int KNIGHT_CHANCE_MAX = 85;
         private const int WITCH_CHANCE_MAX = 95;
         private const int DRAGON_CHANCE_MAX = 100;
+
+        /// <summary>
+        /// Static constructor for <see cref="Enemy"/> object
+        /// </summary>
+        static Enemy()
+        {
+            // Setting up a diagonal move sequence dictionary
+            diagonalMoveSequence = new Dictionary<Vector2Int, Vector2Int[]>();
+            diagonalMoveSequence.Add(new Vector2Int(1, 1), new Vector2Int[] { new Vector2Int(1, 1), new Vector2Int(1, 0) });
+            diagonalMoveSequence.Add(new Vector2Int(-1, -1), new Vector2Int[] { new Vector2Int(-1, -1), new Vector2Int(-1, 0) });
+            diagonalMoveSequence.Add(new Vector2Int(1, -1), new Vector2Int[] { new Vector2Int(1, -1), new Vector2Int(1, 0) });
+            diagonalMoveSequence.Add(new Vector2Int(-1, 1), new Vector2Int[] { new Vector2Int(-1, 1), new Vector2Int(-1, 0) });
+        }
 
         /// <summary>
         /// Subprogram to initialize various graphical components of this <see cref="Enemy"/>
@@ -129,31 +159,6 @@ namespace ISU_Medieval_Odyssey
             // Scanning for a path to player
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             timeToAttack += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            //if ((CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= 1 && timeToAttack >= attackTime)
-            //{
-            //    timeToAttack = 0;
-
-            //    Vector2Int dif = (CurrentTile - Player.Instance.CurrentTile);
-
-            //    if (dif.X == 1)
-            //    {
-
-            //    }
-            //    else if (dif.X == -1)
-            //    {
-
-            //    }
-            //    else if (dif.Y == -1)
-            //    {
-
-            //    }
-            //    else if (dif.Y == 1)
-            //    {
-
-            //    }
-
-            //}
-            //else 
             if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
             {
                 timeToScan = 0;
@@ -170,24 +175,11 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Subprogram to determine the <see cref="AdvancedEnemy"/>'s path to the <see cref="Player"/>, if it exists
-        /// </summary>
-        /// <returns>The path to <see cref="Player"/>, if it exists</returns>
-        public virtual Queue<Vector2Int> FindPathToPlayer()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Subprogram to update this <see cref="Enemy"/>'s movement
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         protected virtual void UpdateMovement(GameTime gameTime)
-        {
-            // The future location vector of the enemmy
-            Vector2Int futurePixelLocation = new Vector2Int();
-            Vector2Int futureTileLocation;
-            
+        {            
             // Updating animation/frame counter
             frameCounter = (frameCounter == counterMax) ? 0 : (frameCounter + 1);
             if (frameCounter == 0)
@@ -195,10 +187,12 @@ namespace ISU_Medieval_Odyssey
                 currentFrame = (currentFrame + 1) % numFrames;
             }
 
+            // Moving towards next target if current target has been reached
             if (pathToPlayer != null && currentTarget == CurrentTile && pathToPlayer.Count > 0)
             {
                 currentTarget = pathToPlayer.Dequeue();
 
+                // Determining direction
                 if (currentTarget.X - CurrentTile.X == 1)
                 {
                     Direction = Direction.Right;
@@ -215,69 +209,14 @@ namespace ISU_Medieval_Odyssey
                 {
                     Direction = Direction.Down;
                 }
-            }            
-            
-            // Moving enemy in appropriate direction
-            switch (Direction)
-            {
-                case Direction.Up:
+            }                            
+        }
 
-                    // Calculating the enemy's future location if it goes up
-                    //futurePixelLocation.X = center.X;
-                    //futurePixelLocation.Y = (int)(hitBox.Top - GetPixelSpeed(gameTime) + 0.5);
-                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
-
-                    //// Only moving up if there are on barriers
-                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    //{
-                        unroundedLocation.Y -= GetPixelSpeed(gameTime);
-                    //}
-                    break;
-
-                case Direction.Right:
-
-                    // Calculating the enemy's future location if it goes right
-                    //futurePixelLocation.X = (int)(hitBox.Right + GetPixelSpeed(gameTime) + 0.5);
-                    //futurePixelLocation.Y = center.Y;
-                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
-
-                    //// Only moving right if there are on barriers
-                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    //{
-                        unroundedLocation.X += GetPixelSpeed(gameTime);
-                    //}
-                    break;
-
-                case Direction.Down:
-
-                    // Calculating the enemy's future location if it goes down
-                    //futurePixelLocation.X = center.X;
-                    //futurePixelLocation.Y = (int)(hitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
-                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
-
-                    //// Only moving down if there are on barriers
-                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    //{
-                        unroundedLocation.Y += GetPixelSpeed(gameTime);
-                    //}
-                    break;
-
-                case Direction.Left:
-
-                    // Calculating the enemy's future location if it goes left
-                    //futurePixelLocation.X = (int)(hitBox.Left - GetPixelSpeed(gameTime) + 0.5);
-                    //futurePixelLocation.Y = center.Y;
-                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
-
-                    //// Only moving left if there are on barriers
-                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    //{
-                        unroundedLocation.X -= GetPixelSpeed(gameTime);
-                    //}
-                    break;
-
-            }
-
+        /// <summary>
+        /// Subprogram to calculate this <see cref="Enemy"/>'s locations
+        /// </summary>
+        protected void CalculateLocations()
+        {
             // Calculating the enemy's locations
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
@@ -298,7 +237,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         /// <returns>The pixel speed of this enemy</returns>
-        private float GetPixelSpeed(GameTime gameTime) => Speed * Tile.SPACING * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+        protected float GetPixelSpeed(GameTime gameTime) => Speed * Tile.SPACING * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
         /// <summary>
         /// Draw subprogram for <see cref="Enemy"/> object
@@ -311,6 +250,138 @@ namespace ISU_Medieval_Odyssey
             healthBar.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Subprogram to determine the <see cref="AdvancedEnemy"/>'s path to the <see cref="Player"/>, if it exists
+        /// </summary>
+        /// <returns>The path to <see cref="Player"/>, if it exists</returns>
+        public Queue<Vector2Int> FindPathToPlayer()
+        {
+            // Various data structures and variables to hold current tile data, visited tiles, and tiles to visit
+            Queue<TileNode> tilesToEvaluate = new Queue<TileNode>();
+            HashSet<Vector2Int> visitied = new HashSet<Vector2Int>();
+            Vector2Int newCoordinate;
+            TileNode currentTile;
+
+            // Adding the enemy's initial location
+            tilesToEvaluate.Enqueue(new TileNode(CurrentTile, 0));
+
+            // Continuing to evaluate tiles while they exist
+            while (tilesToEvaluate.Count > 0)
+            {
+                // Obtaining current node
+                currentTile = tilesToEvaluate.Dequeue();
+
+                // If a path is found, return the path, if the enemy's scan range is exceeded, return null
+                if (currentTile.Coordinate == Player.Instance.CurrentTile)
+                {
+                    return BuildPath(currentTile);
+                }
+                else if (currentTile.Distance > scanRange)
+                {
+                    return null;
+                }
+
+                // Adding all of the tiles adjacent to the current tile, if appropriate
+                for (byte i = 0; i < adjacentMoves.Length; ++i)
+                {
+                    newCoordinate = currentTile.Coordinate + adjacentMoves[i];
+                    if (!visitied.Contains(newCoordinate) && ValidTile(newCoordinate))
+                    {
+                        tilesToEvaluate.Enqueue(new TileNode(newCoordinate, currentTile.Distance + 1, currentTile));
+                        visitied.Add(newCoordinate);
+                    }
+                }
+
+                // Adding all of the tiles diagonal to the current tile, if appropriate
+                for (byte i = 0; i < diagonalMoves.Length; ++i)
+                {
+                    newCoordinate = currentTile.Coordinate + diagonalMoves[i];
+                    if (!visitied.Contains(newCoordinate) && ValidTile(newCoordinate))
+                    {
+                        tilesToEvaluate.Enqueue(new TileNode(newCoordinate, currentTile.Distance + 2, currentTile));
+                        visitied.Add(newCoordinate);
+                    }
+                }
+            }
+
+            // Otherwise returning null
+            return null;
+        }
+
+        /// <summary>
+        /// Subprogram to build the path from the <see cref="AdvancedEnemy"/>'s current <see cref="Tile"/> to the specified end <see cref="Tile"/>
+        /// </summary>
+        /// <param name="endTile">The <see cref="Tile"/> representing the end of the path</param>
+        /// <returns>A queue holding the in order <see cref="Tile"/> to traverse</returns>
+        private Queue<Vector2Int> BuildPath(TileNode endTile)
+        {
+            // The path, and various objects regarding the current/previous tile
+            Queue<Vector2Int> pathTiles = new Queue<Vector2Int>();
+            TileNode currentTile = endTile;
+            Vector2Int tileDelta;
+
+            // Continuing the add tiles as long as the current tile is not the start tile
+            while (currentTile.PreviousNode != null)
+            {
+                // Calculating the difference between the current and previous path
+                tileDelta = currentTile.Coordinate - currentTile.PreviousNode.Coordinate; //what you add to p -> c
+
+                // If the move is non-diagonal, add the path
+                if (tileDelta.ManhattanLength == 1)
+                {
+                    pathTiles.Enqueue(currentTile.Coordinate);
+                }
+                else
+                {
+                    // Otherwise, add the diagonal move sequences for the diagonal move
+                    foreach (Vector2Int move in diagonalMoveSequence[tileDelta])
+                    {
+                        pathTiles.Enqueue(currentTile.PreviousNode.Coordinate + move);
+                    }
+                }
+
+                // Traversing to next tile in path
+                currentTile = currentTile.PreviousNode;
+            }
+
+            // Adding the enemy's current tile and returning the path tiles (in reverse)
+            pathTiles.Enqueue(CurrentTile);
+            pathTiles = new Queue<Vector2Int>(pathTiles.Reverse());
+            return pathTiles;
+        }
+
+        /// <summary>
+        /// Subprogram to determine if a <see cref="Tile"/> is valid to traverse to
+        /// </summary>
+        /// <param name="tileCoordinate">The <see cref="Tile"/> coordinate</param>
+        /// <returns>Whether a <see cref="Tile"/> is a valid <see cref="Tile"/></returns>
+        private bool ValidTile(Vector2Int tileCoordinate)
+        {
+            // If the tile in question is not valid, return false
+            if (World.Instance.GetTileAt(tileCoordinate).OutsideObstructState)
+            {
+                return false;
+            }
+
+            // If any of the adjacent tiles aren't valid, return false
+            for (byte i = 0; i < adjacentMoves.Length; ++i)
+            {
+                if (World.Instance.IsTileObstructed(tileCoordinate + adjacentMoves[i], true))
+                {
+                    return false;
+                }
+            }
+
+            // Otherwise return true
+            return true;
+        }
+
+
+        /// <summary>
+        /// Subprogram to generate a random <see cref="Enemy"/>
+        /// </summary>
+        /// <param name="tileCoordinate">The <see cref="Tile"/> coordinate at which to generate the enemy</param>
+        /// <returns>The random <see cref="Enemy"/></returns>
         public static Enemy RandomEnemy(Vector2Int tileCoordinate)
         {
             // Determing the type of enemy
