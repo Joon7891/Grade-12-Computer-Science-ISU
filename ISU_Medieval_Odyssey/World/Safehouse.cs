@@ -8,7 +8,6 @@ namespace ISU_Medieval_Odyssey
 {
     class Safehouse //: IBuilding
     {
-        //IBuilding 
 
     }
 }
