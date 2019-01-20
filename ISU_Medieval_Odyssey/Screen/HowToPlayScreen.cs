@@ -7,6 +7,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -17,6 +18,16 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public static HowToPlayScreen Instance { get; set; }
 
+        // Background imgaes and audio
+        private Background[] backgrounds = new Background[0];
+        private int currentBackground = 0;
+        private Song backgroundMusic;
+
+        // Buttons to interact with this screen
+        private Button backButton;
+        private Button previousButton;
+        private Button nextButton;
+
         /// <summary>
         /// Constructor for <see cref="HowToPlayScreen"/>
         /// </summary>
@@ -24,6 +35,22 @@ namespace ISU_Medieval_Odyssey
         {
             // Setting up singleton
             Instance = this;
+
+            // Importing various background images and audio
+            backgroundMusic = Main.Content.Load<Song>("Audio/Music/howToPlayBackgroundMusic");
+            for (byte i = 0; i < backgrounds.Length; ++i)
+            {
+                backgrounds[i] = new Background(Main.Content.Load<Texture2D>($"Images/Backgrounds/howToPlayBackgroundImage{i}"));
+            }
+
+            // Setting up various buttons
+            backButton = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/backButton"), new Rectangle(10, 10, 65, 65), () =>
+            {
+                Main.CurrentScreen = ScreenMode.MainMenu;
+                MediaPlayer.Stop();
+            });
+            previousButton = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/previousButton"), new Rectangle(10, SharedData.SCREEN_HEIGHT - 90, 240, 80), () => --currentBackground);
+            nextButton = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/nextButton"), new Rectangle(SharedData.SCREEN_WIDTH - 250, SharedData.SCREEN_HEIGHT - 90, 240, 80), () => ++currentBackground);
         }
 
         /// <summary>
@@ -32,7 +59,22 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
+            // Playing music
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+                MediaPlayer.Play(backgroundMusic);
+            }
 
+            // Updating appropriate buttons, when applicable
+            backButton.Update(gameTime);
+            if (currentBackground > 0)
+            {
+                previousButton.Update(gameTime);
+            }
+            if (currentBackground < backgrounds.Length - 1)
+            {
+                nextButton.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -41,7 +83,25 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw Sprites</param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            // Beginning sprite batch
+            spriteBatch.Begin();
 
+            // Drawing current background
+        //    backgrounds[currentBackground].Draw(spriteBatch);
+
+            // Drawing appropriate buttons, when applicable
+            backButton.Draw(spriteBatch);
+            if (currentBackground > 0)
+            {
+                previousButton.Draw(spriteBatch);
+            }
+            if (currentBackground < backgrounds.Length - 1)
+            {
+                nextButton.Draw(spriteBatch);
+            }
+
+            // Ending sprite batch
+            spriteBatch.End();
         }
     }
 }

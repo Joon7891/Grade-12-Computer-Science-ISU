@@ -503,7 +503,7 @@ namespace ISU_Medieval_Odyssey
                 animationCounter = (animationCounter == 2) ? 0 : (animationCounter + 1);
                 IsInventoryOpen = false;
 
-                // Moving onto next frame every 4 updates
+                // Moving onto next frame every 2 updates
                 if (animationCounter == 2)
                 {
                     // If there are no more images left to animate, switch to walking graphics, otherwise animate weapon
@@ -513,10 +513,6 @@ namespace ISU_Medieval_Odyssey
                         if (currentWeapon is Bow)
                         {
                             World.Instance.AddProjectile(new Arrow(Direction, this, 50));
-                        }
-                        else
-                        {
-                            currentWeapon.Use(this);
                         }
 
                         // Switching to movement graphics
@@ -528,6 +524,16 @@ namespace ISU_Medieval_Odyssey
                     {
                         movementType = imagesToAnimate.Peek().MovementType;
                         frameNumber = imagesToAnimate.Dequeue().FrameNumber;
+                    }
+
+                    // Using melee weapon in the middle of its animation
+                    if (currentWeapon is SlashWeapon && frameNumber == (SlashWeapon.NUM_FRAMES - 1) / 2)
+                    {
+                        currentWeapon.Use(this);
+                    }
+                    else if (currentWeapon is ThrustWeapon && frameNumber == (ThrustWeapon.NUM_FRAMES - 1) / 2)
+                    {
+                        currentWeapon.Use(this);
                     }
                 }
             }

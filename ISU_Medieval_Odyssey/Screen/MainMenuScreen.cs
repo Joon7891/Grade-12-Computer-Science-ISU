@@ -63,7 +63,7 @@ namespace ISU_Medieval_Odyssey
                 Main.CurrentScreen = ScreenMode.HowToPlay;
                 MediaPlayer.Stop();
             });
-            optionButtons[3] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/settingButton"), new Rectangle(SharedData.SCREEN_WIDTH - 130, SharedData.SCREEN_HEIGHT - 90, 120, 80), () =>
+            optionButtons[3] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/settingButton"), new Rectangle(SharedData.SCREEN_WIDTH - 110, SharedData.SCREEN_HEIGHT - 90, 100, 80), () =>
             {
                 Main.CurrentScreen = ScreenMode.Settings;
                 MediaPlayer.Stop();

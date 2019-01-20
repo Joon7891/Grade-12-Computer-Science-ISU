@@ -52,7 +52,6 @@
     <Compile Include="World\TileNode.cs" />
     <Compile Include="Entities\Enemies\Advanced\Dragon.cs" />
     <Compile Include="Entities\Enemies\Advanced\Knight.cs" />
-    <Compile Include="Entities\Enemies\Advanced\RangedEnemy.cs" />
     <Compile Include="Entities\Enemies\Advanced\Wizard.cs" />
     <Compile Include="World\IBuilding.cs" />
     <Compile Include="World\Interaction.cs" />

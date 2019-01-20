@@ -7,7 +7,7 @@
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Wizard : RangedEnemy
+    public sealed class Wizard : AdvancedEnemy
     {
         // Various Wizard specific graphics and corresponding variables
         private const int WIDTH = 50;

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
-    public sealed class Witch : RangedEnemy
+    public sealed class Witch : AdvancedEnemy
     {
         // Various Witch specific graphics and corresponding variables
         private const int WIDTH = 60;
