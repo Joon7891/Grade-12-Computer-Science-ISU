@@ -68,8 +68,8 @@ namespace ISU_Medieval_Odyssey
             transactionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/transactionSoundEffect");
 
             // Setting up price offer text locations
-            priceOfferLocations[0] = new Vector2(613, 490);
-            priceOfferLocations[1] = new Vector2(235, 490); //80, 32
+            priceOfferLocations[0] = new Vector2(613, 525);
+            priceOfferLocations[1] = new Vector2(235, 525);
 
             // Setting up inside obstruction tiles
             for (int i = 0; i < INSIDE_WIDTH; ++i)
@@ -118,13 +118,13 @@ namespace ISU_Medieval_Odyssey
             for (int i = 0; i < INVENTORY_SIZE; ++i)
             {
                 inventory[i] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (i % ROW_SIZE - 3.5) * 70), 
-                    210 + 70 * (i / ROW_SIZE), i < shopItems.Length ? shopItems[i] : null, Color.White);
+                    280 + 70 * (i / ROW_SIZE), i < shopItems.Length ? shopItems[i] : null, Color.White);
             }
-            transactionItemSlot[0] = new ItemSlot(710, 455, null, Color.Green); // Buy
-            transactionItemSlot[1] = new ItemSlot(150, 455, null, Color.Red); // Sell
+            transactionItemSlot[0] = new ItemSlot(710, 490, null, Color.Green); // Buy
+            transactionItemSlot[1] = new ItemSlot(150, 490, null, Color.Red); // Sell
 
             // Setting up transaction buttons
-            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(608, 455, 80, 32), () =>
+            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(608, 490, 80, 32), () =>
             {
                 // Making tranaction, if possible
                 if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value)
@@ -140,7 +140,7 @@ namespace ISU_Medieval_Odyssey
                     errorSoundEffect.CreateInstance().Play();
                 }
             });
-            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(230, 455, 80, 32), () =>
+            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(230, 490, 80, 32), () =>
             {
                 // Making transaction if possible, otherwise error
                 if (transactionItemSlot[1].Item != null && (inventory.Count(itemSlot => itemSlot.Item == null) + 1 > 0))

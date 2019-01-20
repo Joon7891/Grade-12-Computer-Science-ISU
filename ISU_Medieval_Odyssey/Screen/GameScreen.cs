@@ -44,7 +44,7 @@ namespace ISU_Medieval_Odyssey
 
         // Statistics display-related variables
         private bool showStatistics = false;
-        private Vector2[] statisticsLoc = new Vector2[4];
+        private Vector2[] statisticsLoc = new Vector2[5];
 
         /// <summary>
         /// Constructor for <see cref="GameScreen"/>
@@ -95,8 +95,8 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating logic for minimap camera
-            miniMapCamera.Position = -World.WorldBoundsRect.Location.ToVector2() + adjustmentVector;
-            miniMapCamera.Origin = miniMapCamera.Position - World.WorldBoundsRect.Location.ToVector2() * miniMapCamera.OrthographicSize / 2.0f;
+            miniMapCamera.Position = - World.WorldBoundsRect.Location.ToVector2() / Chunk.SIZE + adjustmentVector;
+            miniMapCamera.Origin = miniMapCamera.Position - World.WorldBoundsRect.Location.ToVector2() / Chunk.SIZE * miniMapCamera.OrthographicSize / 2.0f;
         }
 
         /// <summary>
@@ -148,7 +148,8 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Tile Coordinate: {Player.CurrentTile}", statisticsLoc[0], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Chunk Coordinate: {Player.CurrentChunk}", statisticsLoc[1], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Frames Per Second: {Main.FPS}", statisticsLoc[2], Color.White);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Total Memory Used: {Math.Round(GC.GetTotalMemory(false) / 1048576.0, 3)} MB", statisticsLoc[3], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Enemies Loaded {World.Instance.EnemiesLoaded}", statisticsLoc[3], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Total Memory Used: {Math.Round(GC.GetTotalMemory(false) / 1048576.0, 3)} MB", statisticsLoc[4], Color.White);
         }
     }
 }

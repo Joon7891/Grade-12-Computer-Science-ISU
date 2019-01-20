@@ -30,7 +30,14 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The current <see cref="IBuilding"/> the <see cref="Player"/> is in
         /// </summary>
+        [JsonIgnore]
         public IBuilding CurrentBuilding { get; set; }
+
+        /// <summary>
+        /// The number of <see cref="Enemy"/> in this <see cref="World"/>
+        /// </summary>
+        [JsonIgnore]
+        public int EnemiesLoaded => enemies.Count;
 
         // The world's loaded chunks and loaded chunks
         [JsonProperty]
@@ -81,6 +88,20 @@ namespace ISU_Medieval_Odyssey
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
             buildings.Add(new Shop(new Vector2Int(2, 2)));
+
+            for (int i = 0; i < 100; ++i)
+            {
+                for (int j = 0; j < 100; ++j)
+                {
+                    enemies.Add(new Witch(new Vector2Int(i, j)));
+                }
+            }
+
+            enemies.Add(new Witch(new Vector2Int(-1, -1)));
+            enemies.Add(new Witch(new Vector2Int(5, 5)));
+            enemies.Add(new Witch(new Vector2Int(-5, -5)));
+            enemies.Add(new Witch(new Vector2Int(10, 10)));
+
         }
 
         /// <summary>
@@ -178,6 +199,15 @@ namespace ISU_Medieval_Odyssey
                     liveItems.RemoveAt(i);
                 }
             }
+
+            // Removing enemies out of the loaded world
+            for (int i = enemies.Count - 1; i >= 0; --i)
+            {
+                if (!worldBoundsRect.Contains(enemies[i].HitBox))
+                {
+                    enemies.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -200,9 +230,18 @@ namespace ISU_Medieval_Odyssey
             loadedChunks = newLoadedChunks;
 
             // Setting the newly loaded chunks as current loaded chunks
-            worldBoundsRect.X = loadedChunks[0, 0].Position.X * Tile.SPACING;
-            worldBoundsRect.Y = loadedChunks[0, 0].Position.Y * Tile.SPACING;
+            worldBoundsRect.X = loadedChunks[0, 0].Position.X * Tile.SPACING * Chunk.SIZE;
+            worldBoundsRect.Y = loadedChunks[0, 0].Position.Y * Tile.SPACING * Chunk.SIZE;
             collisionTree.Range = worldBoundsRect;
+
+            // Removing buildings outside of loaded chunks 
+            for (int i = buildings.Count - 1; i >= 0; --i)
+            {
+                if (!worldBoundsRect.Contains(buildings[i].Rectangle))
+                {
+                    buildings.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>

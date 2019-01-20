@@ -39,7 +39,7 @@ namespace ISU_Medieval_Odyssey
         private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
 
         private float timeToScan = 0;
-        private const float MAX_SCAN_INTERVAL = 0.25f; // May chance if lag becomes an issue
+        private const float MAX_SCAN_INTERVAL = 0.25f; 
 
         private const int HEALTH_BAR_BUFFER_Y = 25;
         private const int HEALTH_BAR_WIDTH = 90;
@@ -111,7 +111,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Scanning 
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (timeToScan >= MAX_SCAN_INTERVAL)
+            if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).LengthSquared <= scanRange * scanRange)
             {
                 timeToScan = 0;
                 pathToPlayer = FindPathToPlayer();
@@ -128,6 +128,8 @@ namespace ISU_Medieval_Odyssey
             // Calculating the enemy's locations
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
+            hitBox.X = rectangle.X + collisionBUfferHorizontal;
+            hitBox.Y = rectangle.Y + collisionBufferVertical;
             healthBar.X = rectangle.X - healthBarBufferX;
             healthBar.Y = rectangle.Y - HEALTH_BAR_BUFFER_Y;
             center.X = rectangle.X + (rectangle.Width >> 1);

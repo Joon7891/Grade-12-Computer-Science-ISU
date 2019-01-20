@@ -13,6 +13,11 @@ namespace ISU_Medieval_Odyssey
     public interface IBuilding
     {
         /// <summary>
+        /// The <see cref="Rectangle"/> that this building is drawn in
+        /// </summary>
+        Rectangle Rectangle { get; }
+        
+        /// <summary>
         /// Update subprogram for this <see cref="IBuilding"/>
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
