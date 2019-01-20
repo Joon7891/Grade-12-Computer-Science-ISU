@@ -36,7 +36,7 @@ namespace ISU_Medieval_Odyssey
 
                 case Direction.Right:
                     adjustedRectangle.Width = horizontalHitBox.Width;
-                    adjustedRectangle.Height = verticalHitBox.Height;
+                    adjustedRectangle.Height = horizontalHitBox.Height;
                     adjustedRectangle.Y -= adjustedRectangle.Height / 2;
                     break;
 

@@ -216,7 +216,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // To Remove Later
-            inventory[6].Item = new LongSpear();
+            inventory[6].Item = new Dagger();
             inventory[7].Item = new Sword();
             inventory[8].Item = new Bow();
             inventory[9].Item = new HealthPotion();

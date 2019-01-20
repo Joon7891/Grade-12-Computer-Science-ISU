@@ -12,9 +12,11 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Rapier : SlashWeapon
     {
-        // Rapier specific graphics
+        // Rapier specific graphics and rectangles
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private new static Texture2D iconImage;
+        private new static Rectangle verticalHitBox = new Rectangle(0, 0, 240, 80);
+        private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 120, 240);
 
         /// <summary>
         /// Static constructor for <see cref="Rapier"/> object
@@ -36,6 +38,8 @@ namespace ISU_Medieval_Odyssey
             // Setting up Rapier
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            base.verticalHitBox = verticalHitBox;
+            base.horizontalHitBox = horizontalHitBox;
         }
 
         /// <summary>

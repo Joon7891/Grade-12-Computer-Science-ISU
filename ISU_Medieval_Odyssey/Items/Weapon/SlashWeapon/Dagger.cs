@@ -5,20 +5,18 @@
 // Modified Date: 12/19/2018
 // Description: Class to hold Dagger object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Dagger : SlashWeapon
     {
-        // Dagger specific images
+        // Dagger specific images and rectangles
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private new static Texture2D iconImage;
+        private new static Rectangle verticalHitBox = new Rectangle(0, 0, 25, 50);
+        private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 50, 25);
 
         /// <summary>
         /// Static constructor for <see cref="Dagger"/> object
@@ -40,6 +38,8 @@ namespace ISU_Medieval_Odyssey
             // Setting up Dagger
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            base.verticalHitBox = verticalHitBox;
+            base.horizontalHitBox = horizontalHitBox;
         }
     }
 }
