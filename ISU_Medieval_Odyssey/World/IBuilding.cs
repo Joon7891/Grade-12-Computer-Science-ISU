@@ -43,6 +43,6 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Subprogram to set properties of various <see cref="Tile"/> that the <see cref="IBuilding"/> affects
         /// </summary>
-        void SetTiles(Vector2Int cornerTile);
+        void SetTiles();
     }
 }

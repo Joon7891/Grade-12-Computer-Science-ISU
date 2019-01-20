@@ -127,5 +127,17 @@ namespace ISU_Medieval_Odyssey
                 spriteBatch.DrawString(textFont, Text, textLocation, !isSelected ? Color.White : Color.Yellow);
             }
         }
+
+        /// <summary>
+        /// Subprogram to simply draw a certain <see cref="Keys"/>
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw sprites</param>
+        /// <param name="key">The <see cref="Keys"/> to be drawn</param>
+        /// <param name="rectangle">The <see cref="Rectangle"/> to draw it in</param>
+        public static void DrawKey(SpriteBatch spriteBatch, Keys key, Rectangle rectangle)
+        {
+            // Drawing key
+            spriteBatch.Draw(keyImages[key], rectangle, Color.White);
+        }
     }
 }

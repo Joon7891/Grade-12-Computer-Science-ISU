@@ -92,24 +92,12 @@ namespace ISU_Medieval_Odyssey
 
             // Creating terrtain generator and generating terrain
             terrainGenerator = new TerrainGenerator(seed);
-            for (int y = 0; y < CHUNK_COUNT; ++y)
-            {
-                for (int x = 0; x < CHUNK_COUNT; ++x)
-                {
-                    loadedChunks[x, y] = InitializeChunkAt(x, y);
-                }
-            }
             AdjustLoadedChunks(new Vector2Int(0, 0));//  Player.Instance.CurrentChunk);
 
 
             // Remove
             buildings.Add(new Shop(new Vector2Int(2, 2)));
             cachedBuildings.Add(buildings[0]);
-
-            for (int i = 0; i < 100; ++i) for (int j = 0; j < 100; ++j)
-                {
-                    enemies.Add(new Knight(new Vector2Int(i, j)));
-                }
         }
 
         /// <summary>
@@ -279,26 +267,6 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Subprogram to initialize a <see cref="Chunk"/>
-        /// </summary>
-        /// <param name="x">The x-coordinate of the <see cref="Chunk"/></param>
-        /// <param name="y">The y-coordinate of the <see cref="Chunk"/></param>
-        /// <returns>The initalized chunk</returns>
-        private Chunk InitializeChunkAt(int x, int y)
-        {
-            // The chunk being initlaized
-            Vector2Int coordinate = new Vector2Int(x, y);
-            Chunk chunk = null;
-
-            // Creating chunk and caching it
-            chunk = new Chunk(x, y, terrainGenerator);
-            cachedChunks.Add(coordinate, chunk);
-
-            // Returning initialized chunk
-            return chunk;
-        }
-
-        /// <summary>
         /// Subprogram to adjust the loaded chunks
         /// </summary>
         /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
@@ -337,7 +305,7 @@ namespace ISU_Medieval_Odyssey
                 if (worldBoundsRect.Contains(building.Rectangle) && !buildings.Contains(building))
                 {
                     buildings.Add(building);
-                    building.SetTiles(building.CornerTile);
+                    building.SetTiles();
                 }
             }
         }
@@ -352,23 +320,41 @@ namespace ISU_Medieval_Odyssey
         {
             // Various variables required for chunk searching in memory
             Chunk chunk;
+            bool shouldAddBuilding = true;
+            IBuilding buildingToAdd = null;
             Vector2Int chunkCoordinate = new Vector2Int(x, y);
-            int relativeX = x - loadedChunks[0, 0].Position.X;
-            int relativeY = y - loadedChunks[0, 0].Position.Y;
 
-            // If chunk exists in memory, retrieve it, otherwise create it and save it to memory
-            if (0 <= relativeX && relativeX < CHUNK_COUNT && 0 <= relativeY && relativeY < CHUNK_COUNT)
-            {
-                chunk = loadedChunks[relativeX, relativeY];
-            }
-            else if (cachedChunks.ContainsKey(chunkCoordinate))
+            if (cachedChunks.ContainsKey(chunkCoordinate))
             {
                 chunk = cachedChunks[chunkCoordinate];
             }
             else
             {
                 chunk = new Chunk(x, y, terrainGenerator);
-                cachedChunks.Add(chunkCoordinate, chunk);
+                if (SharedData.RNG.Next(10) == 1)
+                {
+                    foreach (IBuilding building in cachedBuildings)
+                    {
+                        if (chunk.Rectangle.Contains(building.Rectangle))
+                        {
+                            shouldAddBuilding = false;
+                            break;
+                        }
+                    }
+
+                    if (shouldAddBuilding)
+                    {
+                        buildingToAdd = new Shop(new Vector2Int(x * Chunk.SIZE + Chunk.SIZE / 3,
+                            y * Chunk.SIZE + Chunk.SIZE / 3));
+                        cachedBuildings.Add(buildingToAdd);
+                    }
+                    buildingToAdd?.SetTiles();
+                }
+
+                if (!cachedChunks.ContainsKey(chunkCoordinate))
+                {
+                    cachedChunks.Add(chunkCoordinate, chunk);
+                }
             }
 
             // Returning the chunk
