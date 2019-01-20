@@ -68,8 +68,10 @@ namespace ISU_Medieval_Odyssey
         private const int HEALTH_BAR_HEIGHT = 20;
         private int healthBarBufferX;
 
+        private float rotationTimer = 0;
+        private const float ROTATION_SPEED = 0.10f;
+
         private float timeToAttack = 0;
-        private float attackTime = 1.0f;
 
         protected int scanRange;
 
@@ -136,7 +138,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="minDamage">The min damage for this <see cref="Enemy"/></param>
         /// <param name="maxDamage">The max damage for this <see cref="Enemy"/></param>
         /// <param name="speed">The speed of this <see cref="Enemy"/></param>
-        protected void InitializeStatistics(byte scanRange, int minHealth, int maxHealth, int minDamage, int maxDamage, float speed)
+        /// <param name="attackSpeed">The speed at which to attack for this <see cref="Enemy"/></param>
+        protected void InitializeStatistics(byte scanRange, int minHealth, int maxHealth, int minDamage, int maxDamage, float speed, float attackSpeed)
         {
             // Setting up various statistics for enemy 
             short health = (short) SharedData.RNG.Next(minHealth, maxHealth + 1);
@@ -146,6 +149,7 @@ namespace ISU_Medieval_Odyssey
             healthBar = new NumberBar(new Rectangle(rectangle.X + healthBarBufferX, rectangle.Y - HEALTH_BAR_BUFFER_Y, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT), health, health, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[4], Color.Black);
             Speed = speed;
+            this.attackSpeed = attackSpeed;
             Experience = (short)(damageAmount + health + 10 * speed + 0.5);
             miniIcon = new Circle(new Vector2Int(), MINI_ICON_RADIUS, Color.Black);
         }
@@ -156,6 +160,13 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public virtual void Update(GameTime gameTime)
         {
+            // Updating animation/frame counter
+            frameCounter = (frameCounter == counterMax) ? 0 : (frameCounter + 1);
+            if (frameCounter == 0)
+            {
+                currentFrame = (currentFrame + 1) % numFrames;
+            }
+
             // Scanning for a path to player
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             timeToAttack += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -170,8 +181,29 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
-            // Calling subprogram to update movement
-            UpdateMovement(gameTime);
+            // Calling subprogram to update movement if enemy is not on top of player
+            if (CurrentTile != Player.Instance.CurrentTile)
+            {
+                UpdateMovement(gameTime);
+            }
+            else
+            {
+                // Rotating enemy every 1.5 seconds
+                rotationTimer += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                if (rotationTimer >= ROTATION_SPEED)
+                {
+                    rotationTimer = 0;
+                    Direction = (Direction)(((int)Direction + 1) % Enum.GetValues(typeof(Direction)).Length);
+                }
+
+                // Attacking player at every attack time
+                timeToAttack += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                if (timeToAttack > attackSpeed)
+                {
+                    timeToAttack = 0;
+                    Player.Instance.InflictDamage(damageAmount);
+                }
+            }
         }
 
         /// <summary>
@@ -180,13 +212,6 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         protected virtual void UpdateMovement(GameTime gameTime)
         {            
-            // Updating animation/frame counter
-            frameCounter = (frameCounter == counterMax) ? 0 : (frameCounter + 1);
-            if (frameCounter == 0)
-            {
-                currentFrame = (currentFrame + 1) % numFrames;
-            }
-
             // Moving towards next target if current target has been reached
             if (pathToPlayer != null && currentTarget == CurrentTile && pathToPlayer.Count > 0)
             {

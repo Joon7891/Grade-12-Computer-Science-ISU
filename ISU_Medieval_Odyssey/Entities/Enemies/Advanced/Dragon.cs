@@ -21,10 +21,11 @@ namespace ISU_Medieval_Odyssey
         // Various constants regarding the Dragon's attributes
         private const int MIN_HEALTH = 150;
         private const int MAX_HEALTH = 300;
-        private const int MIN_DAMAGE = 150;
-        private const int MAX_DAMAGE = 300;
+        private const int MIN_DAMAGE = 50;
+        private const int MAX_DAMAGE = 80;
         private const int SCAN_RANGE = 8;
         private const float SPEED = 0.9f;
+        private const float ATTACK_SPEED = 3.5f;
 
         /// <summary>
         /// Static constructor for <see cref="Dragon"/> object
@@ -44,7 +45,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up various components of this Dragon
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
-            InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED);
+            InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
         }
     }
 }

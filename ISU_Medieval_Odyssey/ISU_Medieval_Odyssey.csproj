@@ -48,7 +48,6 @@
     <Compile Include="Dungeon\Dungeon.cs" />
     <Compile Include="Entities\Enemies\Primitive\Zombie.cs" />
     <Compile Include="Items\Weapon\MeleeWeapon.cs" />
-    <Compile Include="Projectiles\Fireball.cs" />
     <Compile Include="Screen\HowToPlayScreen.cs" />
     <Compile Include="World\Safehouse.cs" />
     <Compile Include="World\TileNode.cs" />

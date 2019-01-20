@@ -23,10 +23,11 @@ namespace ISU_Medieval_Odyssey
         // Various constants regarding the Witch's attributes
         private const int MIN_HEALTH = 50;
         private const int MAX_HEALTH = 150;
-        private const int MIN_DAMAGE = 50;
-        private const int MAX_DAMAGE = 80;
+        private const int MIN_DAMAGE = 20;
+        private const int MAX_DAMAGE = 40;
         private const int SCAN_RANGE = 20;
         private const float SPEED = 2.5f;
+        private const float ATTACK_SPEED = 1.5f;
 
         // Various variables for the Witch's ability to span skeleton
         private float timeToSpawn = 0;
@@ -50,7 +51,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up various components of Witch
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
-            InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED);
+            InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
         }
 
         /// <summary>
