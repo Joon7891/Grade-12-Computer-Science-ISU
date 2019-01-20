@@ -5,51 +5,89 @@
 // Modified Date: 01/18/2019
 // Description: Class to hold BruteEnemy object
 
-using System.Collections.Generic;
+using System;
+using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
     public abstract class PrimitiveEnemy : Enemy
     {
         /// <summary>
-        /// Subprogram to determine the tiles path to <see cref="Player"/>, if it exists
+        /// Subprogram to update this <see cref="AdvancedEnemy"/> movement
         /// </summary>
-        /// <returns>The path to the <see cref="Player"/>, if it exists</returns>
-        public override Queue<Vector2Int> FindPathToPlayer()
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        protected override void UpdateMovement(GameTime gameTime)
         {
-            // Various variables to determine the player's path
-            Vector2Int delta = Player.Instance.CurrentTile - CurrentTile;
-            Queue<Vector2Int> path = new Queue<Vector2Int>();
-            int unitX = delta.X >= 0 ? 1 : -1;
-            int unitY = delta.Y >= 0 ? 1 : -1;
-            int xCounter = 1;
-            int yCounter = 1;
+            // Various variables to calculate this enemy's movement
+            Vector2Int futurePixelLocation = Vector2Int.Zero;
+            Vector2Int futureTileLocation = Vector2Int.Zero;
 
-            // If the player is not within range, return null
-            if (delta.ManhattanLength > scanRange)
+            // Calling base update movement subprogram
+            base.UpdateMovement(gameTime);
+
+            // Moving enemy in appropriate direction
+            switch (Direction)
             {
-                return null;
+                case Direction.Up:
+
+                    // Calculating the enemy's future location if it goes up
+                    futurePixelLocation.X = center.X;
+                    futurePixelLocation.Y = (int)(hitBox.Top - GetPixelSpeed(gameTime) + 0.5);
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Moving up if there are no barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.Y -= GetPixelSpeed(gameTime);
+                    }          
+                    break;
+
+                case Direction.Right:
+
+                    // Calculating the enemy's future location if it goes right
+                    futurePixelLocation.X = (int)(hitBox.Right + GetPixelSpeed(gameTime) + 0.5);
+                    futurePixelLocation.Y = center.Y;
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Moving right if there are no barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.X += GetPixelSpeed(gameTime);
+                    }
+                    break;
+
+                case Direction.Down:
+
+                    // Calculating the enemy's future location if it goes down
+                    futurePixelLocation.X = center.X;
+                    futurePixelLocation.Y = (int)(hitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Moving down if there are no barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.Y += GetPixelSpeed(gameTime);
+                    }
+                    break;
+
+                case Direction.Left:
+
+                    // Calculating the enemy's future location if it goes left
+                    futurePixelLocation.X = (int)(hitBox.Left - GetPixelSpeed(gameTime) + 0.5);
+                    futurePixelLocation.Y = center.Y;
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Moving left if there are no barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.X -= GetPixelSpeed(gameTime);
+                    }
+                    break;
+
             }
 
-            // Building the path
-            path.Enqueue(CurrentTile);
-            while (path.Count <= delta.ManhattanLength + 1)
-            {
-                // Adding a x or y component, depending on how the path is spread out
-                if (delta.X / (float)xCounter >= delta.Y / (float)yCounter)
-                {
-                    path.Enqueue(CurrentTile + new Vector2Int(unitX * (xCounter - 1), unitY * (yCounter - 1)));
-                    ++xCounter;
-                }
-                else
-                {
-                    path.Enqueue(CurrentTile + new Vector2Int(unitX * (xCounter - 1), unitY * (yCounter - 1)));
-                    ++yCounter;
-                }
-            }
-
-            // Returning the path to the player
-            return path;
+            // Calling subprogram to calculate prim. enemy locations
+            CalculateLocations();
         }
     }
 }

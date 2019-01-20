@@ -12,7 +12,7 @@ namespace ISU_Medieval_Odyssey
         private const int WIDTH = 60;
         private const int HEIGHT = 60;
         private const int NUM_FRAMES = 9;
-        private const int COUNTER_MAX = 5;
+        private const int COUNTER_MAX = 1;
         private const int HITBOX_BUFFER_X = 20;
         private const int HITBOX_BUFFER_Y = 15;
         private static new DirectionalSpriteSheet directionalSpriteSheet;

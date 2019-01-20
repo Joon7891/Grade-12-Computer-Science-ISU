@@ -8,7 +8,7 @@
 using System;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Graphics;
-using static ISU_Medieval_Odyssey.Tile;
+using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -30,6 +30,11 @@ namespace ISU_Medieval_Odyssey
         /// <param name="y">The y-coordinate of the tile, relative to this <see cref="Chunk"/></param>
         /// <returns>The <see cref="Tile"/> at the specified coordinate</returns>
         public Tile this[int x, int y] => tiles[x, y];
+
+        /// <summary>
+        /// The containing rectangle of this <see cref="Chunk"/>
+        /// </summary>
+        public Rectangle Rectangle { get; }
 
         /// <summary>
         /// The position of this <see cref="Chunk"/> in chunk-space
@@ -63,6 +68,7 @@ namespace ISU_Medieval_Odyssey
             tiles = new Tile[SIZE, SIZE];
             this.terrainGenerator = terrainGenerator;
             tiles = terrainGenerator.GenerateChunkTiles(Position);
+            Rectangle = new Rectangle(SIZE * Tile.SPACING * x, SIZE * Tile.SPACING * y, SIZE * Tile.SPACING, SIZE * Tile.SPACING);
         }
 
         /// <summary>

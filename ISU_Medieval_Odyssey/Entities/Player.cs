@@ -756,7 +756,7 @@ namespace ISU_Medieval_Odyssey
         public void AddToInventory(Item item)
         {
             // Adding the item where there is an opening
-            for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE; ++i)
+            for (int i = ARMOUR_SIZE; i < 3 * ROW_SIZE + ARMOUR_SIZE; ++i)
             {
                 if (inventory[i].Item == null)
                 {

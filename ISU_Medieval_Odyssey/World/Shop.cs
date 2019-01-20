@@ -137,7 +137,7 @@ namespace ISU_Medieval_Odyssey
             transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(608, 490, 80, 32), () =>
             {
                 // Making tranaction, if possible
-                if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value)
+                if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value && Player.Instance.ItemSlotsAvailable > 0)
                 {
                     transactionItemSlot[0].Item.IsPlayerItem = true;
                     Player.Instance.Gold -= transactionItemSlot[0].Item.Value;
@@ -174,32 +174,32 @@ namespace ISU_Medieval_Odyssey
 
             // Setting up appropriate obstructions and functions for certain locations
             CornerTile = cornerTile;
-            SetTiles(CornerTile);
+            SetTiles();
         }
 
-        public void SetTiles(Vector2Int cornerTile)
+        public void SetTiles()
         {
             for (int i = 0; i < insideObstructionLocs.Count; ++i)
             {
-                World.Instance.GetTileAt(cornerTile + insideObstructionLocs[i]).InsideObstructState = true;
+                World.Instance.GetTileAt(CornerTile + insideObstructionLocs[i]).InsideObstructState = true;
             }
             for (int i = 0; i < outsideObstructionLocs.Count; ++i)
             {
-                World.Instance.GetTileAt(cornerTile + outsideObstructionLocs[i]).OutsideObstructState = true;
+                World.Instance.GetTileAt(CornerTile + outsideObstructionLocs[i]).OutsideObstructState = true;
             }
-            World.Instance.GetTileAt(cornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
+            World.Instance.GetTileAt(CornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
             {
                 World.Instance.IsInside = false;
                 World.Instance.CurrentBuilding = null;
                 player.Y += Tile.SPACING;
             });
-            World.Instance.GetTileAt(cornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
+            World.Instance.GetTileAt(CornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
             {
                 World.Instance.IsInside = true;
                 World.Instance.CurrentBuilding = this;
                 player.Y -= Tile.SPACING;
             });
-            World.Instance.GetTileAt(cornerTile + shopLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
+            World.Instance.GetTileAt(CornerTile + shopLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
             {
                 player.InTransaction = !player.InTransaction;
                 player.IsInventoryOpen = true;

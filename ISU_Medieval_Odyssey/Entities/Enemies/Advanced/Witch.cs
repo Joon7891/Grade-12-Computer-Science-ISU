@@ -25,7 +25,7 @@ namespace ISU_Medieval_Odyssey
         private const int MAX_HEALTH = 150;
         private const int MIN_DAMAGE = 50;
         private const int MAX_DAMAGE = 80;
-        private const int SCAN_RANGE = 12;
+        private const int SCAN_RANGE = 20;
         private const float SPEED = 2.5f;
 
         // Various variables for the Witch's ability to span skeleton

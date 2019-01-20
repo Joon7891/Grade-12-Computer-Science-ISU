@@ -6,7 +6,6 @@
 // Description: Class to hold World object / Information about the current map
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,6 +46,7 @@ namespace ISU_Medieval_Odyssey
 
         // List of various entities drawn above the world tilemap
         private List<Enemy> enemies = new List<Enemy>();
+        private List<Enemy> hitEnemies = new List<Enemy>();
         private List<LiveItem> liveItems = new List<LiveItem>();
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
@@ -86,23 +86,16 @@ namespace ISU_Medieval_Odyssey
             // Setting up singleton
             Instance = this;
 
-            // Creating terrtain generator
-            terrainGenerator = new TerrainGenerator(seed);
-
             // Setting up quadtree and search range
             worldBoundsRect = new Rectangle(0, 0, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT, Tile.SPACING * Chunk.SIZE * CHUNK_COUNT);
             collisionTree = new CollisionTree(worldBoundsRect);
 
-            // Generating chunks around world and adding them to file after clearing previously existing world
-            for (int y = 0; y < CHUNK_COUNT; ++y)
-            {
-                for (int x = 0; x < CHUNK_COUNT; ++x)
-                {
-                    loadedChunks[x, y] = InitializeChunkAt(x, y);
-                }
-            }
+            // Creating terrtain generator and generating terrain
+            terrainGenerator = new TerrainGenerator(seed);
             AdjustLoadedChunks(new Vector2Int(0, 0));//  Player.Instance.CurrentChunk);
 
+
+            // Remove
             buildings.Add(new Shop(new Vector2Int(2, 2)));
             cachedBuildings.Add(buildings[0]);
 
@@ -144,7 +137,13 @@ namespace ISU_Medieval_Odyssey
                 AdjustLoadedChunks(Player.Instance.CurrentChunk);
             }
 
-            // Generating enemies every 20s
+            // Updating current building if inside a building 
+            if (IsInside)
+            {
+                CurrentBuilding.Update(gameTime);
+            }
+
+            // Generating enemies every 3s
             enemyGenerationTimer += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (enemyGenerationTimer > ENEMY_GENERATE_TIME)
             {
@@ -158,22 +157,15 @@ namespace ISU_Medieval_Odyssey
             {
                 enemies[i].Update(gameTime);
 
-                // Removing enemies and giving player loot
+                // Removing enemies if they die and giving player corresponding
                 if (!enemies[i].Alive)
                 {
                     Player.Instance.Experience += enemies[i].Experience;
                     Player.Instance.Gold += enemies[i].Gold;
+                    AddItems(enemies[i].HitBox, enemies[i].LootTable);
                     enemies.RemoveAt(i);
                 }
-            }
-
-            // Updating current building if inside a building 
-            if (IsInside)
-            {
-                CurrentBuilding.Update(gameTime);
-            }
-
-            List<Enemy> projectileHits = new List<Enemy>();
+            }            
 
             // Updating the projectiles and collision info in the world
             for (int i = projectiles.Count - 1; i >= 0; --i)
@@ -187,14 +179,13 @@ namespace ISU_Medieval_Odyssey
                     continue;
                 }
 
-                projectileHits = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
-
-                for (int j = 0; j < projectileHits.Count; ++j)
+                // Inflicting damage and removing projectile if it hits a enemy
+                hitEnemies = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
+                for (int j = 0; j < hitEnemies.Count; ++j)
                 {
-                    projectileHits[j].Health -= projectiles[i].DamageAmount;
+                    hitEnemies[j].Health -= projectiles[i].DamageAmount;
                 }
-
-                if (projectileHits.Count > 0)
+                if (hitEnemies.Count > 0)
                 {
                     projectiles.RemoveAt(i);
                 }
@@ -211,7 +202,7 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
-            // Removing enemies out of the loaded world
+            // Removing enemies outside of the loaded world
             for (int i = enemies.Count - 1; i >= 0; --i)
             {
                 if (!worldBoundsRect.Contains(enemies[i].HitBox))
@@ -221,49 +212,7 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-        /// <summary>
-        /// Subprogram to adjust the loaded chunk
-        /// </summary>
-        /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
-        public void AdjustLoadedChunks(Vector2Int centerChunk)        
-        {
-            // The newly loaded chunks
-            Chunk[,] newLoadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
-            
-            // Iterating through chunks that should be loaded and setting it
-            for (short y = 0; y < CHUNK_COUNT; ++y)
-            {
-                for (short x = 0; x < CHUNK_COUNT; ++x)
-                {
-                    newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - CHUNK_COUNT / 2, centerChunk.Y + y - CHUNK_COUNT / 2);
-                }
-            }
-            loadedChunks = newLoadedChunks;
-
-            // Setting the newly loaded chunks as current loaded chunks
-            worldBoundsRect.X = loadedChunks[0, 0].Position.X * Tile.SPACING * Chunk.SIZE;
-            worldBoundsRect.Y = loadedChunks[0, 0].Position.Y * Tile.SPACING * Chunk.SIZE;
-            collisionTree.Range = worldBoundsRect;
-
-            // Removing buildings outside of loaded chunks 
-            for (int i = buildings.Count - 1; i >= 0; --i)
-            {
-                if (!worldBoundsRect.Contains(buildings[i].Rectangle))
-                {
-                    buildings.RemoveAt(i);
-                }
-            }
-
-            // Adding buildings that are now in the world
-            foreach (IBuilding building in cachedBuildings)
-            {
-                if (worldBoundsRect.Contains(building.Rectangle) && !buildings.Contains(building))
-                {
-                    buildings.Add(building);
-                    building.SetTiles(building.CornerTile);
-                }
-            }
-        }
+        
 
         /// <summary>
         /// Draw subprogram for <see cref="World"/> object
@@ -283,6 +232,12 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
 
+                // Drawing enemies
+                for (short i = 0; i < enemies.Count; ++i)
+                {
+                    enemies[i].Draw(spriteBatch);
+                }
+
                 // Drawing the outsides of various buildings
                 for (int i = 0; i < buildings.Count; ++i)
                 {
@@ -293,14 +248,7 @@ namespace ISU_Medieval_Odyssey
             {
                 // Drawing the current building the player is in
                 CurrentBuilding.DrawInside(spriteBatch);
-            }
-            
-
-            // Drawing enemies
-            for (short i = 0; i < enemies.Count; ++i)
-            {
-                enemies[i].Draw(spriteBatch);
-            }
+            }           
 
             // Drawing projectiles
             for (byte i = 0; i < projectiles.Count; ++i)
@@ -344,106 +292,100 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
-        /// Subprogram to add a projectile into this <see cref="World"/>
+        /// Subprogram to adjust the loaded chunks
         /// </summary>
-        /// <param name="projectile">The <see cref="Projectile"/> to be added</param>
-        public void AddProjectile(Projectile projectile)
+        /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
+        public void AdjustLoadedChunks(Vector2Int centerChunk)
         {
-            // Adding projectile
-            projectiles.Add(projectile);
-        }
+            // The newly loaded chunks
+            Chunk[,] newLoadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
 
-        /// <summary>
-        /// Subprogram to add an <see cref="Item"/> to the <see cref="World"/>
-        /// </summary>
-        /// <param name="item">The <see cref="Item"/> to be added</param>
-        /// <param name="playerRectangle">The <see cref="Rectangle"/> of the <see cref="Player"/> who is adding the item</param>
-        public void AddItem(Item item, Rectangle playerRectangle)
-        {
-            // Adjusting rectangle and adding item as a LiveItem
-            playerRectangle.Y = playerRectangle.Y + (playerRectangle.Height - ItemSlot.SIZE) / 2;
-            playerRectangle.X = playerRectangle.X + (playerRectangle.Width - ItemSlot.SIZE) / 2;
-            playerRectangle.Width = ItemSlot.SIZE;
-            playerRectangle.Height = ItemSlot.SIZE;
-            liveItems.Add(new LiveItem(item, playerRectangle));
-        }
-
-        /// <summary>
-        /// Subprogram to add a <see cref="Enemy"/>
-        /// </summary>
-        /// <param name="enemy">The <see cref="Enemy"/> to be added</param>
-        public void AddEnemy(Enemy enemy)
-        {
-            // Adding enemies to world
-            enemies.Add(enemy);
-        }
-
-        /// <summary>
-        /// Subprogram to retrieve an <see cref="Item"/> that the <see cref="Player"/> is on top of
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> retrieving the <see cref="Item"/></param>
-        /// <returns>The retrieved <see cref="Item"/> if it exists</returns>
-        public Item RetrieveItem(Player player)
-        {
-            // The items the player is on top of
-            Item retrievedItem = null;
-            List<LiveItem> hitItems = collisionTree.GetCollisions(player.HitBox, liveItems);
-            
-            // Retrieving item if the player is on top of one
-            if (hitItems.Count > 0)
+            // Iterating through chunks that should be loaded and setting it
+            for (short y = 0; y < CHUNK_COUNT; ++y)
             {
-                retrievedItem = hitItems[0].Item;
-                liveItems.Remove(hitItems[0]);
+                for (short x = 0; x < CHUNK_COUNT; ++x)
+                {
+                    newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - CHUNK_COUNT / 2, centerChunk.Y + y - CHUNK_COUNT / 2);
+                }
+            }
+            loadedChunks = newLoadedChunks;
+
+            // Setting the newly loaded chunks as current loaded chunks
+            worldBoundsRect.X = loadedChunks[0, 0].Position.X * Tile.SPACING * Chunk.SIZE;
+            worldBoundsRect.Y = loadedChunks[0, 0].Position.Y * Tile.SPACING * Chunk.SIZE;
+            collisionTree.Range = worldBoundsRect;
+
+            // Removing buildings outside of loaded chunks 
+            for (int i = buildings.Count - 1; i >= 0; --i)
+            {
+                if (!worldBoundsRect.Contains(buildings[i].Rectangle))
+                {
+                    buildings.RemoveAt(i);
+                }
             }
 
-            // Returning the retrieved item
-            return retrievedItem;
+            // Adding buildings that are now in the world
+            foreach (IBuilding building in cachedBuildings)
+            {
+                if (worldBoundsRect.Contains(building.Rectangle) && !buildings.Contains(building))
+                {
+                    buildings.Add(building);
+                    building.SetTiles();
+                }
+            }
         }
 
-
+        /// <summary>
+        /// Subprogram to retrieve a <see cref="Chunk"/> at a specified <see cref="Chunk"/> coordinate
+        /// </summary>
+        /// <param name="x">The x-component of the <see cref="Chunk"/></param>
+        /// <param name="y">The y-component of the <see cref="Chunk"/></param>
+        /// <returns>The <see cref="Chunk"/> at the query</returns>
         public Chunk GetChunkAt(int x, int y)
         {
+            // Various variables required for chunk searching in memory
             Chunk chunk;
+            bool shouldAddBuilding = true;
+            IBuilding buildingToAdd = null;
             Vector2Int chunkCoordinate = new Vector2Int(x, y);
-            int relativeX = x - loadedChunks[0, 0].Position.X;
-            int relativeY = y - loadedChunks[0, 0].Position.Y;
 
-            if (0 <= relativeX && relativeX < CHUNK_COUNT && 0 <= relativeY && relativeY < CHUNK_COUNT)
-            {
-                chunk = loadedChunks[relativeX, relativeY];
-            }
-            else if (cachedChunks.ContainsKey(chunkCoordinate))
+            if (cachedChunks.ContainsKey(chunkCoordinate))
             {
                 chunk = cachedChunks[chunkCoordinate];
             }
             else
             {
                 chunk = new Chunk(x, y, terrainGenerator);
-                cachedChunks.Add(chunkCoordinate, chunk);
+                if (SharedData.RNG.Next(10) == 1)
+                {
+                    foreach (IBuilding building in cachedBuildings)
+                    {
+                        if (chunk.Rectangle.Contains(building.Rectangle))
+                        {
+                            shouldAddBuilding = false;
+                            break;
+                        }
+                    }
+
+                    if (shouldAddBuilding)
+                    {
+                        buildingToAdd = new Shop(new Vector2Int(x * Chunk.SIZE + Chunk.SIZE / 3,
+                            y * Chunk.SIZE + Chunk.SIZE / 3));
+                        cachedBuildings.Add(buildingToAdd);
+                    }
+                    buildingToAdd?.SetTiles();
+                }
+
+                if (!cachedChunks.ContainsKey(chunkCoordinate))
+                {
+                    cachedChunks.Add(chunkCoordinate, chunk);
+                }
             }
 
+            // Returning the chunk
             return chunk;
         }
 
-        /// <summary>
-        /// Subprogram to inflict melee damage from a <see cref="Player"/> into the <see cref="World"/>
-        /// </summary>
-        /// <param name="weaponHitBox">The <see cref="Weapon"/>'s hit box</param>
-        /// <param name="damageAmount">The damage amount of the <see cref="Weapon"/></param>
-        /// <param name="direction">The direction of the <see cref="Player"/></param>
-        public void InflictMeleeDamage(Rectangle weaponHitBox, int damageAmount, Direction direction)
-        {
-            // Determine the enemies who were hit
-            List<Enemy> enemiesHit = new List<Enemy>();
-            enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
-            
-            // Reducing the health of all the hit enemies
-            for (short i = 0; i < enemiesHit.Count; ++i)
-            {
-                enemiesHit[i].Health -= damageAmount;
-                enemiesHit[i].FindPathToPlayer();
-            }
-        }
 
         /// <summary>
         /// Subprogram to return the <see cref="Tile"/> at a specified <see cref="Tile"/> coordinate
@@ -462,20 +404,111 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to determine if a certain tile is obstructed
         /// </summary>
         /// <param name="tileCoordinate"></param>
-        /// <returns></returns>
-        public bool IsTileObstructed(Vector2Int tileCoordinate)
+        /// <param name="isEnemy">Whether the <see cref="Entity"/> querying this information is a <see cref="Enemy"/></param>
+        /// <returns>Whether a given <see cref="Entity"/> can walk/move onto this tile</returns>
+        public bool IsTileObstructed(Vector2Int tileCoordinate, bool isEnemy = false)
         {
             // The tile thaty may be obstructed
             Tile tile = GetTileAt(tileCoordinate);
 
-            // If the player is inside a building return the inside obstruct state
-            if (IsInside)
+            // Returning the obstruct state depending whether player is inside/outside
+            if (!IsInside || isEnemy)
+            {
+                return tile.OutsideObstructState;
+            }
+            else
             {
                 return tile.InsideObstructState;
             }
+        }
 
-            // Otherwise return the outside obstruct state
-            return tile.OutsideObstructState;
+        /// <summary>
+        /// Subprogram to add a projectile into this <see cref="World"/>
+        /// </summary>
+        /// <param name="projectile">The <see cref="Projectile"/> to be added</param>
+        public void AddProjectile(Projectile projectile) => projectiles.Add(projectile);
+
+        /// <summary>
+        /// Subprogram to add an <see cref="Enemy"/> to this <see cref="World"/>
+        /// </summary>
+        /// <param name="enemy">The <see cref="Enemy"/> to be added</param>
+        public void AddEnemy(Enemy enemy) => enemies.Add(enemy);
+
+        /// <summary>
+        /// Subprogram to add an <see cref="Item"/> to the <see cref="World"/>
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to be added</param>
+        /// <param name="playerRectangle">The <see cref="Rectangle"/> of the <see cref="Player"/> who is adding the item</param>
+        public void AddItem(Item item, Rectangle playerRectangle)
+        {
+            // Adjusting rectangle and adding item as a LiveItem
+            playerRectangle.Y = playerRectangle.Y + (playerRectangle.Height - ItemSlot.SIZE) / 2;
+            playerRectangle.X = playerRectangle.X + (playerRectangle.Width - ItemSlot.SIZE) / 2;
+            playerRectangle.Width = ItemSlot.SIZE;
+            playerRectangle.Height = ItemSlot.SIZE;
+            liveItems.Add(new LiveItem(item, playerRectangle));
+        }
+
+        /// <summary>
+        /// Subprogram to retrieve an <see cref="Item"/> that the <see cref="Player"/> is on top of
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> retrieving the <see cref="Item"/></param>
+        /// <returns>The retrieved <see cref="Item"/> if it exists</returns>
+        public Item RetrieveItem(Player player)
+        {
+            // The items the player is on top of
+            Item retrievedItem = null;
+            List<LiveItem> hitItems = collisionTree.GetCollisions(player.HitBox, liveItems);
+
+            // Retrieving item if the player is on top of one
+            if (hitItems.Count > 0)
+            {
+                retrievedItem = hitItems[hitItems.Count - 1].Item;
+                liveItems.Remove(hitItems[hitItems.Count - 1]);
+            }
+
+            // Returning the retrieved item
+            return retrievedItem;
+        }
+
+        /// <summary>
+        /// Subprogram to add a <see cref="HashSet{Item}"/> of <see cref="Item"/> to this <see cref="World"/>
+        /// </summary>
+        /// <param name="enemyRectangle">The rectangle that the <see cref="Entity"/> is at</param>
+        /// <param name="lootTable">The <see cref="HashSet{T}"/> containing the <see cref="Item"/>s</param>
+        private void AddItems(Rectangle entityRectangle, HashSet<Item> lootTable)
+        {
+            // Adjusting entity rectangle
+            entityRectangle.Y = entityRectangle.Y + (entityRectangle.Height - ItemSlot.SIZE) / 2;
+            entityRectangle.X = entityRectangle.X + (entityRectangle.Width - ItemSlot.SIZE) / 2;
+            entityRectangle.Width = ItemSlot.SIZE;
+            entityRectangle.Height = ItemSlot.SIZE;
+
+            // Adding items to the world
+            foreach (Item item in lootTable)
+            {
+                liveItems.Add(new LiveItem(item, entityRectangle));
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to inflict melee damage from a <see cref="Player"/> into the <see cref="World"/>
+        /// </summary>
+        /// <param name="weaponHitBox">The <see cref="Weapon"/>'s hit box</param>
+        /// <param name="damageAmount">The damage amount of the <see cref="Weapon"/></param>
+        /// <param name="direction">The direction of the <see cref="Player"/></param>
+        public void InflictMeleeDamage(Rectangle weaponHitBox, int damageAmount, Direction direction)
+        {
+            // Determine the enemies who were hit
+            List<Enemy> enemiesHit = new List<Enemy>();
+            enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
+            
+            // Hitting all applicable enemies and resetting their path finding
+            for (short i = 0; i < enemiesHit.Count; ++i)
+            {
+                enemiesHit[i].Health -= damageAmount;
+                enemiesHit[i].FindPathToPlayer();
+            }
         }
 
         /// <summary>
@@ -511,5 +544,12 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <returns>A <see cref="string"/> representing this <see cref="World"/>'s data</returns>
         public string Serialize() => JsonConvert.SerializeObject(this);
+
+        /// <summary>
+        /// Subprogram to deserialize a <see cref="World"/>
+        /// </summary>
+        /// <param name="serializedData">A <see cref="string"/> representing a <see cref="World"/>'s data</param>
+        /// <returns>The deserialized <see cref="World"/></returns>
+        public static World Deserialize(string serializedData) => JsonConvert.DeserializeObject<World>(serializedData);
     }
 }
