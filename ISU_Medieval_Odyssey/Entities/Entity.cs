@@ -19,7 +19,12 @@ namespace ISU_Medieval_Odyssey
         public int X
         {
             get => rectangle.X;
-            set => unroundedLocation.X = value;
+            set
+            {
+                unroundedLocation.X = value;
+                rectangle.X = (int)(unroundedLocation.X + 0.5);
+                center.X = rectangle.X + (rectangle.Width >> 1);
+            }
         }
 
         /// <summary>
@@ -28,7 +33,12 @@ namespace ISU_Medieval_Odyssey
         public int Y
         {
             get => rectangle.Y;
-            set => unroundedLocation.Y = value;
+            set
+            {
+                unroundedLocation.Y = value;
+                rectangle.Y = (int)(unroundedLocation.Y + 0.5);
+                center.Y = rectangle.Y + (rectangle.Height >> 1);
+            }
         }
 
         /// <summary>

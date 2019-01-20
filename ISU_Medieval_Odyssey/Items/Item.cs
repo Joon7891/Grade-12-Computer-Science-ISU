@@ -30,6 +30,21 @@ namespace ISU_Medieval_Odyssey
         // The image the item's icon
         protected Texture2D iconImage;
 
+        private string[] informationText;
+        private static Texture2D informationBackImage;
+        private static Vector2Int textBuffer = new Vector2Int(0, 40);
+        private const int INFO_WIDTH = 50;
+        private const int INFO_HEIGHT = 45;
+
+        /// <summary>
+        /// Static constructor for <see cref="Item"/>
+        /// </summary>
+        static Item()
+        {
+            // Setting up item information graphics
+            informationBackImage = Main.Content.Load<Texture2D>("Images/Sprites/informationBoxImage");
+        }
+
         /// <summary>
         /// Subprogram to use this <see cref="Item"/>
         /// </summary>
@@ -45,6 +60,18 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing icon
             spriteBatch.Draw(iconImage, rectangle, Color.White);
+        }
+
+        public void DrawInformation(SpriteBatch spriteBatch, Vector2Int bottomRight)
+        {
+            // Drawing back rectangle
+            Rectangle rectangle = new Rectangle(bottomRight.X - informationText.Length * INFO_HEIGHT, bottomRight.Y, INFO_WIDTH, informationText.Length * INFO_HEIGHT);
+
+            spriteBatch.Draw(informationBackImage, rectangle, Color.White);
+            for (int i = 0; i < informationText.Length; ++i)
+            {
+                spriteBatch.DrawString(SharedData.InformationFonts[3], informationText[0], rectangle.Location.ToVector2() + (textBuffer * i).ToVector2(), Color.White);
+            }
         }
 
         /// <summary>

@@ -44136,18 +44136,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buildings/shopInsideImage.png
 
-#begin Images/Sprites/Buildings/shopOutsideImage.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Sprites/Buildings/shopOutsideImage.png
-
 #begin Images/Sprites/Enemies/Witch/Down/witchDown0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -45576,4 +45564,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Enemies/Zombie/Up/zombieUp2.png
+
+#begin Images/Sprites/Buildings/shopOutsideImage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buildings/shopOutsideImage.png
+
+#begin Images/Sprites/informationBoxImage.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/informationBoxImage.jpg
 

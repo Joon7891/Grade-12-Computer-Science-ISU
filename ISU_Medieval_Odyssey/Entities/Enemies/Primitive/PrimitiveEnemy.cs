@@ -15,7 +15,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to determine the tiles path to <see cref="Player"/>, if it exists
         /// </summary>
         /// <returns>The path to the <see cref="Player"/>, if it exists</returns>
-        protected override Queue<Vector2Int> FindPathToPlayer()
+        public override Queue<Vector2Int> FindPathToPlayer()
         {
             // Various variables to determine the player's path
             Vector2Int delta = Player.Instance.CurrentTile - CurrentTile;

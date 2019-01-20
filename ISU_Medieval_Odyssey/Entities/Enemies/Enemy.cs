@@ -51,6 +51,9 @@ namespace ISU_Medieval_Odyssey
         private const int HEALTH_BAR_HEIGHT = 20;
         private int healthBarBufferX;
 
+        private float timeToAttack = 0;
+        private float attackTime = 1.0f;
+
         protected int scanRange;
 
         // Graphics-realted data
@@ -125,7 +128,32 @@ namespace ISU_Medieval_Odyssey
         {
             // Scanning for a path to player
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
+            timeToAttack += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if ((CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= 1 && timeToAttack >= attackTime)
+            {
+                timeToAttack = 0;
+
+                Vector2Int dif = (CurrentTile - Player.Instance.CurrentTile);
+
+                if (dif.X == 1)
+                {
+                    
+                }
+                else if (dif.X == -1)
+                {
+
+                }
+                else if (dif.Y == -1)
+                {
+                    
+                }
+                else if (dif.Y == 1)
+                {
+
+                }
+
+            }
+            else if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
             {
                 timeToScan = 0;
                 pathToPlayer = FindPathToPlayer();
@@ -144,7 +172,7 @@ namespace ISU_Medieval_Odyssey
         /// Subprogram to determine the <see cref="AdvancedEnemy"/>'s path to the <see cref="Player"/>, if it exists
         /// </summary>
         /// <returns>The path to <see cref="Player"/>, if it exists</returns>
-        protected virtual Queue<Vector2Int> FindPathToPlayer()
+        public virtual Queue<Vector2Int> FindPathToPlayer()
         {
             return null;
         }
@@ -223,7 +251,7 @@ namespace ISU_Medieval_Odyssey
 
                     // Calculating the enemy's future location if it goes down
                     futurePixelLocation.X = center.X;
-                    futurePixelLocation.Y = (int)(hitBox.Top + GetPixelSpeed(gameTime) + 0.5);
+                    futurePixelLocation.Y = (int)(hitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
                     futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
                     // Only moving down if there are on barriers
@@ -236,7 +264,7 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Left:
 
                     // Calculating the enemy's future location if it goes left
-                    futurePixelLocation.X = (int)(hitBox.Right - GetPixelSpeed(gameTime) + 0.5);
+                    futurePixelLocation.X = (int)(hitBox.Left - GetPixelSpeed(gameTime) + 0.5);
                     futurePixelLocation.Y = center.Y;
                     futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 

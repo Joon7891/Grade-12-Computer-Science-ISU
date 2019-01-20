@@ -433,16 +433,40 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="weaponHitBox">The <see cref="Weapon"/>'s hit box</param>
         /// <param name="damageAmount">The damage amount of the <see cref="Weapon"/></param>
-        public void InflictMeleeDamage(Rectangle weaponHitBox, int damageAmount)
+        /// <param name="direction">The direction of the <see cref="Player"/></param>
+        public void InflictMeleeDamage(Rectangle weaponHitBox, int damageAmount, Direction direction)
         {
             // Determine the enemies who were hit
+            Vector2Int positionChange = new Vector2Int(0, 0);
             List<Enemy> enemiesHit = new List<Enemy>();
             enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
             
+            switch (direction)
+            {
+                case Direction.Up:
+                    positionChange.Y = -(Tile.SPACING >> 1);
+                    break;
+
+                case Direction.Right:
+                    positionChange.X = (Tile.SPACING >> 1);
+                    break;
+
+                case Direction.Down:
+                    positionChange.Y = (Tile.SPACING >> 1);
+                    break;
+
+                case Direction.Left:
+                    positionChange.X = -(Tile.SPACING >> 1);
+                    break;
+            }
+
             // Reducing the health of all the hit enemies
             for (short i = 0; i < enemiesHit.Count; ++i)
             {
                 enemiesHit[i].Health -= damageAmount;
+                enemiesHit[i].X += positionChange.X;
+                enemiesHit[i].Y += positionChange.Y;
+                enemiesHit[i].FindPathToPlayer();
             }
         }
 
