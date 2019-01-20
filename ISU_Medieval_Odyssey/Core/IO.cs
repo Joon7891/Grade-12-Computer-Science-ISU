@@ -91,15 +91,25 @@ namespace ISU_Medieval_Odyssey
         {
             // Raw and serialized data
             SettingsData settings = null;
-            string serializedSettings;
 
             // Try-Catch block
             try
             {
                 // Opening file and loading data
-                inFile = File.OpenText(SETTINGS_PATH);
-                serializedSettings = inFile.ReadLine();
-                settings = SettingsData.Deserialize(serializedSettings);
+                if (File.Exists(SETTINGS_PATH))
+                {
+
+                    inFile = File.OpenText(SETTINGS_PATH);
+                    string serializedSettings = inFile.ReadLine();
+                    settings = SettingsData.Deserialize(serializedSettings);
+
+                    // Closing file and returning settings
+                    inFile.Close();
+                }
+                else
+                {
+                    settings = new SettingsData();
+                }
             }
             catch (Exception exception)
             {
@@ -107,8 +117,6 @@ namespace ISU_Medieval_Odyssey
                 Console.WriteLine(exception.Message);
             }
 
-            // Closing file and returning settings
-            inFile.Close();
             return settings;
         }
 
