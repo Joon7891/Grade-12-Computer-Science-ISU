@@ -79,10 +79,7 @@ namespace ISU_Medieval_Odyssey
                 World.Instance.GetTileAt(CornerTile + insideObstructionLocs[i]).InsideObstructState = true;
             }
 
-            for (int i = 0; i < outsideObstructionLocs.Count; ++i)
-            {
-                World.Instance.GetTileAt(CornerTile + outsideObstructionLocs[i]).OutsideObstructState = true;
-            }
+            World.Instance.GetTileAt(CornerTile + enterLocation).OutsideObstructState = true;
 
             World.Instance.GetTileAt(CornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
             {
