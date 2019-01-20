@@ -97,7 +97,7 @@ namespace ISU_Medieval_Odyssey
                 insideObstructionLocs.Add(new Vector2Int(5 + i, 5));
             }
             insideObstructionLocs.Add(new Vector2Int(4, 6));
-
+            
             // Setting up outside obstruction tiles
             for (int i = 0; i < INSIDE_WIDTH; ++i)
             {

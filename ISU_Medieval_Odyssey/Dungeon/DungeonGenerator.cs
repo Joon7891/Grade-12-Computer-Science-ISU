@@ -19,7 +19,7 @@ namespace ISU_Medieval_Odyssey
 {
     class DungeonGenerator
     {
-        const int ROOM_ATTEMPTS = 500;
+        const int ROOM_ATTEMPTS = 100;
 
         /// <summary>
         /// Higher = bigger rooms
@@ -30,8 +30,8 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Max dimentions of the dungeon.
         /// </summary>
-        const int MAX_WIDTH = 501;
-        const int MAX_HEIGHT = 501;
+        const int MAX_WIDTH = 51;
+        const int MAX_HEIGHT = 51;
         
         /// <summary>
         /// Indicates the extra chance that the maze will continue in the same direction 
@@ -71,13 +71,14 @@ namespace ISU_Medieval_Odyssey
         public DungeonGenerator()
         {
             rng = new Random();
+            rooms = new List<Rectangle>();
             collisionTree = new CollisionTree(new Rectangle(0, 0, MAX_WIDTH, MAX_HEIGHT));
             region = new int[MAX_WIDTH, MAX_HEIGHT];
             currentRegion = -1;
 
             for(int i = 0; i < MAX_WIDTH; i++)
             {
-                for(int j = 0; j < MAX_HEIGHT; i++)
+                for(int j = 0; j < MAX_HEIGHT; j++)
                 {
                     region[i, j] = -1;
         
@@ -109,12 +110,17 @@ namespace ISU_Medieval_Odyssey
                 }
 
                 // align room with odd coordinate
-                int x = rng.Next(0, MAX_HEIGHT) * 2 + 1;
-                int y = rng.Next(0, MAX_WIDTH) * 2 + 1;
+                int x = rng.Next(0, MAX_HEIGHT/2) * 2 + 1;
+                int y = rng.Next(0, MAX_WIDTH/2) * 2 + 1;
 
                 Rectangle room = new Rectangle(x, y, width, height);
 
                 if(collisionTree.GetCollisions(room, roomRectangles).Count != 0)
+                {
+                    continue;
+                }
+
+                if(room.X + room.Width >= MAX_WIDTH || room.Y + room.Height >= MAX_HEIGHT)
                 {
                     continue;
                 }
@@ -128,11 +134,24 @@ namespace ISU_Medieval_Odyssey
                 {
                     for(int k = room.Y; k <= room.Y + room.Height; k++)
                     {
-                        region[i,j] = currentRegion;
+                        region[j,k] = currentRegion;
                     }
                 }
             }
 
+        }
+
+        private bool LegalMove(Vector2Int cur, Vector2Int offset)
+        {
+            if ((offset + cur).X >= MAX_WIDTH || (offset + cur).Y >= MAX_WIDTH)
+            {
+                return false;
+            }
+            if ((offset + cur).X < 0 || (offset + cur).Y < 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -149,7 +168,7 @@ namespace ISU_Medieval_Odyssey
         /// Expands on a maze path
         /// </summary>
         /// <param name="current"> the tile to start on </param>
-        private void ExpandMaze(Vector2Int current) // dfs style path finding to create maze
+        private void ExpandMaze(Vector2Int current) 
         {
             currentRegion++;
 
@@ -166,7 +185,12 @@ namespace ISU_Medieval_Odyssey
 
                 for(int i = 0; i < 4; i++)
                 {
-                    if(region[(MoveDirections[i] * 2 + current).X, (MoveDirections[i] * 2 + current).Y] == -1)
+                    if(!LegalMove(MoveDirections[i] * 2, current))
+                    {
+                        continue;
+                    }
+
+                    if (region[(MoveDirections[i] * 2 + current).X, (MoveDirections[i] * 2 + current).Y] == -1)
                     {
                         openDirections.Add(i);
                     }
@@ -176,12 +200,9 @@ namespace ISU_Medieval_Odyssey
                 {
                     int nextDirection = -1;
 
-                    if (openDirections.Contains(lastDirection))
+                    if (openDirections.Contains(lastDirection) && rng.Next(0, 101) > DIRECTION_CHANCE)
                     {
-                        if (rng.Next(0, 101) > DIRECTION_CHANCE)
-                        {
-                            nextDirection = lastDirection;
-                        }
+                        nextDirection = lastDirection;
                     }
                     else
                     {
@@ -189,10 +210,17 @@ namespace ISU_Medieval_Odyssey
                     }
 
                     // create path twice in the chosen direction, because rooms and initial paths can only be odd-numbered
-                    ChangeRegion(current, MoveDirections[nextDirection]);
-                    ChangeRegion(current, MoveDirections[nextDirection] * 2);
+                    if (LegalMove(MoveDirections[nextDirection], current))
+                    {
+                        ChangeRegion(current, MoveDirections[nextDirection]);
+                    }
 
-                    stack.Push(current + MoveDirections[nextDirection] * 2);
+                    if (LegalMove(MoveDirections[nextDirection] * 2, current))
+                    {
+                        ChangeRegion(current, MoveDirections[nextDirection] * 2);
+                        stack.Push(current + MoveDirections[nextDirection] * 2);
+                    }
+
                     lastDirection = nextDirection;
                 }
                 else
@@ -211,7 +239,7 @@ namespace ISU_Medieval_Odyssey
         {
             currentRegion++;
             // create disjoint set for spanning tree
-            DisjointSet disjointSet = new DisjointSet(rooms.Count);
+            DisjointSet disjointSet = new DisjointSet(currentRegion);
 
             // List of all tiles that are currently impassible and touch 2+ regions
             // These are stored as edges between two of the regions, and used to construct an imperfect spanning tree
@@ -228,11 +256,12 @@ namespace ISU_Medieval_Odyssey
                     {
                         List<int> regions = new List<int>();
                         Vector2Int current = new Vector2Int(i, j);
-                        
-                        for(int k = 0; k < 4; k++)
+
+                        for (int k = 0; k < 4; k++)
                         {
                             Vector2Int check = current + MoveDirections[k];
-                            if(!regions.Contains(region[check.X, check.Y])){
+                            if (!regions.Contains(region[check.X, check.Y]) && region[check.X, check.Y] != -1)
+                            {
                                 regions.Add(region[check.X, check.Y]);
                             }
                         }
@@ -277,7 +306,7 @@ namespace ISU_Medieval_Odyssey
                     for (int k = 0; k < 4; k++)
                     {
                         Vector2Int check = current + MoveDirections[k];
-                        if (!regions.Contains(region[check.X, check.Y]))
+                        if (!regions.Contains(region[check.X, check.Y]) && region[check.X, check.Y] != -1)
                         {
                             regions.Add(region[check.X, check.Y]);
                         }
@@ -320,10 +349,21 @@ namespace ISU_Medieval_Odyssey
                     while (queue.Count > 0)
                     {
                         Vector2Int current = queue.Dequeue();
+
+                        if(region[current.X,current.Y] == -1)
+                        {
+                            continue;
+                        }
+                            
                         int walls = 0;
 
                         for (int k = 0; k < 4; k++)
                         {
+                            if(!LegalMove(current, MoveDirections[k]))
+                            {
+                                continue;
+                            }
+
                             Vector2Int check = current + MoveDirections[k];
                             if (region[check.X, check.Y] == -1)
                             {
@@ -370,9 +410,45 @@ namespace ISU_Medieval_Odyssey
         public int[,] GenerateDungeon()
         {
             GenerateRooms();
+            for (int i = 0; i < MAX_HEIGHT; i++)
+            {
+                for (int j = 0; j < MAX_WIDTH; j++)
+                {
+                    Console.Write(region[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
             CreateMazes();
+            for (int i = 0; i < MAX_HEIGHT; i++)
+            {
+                for (int j = 0; j < MAX_WIDTH; j++)
+                {
+                    Console.Write(region[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
             ConnectRegions();
+            for (int i = 0; i < MAX_HEIGHT; i++)
+            {
+                for (int j = 0; j < MAX_WIDTH; j++)
+                {
+                    Console.Write(region[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
             FillDeadEnds();
+            for (int i = 0; i < MAX_HEIGHT; i++)
+            {
+                for (int j = 0; j < MAX_WIDTH; j++)
+                {
+                    Console.Write(region[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
             return region;
         }
 

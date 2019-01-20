@@ -18,10 +18,11 @@ namespace ISU_Medieval_Odyssey
 
             for(int i = 0; i <= size; i++)
             {
-                parent[i] = i;
-                rank[i] = 0;
+                parent.Add(i);
+                rank.Add(0);
             }
         }
+
 
         public int Find(int v)
         {
