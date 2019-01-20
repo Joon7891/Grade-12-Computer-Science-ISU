@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
-    public abstract class SlashWeapon : Weapon
+    public abstract class SlashWeapon : MeleeWeapon
     {
         /// <summary>
         /// The number of frames in this <see cref="SlashWeapon"/>'s animation
@@ -42,6 +42,9 @@ namespace ISU_Medieval_Odyssey
         {
             // Playing slashing sound effect
             slashSoundEffect.CreateInstance().Play();
+
+            // Calling base use subprogram
+            base.Use(player);
         }
 
         /// <summary>

@@ -148,7 +148,7 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Tile Coordinate: {Player.CurrentTile}", statisticsLoc[0], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Chunk Coordinate: {Player.CurrentChunk}", statisticsLoc[1], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Frames Per Second: {Main.FPS}", statisticsLoc[2], Color.White);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Enemies Loaded {World.Instance.EnemiesLoaded}", statisticsLoc[3], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Enemies Loaded: {World.Instance.EnemiesLoaded}", statisticsLoc[3], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[0], $"Total Memory Used: {Math.Round(GC.GetTotalMemory(false) / 1048576.0, 3)} MB", statisticsLoc[4], Color.White);
         }
     }

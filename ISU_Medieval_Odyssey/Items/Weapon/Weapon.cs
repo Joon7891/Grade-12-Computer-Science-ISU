@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
     public abstract class Weapon : Item
     {
         // Base attack damage of the weapon, before modifiers
-        public int BaseDamage { get; protected set; }
+        public int Damage { get; protected set; }
 
         // The directional spritesheet for a weapon
         protected DirectionalSpriteSheet directionalSpriteSheet;
