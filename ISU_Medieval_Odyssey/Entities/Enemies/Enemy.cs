@@ -55,6 +55,15 @@ namespace ISU_Medieval_Odyssey
         protected int frameCounter = 0;
         protected DirectionalSpriteSheet directionalSpriteSheet;
 
+        // Constants related to random enemy generation
+        private const int SKELETON_CHANCE_MAX = 25;
+        private const int GOBLIN_CHANCE_MAX = 50;
+        private const int ZOMBIE_CHANCE_MAX = 65;
+        private const int WIZARD_CHANCE_MAX = 75;
+        private const int KNIGHT_CHANCE_MAX = 85;
+        private const int WITCH_CHANCE_MAX = 95;
+        private const int DRAGON_CHANCE_MAX = 100;
+
         /// <summary>
         /// Subprogram to initialize various graphical components of this <see cref="Enemy"/>
         /// </summary>
@@ -111,7 +120,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Scanning 
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).LengthSquared <= scanRange * scanRange)
+            if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
             {
                 timeToScan = 0;
                 pathToPlayer = FindPathToPlayer();
@@ -209,6 +218,11 @@ namespace ISU_Medieval_Odyssey
 
         }
 
+        /// <summary>
+        /// Subprogram to get the speed of this <see cref="Enemy"/>, in pixels
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values</param>
+        /// <returns>The pixel speed of this enemy</returns>
         private float GetPixelSpeed(GameTime gameTime) => Speed * Tile.SPACING * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
         /// <summary>
@@ -220,6 +234,42 @@ namespace ISU_Medieval_Odyssey
             // Drawing enemy and healthbar
             directionalSpriteSheet.Draw(spriteBatch, Direction, currentFrame, rectangle);
             healthBar.Draw(spriteBatch);
+        }
+
+        public static Enemy RandomEnemy(Vector2Int tileCoordinate)
+        {
+            // Determing the type of enemy
+            int randomEnemyValue = SharedData.RNG.Next(100);
+
+            // Generating and returning appropriate random enemy type
+            if (randomEnemyValue < SKELETON_CHANCE_MAX)
+            {
+                return new Skeleton(tileCoordinate);
+            }
+            else if (randomEnemyValue < GOBLIN_CHANCE_MAX)
+            {
+                return new Goblin(tileCoordinate);
+            }
+            else if (randomEnemyValue < ZOMBIE_CHANCE_MAX)
+            {
+                return new Zombie(tileCoordinate);
+            }
+            else if (randomEnemyValue < WIZARD_CHANCE_MAX)
+            {
+                return new Wizard(tileCoordinate);
+            }
+            else if (randomEnemyValue < KNIGHT_CHANCE_MAX)
+            {
+                return new Knight(tileCoordinate);
+            }
+            else if (randomEnemyValue < WITCH_CHANCE_MAX)
+            {
+                return new Witch(tileCoordinate);
+            }
+            else
+            {
+                return new Dragon(tileCoordinate);
+            }
         }
     }
 }

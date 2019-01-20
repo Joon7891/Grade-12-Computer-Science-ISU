@@ -45,6 +45,8 @@
     <Compile Include="Data Structures\DisjointSet.cs" />
     <Compile Include="Data Structures\ICollidable.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
+    <Compile Include="Entities\Enemies\Primitive\Zombie.cs" />
+    <Compile Include="Items\Weapon\MeleeWeapon.cs" />
     <Compile Include="Projectiles\Fireball.cs" />
     <Compile Include="Screen\HowToPlayScreen.cs" />
     <Compile Include="World\TileNode.cs" />
@@ -52,7 +54,6 @@
     <Compile Include="Entities\Enemies\Advanced\Knight.cs" />
     <Compile Include="Entities\Enemies\Advanced\RangedEnemy.cs" />
     <Compile Include="Entities\Enemies\Advanced\Wizard.cs" />
-    <Compile Include="Entities\Enemies\Primitive\Wolf.cs" />
     <Compile Include="World\IBuilding.cs" />
     <Compile Include="World\Interaction.cs" />
     <Compile Include="World\Shop.cs" />

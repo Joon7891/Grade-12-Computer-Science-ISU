@@ -187,11 +187,6 @@ namespace ISU_Medieval_Odyssey
         public int ManhattanLength => Math.Abs(X) + Math.Abs(Y);
 
         /// <summary>
-        /// The squared cartesian distatnce of thie <see cref="Vector2Int"/>
-        /// </summary>
-        public int LengthSquared => X * X + Y * Y;
-
-        /// <summary>
         /// Converts a <see cref="Vector2Int"/> to a <see cref="Vector2"/>
         /// </summary>
         /// <returns>The <see cref="Vector2"/> representation of a <see cref="Vector2Int"/></returns>

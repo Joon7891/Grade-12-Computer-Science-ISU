@@ -60,6 +60,18 @@ namespace ISU_Medieval_Odyssey
         private CollisionTree collisionTree;
         private Rectangle worldBoundsRect;
 
+        // Variables related to enemy generation throughout the world
+        private float enemyGenerationTimer = 0;
+        private const int ENEMY_GENERATE_TIME = 5;
+        private int chunkBounaryID;
+        private Vector2Int[] chunkBoundaries =
+        {
+            new Vector2Int(0, Chunk.SIZE),
+            new Vector2Int(0, -Chunk.SIZE),
+            new Vector2Int(Chunk.SIZE, 0),
+            new Vector2Int(-Chunk.SIZE, 0),
+        };
+
         /// <summary>
         /// Constructor for <see cref="World"/> object
         /// </summary>
@@ -88,20 +100,6 @@ namespace ISU_Medieval_Odyssey
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
             buildings.Add(new Shop(new Vector2Int(2, 2)));
-
-            for (int i = 0; i < 100; ++i)
-            {
-                for (int j = 0; j < 100; ++j)
-                {
-                    enemies.Add(new Witch(new Vector2Int(i, j)));
-                }
-            }
-
-            enemies.Add(new Witch(new Vector2Int(-1, -1)));
-            enemies.Add(new Witch(new Vector2Int(5, 5)));
-            enemies.Add(new Witch(new Vector2Int(-5, -5)));
-            enemies.Add(new Witch(new Vector2Int(10, 10)));
-
         }
 
         /// <summary>
@@ -141,6 +139,15 @@ namespace ISU_Medieval_Odyssey
             if (Player.Instance.CurrentChunk != loadedChunks[CHUNK_COUNT / 2, CHUNK_COUNT / 2].Position)
             {
                 AdjustLoadedChunks(Player.Instance.CurrentChunk);
+            }
+
+            // Generating enemies every 20s
+            enemyGenerationTimer += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if (enemyGenerationTimer > ENEMY_GENERATE_TIME)
+            {
+                chunkBounaryID = SharedData.RNG.Next(chunkBoundaries.Length);
+                enemies.Add(Enemy.RandomEnemy(chunkBoundaries[chunkBounaryID] + Player.Instance.CurrentTile));
+                enemyGenerationTimer = 0;
             }
 
             // Updating enemies
@@ -402,6 +409,22 @@ namespace ISU_Medieval_Odyssey
             }
 
             return chunk;
+        }
+
+        /// <summary>
+        /// Subprogram to inflict melee damage from a <see cref="Player"/> into the <see cref="World"/>
+        /// </summary>
+        /// <param name="weaponHitBox">The <see cref="Weapon"/>'s hit box</param>
+        /// <param name="damageAmount">The damage amount of the <see cref="Weapon"/></param>
+        public void InflictMeleeDamage(Rectangle weaponHitBox, int damageAmount)
+        {
+            List<Enemy> enemiesHit = new List<Enemy>();
+            enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
+            
+            for (short i = 0; i < enemiesHit.Count; ++i)
+            {
+                enemiesHit[i].Health -= damageAmount;
+            }
         }
 
         /// <summary>

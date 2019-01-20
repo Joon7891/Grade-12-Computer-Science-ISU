@@ -2,20 +2,37 @@
 // File Name: Staff.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 12/19/2018
-// Modified Date: 12/19/2018
+// Modified Date: 01/19/2018
 // Description: Class to hold Staff object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Staff : ThrustWeapon
     {
-        private static Texture2D iconImage;
+        // Various Staff specific images
+        private new static DirectionalSpriteSheet directionalSpriteSheet;
+        private new static Texture2D iconImage;
+
+        /// <summary>
+        /// Static constructor for <see cref="Staff"/> object
+        /// </summary>
+        static Staff()
+        {
+            // Importing varioius Staff specific images
+            directionalSpriteSheet = new DirectionalSpriteSheet("Images/Sprites/Weapon/Thrust/Staff/", "staff", NUM_FRAMES);
+            iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/staffIcon");
+        }
+
+        /// <summary>
+        /// Constructor for <see cref="Staff"/> object
+        /// </summary>
+        public Staff()
+        {
+            // Setting up Staff
+            base.directionalSpriteSheet = directionalSpriteSheet;
+            base.iconImage = iconImage;
+        }
     }
 }
