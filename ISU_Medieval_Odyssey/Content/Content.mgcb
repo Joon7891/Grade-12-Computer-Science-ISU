@@ -44118,12 +44118,6 @@
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/potionSoundEffect.mp3
 
-#begin Audio/SoundEffects/doorSoundEffect.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/SoundEffects/doorSoundEffect.mp3
-
 #begin Images/Sprites/Buildings/shopInsideImage.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -45612,4 +45606,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buttons/previousButton.png
+
+#begin Audio/SoundEffects/doorSoundEffects.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SoundEffects/doorSoundEffects.mp3
 

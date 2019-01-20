@@ -656,7 +656,7 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Up:
                     
                     // Calculating the player's future location from moving up
-                    newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 1.5);
+                    newPixelLocations[0].Y = (int)(Center.Y + 25 - GetPixelSpeed(gameTime) + 1);
                     newPixelLocations[1].Y = newPixelLocations[0].Y;
                     newPixelLocations[0].X = HitBox.Left;
                     newPixelLocations[1].X = HitBox.Right;
@@ -695,7 +695,7 @@ namespace ISU_Medieval_Odyssey
                 default:
 
                     // Calculating the player's future location from moving right
-                    newPixelLocations[0].X = (int)(HitBox.Right + GetPixelSpeed(gameTime) + 1.5);
+                    newPixelLocations[0].X = (int)(HitBox.Right + GetPixelSpeed(gameTime) + 1);
                     newPixelLocations[1].X = newPixelLocations[0].X;
                     newPixelLocations[0].Y = Center.Y + 25;
                     newPixelLocations[1].Y = HitBox.Bottom;
