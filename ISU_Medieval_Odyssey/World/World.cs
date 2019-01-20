@@ -103,6 +103,9 @@ namespace ISU_Medieval_Odyssey
             buildings.Add(new Dungeon(new Vector2Int(0, 0)));
             cachedBuildings.Add(buildings[1]);
 
+            buildings.Add(new Safehouse(new Vector2Int(-10, -10)));
+            cachedBuildings.Add(buildings[2]);
+
             enemies.Add(new Zombie(new Vector2Int(-1, -1)));
         }
 
