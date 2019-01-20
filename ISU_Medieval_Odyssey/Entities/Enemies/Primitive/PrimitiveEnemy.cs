@@ -11,48 +11,44 @@ namespace ISU_Medieval_Odyssey
 {
     public abstract class PrimitiveEnemy : Enemy
     {
+        /// <summary>
+        /// Subprogram to determine the tiles path to <see cref="Player"/>, if it exists
+        /// </summary>
+        /// <returns>The path to the <see cref="Player"/>, if it exists</returns>
         protected override Queue<Vector2Int> FindPathToPlayer()
         {
-            Vector2Int deltaPosition = Player.Instance.CurrentChunk - CurrentChunk;
+            // Various variables to determine the player's path
+            Vector2Int delta = Player.Instance.CurrentTile - CurrentTile;
             Queue<Vector2Int> path = new Queue<Vector2Int>();
-            int currentX = 0;
-            float xyRatio;
+            int unitX = delta.X >= 0 ? 1 : -1;
+            int unitY = delta.Y >= 0 ? 1 : -1;
+            int xCounter = 1;
+            int yCounter = 1;
 
-            if (deltaPosition.ManhattanLength > scanRange)
+            // If the player is not within range, return null
+            if (delta.ManhattanLength > scanRange)
             {
                 return null;
             }
 
-            if (deltaPosition.X == 0)
+            // Building the path
+            path.Enqueue(CurrentTile);
+            while (path.Count <= delta.ManhattanLength + 1)
             {
-                for (int i = 0; i <= deltaPosition.Y; ++i)
+                // Adding a x or y component, depending on how the path is spread out
+                if (delta.X / (float)xCounter >= delta.Y / (float)yCounter)
                 {
-                    path.Enqueue(CurrentChunk + new Vector2Int(0, i));
+                    path.Enqueue(CurrentTile + new Vector2Int(unitX * (xCounter - 1), unitY * (yCounter - 1)));
+                    ++xCounter;
                 }
-            }
-            else if (deltaPosition.Y == 0)
-            {
-                for (int i = 0; i <= deltaPosition.X; ++i)
+                else
                 {
-                    path.Enqueue(CurrentChunk + new Vector2Int(i, 0));
-                }
-            }
-            else
-            {
-                xyRatio = deltaPosition.X / (float)deltaPosition.Y;
-
-                for (int i = 0; i <= deltaPosition.Y; ++i)
-                {
-                    path.Enqueue(CurrentChunk + new Vector2Int(i, currentX));
-
-                    while (i * xyRatio >= currentX) // After how many y, should we insert an x?
-                    {
-                        ++currentX;
-                        path.Enqueue(CurrentChunk + new Vector2Int(i, currentX));
-                    }
+                    path.Enqueue(CurrentTile + new Vector2Int(unitX * (xCounter - 1), unitY * (yCounter - 1)));
+                    ++yCounter;
                 }
             }
 
+            // Returning the path to the player
             return path;
         }
     }

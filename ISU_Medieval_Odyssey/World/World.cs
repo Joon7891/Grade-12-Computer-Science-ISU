@@ -100,6 +100,8 @@ namespace ISU_Medieval_Odyssey
             AdjustLoadedChunks(Player.Instance.CurrentChunk);
 
             buildings.Add(new Shop(new Vector2Int(2, 2)));
+
+            enemies.Add(new Zombie(new Vector2Int(-1, -1)));
         }
 
         /// <summary>
@@ -418,9 +420,11 @@ namespace ISU_Medieval_Odyssey
         /// <param name="damageAmount">The damage amount of the <see cref="Weapon"/></param>
         public void InflictMeleeDamage(Rectangle weaponHitBox, int damageAmount)
         {
+            // Determine the enemies who were hit
             List<Enemy> enemiesHit = new List<Enemy>();
             enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
             
+            // Reducing the health of all the hit enemies
             for (short i = 0; i < enemiesHit.Count; ++i)
             {
                 enemiesHit[i].Health -= damageAmount;

@@ -77,7 +77,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The amount of gold (currency) that the <see cref="Entity"/> has
         /// </summary>
-        public int Gold { get; set; }
+        public virtual int Gold { get; set; }
 
         /// <summary>
         /// The current direction the <see cref="Entity"/> is facing

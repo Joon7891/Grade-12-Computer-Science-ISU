@@ -17,9 +17,11 @@ namespace ISU_Medieval_Odyssey
 {
     public sealed class Sword : SlashWeapon
     {
-        // Various Sword specific images
+        // Various Sword specific images and rectangles
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private new static Texture2D iconImage;
+        private new static Rectangle verticalHitBox = new Rectangle(0, 0, 100, 50);
+        private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 50, 100);
 
         /// <summary>
         /// Static constructor for <see cref="Sword"/> object
@@ -39,6 +41,8 @@ namespace ISU_Medieval_Odyssey
             // Setting up sword
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            base.verticalHitBox = verticalHitBox;
+            base.horizontalHitBox = horizontalHitBox;
         }
 
         /// <summary>

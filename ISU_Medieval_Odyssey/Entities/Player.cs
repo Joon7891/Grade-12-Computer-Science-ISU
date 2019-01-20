@@ -397,12 +397,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="newExperience">The new experience amount</param>
         private void SetExperience(short newExperience)
         {
-            // If new experience does not overflow, set value, otherwise level up player
-            if (newExperience < experienceBar.MaxValue)
-            {
-                experienceBar.CurrentValue = newExperience;
-            }
-            else
+            // Leveling up player if experience overflows
+            while (newExperience >= experienceBar.MaxValue)
             {
                 ++Level;
                 AttributePoints += 5;
@@ -411,6 +407,9 @@ namespace ISU_Medieval_Odyssey
                 experienceBar.MaxValue = LevelUpRequirement();
                 levelUpSoundEffect.CreateInstance().Play();
             }
+
+            // Adding experience
+            experienceBar.CurrentValue = newExperience;
         }
 
         /// <summary>
@@ -464,8 +463,11 @@ namespace ISU_Medieval_Odyssey
                 animationCounter = 0;
             }
 
-            // Using item
-            item.Use(this);
+            // Using item if it is not a weapon
+            if (!(item is Weapon))
+            {
+                item.Use(this);
+            }
         }
 
         /// <summary>
@@ -490,6 +492,10 @@ namespace ISU_Medieval_Odyssey
                         if (currentWeapon is Bow)
                         {
                             World.Instance.AddProjectile(new Arrow(Direction, this, 50));
+                        }
+                        else
+                        {
+                            currentWeapon.Use(this);
                         }
 
                         // Switching to movement graphics

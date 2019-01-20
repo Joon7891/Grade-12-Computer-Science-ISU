@@ -13,7 +13,7 @@ namespace ISU_Medieval_Odyssey
         private const int WIDTH = 40;
         private const int HEIGHT = 80;
         private const int NUM_FRAMES = 3;
-        private const int COUNTER_MAX = 5;
+        private const int COUNTER_MAX = 2;
         private const int HITBOX_BUFFER_X = 0;
         private const int HITBOX_BUFFER_Y = 20;
         private static new DirectionalSpriteSheet directionalSpriteSheet;
@@ -23,7 +23,7 @@ namespace ISU_Medieval_Odyssey
         private const int MAX_HEALTH = 60;
         private const int MIN_DAMAGE = 20;
         private const int MAX_DAMAGE = 30;
-        private const int SCAN_RANGE = 8;
+        private const int SCAN_RANGE = 10;
         private const float SPEED = 2.5f;
 
         /// <summary>

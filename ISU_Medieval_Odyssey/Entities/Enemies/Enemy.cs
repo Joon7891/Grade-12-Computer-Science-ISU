@@ -29,11 +29,16 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public short Experience { get; private set; }
 
+        /// <summary>
+        /// The amount of gold this <see cref="Enemy"/> drops
+        /// </summary>
+        public override int Gold => Experience / 10;
+
         protected float attackSpeed;
         protected short damageAmount;
 
         protected int collisionBufferVertical;
-        protected int collisionBUfferHorizontal;
+        protected int collisionBufferHorizontal;
 
         private Vector2Int currentTarget;
         private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
@@ -118,7 +123,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public virtual void Update(GameTime gameTime)
         {
-            // Scanning 
+            // Scanning for a path to player
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
             {
@@ -133,20 +138,6 @@ namespace ISU_Medieval_Odyssey
 
             // Calling subprogram to update movement
             UpdateMovement(gameTime);
-
-            // Calculating the enemy's locations
-            rectangle.X = (int)(unroundedLocation.X + 0.5);
-            rectangle.Y = (int)(unroundedLocation.Y + 0.5);
-            hitBox.X = rectangle.X + collisionBUfferHorizontal;
-            hitBox.Y = rectangle.Y + collisionBufferVertical;
-            healthBar.X = rectangle.X - healthBarBufferX;
-            healthBar.Y = rectangle.Y - HEALTH_BAR_BUFFER_Y;
-            center.X = rectangle.X + (rectangle.Width >> 1);
-            center.Y = rectangle.Y + (rectangle.Height >> 1);
-            groundCoordinate.X = center.X;
-            groundCoordinate.Y = rectangle.Bottom - 1;
-            miniIcon.X = center.X;
-            miniIcon.Y = center.Y;
         }
 
         /// <summary>
@@ -164,6 +155,10 @@ namespace ISU_Medieval_Odyssey
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         protected virtual void UpdateMovement(GameTime gameTime)
         {
+            // The future location vector of the enemmy
+            Vector2Int futurePixelLocation = new Vector2Int();
+            Vector2Int futureTileLocation;
+            
             // Updating animation/frame counter
             frameCounter = (frameCounter == counterMax) ? 0 : (frameCounter + 1);
             if (frameCounter == 0)
@@ -197,25 +192,76 @@ namespace ISU_Medieval_Odyssey
             switch (Direction)
             {
                 case Direction.Up:
-                    unroundedLocation.Y -= GetPixelSpeed(gameTime);
 
+                    // Calculating the enemy's future location if it goes up
+                    futurePixelLocation.X = center.X;
+                    futurePixelLocation.Y = (int)(hitBox.Top - GetPixelSpeed(gameTime) + 0.5);
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Only moving up if there are on barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.Y -= GetPixelSpeed(gameTime);
+                    }
                     break;
-                case Direction.Right:
-                    unroundedLocation.X += GetPixelSpeed(gameTime);
 
+                case Direction.Right:
+
+                    // Calculating the enemy's future location if it goes right
+                    futurePixelLocation.X = (int)(hitBox.Right + GetPixelSpeed(gameTime) + 0.5);
+                    futurePixelLocation.Y = center.Y;
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Only moving right if there are on barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.Y += GetPixelSpeed(gameTime);
+                    }
                     break;
 
                 case Direction.Down:
-                    unroundedLocation.Y += GetPixelSpeed(gameTime);
 
+                    // Calculating the enemy's future location if it goes down
+                    futurePixelLocation.X = center.X;
+                    futurePixelLocation.Y = (int)(hitBox.Top + GetPixelSpeed(gameTime) + 0.5);
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Only moving down if there are on barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.Y += GetPixelSpeed(gameTime);
+                    }
                     break;
 
                 case Direction.Left:
-                    unroundedLocation.X -= GetPixelSpeed(gameTime);
 
+                    // Calculating the enemy's future location if it goes left
+                    futurePixelLocation.X = (int)(hitBox.Right - GetPixelSpeed(gameTime) + 0.5);
+                    futurePixelLocation.Y = center.Y;
+                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+
+                    // Only moving left if there are on barriers
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    {
+                        unroundedLocation.X -= GetPixelSpeed(gameTime);
+                    }
                     break;
+
             }
 
+            // Calculating the enemy's locations
+            rectangle.X = (int)(unroundedLocation.X + 0.5);
+            rectangle.Y = (int)(unroundedLocation.Y + 0.5);
+            hitBox.X = rectangle.X + collisionBufferHorizontal;
+            hitBox.Y = rectangle.Y + collisionBufferVertical;
+            healthBar.X = rectangle.X - healthBarBufferX;
+            healthBar.Y = rectangle.Y - HEALTH_BAR_BUFFER_Y;
+            center.X = rectangle.X + (rectangle.Width >> 1);
+            center.Y = rectangle.Y + (rectangle.Height >> 1);
+            groundCoordinate.X = center.X;
+            groundCoordinate.Y = rectangle.Bottom - 1;
+            miniIcon.X = center.X;
+            miniIcon.Y = center.Y;
         }
 
         /// <summary>

@@ -41,19 +41,19 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Whether the <see cref="Tile"/> is obstructed from a <see cref="Entity"/> from the inside of a <see cref="IBuilding"/>
         /// </summary>
-        [JsonProperty]
+        [JsonIgnore]
         public bool InsideObstructState { get; set; } = false;
 
         /// <summary>
         /// Whether the <see cref="Tile"/> is obstructed from a <see cref="Entity"/> from the outside of a <see cref="IBuilding"/>
         /// </summary>
-        [JsonProperty] 
+        [JsonIgnore] 
         public bool OutsideObstructState { get; set; } = false;
 
         /// <summary>
         /// The <see cref="OnInteract"/> procedure to execute while on this <see cref="Tile"/>
         /// </summary>
-        [JsonProperty]
+        [JsonIgnore]
         public Interaction OnInteractProcedure { get; set; }
 
         // Variables required for drawing tile
