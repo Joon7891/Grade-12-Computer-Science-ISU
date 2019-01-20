@@ -54,8 +54,15 @@ namespace ISU_Medieval_Odyssey
                     {
                         currentTile *= TILE_SPACING;
                         tileSprites.Add(new Sprite(tile, new Rectangle(currentTile.X, currentTile.Y, TILE_SIZE, TILE_SIZE)));
+                        tileSprites.Add(new Sprite(tile, new Rectangle(currentTile.X, currentTile.Y + TILE_SIZE/2, TILE_SIZE, TILE_SIZE)));
                     }
                 }
+            }
+
+            for (int i = 0; i < INSIDE_WIDTH; i++)
+            {
+               insideObstructionLocs.Add (new Vector2Int(i, INSIDE_WIDTH) + cornerTile);
+               insideObstructionLocs.Add (new Vector2Int(INSIDE_HEIGHT, i) + cornerTile);
             }
 
             // put enter at top left, exit at bottom right
