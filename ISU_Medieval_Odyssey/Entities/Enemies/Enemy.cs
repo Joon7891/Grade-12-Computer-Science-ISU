@@ -17,12 +17,12 @@ using System.Threading.Tasks;
 namespace ISU_Medieval_Odyssey
 {
     public abstract class Enemy : Entity
-    {       
+    {
 
         /// <summary>
         /// Possible loot drops for this <see cref="Enemy"/>
         /// </summary>
-        public List<Item> LootTable { get; }
+        public HashSet<Item> LootTable { get; protected set; } = new HashSet<Item>();
 
         /// <summary>
         /// The amount of experience this <see cref="Enemy"/> drops/gives to <see cref="Player"/>
@@ -129,31 +129,32 @@ namespace ISU_Medieval_Odyssey
             // Scanning for a path to player
             timeToScan += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             timeToAttack += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if ((CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= 1 && timeToAttack >= attackTime)
-            {
-                timeToAttack = 0;
+            //if ((CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= 1 && timeToAttack >= attackTime)
+            //{
+            //    timeToAttack = 0;
 
-                Vector2Int dif = (CurrentTile - Player.Instance.CurrentTile);
+            //    Vector2Int dif = (CurrentTile - Player.Instance.CurrentTile);
 
-                if (dif.X == 1)
-                {
-                    
-                }
-                else if (dif.X == -1)
-                {
+            //    if (dif.X == 1)
+            //    {
 
-                }
-                else if (dif.Y == -1)
-                {
-                    
-                }
-                else if (dif.Y == 1)
-                {
+            //    }
+            //    else if (dif.X == -1)
+            //    {
 
-                }
+            //    }
+            //    else if (dif.Y == -1)
+            //    {
 
-            }
-            else if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
+            //    }
+            //    else if (dif.Y == 1)
+            //    {
+
+            //    }
+
+            //}
+            //else 
+            if (timeToScan >= MAX_SCAN_INTERVAL && (CurrentTile - Player.Instance.CurrentTile).ManhattanLength <= scanRange)
             {
                 timeToScan = 0;
                 pathToPlayer = FindPathToPlayer();
@@ -222,57 +223,57 @@ namespace ISU_Medieval_Odyssey
                 case Direction.Up:
 
                     // Calculating the enemy's future location if it goes up
-                    futurePixelLocation.X = center.X;
-                    futurePixelLocation.Y = (int)(hitBox.Top - GetPixelSpeed(gameTime) + 0.5);
-                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+                    //futurePixelLocation.X = center.X;
+                    //futurePixelLocation.Y = (int)(hitBox.Top - GetPixelSpeed(gameTime) + 0.5);
+                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
-                    // Only moving up if there are on barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    {
+                    //// Only moving up if there are on barriers
+                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    //{
                         unroundedLocation.Y -= GetPixelSpeed(gameTime);
-                    }
+                    //}
                     break;
 
                 case Direction.Right:
 
                     // Calculating the enemy's future location if it goes right
-                    futurePixelLocation.X = (int)(hitBox.Right + GetPixelSpeed(gameTime) + 0.5);
-                    futurePixelLocation.Y = center.Y;
-                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+                    //futurePixelLocation.X = (int)(hitBox.Right + GetPixelSpeed(gameTime) + 0.5);
+                    //futurePixelLocation.Y = center.Y;
+                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
-                    // Only moving right if there are on barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    {
-                        unroundedLocation.Y += GetPixelSpeed(gameTime);
-                    }
+                    //// Only moving right if there are on barriers
+                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    //{
+                        unroundedLocation.X += GetPixelSpeed(gameTime);
+                    //}
                     break;
 
                 case Direction.Down:
 
                     // Calculating the enemy's future location if it goes down
-                    futurePixelLocation.X = center.X;
-                    futurePixelLocation.Y = (int)(hitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
-                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+                    //futurePixelLocation.X = center.X;
+                    //futurePixelLocation.Y = (int)(hitBox.Bottom + GetPixelSpeed(gameTime) + 0.5);
+                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
-                    // Only moving down if there are on barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    {
+                    //// Only moving down if there are on barriers
+                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    //{
                         unroundedLocation.Y += GetPixelSpeed(gameTime);
-                    }
+                    //}
                     break;
 
                 case Direction.Left:
 
                     // Calculating the enemy's future location if it goes left
-                    futurePixelLocation.X = (int)(hitBox.Left - GetPixelSpeed(gameTime) + 0.5);
-                    futurePixelLocation.Y = center.Y;
-                    futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
+                    //futurePixelLocation.X = (int)(hitBox.Left - GetPixelSpeed(gameTime) + 0.5);
+                    //futurePixelLocation.Y = center.Y;
+                    //futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
-                    // Only moving left if there are on barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
-                    {
+                    //// Only moving left if there are on barriers
+                    //if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    //{
                         unroundedLocation.X -= GetPixelSpeed(gameTime);
-                    }
+                    //}
                     break;
 
             }

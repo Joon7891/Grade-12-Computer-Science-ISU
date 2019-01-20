@@ -137,7 +137,7 @@ namespace ISU_Medieval_Odyssey
             transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(608, 490, 80, 32), () =>
             {
                 // Making tranaction, if possible
-                if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value)
+                if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value && Player.Instance.ItemSlotsAvailable > 0)
                 {
                     transactionItemSlot[0].Item.IsPlayerItem = true;
                     Player.Instance.Gold -= transactionItemSlot[0].Item.Value;

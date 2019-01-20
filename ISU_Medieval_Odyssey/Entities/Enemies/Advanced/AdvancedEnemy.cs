@@ -30,6 +30,19 @@ namespace ISU_Medieval_Odyssey
         private static Dictionary<Vector2Int, Vector2Int[]> diagonalMoveSequence;
 
         /// <summary>
+        /// Constructor for <see cref="AdvancedEnemy"/> object
+        /// </summary>
+        public AdvancedEnemy()
+        {
+            // Adding a number of loot to this enemy's loot table
+            int lootCount = SharedData.RNG.Next(8) - 5;
+            for (byte i = 0; i < lootCount; ++i)
+            {
+                LootTable.Add(Item.RandomItem());
+            }
+        }
+
+        /// <summary>
         /// Static constructor for <see cref="AdvancedEnemy"/> object
         /// </summary>
         static AdvancedEnemy()
