@@ -57,7 +57,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up statistics locations
             for (byte i = 0; i < statisticsLoc.Length; ++i)
             {
-                statisticsLoc[i] = new Vector2(215, 15 + 30 * i);
+                statisticsLoc[i] = new Vector2(455, 15 + 30 * i);
             }
 
             // Setting up minimap

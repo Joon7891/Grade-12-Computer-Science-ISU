@@ -45613,3 +45613,15 @@
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/doorSoundEffects.mp3
 
+#begin Images/Sprites/Buttons/upgradeButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buttons/upgradeButton.png
+

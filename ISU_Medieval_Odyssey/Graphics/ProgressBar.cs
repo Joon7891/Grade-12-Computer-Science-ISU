@@ -7,6 +7,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -15,6 +16,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The maximum possible value for the progress bar
         /// </summary>
+        [JsonProperty]
         public short MaxValue { get; set; }
 
         /// <summary>
@@ -29,6 +31,7 @@ namespace ISU_Medieval_Odyssey
                 progressRectangle.Width = (int)(backRectangle.Width * (((float)CurrentValue) / MaxValue) + 0.5);
             }
         }
+        [JsonProperty]
         private short currentValue;
 
         /// <summary>

@@ -37,6 +37,13 @@ namespace ISU_Medieval_Odyssey
         public static bool IsRightDown() => Main.NewMouse.RightButton == ButtonState.Pressed;
 
         /// <summary>
+        /// Determine if the mouse is hovering over a <see cref="Rectangle"/>
+        /// </summary>
+        /// <param name="rectangle">The <see cref="Rectangle"/> to check for hovering</param>
+        /// <returns>Whether the mouse is hovering over the <see cref="Rectangle"/></returns>
+        public static bool IsHovering(Rectangle rectangle) => rectangle.Contains(Location);
+
+        /// <summary>
         /// Subprogram to check if a <see cref="Rectangle"/> is clicked via left mouse button
         /// </summary>
         /// <param name="rectangle">The <see cref="Rectangle"/> to check if clicked via left mouse button</param>
