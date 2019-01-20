@@ -94,6 +94,36 @@ namespace ISU_Medieval_Odyssey
             // Creating terrtain generator and generating terrain
             terrainGenerator = new TerrainGenerator(seed);
             AdjustLoadedChunks(new Vector2Int(0, 0));//  Player.Instance.CurrentChunk);
+
+
+            // Remove
+            buildings.Add(new Shop(new Vector2Int(2, 2)));
+            cachedBuildings.Add(buildings[0]);
+
+            buildings.Add(new Dungeon(new Vector2Int(0, 0)));
+            cachedBuildings.Add(buildings[1]);
+
+            enemies.Add(new Zombie(new Vector2Int(-1, -1)));
+        }
+
+        /// <summary>
+        /// Subprogram to initialize a <see cref="Chunk"/>
+        /// </summary>
+        /// <param name="x">The x-coordinate of the <see cref="Chunk"/></param>
+        /// <param name="y">The y-coordinate of the <see cref="Chunk"/></param>
+        /// <returns>The initalized chunk</returns>
+        private Chunk InitializeChunkAt(int x, int y)
+        {
+            // The chunk being initlaized
+            Vector2Int coordinate = new Vector2Int(x, y);
+            Chunk chunk = null;
+
+            // Creating chunk and caching it
+            chunk = new Chunk(x, y, terrainGenerator);
+            cachedChunks.Add(coordinate, chunk);
+            
+            // Returning initialized chunk
+            return chunk;
         }
 
         /// <summary>
