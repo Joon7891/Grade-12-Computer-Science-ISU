@@ -10,6 +10,8 @@ namespace ISU_Medieval_Odyssey
 {
     class Dungeon : IBuilding
     {
+        private const int TILE_SIZE = Tile.SPACING;
+        private Vector2Int TILE_SPACING = new Vector2Int(TILE_SIZE,TILE_SIZE);
         private const int INSIDE_WIDTH = 50;
         private const int INSIDE_HEIGHT = 50;
         private const int OUTSIDE_WIDTH = 1;
@@ -23,47 +25,56 @@ namespace ISU_Medieval_Odyssey
         private Vector2Int enterLocation;
         private Vector2Int exitLocation;
 
+        static Texture2D tile;
+        List<Sprite> tileSprites;
+
+        static Dungeon()
+        {
+            tile = Main.Content.Load<Texture2D>("Images/Sprites/Tiles/tileStone");
+        }
+
         public Dungeon(Vector2Int cornerTile)
         {
             DungeonGenerator generator = new DungeonGenerator();
             int[,] layout = generator.GenerateDungeon();
 
-            // Setting up inside obstruction tiles
+            tileSprites = new List<Sprite>();
+
+            // Setting up inside obstruction tiles and sprites
             for (int i = 0; i < INSIDE_WIDTH; i++)
             {
                 for(int j = 0; j < INSIDE_HEIGHT; j++)
                 {
-                    if(layout[i,j] == -1)
+                    Vector2Int currentTile = new Vector2Int(i, j) + cornerTile;
+                    if (layout[i, j] == -1)
                     {
-                        insideObstructionLocs.Add(new Vector2Int(i, j));
+                        insideObstructionLocs.Add(currentTile);
+                    }
+                    else
+                    {
+                        currentTile *= TILE_SPACING;
+                        tileSprites.Add(new Sprite(tile, new Rectangle(currentTile.X, currentTile.Y, TILE_SIZE, TILE_SIZE)));
                     }
                 }
             }
 
             // put enter at top left, exit at bottom right
-            for (int i = 0; i < INSIDE_HEIGHT; i++)
+            enterLocation = new Vector2Int(-1, -1);
+
+            for (int i = 0; i < INSIDE_WIDTH; i++)
             {
-                for (int j = 0; j < INSIDE_WIDTH; j++)
+                for (int j = 0; j < INSIDE_HEIGHT; j++)
                 {
-                    if (layout[i, j] != -1)
+                    if (layout[i, j] != -1 && enterLocation.X == -1)
                     {
                         enterLocation = (new Vector2Int(i, j));
-                        break;
                     }
+                    exitLocation = (new Vector2Int(i, j));
                 }
             }
 
-            for (int i = INSIDE_HEIGHT; i >= 0; i--)
-            {
-                for (int j = INSIDE_WIDTH; j >= 0; j--)
-                {
-                    if (layout[i, j] != -1)
-                    {
-                        exitLocation = (new Vector2Int(i, j));
-                        break;
-                    }
-                }
-            }
+            enterLocation += cornerTile;
+            exitLocation += cornerTile;
 
             CornerTile = cornerTile;
             SetTiles();
@@ -76,18 +87,18 @@ namespace ISU_Medieval_Odyssey
         {
             for (int i = 0; i < insideObstructionLocs.Count; ++i)
             {
-                World.Instance.GetTileAt(CornerTile + insideObstructionLocs[i]).InsideObstructState = true;
+                World.Instance.GetTileAt(insideObstructionLocs[i]).InsideObstructState = true;
             }
 
-            World.Instance.GetTileAt(CornerTile + enterLocation).OutsideObstructState = true;
+            //World.Instance.GetTileAt(CornerTile + enterLocation).OutsideObstructState = true;
 
-            World.Instance.GetTileAt(CornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
+            World.Instance.GetTileAt(exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
             {
                 World.Instance.IsInside = false;
                 World.Instance.CurrentBuilding = null;
             });
 
-            World.Instance.GetTileAt(CornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
+            World.Instance.GetTileAt(enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
             {
                 World.Instance.IsInside = true;
                 World.Instance.CurrentBuilding = this;
@@ -120,6 +131,10 @@ namespace ISU_Medieval_Odyssey
         public void DrawInside(SpriteBatch spriteBatch)
         {
             Console.WriteLine(exitLocation.X + " " + exitLocation.Y);
+            foreach (Sprite sprite in tileSprites)
+            {
+                sprite.Draw(spriteBatch);
+            }
         }
     }
 }

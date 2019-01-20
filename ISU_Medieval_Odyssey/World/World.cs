@@ -100,7 +100,7 @@ namespace ISU_Medieval_Odyssey
             buildings.Add(new Shop(new Vector2Int(2, 2)));
             cachedBuildings.Add(buildings[0]);
 
-            buildings.Add(new Dungeon(new Vector2Int(0, 0)));
+            buildings.Add(new Dungeon(new Vector2Int(10, 10)));
             cachedBuildings.Add(buildings[1]);
 
             buildings.Add(new Safehouse(new Vector2Int(-10, -10)));
@@ -215,8 +215,6 @@ namespace ISU_Medieval_Odyssey
                 }
             }
         }
-
-        
 
         /// <summary>
         /// Draw subprogram for <see cref="World"/> object

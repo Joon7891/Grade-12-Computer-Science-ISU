@@ -19,13 +19,13 @@ namespace ISU_Medieval_Odyssey
 {
     class DungeonGenerator
     {
-        const int ROOM_ATTEMPTS = 100;
+        const int ROOM_ATTEMPTS = 20;
 
         /// <summary>
         /// Higher = bigger rooms
         /// </summary>
         /// 
-        const int SIZE_MODIFIER = 0;
+        const int SIZE_MODIFIER = -1;
 
         /// <summary>
         /// Max dimentions of the dungeon.
@@ -41,7 +41,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// Indicates the extra chance that the maze will have more than one connector for any two+ regions
         /// </summary>
-        const int CONNECTION_CHANCE = 30;
+        const int CONNECTION_CHANCE = 20;
 
         /// <summary>
         /// Direction vector2ints that can be added to another vector2int to move in that direction
