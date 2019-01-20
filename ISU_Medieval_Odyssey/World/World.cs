@@ -54,6 +54,7 @@ namespace ISU_Medieval_Odyssey
         // A set of cached buildings
         [JsonProperty]
         private HashSet<IBuilding> cachedBuildings = new HashSet<IBuilding>();
+        private HashSet<Vector2Int> visitedChunks = new HashSet<Vector2Int>();
         private Dictionary<Vector2Int, Chunk> cachedChunks = new Dictionary<Vector2Int, Chunk>();
 
         /// <summary>
@@ -232,12 +233,6 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
 
-                // Drawing enemies
-                for (short i = 0; i < enemies.Count; ++i)
-                {
-                    enemies[i].Draw(spriteBatch);
-                }
-
                 // Drawing the outsides of various buildings
                 for (int i = 0; i < buildings.Count; ++i)
                 {
@@ -260,6 +255,15 @@ namespace ISU_Medieval_Odyssey
             for (short i = 0; i < liveItems.Count; ++i)
             {
                 liveItems[i].Draw(spriteBatch);
+            }
+
+            // Drawing enemies
+            if (!IsInside)
+            {
+                for (short i = 0; i < enemies.Count; ++i)
+                {
+                    enemies[i].Draw(spriteBatch);
+                }
             }
         }
 
@@ -297,7 +301,8 @@ namespace ISU_Medieval_Odyssey
         /// <param name="centerChunk">A <see cref="Vector2Int"/> representing the center of the loaded chunk</param>
         public void AdjustLoadedChunks(Vector2Int centerChunk)
         {
-            // The newly loaded chunks
+            // The newly loaded chunks and difference
+            Vector2Int currentChunkCoodinate = Vector2Int.Zero;
             Chunk[,] newLoadedChunks = new Chunk[CHUNK_COUNT, CHUNK_COUNT];
 
             // Iterating through chunks that should be loaded and setting it
@@ -305,7 +310,9 @@ namespace ISU_Medieval_Odyssey
             {
                 for (short x = 0; x < CHUNK_COUNT; ++x)
                 {
-                    newLoadedChunks[x, y] = GetChunkAt(centerChunk.X + x - CHUNK_COUNT / 2, centerChunk.Y + y - CHUNK_COUNT / 2);
+                    currentChunkCoodinate.X = centerChunk.X + x - CHUNK_COUNT / 2;
+                    currentChunkCoodinate.Y = centerChunk.Y + y - CHUNK_COUNT / 2;
+                    newLoadedChunks[x, y] = GetChunkAt(currentChunkCoodinate.X, currentChunkCoodinate.Y);
                 }
             }
             loadedChunks = newLoadedChunks;
@@ -345,8 +352,6 @@ namespace ISU_Medieval_Odyssey
         {
             // Various variables required for chunk searching in memory
             Chunk chunk;
-            bool shouldAddBuilding = true;
-            IBuilding buildingToAdd = null;
             Vector2Int chunkCoordinate = new Vector2Int(x, y);
 
             if (cachedChunks.ContainsKey(chunkCoordinate))
@@ -356,30 +361,12 @@ namespace ISU_Medieval_Odyssey
             else
             {
                 chunk = new Chunk(x, y, terrainGenerator);
-                if (SharedData.RNG.Next(10) == 1)
+                cachedChunks.Add(chunkCoordinate, chunk);
+                if (!visitedChunks.Contains(chunkCoordinate))
                 {
-                    foreach (IBuilding building in cachedBuildings)
-                    {
-                        if (chunk.Rectangle.Contains(building.Rectangle))
-                        {
-                            shouldAddBuilding = false;
-                            break;
-                        }
-                    }
-
-                    if (shouldAddBuilding)
-                    {
-                        buildingToAdd = new Shop(new Vector2Int(x * Chunk.SIZE + Chunk.SIZE / 3,
-                            y * Chunk.SIZE + Chunk.SIZE / 3));
-                        cachedBuildings.Add(buildingToAdd);
-                    }
-                    buildingToAdd?.SetTiles();
+                    AddBuilding(chunkCoordinate.X, chunkCoordinate.Y);
                 }
-
-                if (!cachedChunks.ContainsKey(chunkCoordinate))
-                {
-                    cachedChunks.Add(chunkCoordinate, chunk);
-                }
+                visitedChunks.Add(chunkCoordinate);
             }
 
             // Returning the chunk
@@ -419,6 +406,19 @@ namespace ISU_Medieval_Odyssey
             else
             {
                 return tile.InsideObstructState;
+            }
+        }
+
+        /// <summary>
+        /// Subprogram to add a <see cref="IBuilding"/> into the world
+        /// </summary>
+        /// <param name="chunkX">The x-coordinate of the <see cref="Chunk"/></param>
+        /// <param name="chunkY">The y-coordinate of the <see cref="Chunk"/></param>
+        private void AddBuilding(int chunkX, int chunkY)
+        {
+            if (SharedData.RNG.Next(25) == 1)
+            {
+                cachedBuildings.Add(new Shop(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
         }
 

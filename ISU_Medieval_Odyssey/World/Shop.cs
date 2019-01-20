@@ -73,7 +73,7 @@ namespace ISU_Medieval_Odyssey
             // Importing shop images and audio
             insideShopImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopInsideImage");
             outsideShopImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopOutsideImage");
-            doorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/doorSoundEffect");
+            doorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/doorSoundEffects");
             errorSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/errorSoundEffect");
             transactionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/transactionSoundEffect");
 
@@ -118,7 +118,7 @@ namespace ISU_Medieval_Odyssey
         public Shop(Vector2Int cornerTile)
         {
             // Setting up shop inventory and buying/selling function
-            Item[] shopItems = new Item[SharedData.RNG.Next(2 * ROW_SIZE)];
+            Item[] shopItems = new Item[SharedData.RNG.Next(ROW_SIZE, 2 * ROW_SIZE)];
             profitCut = (float)(SharedData.RNG.NextDouble() * (MAX_PROFIT_CUT - MIN_PROFIT_CUT)) + MIN_PROFIT_CUT;
             for (int i = 0; i < shopItems.Length; ++i)
             {
@@ -189,12 +189,14 @@ namespace ISU_Medieval_Odyssey
             }
             World.Instance.GetTileAt(CornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
             {
+                doorSoundEffect.CreateInstance().Play();
                 World.Instance.IsInside = false;
                 World.Instance.CurrentBuilding = null;
                 player.Y += Tile.SPACING;
             });
             World.Instance.GetTileAt(CornerTile + enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
             {
+                doorSoundEffect.CreateInstance().Play();
                 World.Instance.IsInside = true;
                 World.Instance.CurrentBuilding = this;
                 player.Y -= Tile.SPACING;
