@@ -15,6 +15,8 @@ namespace ISU_Medieval_Odyssey
         // LongSpear specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private new static Texture2D iconImage;
+        private new static Rectangle verticalHitBox = new Rectangle(0, 0, 20, 100);
+        private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 100, 20);
 
         /// <summary>
         /// Static constructor for <see cref="LongSpear"/> object
@@ -34,6 +36,8 @@ namespace ISU_Medieval_Odyssey
             // Setting up LongSpear
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            base.verticalHitBox = verticalHitBox;
+            base.horizontalHitBox = horizontalHitBox;
         }
 
         /// <summary>

@@ -5,6 +5,7 @@
 // Modified Date: 01/19/2018
 // Description: Class to hold Staff object
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -14,6 +15,8 @@ namespace ISU_Medieval_Odyssey
         // Various Staff specific images
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private new static Texture2D iconImage;
+        private new static Rectangle verticalHitBox = new Rectangle(0, 0, 20, 50);
+        private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 50, 20);
 
         /// <summary>
         /// Static constructor for <see cref="Staff"/> object
@@ -33,6 +36,8 @@ namespace ISU_Medieval_Odyssey
             // Setting up Staff
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            base.verticalHitBox = verticalHitBox;
+            base.horizontalHitBox = horizontalHitBox;
         }
     }
 }
