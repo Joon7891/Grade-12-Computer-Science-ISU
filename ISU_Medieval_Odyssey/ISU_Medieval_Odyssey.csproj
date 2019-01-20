@@ -44,6 +44,7 @@
     <Compile Include="Data Structures\DisjointSet.cs" />
     <Compile Include="Data Structures\ICollidable.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
+    <Compile Include="Projectiles\Fireball.cs" />
     <Compile Include="Screen\HowToPlayScreen.cs" />
     <Compile Include="World\TileNode.cs" />
     <Compile Include="Entities\Enemies\Advanced\Dragon.cs" />
