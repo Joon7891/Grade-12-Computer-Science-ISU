@@ -76,6 +76,7 @@ namespace ISU_Medieval_Odyssey
 
         private void GenerateRooms()
         {
+            List<CollisionRectangle> roomRectangles = new List<CollisionRectangle>();
             for(int i = 0; i < ROOM_ATTEMPTS; i++)
             {
                 // ensure room dimensions are odd
@@ -99,13 +100,13 @@ namespace ISU_Medieval_Odyssey
 
                 Rectangle room = new Rectangle(x, y, width, height);
 
-                foreach(Rectangle rectangle in rooms) // TODO: collision for rooms 
+                if(collisionTree.GetCollisions(room, roomRectangles).Count != 0)
                 {
-                    throw new NotImplementedException();
-                    //collisionTree.Update(rooms);
-
-                    // if overlap, continue
+                    continue;
                 }
+
+                rooms.Add(room);
+                roomRectangles.Add(new CollisionRectangle(room));
 
                 currentRegion++;
 
