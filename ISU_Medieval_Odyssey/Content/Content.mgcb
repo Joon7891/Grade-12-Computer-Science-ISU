@@ -45741,7 +45741,7 @@
 
 #begin Audio/SoundEffects/enemyHit.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/enemyHit.mp3
 

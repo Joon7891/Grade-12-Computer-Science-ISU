@@ -52,31 +52,26 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public override int Gold => Experience / 10;
 
-        protected float attackSpeed;
-        protected short damageAmount;
-
+        // Pathfinding variables
+        protected int scanRange;
+        protected bool isInside;
+        private float timeToScan = 0;
+        private const float MAX_SCAN_INTERVAL = 0.25f;
+        private Vector2Int currentTarget;
+        private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
         protected int collisionBufferVertical;
         protected int collisionBufferHorizontal;
 
-        private Vector2Int currentTarget;
-        private Queue<Vector2Int> pathToPlayer = new Queue<Vector2Int>();
-
-        private float timeToScan = 0;
-        private const float MAX_SCAN_INTERVAL = 0.25f; 
-
+        // Health, attack, and health related variables
+        protected float attackSpeed;
+        protected short damageAmount;
         private const int HEALTH_BAR_BUFFER_Y = 25;
         private const int HEALTH_BAR_WIDTH = 90;
         private const int HEALTH_BAR_HEIGHT = 20;
         private int healthBarBufferX;
-
         private float rotationTimer = 0;
         private const float ROTATION_SPEED = 0.10f;
-
         private float timeToAttack = 0;
-
-        protected int scanRange;
-
-        protected bool isInside; 
 
         // Graphics-realted data
         protected int numFrames;
@@ -107,7 +102,7 @@ namespace ISU_Medieval_Odyssey
             diagonalMoveSequence.Add(new Vector2Int(-1, -1), new Vector2Int[] { new Vector2Int(-1, -1), new Vector2Int(-1, 0) });
             diagonalMoveSequence.Add(new Vector2Int(1, -1), new Vector2Int[] { new Vector2Int(1, -1), new Vector2Int(1, 0) });
             diagonalMoveSequence.Add(new Vector2Int(-1, 1), new Vector2Int[] { new Vector2Int(-1, 1), new Vector2Int(-1, 0) });
-            hitSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/enemySoundEffect");
+            hitSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/enemyHit");
         }
 
         /// <summary>

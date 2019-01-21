@@ -5,12 +5,6 @@
 // Modified Date: 12/17/2019
 // Description: Class to hold ScreenMode enum
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ISU_Medieval_Odyssey
 {
     /// <summary>

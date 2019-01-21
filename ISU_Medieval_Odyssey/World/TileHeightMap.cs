@@ -5,12 +5,6 @@
 // Modified Date: 12/24/2018
 // Description: TileNoiseMap structure - maps a noise to a tile type
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ISU_Medieval_Odyssey
 {
     public struct TileNoiseMap

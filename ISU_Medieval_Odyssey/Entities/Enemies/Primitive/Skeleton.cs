@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Author: Joon Song
+// File Name: Skeleton.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 01/17/2019
+// Modified Date: 01/17/2019
+// Description: Class to hold Skeleton object
 
 namespace ISU_Medieval_Odyssey
 {

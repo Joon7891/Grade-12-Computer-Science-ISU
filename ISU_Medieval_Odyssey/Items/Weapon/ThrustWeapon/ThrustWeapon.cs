@@ -6,7 +6,6 @@
 // Description: Class to hold ThrustWeapon object
 
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {

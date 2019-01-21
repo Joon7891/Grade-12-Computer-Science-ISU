@@ -5,13 +5,7 @@
 // Modified Date: 01/19/2018
 // Description: Class to hold SlashWeapon object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {

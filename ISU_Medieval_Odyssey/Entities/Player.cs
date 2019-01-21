@@ -782,6 +782,9 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void DrawHUD(SpriteBatch spriteBatch)
         {
+            // Adjustment rectangle for HUD
+            Rectangle adjustmentRectangle;
+            
             // Drawing the hotbar
             for (int i = 0; i < ARMOUR_SIZE + (IsInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
             {
@@ -831,7 +834,17 @@ namespace ISU_Medieval_Odyssey
             {
                 if (MouseHelper.IsHovering(inventory[i].Rectangle))
                 {
-                    inventory[i].Item?.DrawInformation(spriteBatch, inventory[i].Rectangle);
+                    if (i < ARMOUR_SIZE)
+                    {
+                        adjustmentRectangle = inventory[i].Rectangle;
+                        adjustmentRectangle.X -= 3 * ItemSlot.SIZE;
+                        adjustmentRectangle.Y += 2 * ItemSlot.SIZE;
+                        inventory[i].Item?.DrawInformation(spriteBatch, adjustmentRectangle);
+                    }
+                    else
+                    {
+                        inventory[i].Item?.DrawInformation(spriteBatch, inventory[i].Rectangle);
+                    }
                 }
             }
         }
