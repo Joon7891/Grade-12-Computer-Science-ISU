@@ -147,13 +147,30 @@ namespace ISU_Medieval_Odyssey
             });
         }
 
-
         /// <summary>
         /// Update subprogram for this <see cref="Dungeon"/>
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public void Update(GameTime gameTime)
         {
+            for (int i = World.Instance.DungeonEnemies.Count - 1; i >= 0; --i)
+            {
+                if (World.Instance.DungeonEnemies[i].IsStuck())
+                {
+                    World.Instance.DungeonEnemies.RemoveAt(i);
+                }
+            }
+
+            for (int i = World.Instance.DungeonEnemies.Count - 1; i >= 0; --i)
+            {
+                if (World.Instance.DungeonEnemies[i].CurrentTile.X > exitLocation.X ||
+                    World.Instance.DungeonEnemies[i].CurrentTile.Y > exitLocation.Y ||
+                    enterLocation.X > World.Instance.DungeonEnemies[i].CurrentTile.X ||
+                    enterLocation.Y > World.Instance.DungeonEnemies[i].CurrentTile.Y)
+                {
+                    World.Instance.DungeonEnemies.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
