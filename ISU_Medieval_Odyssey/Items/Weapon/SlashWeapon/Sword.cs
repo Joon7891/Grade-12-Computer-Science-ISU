@@ -45,6 +45,7 @@ namespace ISU_Medieval_Odyssey
         public Sword()
         {
             // Setting up sword
+            itemName = "Sword";
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
             base.verticalHitBox = verticalHitBox;

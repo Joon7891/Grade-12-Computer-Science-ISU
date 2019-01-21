@@ -34,6 +34,7 @@ namespace ISU_Medieval_Odyssey
         public HealthPotion()
         {
             // Assigning health potion components
+            itemName = "Health Potion";
             base.iconImage = iconImage;
             healthIncrease = SharedData.RNG.Next(HEALTH_INCREASE_MIN, HEALTH_INCREASE_MAX + 1);
             Value = healthIncrease;

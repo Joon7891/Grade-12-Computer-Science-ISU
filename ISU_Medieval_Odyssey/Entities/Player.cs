@@ -829,6 +829,15 @@ namespace ISU_Medieval_Odyssey
             {
                 spriteBatch.DrawString(SharedData.InformationFonts[0], $"Speed (+50%): {Math.Round(SpeedBoostTime, 2)}s", boostsTextLocs[3] - ((AttackBoostTime > 0 ? 0 : 1) + (DefenseBoostTime > 0 ? 0 : 1)) * boostTextBuffer, Color.Blue);
             }
+
+            // Drawing item information if player is hovering over it
+            for (int i = 0; i < ARMOUR_SIZE + (IsInventoryOpen ? 3 : 1) * ROW_SIZE; ++i)
+            {
+                if (MouseHelper.IsHovering(inventory[i].Rectangle))
+                {
+                    inventory[i].Item?.DrawInformation(spriteBatch, inventory[i].Rectangle);
+                }
+            }
         }
 
         /// <summary>

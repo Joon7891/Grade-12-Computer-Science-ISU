@@ -42,6 +42,7 @@ namespace ISU_Medieval_Odyssey
         public Dagger()
         {
             // Setting up Dagger
+            itemName = "Dagger";
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
             base.verticalHitBox = verticalHitBox;

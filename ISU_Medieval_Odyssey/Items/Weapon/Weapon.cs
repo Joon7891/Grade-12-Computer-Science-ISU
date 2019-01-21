@@ -67,6 +67,16 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// Subprogram to draw information about this <see cref="Weapon"/>
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw sprites</param>
+        /// <param name="iconRectangle">The icon's rectangle</param>
+        public override void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
+        {
+            base.DrawInformation(spriteBatch, iconRectangle);
+        }
+
+        /// <summary>
         /// Subprogram to draw the icon of this <see cref="Weapon"/>
         /// </summary>
         /// <param name="spriteBatch">Spritebatch to draw sprites</param>

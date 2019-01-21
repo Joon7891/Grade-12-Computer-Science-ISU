@@ -51,7 +51,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public Bow()
         {
-            // Setting up Bow images
+            // Setting up Bow
+            itemName = "Bow";
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
             Initialize(MIN_DAMAGE, MAX_DAMAGE, MIN_DURABILITY, MAX_DURABILITY);

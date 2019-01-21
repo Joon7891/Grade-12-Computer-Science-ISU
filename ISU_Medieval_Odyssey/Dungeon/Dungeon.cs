@@ -28,8 +28,6 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         private const int ENEMY_CHANCE = 5;
 
-        private static Random rng;
-
         /// <summary>
         /// Metadata for buildings
         /// </summary>
@@ -56,7 +54,6 @@ namespace ISU_Medieval_Odyssey
         {
             tile = Main.Content.Load<Texture2D>("Images/Sprites/Tiles/tileStone");
             tileSpacing = new Vector2Int(TILE_SIZE, TILE_SIZE);
-            rng = new Random();
         }
 
         public Dungeon(Vector2Int cornerTile)
@@ -78,7 +75,7 @@ namespace ISU_Medieval_Odyssey
                     }
                     else
                     {
-                        if (rng.Next(0, 101) < ENEMY_CHANCE)
+                        if (SharedData.RNG.Next(0, 101) < ENEMY_CHANCE)
                         {
                             World.Instance.DungeonEnemies.Add(Enemy.RandomEnemy(currentTile + cornerTile, true));
                         }

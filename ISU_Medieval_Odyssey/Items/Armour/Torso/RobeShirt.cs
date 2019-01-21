@@ -38,6 +38,7 @@ namespace ISU_Medieval_Odyssey
         public RobeShirt()
         {
             // Setting up RobeShirt
+            itemName = "Robe Shirt";
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);

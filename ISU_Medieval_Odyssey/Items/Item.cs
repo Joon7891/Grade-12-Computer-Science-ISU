@@ -30,12 +30,9 @@ namespace ISU_Medieval_Odyssey
         // The image the item's icon
         protected Texture2D iconImage;
 
-        // Tooltip 
-        private string[] informationText;
-        private const int INFO_WIDTH = 50;
-        private const int INFO_HEIGHT = 45;
-        private static Texture2D informationBackImage;
-        private static Vector2Int textBuffer = new Vector2Int(0, 40);
+        // Variables for drawing item tooltip 
+        protected static Texture2D informationBackImage;
+        protected string itemName;
 
         /// <summary>
         /// Static constructor for <see cref="Item"/>
@@ -61,6 +58,21 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing icon
             spriteBatch.Draw(iconImage, rectangle, Color.White);
+        }
+
+        /// <summary>
+        /// Subprogram to draw information about this <see cref="Item"/>
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw sprites</param>
+        /// <param name="iconRectangle">The icon's rectangle</param>
+        public virtual void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
+        {
+            // Adjusting rectangle and drawing backing
+            iconRectangle.X -= iconRectangle.Width / 2;
+            iconRectangle.Y -= 5 * iconRectangle.Height / 2;
+            iconRectangle.Width *= 2;
+            iconRectangle.Height = 2 * iconRectangle.Height;
+            spriteBatch.Draw(informationBackImage, iconRectangle, Color.White);
         }
 
         /// <summary>
