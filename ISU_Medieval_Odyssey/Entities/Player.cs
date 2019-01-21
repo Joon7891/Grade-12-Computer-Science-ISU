@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Newtonsoft.Json;
@@ -88,25 +87,16 @@ namespace ISU_Medieval_Odyssey
         /// The amount of attributes this <see cref="Player"/> has
         /// </summary>
         [JsonProperty]
-        public int AttributePoints { get; private set; } = 0;
-
-        /// <summary>
-        /// The level of the health attribute
-        /// </summary>
-        [JsonProperty]
-        public int HealthAttributeLevel { get; private set; } = 0;
+        public int AttributePoints { get; set; } = 0;
 
         /// <summary>
         /// The level of the attack attribute
         /// </summary>
-        [JsonProperty]
-        public int AttackAttributeLevel { get; private set; } = 0;
+        [JsonIgnore]
+        public int AttackLevel => attributes[1].Level;
 
         [JsonProperty]
-        public int DefenseAttributeLevel { get; private set; } = 0;
-
-        [JsonProperty]
-        public int SpeedAttributeLevel { get; private set; } = 0;
+        private Attribute[] attributes = new Attribute[4];
 
         /// <summary>
         /// The amount of <see cref="ItemSlot"/>s available for this <see cref="Player"/>
@@ -169,14 +159,15 @@ namespace ISU_Medieval_Odyssey
             new Vector2(110, 40),
             new Vector2(60, 60),
             new Vector2(80, 115),
-            new Vector2(64, 170)
+            new Vector2(60, 180),
+            new Vector2(72, 205)
         };
         private readonly Vector2[] boostsTextLocs =
         {
-            new Vector2(79, 170),
-            new Vector2(27, 200),
-            new Vector2(10, 230),
-            new Vector2(27, 260)
+            new Vector2(299, 15),
+            new Vector2(246, 45),
+            new Vector2(230, 75),
+            new Vector2(247, 105)
         };
         private readonly Vector2 boostTextBuffer = new Vector2(0, 30);
 
@@ -203,17 +194,15 @@ namespace ISU_Medieval_Odyssey
 
             // Setting up player speed, rectangle, and camera components
             Speed = 3;
+            center = Vector2Int.Zero;
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
             unroundedLocation = rectangle.Location.ToVector2();
             hitBox = new Rectangle(PIXEL_SIZE >> 2, PIXEL_SIZE / 5, PIXEL_SIZE >> 1, 4 * PIXEL_SIZE / 5);
             miniIcon = new Circle(new Vector2Int(), MINI_ICON_RADIUS, Color.Red);
 
-            // Constructing world coordinate variables
-            center = Vector2Int.Zero;
-
             // Setting up name and other attributes
-            Name = name;
             Level = 1;
+            Name = name;
             statisticsLocs[0].X = 100 - SharedData.InformationFonts[0].MeasureString(name).X / 2;
             experienceBar = new NumberBar(new Rectangle(10, 80, 200, 28), LevelUpRequirement(), 0, Color.White * 0.5f, 
                 Color.Blue * 0.6f, SharedData.InformationFonts[0], Color.Black);
@@ -249,6 +238,15 @@ namespace ISU_Medieval_Odyssey
             inventory[4].Item = new MetalShoulders();
             inventory[5].Item = new MetalHelmet();
 
+            attributes[0] = new Attribute(new Rectangle(110, 230, 100, 30), "Health", () =>
+            {
+                healthBar.MaxValue += 20;
+                healthBar.CurrentValue += 20;
+            });
+            attributes[1] = new Attribute(new Rectangle(110, 295, 100, 30), "Attack");
+            attributes[2] = new Attribute(new Rectangle(110, 360, 100, 30), "Defense");
+            attributes[3] = new Attribute(new Rectangle(110, 425, 100, 30), "Speed");
+
             // Serializing player data
             // IO.SavePlayer(this);
         }
@@ -260,6 +258,18 @@ namespace ISU_Medieval_Odyssey
         /// <param name="cameraCenter">The center of the camera that is currenetly pointed at the Player</param>
         public void Update(GameTime gameTime, Vector2 cameraCenter)
         {
+            // Updating attributes bar
+            for (byte i = 0; i < attributes.Length; ++i)
+            {
+                attributes[i].Update(gameTime);
+
+                // Returning out of subprogram of the button is pressed - prevents double presses
+                if (MouseHelper.IsRectangleLeftClicked(attributes[i].Rectangle))
+                {
+                    return;
+                }
+            }
+            
             // Calling subprograms to update movement if player is not in a shop
             if (!InTransaction)
             {
@@ -328,9 +338,10 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
-            // Putting item in "hand" if user left clicks the item
+            // Looping through inventory
             for (int i = 0; i < ARMOUR_SIZE + ROW_SIZE * (IsInventoryOpen ? 3 : 1); ++i)
             {
+                // Putting item in "hand" if user left clicks the item
                 if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
                 {
                     if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || 
@@ -346,7 +357,7 @@ namespace ISU_Medieval_Odyssey
                     }
 
                     return;
-                }
+                }                
             }
 
             // Using item if user left clicks on the world to use it
@@ -621,7 +632,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         /// <returns>The <see cref="Player"/>'s speed in pixels</returns>
-        private float GetPixelSpeed(GameTime gameTime) => (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+        private float GetPixelSpeed(GameTime gameTime) => (1 + 0.05f * attributes[3].Level) * (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
 
         /// <summary>
         /// Subprogram to update the player's direction
@@ -746,6 +757,7 @@ namespace ISU_Medieval_Odyssey
                     }
                 }
             }
+            finalDamageAmount = (int)(finalDamageAmount / (1 + 0.05 * attributes[2].Level) + 0.5);
             Health -= (int)(finalDamageAmount * (DefenseBoostTime > 0 ? 1.0f - DefensePotion.BOOST_AMOUNT : 1) + 0.5);
         }
 
@@ -791,6 +803,14 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.DrawString(SharedData.InformationFonts[0], "Health", statisticsLocs[4], Color.Red);
             healthBar.Draw(spriteBatch);
 
+            // Drawing attributes
+            spriteBatch.DrawString(SharedData.InformationFonts[1], "Attributes", statisticsLocs[5], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Points: {AttributePoints}", statisticsLocs[6], Color.White);
+            for (byte i = 0; i < attributes.Length; ++i)
+            {
+                attributes[i].Draw(spriteBatch);
+            }
+
             // Drawing various boosts, if applicable
             if (AttackBoostTime > 0 || DefenseBoostTime > 0 || SpeedBoostTime > 0)
             {
@@ -798,15 +818,15 @@ namespace ISU_Medieval_Odyssey
             }
             if (AttackBoostTime > 0)
             {
-                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Attack (+30%): {Math.Round(AttackBoostTime, 2)}s", boostsTextLocs[1], Color.SpringGreen);
+                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Attack (+30%): {Math.Round(AttackBoostTime, 2)}s", boostsTextLocs[1], Color.Blue);
             }
             if (DefenseBoostTime > 0)
             {
-                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Defense (+40%): {Math.Round(DefenseBoostTime, 2)}s", boostsTextLocs[2] - (AttackBoostTime > 0 ? 0 : 1) * boostTextBuffer, Color.SpringGreen);
+                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Defense (+40%): {Math.Round(DefenseBoostTime, 2)}s", boostsTextLocs[2] - (AttackBoostTime > 0 ? 0 : 1) * boostTextBuffer, Color.Blue);
             }
             if (SpeedBoostTime > 0)
             {
-                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Speed (+50%): {Math.Round(SpeedBoostTime, 2)}s", boostsTextLocs[3] - ((AttackBoostTime > 0 ? 0 : 1) + (DefenseBoostTime > 0 ? 0 : 1)) * boostTextBuffer, Color.SpringGreen);
+                spriteBatch.DrawString(SharedData.InformationFonts[0], $"Speed (+50%): {Math.Round(SpeedBoostTime, 2)}s", boostsTextLocs[3] - ((AttackBoostTime > 0 ? 0 : 1) + (DefenseBoostTime > 0 ? 0 : 1)) * boostTextBuffer, Color.Blue);
             }
         }
 

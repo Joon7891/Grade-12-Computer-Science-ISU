@@ -49,7 +49,6 @@ namespace ISU_Medieval_Odyssey
         // Variables required to draw NumberBar text
         private Vector2 textLocation;
         private readonly Color textColor;
-        [JsonProperty]
         private readonly SpriteFont progressFont;
 
         /// <summary>

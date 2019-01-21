@@ -46,6 +46,7 @@
     <Compile Include="Data Structures\ICollidable.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
     <Compile Include="Dungeon\Dungeon.cs" />
+    <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\Enemies\Primitive\Zombie.cs" />
     <Compile Include="Items\Weapon\MeleeWeapon.cs" />
     <Compile Include="Screen\HowToPlayScreen.cs" />
