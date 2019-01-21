@@ -5,11 +5,6 @@
 // Modified Date: 12/19/2018
 // Description: Class to hold ChainHelmet object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -42,6 +37,7 @@ namespace ISU_Medieval_Odyssey
         public ChainHelmet()
         {
             // Setting up ChainHelmet
+            itemName = "Chain Helmet";
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);

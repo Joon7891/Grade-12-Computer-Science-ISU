@@ -5,11 +5,6 @@
 // Modified Date: 12/18/2018
 // Description: Class to hold LeatherShoes object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -41,6 +36,8 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public LeatherShoes()
         {
+            // Setting up leather shoes
+            itemName = "Leather Shoes";
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);

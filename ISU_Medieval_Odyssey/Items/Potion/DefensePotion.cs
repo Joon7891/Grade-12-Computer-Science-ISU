@@ -32,6 +32,7 @@ namespace ISU_Medieval_Odyssey
         public DefensePotion()
         {
             // Setting up defense potion
+            itemName = "Defense Potion";
             base.iconImage = iconImage;
             Value = VALUE;
         }

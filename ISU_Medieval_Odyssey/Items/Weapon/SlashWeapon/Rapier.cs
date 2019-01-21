@@ -42,6 +42,7 @@ namespace ISU_Medieval_Odyssey
         public Rapier()
         {
             // Setting up Rapier
+            itemName = "Rapier";
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
             base.verticalHitBox = verticalHitBox;

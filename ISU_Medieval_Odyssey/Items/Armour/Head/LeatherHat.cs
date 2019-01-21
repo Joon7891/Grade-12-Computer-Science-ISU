@@ -5,7 +5,6 @@
 // Modified Date: 12/20/2018
 // Description: Class to hold LeatherHat object
 
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -38,6 +37,7 @@ namespace ISU_Medieval_Odyssey
         public LeatherHat()
         {
             // Setting up LeatherHat
+            itemName = "Leather Hat";
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);

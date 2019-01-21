@@ -32,6 +32,7 @@ namespace ISU_Medieval_Odyssey
         public AttackPotion()
         {
             // Setting up attack potion
+            itemName = "Attack Potion";
             base.iconImage = iconImage;
             Value = VALUE;
         }

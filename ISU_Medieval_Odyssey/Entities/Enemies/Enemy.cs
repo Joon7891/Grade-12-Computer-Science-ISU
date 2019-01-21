@@ -7,6 +7,7 @@
 
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -84,6 +85,8 @@ namespace ISU_Medieval_Odyssey
         protected int frameCounter = 0;
         protected DirectionalSpriteSheet directionalSpriteSheet;
 
+        private static SoundEffect hitSoundEffect;
+
         // Constants related to random enemy generation
         private const int SKELETON_CHANCE_MAX = 25;
         private const int GOBLIN_CHANCE_MAX = 50;
@@ -104,6 +107,7 @@ namespace ISU_Medieval_Odyssey
             diagonalMoveSequence.Add(new Vector2Int(-1, -1), new Vector2Int[] { new Vector2Int(-1, -1), new Vector2Int(-1, 0) });
             diagonalMoveSequence.Add(new Vector2Int(1, -1), new Vector2Int[] { new Vector2Int(1, -1), new Vector2Int(1, 0) });
             diagonalMoveSequence.Add(new Vector2Int(-1, 1), new Vector2Int[] { new Vector2Int(-1, 1), new Vector2Int(-1, 0) });
+            hitSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/enemyHit");
         }
 
         /// <summary>
@@ -203,6 +207,7 @@ namespace ISU_Medieval_Odyssey
                 if (timeToAttack > attackSpeed)
                 {
                     timeToAttack = 0;
+                    hitSoundEffect.CreateInstance().Play();
                     Player.Instance.InflictDamage(damageAmount);
                 }
             }

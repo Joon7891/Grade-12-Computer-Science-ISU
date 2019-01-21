@@ -32,6 +32,7 @@ namespace ISU_Medieval_Odyssey
         public SpeedPotion()
         {
             // Setting up speed potion
+            itemName = "Speed Potion";
             base.iconImage = iconImage;
             Value = VALUE;
         }

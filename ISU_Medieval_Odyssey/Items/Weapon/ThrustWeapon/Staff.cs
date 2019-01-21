@@ -40,6 +40,7 @@ namespace ISU_Medieval_Odyssey
         public Staff()
         {
             // Setting up Staff
+            itemName = "Staff";
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
             base.verticalHitBox = verticalHitBox;

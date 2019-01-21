@@ -6,11 +6,6 @@
 // Description: Class to hold LeathePants object
 
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -42,6 +37,7 @@ namespace ISU_Medieval_Odyssey
         public LeatherPants()
         {
             // Setting up LeatherPants
+            itemName = "Leather Pants";
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);

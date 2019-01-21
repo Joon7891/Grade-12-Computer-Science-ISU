@@ -40,6 +40,7 @@ namespace ISU_Medieval_Odyssey
         public Spear()
         {
             // Setting up Spear
+            itemName = "Spear";
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
             base.verticalHitBox = verticalHitBox;

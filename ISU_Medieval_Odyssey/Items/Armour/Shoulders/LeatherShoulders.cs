@@ -37,6 +37,7 @@ namespace ISU_Medieval_Odyssey
         public LeatherShoulders()
         {
             // Setting up LeatherShoulders
+            itemName = "Leather Shoulders";
             base.iconImage = iconImage;
             base.movementSpriteSheet = movementSpriteSheet;
             InitializeArmourStatistics(MIN_DEFENSE, MAX_DEFENSE, MIN_DURABILITY, MAX_DURABILITY);
