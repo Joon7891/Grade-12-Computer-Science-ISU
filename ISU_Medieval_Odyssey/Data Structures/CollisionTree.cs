@@ -2,7 +2,7 @@
 // File Name: CollisionTree.cs
 // Project Name: ISU_Medieval_Odyssey
 // Creation Date: 1/15/2018
-// Modified Date: 1/15//2018
+// Modified Date: 1/15/2018
 // Description: Tree that holds projectiles and effciently checks for collisions with rectangles
 
 using System;

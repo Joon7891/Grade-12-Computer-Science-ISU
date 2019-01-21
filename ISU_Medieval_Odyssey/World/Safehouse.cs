@@ -119,7 +119,7 @@ namespace ISU_Medieval_Odyssey
         {
             if (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Interact))
             {
-                IO.SavePlayer(GameScreen.Instance.Player);
+                GameScreen.Instance.Player.Health = int.MaxValue;
             }
         }
 
