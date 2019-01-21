@@ -207,7 +207,7 @@ namespace ISU_Medieval_Odyssey
             statisticsLocs[0].X = 100 - SharedData.InformationFonts[0].MeasureString(name).X / 2;
             experienceBar = new NumberBar(new Rectangle(10, 80, 200, 28), LevelUpRequirement(), 0, Color.White * 0.5f, 
                 Color.Blue * 0.6f, SharedData.InformationFonts[0], Color.Black);
-            healthBar = new NumberBar(new Rectangle(10, 135, 200, 28), 200, 100, Color.White * 0.5f,
+            healthBar = new NumberBar(new Rectangle(10, 135, 200, 28), 200, 200, Color.White * 0.5f,
                 Color.Red * 0.6f, SharedData.InformationFonts[0], Color.Black);
 
             // Constructing player inventory

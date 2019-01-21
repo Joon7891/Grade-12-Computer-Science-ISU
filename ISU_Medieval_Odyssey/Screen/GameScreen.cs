@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -46,6 +47,9 @@ namespace ISU_Medieval_Odyssey
         private bool showStatistics = false;
         private Vector2[] statisticsLoc = new Vector2[5];
 
+        // Various sound effects
+        private static SoundEffect deathSoundEffect;
+
         /// <summary>
         /// Constructor for <see cref="GameScreen"/>
         /// </summary>
@@ -65,8 +69,11 @@ namespace ISU_Medieval_Odyssey
             miniMapBorder = new Sprite(Main.Content.Load<Texture2D>("Images/Sprites/miniMapBorder"), 
                 new Rectangle(SharedData.SCREEN_WIDTH - MINI_MAP_SIZE - 10, 10, MINI_MAP_SIZE, MINI_MAP_SIZE));
             miniMapCamera.Position = miniMapBorder.Rectangle.Location.ToVector2();
+
+            // Importing audio
+            deathSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/deathSoundEffect");
         }
-        
+
         /// <summary>
         /// Update subprogram for GameScreen
         /// </summary>
@@ -98,10 +105,12 @@ namespace ISU_Medieval_Odyssey
             miniMapCamera.Position = - World.WorldBoundsRect.Location.ToVector2() / Chunk.SIZE + adjustmentVector;
             miniMapCamera.Origin = miniMapCamera.Position - World.WorldBoundsRect.Location.ToVector2() / Chunk.SIZE * miniMapCamera.OrthographicSize / 2.0f;
 
+            // Switchint back to main menu if player dies or player goes back to screen
             if (Player.Health <= 0)
             {
                 Player = null;
                 World = null;
+                deathSoundEffect.CreateInstance().Play();
                 Main.CurrentScreen = ScreenMode.MainMenu;
             }
             else if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pause))

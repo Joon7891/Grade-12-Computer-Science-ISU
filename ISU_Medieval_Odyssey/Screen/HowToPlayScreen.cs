@@ -19,7 +19,7 @@ namespace ISU_Medieval_Odyssey
         public static HowToPlayScreen Instance { get; set; }
 
         // Background imgaes and audio
-        private Background[] backgrounds = new Background[3];
+        private Background[] backgrounds = new Background[5];
         private int currentBackground = 0;
         private Song backgroundMusic;
 

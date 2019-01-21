@@ -6,6 +6,7 @@
 // Description: Class to hold NewGameScreen object, implements IScreen
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -61,6 +62,7 @@ namespace ISU_Medieval_Odyssey
             advanceButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/newGameBackButton"), new Rectangle(10, SharedData.SCREEN_HEIGHT - 90, 240, 80), () => onNameScreen = true);
             advanceButtons[2] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/createWorldButton"), new Rectangle(SharedData.SCREEN_WIDTH - 250, SharedData.SCREEN_HEIGHT - 90, 240, 80), () =>
             {
+                onNameScreen = true;
                 GameScreen.Instance.Player = new Player(playerName);
                 GameScreen.Instance.World = seedNumber == string.Empty ? new World() : new World(Convert.ToInt32(seedNumber));
                 Main.CurrentScreen = ScreenMode.Game;
