@@ -10,8 +10,11 @@ using System.Collections.Generic;
 
 namespace ISU_Medieval_Odyssey
 {
-    class Safehouse : IBuilding
+    public sealed class Safehouse : IBuilding
     {
+        /// <summary>
+        /// Constants pertaining to safehouse
+        /// </summary>
         private const int PIXEL_WIDTH = Tile.SPACING * OUTSIDE_WIDTH;
         private const int PIXEL_HEIGHT = Tile.SPACING * OUTSIDE_HEIGHT;
         private const int INSIDE_WIDTH = 7;
@@ -19,17 +22,27 @@ namespace ISU_Medieval_Odyssey
         private const int OUTSIDE_WIDTH = 9;
         private const int OUTSIDE_HEIGHT = 6;
 
+        /// <summary>
+        /// Ibuilding properties
+        /// </summary>
         public Rectangle Rectangle { get; set; }
         public Vector2Int CornerTile { get; }
-        Sprite insideSprite;
-        Sprite outsideSprite;
 
+        /// <summary>
+        /// Building statistics
+        /// </summary>
         static private List<Vector2Int> insideObstructionLocs = new List<Vector2Int>();
         static private List<Vector2Int> outsideObstructionLocs = new List<Vector2Int>();
         static private Vector2Int enterLocation;
         static private Vector2Int exitLocation;
+
+        /// <summary>
+        /// Graphical fields
+        /// </summary>
         static private Texture2D insideImage;
         static private Texture2D outsideImage;
+        Sprite insideSprite;
+        Sprite outsideSprite;
 
         static Safehouse()
         {
@@ -70,7 +83,7 @@ namespace ISU_Medieval_Odyssey
     }
 
         /// <summary>
-        /// Constructor for <see cref="Shop"/> object
+        /// Constructor for <see cref="Safehouse"/> object
         /// </summary>
         /// <param name="cornerTile">The position of the tile <see cref="Tile"/> in the top left corner</param>
         public Safehouse(Vector2Int cornerTile)
@@ -84,7 +97,9 @@ namespace ISU_Medieval_Odyssey
             SetTiles();
         }
 
-
+        /// <summary>
+        /// Readies the collision state of the <see cref="Safehouse"/>
+        /// </summary>
         public void SetTiles()
         {
             for (int i = 0; i < insideObstructionLocs.Count; ++i)
@@ -97,6 +112,7 @@ namespace ISU_Medieval_Odyssey
                 World.Instance.GetTileAt(CornerTile + outsideObstructionLocs[i]).OutsideObstructState = true;
             }
 
+            // setup enter and leave logic
             World.Instance.GetTileAt(CornerTile + exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
             {
                 World.Instance.IsInside = false;
