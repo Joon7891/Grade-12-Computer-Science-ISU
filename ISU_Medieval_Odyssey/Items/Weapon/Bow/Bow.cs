@@ -27,6 +27,12 @@ namespace ISU_Medieval_Odyssey
         private static DirectionalSpriteSheet arrowSpriteSheet;
         private new static Texture2D iconImage;
 
+        // Various constants for Sword components
+        private const int MIN_DAMAGE = 10;
+        private const int MAX_DAMAGE = 100;
+        private const int MIN_DURABILITY = 50;
+        private const int MAX_DURABILITY = 300;
+
         /// <summary>
         /// Static constructor for <see cref="Bow"/> object
         /// </summary>
@@ -48,6 +54,7 @@ namespace ISU_Medieval_Odyssey
             // Setting up Bow images
             base.directionalSpriteSheet = directionalSpriteSheet;
             base.iconImage = iconImage;
+            Initialize(MIN_DAMAGE, MAX_DAMAGE, MIN_DURABILITY, MAX_DURABILITY);
         }
 
         /// <summary>
@@ -61,6 +68,20 @@ namespace ISU_Medieval_Odyssey
         {
             base.Draw(spriteBatch, rectangle, direction, currentFrame);
             arrowSpriteSheet.Draw(spriteBatch, direction, currentFrame, rectangle);
+            Initialize(MIN_DAMAGE, MAX_DAMAGE, MIN_DURABILITY, MAX_DURABILITY);
+        }
+
+        /// <summary>
+        /// Subprogram to use this <see cref="Bow"/>
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using this <see cref="Bow"/></param>
+        public override void Use(Player player)
+        {
+            // Calling base use subprogram
+            base.Use(player);
+
+            // Adding projectile to world
+            World.Instance.AddProjectile(new Arrow(player.Direction, player, damage));
         }
     }
 }

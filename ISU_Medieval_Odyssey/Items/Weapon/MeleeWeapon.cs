@@ -55,7 +55,7 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Sending attack action to world
-            World.Instance.InflictMeleeDamage(adjustedRectangle, 10, player.Direction);
+            World.Instance.InflictMeleeDamage(adjustedRectangle, damage, player.Direction);
             
             // Calling base use subprogram
             base.Use(player);

@@ -6,20 +6,52 @@
 // Description: Class to hold Weapon object
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
 {
     public abstract class Weapon : Item
     {
-        // Base attack damage of the weapon, before modifiers
-        public int Damage { get; protected set; }
+        /// <summary>
+        /// The value of the item - the price at which it will be purchased at
+        /// </summary>
+        public override int Value => damage + durabilityBar.CurrentValue / 2;
 
         // The directional spritesheet for a weapon
         protected DirectionalSpriteSheet directionalSpriteSheet;
 
         // Note: Only used for weapons with 196 x 196 - Long Spear, Sword and Rapier
         protected Rectangle adjustedRectangle = new Rectangle(0, 0, 300, 300);
+
+        // Damage, durability, and breaking sound effect
+        protected int damage;
+        private ProgressBar durabilityBar;
+        private static SoundEffect breakSoundEffect;
+
+        /// <summary>
+        /// Static constructor for <see cref="Weapon"/>
+        /// </summary>
+        static Weapon()
+        {
+            // Importing breaking sound effect
+            breakSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/armourBreakSoundEffect");
+        }
+
+        /// <summary>
+        /// Subprogram to initialize various components of <see cref="Weapon"/>
+        /// </summary>
+        /// <param name="minDamage">The min damage of this <see cref="Weapon"/></param>
+        /// <param name="maxDamage">The max damage of this <see cref="Weapon"/></param>
+        /// <param name="minDurability">The min durability of this <see cref="Weapon"/></param>
+        /// <param name="maxDurability">The max durability of this <see cref="Weapon"/></param>
+        protected void Initialize(int minDamage, int maxDamage, int minDurability, int maxDurability)
+        {
+            // Setting up various weapon statistics
+            short durability = (short)SharedData.RNG.Next(minDurability, maxDurability + 1);
+            damage = SharedData.RNG.Next(minDamage, maxDamage + 1);
+            durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 5), durability, durability, Color.White * 0.6f, Color.Green * 0.6f);
+        }
 
         /// <summary>
         /// Subprogram to draw <see cref="Weapon"/> object
@@ -32,6 +64,36 @@ namespace ISU_Medieval_Odyssey
         {
             // Drawing weapon
             directionalSpriteSheet.Draw(spriteBatch, direction, currentFrame, playerRectangle);
+        }
+
+        /// <summary>
+        /// Subprogram to draw the icon of this <see cref="Weapon"/>
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw sprites</param>
+        /// <param name="rectangle">The <see cref="Rectangle"/> to draw this icon in</param>
+        public override void DrawIcon(SpriteBatch spriteBatch, Rectangle rectangle)
+        {
+            // Calling base draw subprogram
+            base.DrawIcon(spriteBatch, rectangle);
+
+            // Drawing durability bar
+            durabilityBar.X = rectangle.X + 5;
+            durabilityBar.Y = rectangle.Y + 47;
+            durabilityBar.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// Use subprogram for <see cref="Weapon"/>
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using this <see cref="Weapon"/></param>
+        public override void Use(Player player)
+        {
+            // Updating and breaking weapon if durability drops
+            if (--durabilityBar.CurrentValue == 0)
+            {
+                Valid = false;
+                breakSoundEffect.CreateInstance().Play();
+            }
         }
 
         /// <summary>
