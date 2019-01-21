@@ -249,7 +249,7 @@ namespace ISU_Medieval_Odyssey
             attributes[3] = new Attribute(new Rectangle(108, 425, 100, 30), "Speed");
 
             // Serializing player data
-            // IO.SavePlayer(this);
+            IO.SavePlayer(this);
         }
 
         /// <summary>

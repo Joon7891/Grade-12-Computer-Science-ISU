@@ -82,7 +82,7 @@ namespace ISU_Medieval_Odyssey
             base.Use(player);
 
             // Adding projectile to world
-            World.Instance.AddProjectile(new Arrow(player.Direction, player, damage));
+            World.Instance.AddProjectile(new Arrow(player.Direction, player, damage * (int)(0.5 + player.AttackBoostTime > 0 ? 1 + AttackPotion.BOOST_AMOUNT : 1)));
         }
     }
 }
