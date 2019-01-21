@@ -18,6 +18,12 @@ namespace ISU_Medieval_Odyssey
         private new static Rectangle verticalHitBox = new Rectangle(0, 0, 20, 100);
         private new static Rectangle horizontalHitBox = new Rectangle(0, 0, 100, 20);
 
+        // Various constants for LongSpear components
+        private const int MIN_DAMAGE = 20;
+        private const int MAX_DAMAGE = 50;
+        private const int MIN_DURABILITY = 50;
+        private const int MAX_DURABILITY = 200;
+
         /// <summary>
         /// Static constructor for <see cref="LongSpear"/> object
         /// </summary>
@@ -38,6 +44,7 @@ namespace ISU_Medieval_Odyssey
             base.iconImage = iconImage;
             base.verticalHitBox = verticalHitBox;
             base.horizontalHitBox = horizontalHitBox;
+            Initialize(MIN_DAMAGE, MAX_DAMAGE, MIN_DURABILITY, MAX_DURABILITY);
         }
 
         /// <summary>

@@ -524,7 +524,7 @@ namespace ISU_Medieval_Odyssey
                         // Adding arrow if the animation was a shooting animation 
                         if (currentWeapon is Bow)
                         {
-                            World.Instance.AddProjectile(new Arrow(Direction, this, 50));
+                            currentWeapon.Use(this);
                         }
 
                         // Switching to movement graphics
