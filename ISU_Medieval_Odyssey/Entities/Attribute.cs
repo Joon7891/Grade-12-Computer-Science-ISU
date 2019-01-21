@@ -78,8 +78,8 @@ namespace ISU_Medieval_Odyssey
         public void Draw(SpriteBatch spriteBatch)
         {
             // Drawing attribute update button and corresponding text
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"{name}", textLocations[0], Color.Indigo);
-            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Level {Level}", textLocations[1], Color.Indigo);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"{name}", textLocations[0], Color.White);
+            spriteBatch.DrawString(SharedData.InformationFonts[0], $"Level {Level}", textLocations[1], Color.White);
             spriteBatch.DrawString(SharedData.InformationFonts[3], $"{LevelUpRequirement()} Points", textLocations[2], Color.White);
             upgradeButton.Draw(spriteBatch);
         }

@@ -278,10 +278,7 @@ namespace ISU_Medieval_Odyssey
 
             // Drawing keybindings and corresponding graphics
             spriteBatch.DrawString(textFonts[1], "KeyBindings", textLocations[4], Color.White);
-            for (byte i = 0; i < keyBindings.Length; ++i)
-            {
-                keyBindings[i].Draw(spriteBatch, i == selectedKeyBinding);
-            }
+            DrawKeys(spriteBatch);
 
             // Drawing setting options buttons
             for (byte i = 0; i < settingOptionButtons.Length; ++i)
@@ -294,6 +291,19 @@ namespace ISU_Medieval_Odyssey
 
             // Ending sprite batch
             spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Subprogram to draw the variosu keys
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawKeys(SpriteBatch spriteBatch)
+        {
+            // Drawing keys
+            for (byte i = 0; i < keyBindings.Length; ++i)
+            {
+                keyBindings[i].Draw(spriteBatch, i == selectedKeyBinding);
+            }
         }
     }
 }

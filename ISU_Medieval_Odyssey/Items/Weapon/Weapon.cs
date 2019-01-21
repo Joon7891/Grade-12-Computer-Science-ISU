@@ -8,6 +8,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -16,6 +17,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The value of the item - the price at which it will be purchased at
         /// </summary>
+        [JsonProperty]
         public override int Value => damage + durabilityBar.CurrentValue / 2;
 
         // The directional spritesheet for a weapon
@@ -25,7 +27,10 @@ namespace ISU_Medieval_Odyssey
         protected Rectangle adjustedRectangle = new Rectangle(0, 0, 300, 300);
 
         // Damage, durability, and breaking sound effect
+        [JsonProperty]
         protected int damage;
+        [JsonProperty]
+        protected int durability;
         private ProgressBar durabilityBar;
         private static SoundEffect breakSoundEffect;
 
@@ -48,9 +53,9 @@ namespace ISU_Medieval_Odyssey
         protected void Initialize(int minDamage, int maxDamage, int minDurability, int maxDurability)
         {
             // Setting up various weapon statistics
-            short durability = (short)SharedData.RNG.Next(minDurability, maxDurability + 1);
+            durability = (short)SharedData.RNG.Next(minDurability, maxDurability + 1);
             damage = SharedData.RNG.Next(minDamage, maxDamage + 1);
-            durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 5), durability, durability, Color.White * 0.6f, Color.Green * 0.6f);
+            durabilityBar = new ProgressBar(new Rectangle(0, 0, 50, 5), (short)durability, (short)durability, Color.White * 0.6f, Color.Green * 0.6f);
         }
 
         /// <summary>
@@ -106,6 +111,7 @@ namespace ISU_Medieval_Odyssey
         public override void Use(Player player)
         {
             // Updating and breaking weapon if durability drops
+            --durability;
             if (--durabilityBar.CurrentValue == 0)
             {
                 Valid = false;

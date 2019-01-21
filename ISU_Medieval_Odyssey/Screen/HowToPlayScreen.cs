@@ -89,6 +89,12 @@ namespace ISU_Medieval_Odyssey
             // Drawing current background
             backgrounds[currentBackground].Draw(spriteBatch);
 
+            // Drawing key bindings in appropraite screen
+            if (currentBackground == 2)
+            {
+                SettingsScreen.Instance.DrawKeys(spriteBatch);
+            }
+
             // Drawing appropriate buttons, when applicable
             backButton.Draw(spriteBatch);
             if (currentBackground > 0)

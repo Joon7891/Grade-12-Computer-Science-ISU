@@ -57,12 +57,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The amount of experience that the <see cref="Player"/> has
         /// </summary>
+        [JsonProperty]
         public short Experience
         {
             get => experienceBar.CurrentValue;
             set => SetExperience(value);
         }
-        [JsonProperty]
         private NumberBar experienceBar;
 
         /// <summary>
@@ -95,6 +95,7 @@ namespace ISU_Medieval_Odyssey
         [JsonIgnore]
         public int AttackLevel => attributes[1].Level;
 
+        // Attributes of this player
         [JsonProperty]
         private Attribute[] attributes = new Attribute[4];
 
@@ -136,7 +137,7 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The <see cref="Item"/> in this <see cref="Player"/>'s hand
         /// </summary>
-        [JsonProperty]
+        [JsonIgnore]
         public Item ItemInHand { get; set; } = null;
 
         /// <summary>
@@ -222,21 +223,16 @@ namespace ISU_Medieval_Odyssey
                 }
             }
 
-            // To Remove Later
-            inventory[6].Item = new Dagger();
-            inventory[7].Item = new Sword();
-            inventory[8].Item = new Bow();
-            inventory[9].Item = new HealthPotion();
-            inventory[10].Item = new AttackPotion();
-            inventory[11].Item = new SpeedPotion();
-            inventory[12].Item = new DefensePotion();
-
-            inventory[0].Item = new MetalShoes();
-            inventory[1].Item = new MetalPants();
+            // Setting up basic inventory
+            Gold = 50;
+            inventory[0].Item = new LeatherShoes();
+            inventory[1].Item = new LeatherPants();
             inventory[2].Item = new LeatherBelt();
-            inventory[3].Item = new MetalTorso();
-            inventory[4].Item = new MetalShoulders();
-            inventory[5].Item = new MetalHelmet();
+            inventory[3].Item = new LeatherTorso();
+            inventory[4].Item = new LeatherShoulders();
+            inventory[5].Item = new LeatherHat();
+            inventory[6].Item = new Sword();
+            inventory[7].Item = new Bow();
 
             // Setting up player attributes
             attributes[0] = new Attribute(new Rectangle(108, 230, 100, 30), "Health", () =>

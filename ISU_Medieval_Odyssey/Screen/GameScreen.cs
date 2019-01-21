@@ -24,12 +24,12 @@ namespace ISU_Medieval_Odyssey
         /// <summary>
         /// The player in the world
         /// </summary>
-        public Player Player { get; set; } = new Player("Test");
+        public Player Player { get; set; }
 
         /// <summary>
         /// The world of the game
         /// </summary>
-        public World World { get; set; } = new World();
+        public World World { get; set; }
 
         // Camera-realted variables
         public Camera Camera { get; set; } = new Camera();
@@ -97,6 +97,17 @@ namespace ISU_Medieval_Odyssey
             // Updating logic for minimap camera
             miniMapCamera.Position = - World.WorldBoundsRect.Location.ToVector2() / Chunk.SIZE + adjustmentVector;
             miniMapCamera.Origin = miniMapCamera.Position - World.WorldBoundsRect.Location.ToVector2() / Chunk.SIZE * miniMapCamera.OrthographicSize / 2.0f;
+
+            if (Player.Health <= 0)
+            {
+                Player = null;
+                World = null;
+                Main.CurrentScreen = ScreenMode.MainMenu;
+            }
+            else if (KeyboardHelper.NewKeyStroke(SettingsScreen.Instance.Pause))
+            {
+                Main.CurrentScreen = ScreenMode.MainMenu;
+            }
         }
 
         /// <summary>
