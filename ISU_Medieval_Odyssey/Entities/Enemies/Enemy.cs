@@ -383,7 +383,8 @@ namespace ISU_Medieval_Odyssey
         private bool ValidTile(Vector2Int tileCoordinate)
         {
             // If the tile in question is not valid, return false
-            if (World.Instance.GetTileAt(tileCoordinate).OutsideObstructState)
+            if (World.Instance.GetTileAt(tileCoordinate).OutsideObstructState || 
+                World.Instance.GetTileAt(tileCoordinate).InsideObstructState)
             {
                 return false;
             }

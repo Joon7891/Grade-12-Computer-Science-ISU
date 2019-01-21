@@ -51,6 +51,8 @@ namespace ISU_Medieval_Odyssey
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
 
+        public List<Enemy> DungeonEnemies { get; set; } = new List<Enemy>();
+
         // A set of cached buildings
         [JsonProperty]
         private HashSet<IBuilding> cachedBuildings = new HashSet<IBuilding>();
@@ -157,19 +159,39 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating enemies
-            for (int i = enemies.Count - 1; i >= 0; --i)
-            {
-                enemies[i].Update(gameTime);
 
-                // Removing enemies if they die and giving player corresponding
-                if (!enemies[i].Alive)
+            if (!IsInside)
+            {
+                for (int i = enemies.Count - 1; i >= 0; --i)
                 {
-                    Player.Instance.Experience += enemies[i].Experience;
-                    Player.Instance.Gold += enemies[i].Gold;
-                    AddItems(enemies[i].HitBox, enemies[i].LootTable);
-                    enemies.RemoveAt(i);
+                    enemies[i].Update(gameTime);
+
+                    // Removing enemies if they die and giving player corresponding loot
+                    if (!enemies[i].Alive)
+                    {
+                        Player.Instance.Experience += enemies[i].Experience;
+                        Player.Instance.Gold += enemies[i].Gold;
+                        AddItems(enemies[i].HitBox, enemies[i].LootTable);
+                        enemies.RemoveAt(i);
+                    }
                 }
-            }            
+            }
+            else
+            {
+                for (int i = DungeonEnemies.Count - 1; i >= 0; --i)
+                {
+                    DungeonEnemies[i].Update(gameTime);
+
+                    // Removing enemies if they die and giving player corresponding loot
+                    if (!DungeonEnemies[i].Alive)
+                    {
+                        Player.Instance.Experience += DungeonEnemies[i].Experience;
+                        Player.Instance.Gold += DungeonEnemies[i].Gold;
+                        AddItems(DungeonEnemies[i].HitBox, DungeonEnemies[i].LootTable);
+                        DungeonEnemies.RemoveAt(i);
+                    }
+                }
+            }
 
             // Updating the projectiles and collision info in the world
             for (int i = projectiles.Count - 1; i >= 0; --i)
@@ -184,7 +206,15 @@ namespace ISU_Medieval_Odyssey
                 }
 
                 // Inflicting damage and removing projectile if it hits a enemy
-                hitEnemies = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
+                if (IsInside)
+                {
+                    hitEnemies.AddRange(collisionTree.GetCollisions(projectiles[i].HitBox, DungeonEnemies));
+                }
+                else
+                {
+                    hitEnemies = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
+                }
+                
                 for (int j = 0; j < hitEnemies.Count; ++j)
                 {
                     hitEnemies[j].Health -= projectiles[i].DamageAmount;
@@ -264,6 +294,13 @@ namespace ISU_Medieval_Odyssey
                 for (short i = 0; i < enemies.Count; ++i)
                 {
                     enemies[i].Draw(spriteBatch);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < DungeonEnemies.Count; i++)
+                {
+                    DungeonEnemies[i].Draw(spriteBatch);
                 }
             }
         }
@@ -478,7 +515,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="enemyRectangle">The rectangle that the <see cref="Entity"/> is at</param>
         /// <param name="lootTable">The <see cref="HashSet{T}"/> containing the <see cref="Item"/>s</param>
-        private void AddItems(Rectangle entityRectangle, HashSet<Item> lootTable)
+        public void AddItems(Rectangle entityRectangle, HashSet<Item> lootTable)
         {
             // Adjusting entity rectangle
             entityRectangle.Y = entityRectangle.Y + (entityRectangle.Height - ItemSlot.SIZE) / 2;
@@ -503,8 +540,15 @@ namespace ISU_Medieval_Odyssey
         {
             // Determine the enemies who were hit
             List<Enemy> enemiesHit = new List<Enemy>();
-            enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
-            
+            if (IsInside)
+            {
+                enemiesHit = collisionTree.GetCollisions(weaponHitBox, DungeonEnemies);
+            }
+            else
+            {
+                enemiesHit = collisionTree.GetCollisions(weaponHitBox, enemies);
+            }
+
             // Hitting all applicable enemies and resetting their path finding
             for (short i = 0; i < enemiesHit.Count; ++i)
             {

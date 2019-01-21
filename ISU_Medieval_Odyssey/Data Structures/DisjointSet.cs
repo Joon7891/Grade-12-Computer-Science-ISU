@@ -1,8 +1,10 @@
-﻿using System;
+﻿// Author: Steven Ung
+// File Name: DisjointSet.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 1/15/2018
+// Modified Date: 1/20/2018
+// Description: Implementation of the disjoint set data structure using union by rank.
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -13,8 +15,8 @@ namespace ISU_Medieval_Odyssey
 
         public DisjointSet(int size)
         {
-            parent = new List<int>(size+1);
-            rank = new List<int>(size+1);
+            parent = new List<int>();
+            rank = new List<int>();
 
             for(int i = 0; i <= size; i++)
             {
@@ -23,7 +25,11 @@ namespace ISU_Medieval_Odyssey
             }
         }
 
-
+        /// <summary>
+        /// Find the parent of the item
+        /// </summary>
+        /// <param name="v"> the item to find </param>
+        /// <returns> v's parent </returns>
         public int Find(int v)
         {
             if (v == parent[v])
@@ -33,6 +39,11 @@ namespace ISU_Medieval_Odyssey
             return parent[v] = Find(parent[v]);
         }
 
+        /// <summary>
+        /// Unions two sets together
+        /// </summary>
+        /// <param name="a"> an item in set 1 </param>
+        /// <param name="b"> an item in set 2 </param>
         public void Union(int a, int b)
         {
             a = Find(a);

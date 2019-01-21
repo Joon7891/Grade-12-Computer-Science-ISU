@@ -36,7 +36,8 @@ namespace ISU_Medieval_Odyssey
                     futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
                     // Moving up if there are no barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState &&
+                        !World.Instance.GetTileAt(futureTileLocation).InsideObstructState)
                     {
                         unroundedLocation.Y -= GetPixelSpeed(gameTime);
                     }          
@@ -50,7 +51,8 @@ namespace ISU_Medieval_Odyssey
                     futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
                     // Moving right if there are no barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState &&
+                        !World.Instance.GetTileAt(futureTileLocation).InsideObstructState)
                     {
                         unroundedLocation.X += GetPixelSpeed(gameTime);
                     }
@@ -64,7 +66,8 @@ namespace ISU_Medieval_Odyssey
                     futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
                     // Moving down if there are no barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState &&
+                        !World.Instance.GetTileAt(futureTileLocation).InsideObstructState)
                     {
                         unroundedLocation.Y += GetPixelSpeed(gameTime);
                     }
@@ -78,7 +81,8 @@ namespace ISU_Medieval_Odyssey
                     futureTileLocation = World.PixelToTileCoordinate(futurePixelLocation);
 
                     // Moving left if there are no barriers
-                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState)
+                    if (!World.Instance.GetTileAt(futureTileLocation).OutsideObstructState &&
+                        !World.Instance.GetTileAt(futureTileLocation).InsideObstructState)
                     {
                         unroundedLocation.X -= GetPixelSpeed(gameTime);
                     }
