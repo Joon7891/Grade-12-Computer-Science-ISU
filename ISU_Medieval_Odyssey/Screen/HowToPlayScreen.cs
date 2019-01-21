@@ -19,7 +19,7 @@ namespace ISU_Medieval_Odyssey
         public static HowToPlayScreen Instance { get; set; }
 
         // Background imgaes and audio
-        private Background[] backgrounds = new Background[0];
+        private Background[] backgrounds = new Background[3];
         private int currentBackground = 0;
         private Song backgroundMusic;
 
@@ -87,7 +87,7 @@ namespace ISU_Medieval_Odyssey
             spriteBatch.Begin();
 
             // Drawing current background
-        //    backgrounds[currentBackground].Draw(spriteBatch);
+            backgrounds[currentBackground].Draw(spriteBatch);
 
             // Drawing appropriate buttons, when applicable
             backButton.Draw(spriteBatch);

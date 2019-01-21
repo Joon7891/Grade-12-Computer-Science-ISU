@@ -53,7 +53,7 @@ namespace ISU_Medieval_Odyssey
         private const float MIN_PROFIT_CUT = 0.60f;
         private const float MAX_PROFIT_CUT = 0.95f;
         private readonly float profitCut;
-        private const int ROW_SIZE = 9;
+        private const int ROW_SIZE = 7;
         private const int INVENTORY_SIZE = 3 * ROW_SIZE;
         private Button[] transactionButton = new Button[2];
         private ItemSlot[] transactionItemSlot = new ItemSlot[2];
@@ -78,8 +78,8 @@ namespace ISU_Medieval_Odyssey
             transactionSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/transactionSoundEffect");
 
             // Setting up price offer text locations
-            priceOfferLocations[0] = new Vector2(613, 525);
-            priceOfferLocations[1] = new Vector2(235, 525);
+            priceOfferLocations[0] = new Vector2(543, 525);
+            priceOfferLocations[1] = new Vector2(305, 525);
 
             // Setting up inside obstruction tiles
             for (int i = 0; i < INSIDE_WIDTH; ++i)
@@ -127,14 +127,14 @@ namespace ISU_Medieval_Odyssey
             }
             for (int i = 0; i < INVENTORY_SIZE; ++i)
             {
-                inventory[i] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (i % ROW_SIZE - 3.5) * 70), 
+                inventory[i] = new ItemSlot((int)(SharedData.SCREEN_HEIGHT / 2 - 5 + (i % ROW_SIZE - 2.5) * 70), 
                     280 + 70 * (i / ROW_SIZE), i < shopItems.Length ? shopItems[i] : null, Color.White);
             }
-            transactionItemSlot[0] = new ItemSlot(710, 490, null, Color.Green); // Buy
-            transactionItemSlot[1] = new ItemSlot(150, 490, null, Color.Red); // Sell
+            transactionItemSlot[0] = new ItemSlot(640, 490, null, Color.Green); // Buy
+            transactionItemSlot[1] = new ItemSlot(220, 490, null, Color.Red); // Sell
 
             // Setting up transaction buttons
-            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(608, 490, 80, 32), () =>
+            transactionButton[0] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/buyButton"), new Rectangle(538, 490, 80, 32), () =>
             {
                 // Making tranaction, if possible
                 if (transactionItemSlot[0].Item != null && Player.Instance.Gold >= transactionItemSlot[0].Item.Value && Player.Instance.ItemSlotsAvailable > 0)
@@ -150,7 +150,7 @@ namespace ISU_Medieval_Odyssey
                     errorSoundEffect.CreateInstance().Play();
                 }
             });
-            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(230, 490, 80, 32), () =>
+            transactionButton[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/sellButton"), new Rectangle(300, 490, 80, 32), () =>
             {
                 // Making transaction if possible, otherwise error
                 if (transactionItemSlot[1].Item != null && (inventory.Count(itemSlot => itemSlot.Item == null) + 1 > 0))

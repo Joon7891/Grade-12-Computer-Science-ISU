@@ -110,7 +110,7 @@ namespace ISU_Medieval_Odyssey
             Rectangle = rectangle;
             this.showText = showText;
             DisallowedBindings.Add(key);
-            textLocation = new Vector2(rectangle.X + (rectangle.Width - textFont.MeasureString(text).X) / 2, rectangle.Y - 30);
+            textLocation = new Vector2(rectangle.X + (rectangle.Width - textFont.MeasureString(text).X) / 2, rectangle.Y - 35);
         }
 
         /// <summary>

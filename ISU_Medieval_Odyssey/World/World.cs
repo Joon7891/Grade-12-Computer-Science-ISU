@@ -454,10 +454,11 @@ namespace ISU_Medieval_Odyssey
         /// <param name="chunkY">The y-coordinate of the <see cref="Chunk"/></param>
         private void AddBuilding(int chunkX, int chunkY)
         {
-            //if (SharedData.RNG.Next(25) == 1)
-            //{
-            //    cachedBuildings.Add(new Shop(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
-            //}
+            int buildingChance = SharedData.RNG.Next(25);
+            if (buildingChance == 1)
+            {
+                cachedBuildings.Add(new Shop(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
+            }
         }
 
         /// <summary>

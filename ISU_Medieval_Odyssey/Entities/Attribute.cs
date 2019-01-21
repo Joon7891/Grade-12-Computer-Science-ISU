@@ -49,16 +49,13 @@ namespace ISU_Medieval_Odyssey
             {
                 Player.Instance.AttributePoints -= LevelUpRequirement();
                 ++Level;
-                if (upgradeUpdate != null)
-                {
-                    upgradeUpdate();
-                }
+                upgradeUpdate?.Invoke();
             });
             this.name = name;
             textLocations[0].Y = rectangle.Y + 5;
-            textLocations[0].X = rectangle.X - 78;
+            textLocations[0].X = rectangle.X - 74;
             textLocations[1].Y = rectangle.Y + rectangle.Height;
-            textLocations[1].X = rectangle.X - 78;
+            textLocations[1].X = rectangle.X - 74;
             textLocations[2].Y = rectangle.Bottom + 5;
             textLocations[2].X = (rectangle.Width - SharedData.InformationFonts[3].MeasureString($"2 Points").X) / 2 + rectangle.X;
         }

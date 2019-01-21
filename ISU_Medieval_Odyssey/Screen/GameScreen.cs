@@ -37,7 +37,7 @@ namespace ISU_Medieval_Odyssey
 
         // Minimap-related variables
         private Camera miniMapCamera = new Camera();
-        private const int MINI_MAP_SIZE = 200;
+        private const int MINI_MAP_SIZE = 210;
         private Vector2 adjustmentVector = new Vector2(895, 11);
         private Vector2 cameraVerticalShift = new Vector2(0, MINI_MAP_SIZE / 2);
         private Sprite miniMapBorder;
