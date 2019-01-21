@@ -107,7 +107,7 @@ namespace ISU_Medieval_Odyssey
             diagonalMoveSequence.Add(new Vector2Int(-1, -1), new Vector2Int[] { new Vector2Int(-1, -1), new Vector2Int(-1, 0) });
             diagonalMoveSequence.Add(new Vector2Int(1, -1), new Vector2Int[] { new Vector2Int(1, -1), new Vector2Int(1, 0) });
             diagonalMoveSequence.Add(new Vector2Int(-1, 1), new Vector2Int[] { new Vector2Int(-1, 1), new Vector2Int(-1, 0) });
-            hitSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/enemyHit");
+            hitSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/enemySoundEffect");
         }
 
         /// <summary>

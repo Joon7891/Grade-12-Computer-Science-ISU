@@ -323,25 +323,37 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">SpriteBatch to draw sprites</param>
         public void DrawInventory(SpriteBatch spriteBatch)
         {
-            // Drawing inventory items for shop
+            // Drawing inventory items for shop, and information, if applicable
             for (byte i = 0; i < inventory.Length; ++i)
             {
                 inventory[i].Draw(spriteBatch);
+
+                // Drawing information if applicable
+                if (inventory[i].Item != null && MouseHelper.IsHovering(inventory[i].Rectangle))
+                {
+                    inventory[i].Item.DrawInformation(spriteBatch, inventory[i].Rectangle);
+                }
             }
             for (byte i = 0; i < transactionItemSlot.Length; ++i)
             {
                 transactionItemSlot[i].Draw(spriteBatch);
                 transactionButton[i].Draw(spriteBatch);
+
+                // Drawing information if applicable
+                if (transactionItemSlot[i].Item != null && MouseHelper.IsHovering(transactionItemSlot[i].Rectangle))
+                {
+                    transactionItemSlot[i].Item.DrawInformation(spriteBatch, transactionItemSlot[i].Rectangle);
+                }
             }
 
-            // Drawing price offers
+            // Drawing price offers and info, if applicable
             for (byte i = 0; i < priceOfferLocations.Length; ++i)
             {
                 if (transactionItemSlot[i].Item != null)
                 {
                     spriteBatch.DrawString(SharedData.InformationFonts[2], $"${(i == 0 ? transactionItemSlot[i].Item.Value : GetOffer(transactionItemSlot[i].Item))}", 
                         priceOfferLocations[i], Color.White);
-                }
+                }                
             }
         }
 
