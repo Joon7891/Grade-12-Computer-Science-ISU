@@ -177,8 +177,12 @@ namespace ISU_Medieval_Odyssey
             SetTiles();
         }
 
+        /// <summary>
+        /// Subprogram to set the boundary tiles for this <see cref="Shop"/>
+        /// </summary>
         public void SetTiles()
         {
+            // Setting up boundaries
             for (int i = 0; i < insideObstructionLocs.Count; ++i)
             {
                 World.Instance.GetTileAt(CornerTile + insideObstructionLocs[i]).InsideObstructState = true;

@@ -73,7 +73,14 @@ namespace ISU_Medieval_Odyssey
         /// <param name="iconRectangle">The icon's rectangle</param>
         public override void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
         {
+            // Calling base, adjusting rectangle, and drawing information
             base.DrawInformation(spriteBatch, iconRectangle);
+            iconRectangle.X -= 2 * iconRectangle.Width / 3;
+            iconRectangle.Y -= 5 * iconRectangle.Height / 2;
+            iconRectangle.Width *= 3;
+            iconRectangle.Height = 2 * iconRectangle.Height;
+            spriteBatch.DrawString(SharedData.InformationFonts[3], $"Damage: {damage}", iconRectangle.Location.ToVector2() + cornerBuffer + 2 * verticalBuffer, Color.Black);
+            spriteBatch.DrawString(SharedData.InformationFonts[3], $"Durability: {durabilityBar.CurrentValue}/{durabilityBar.MaxValue}", iconRectangle.Location.ToVector2() + cornerBuffer + 3 * verticalBuffer, Color.Black);
         }
 
         /// <summary>

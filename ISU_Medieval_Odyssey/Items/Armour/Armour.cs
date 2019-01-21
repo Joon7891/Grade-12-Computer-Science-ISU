@@ -107,6 +107,23 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// Subprogram to draw information about this <see cref="Armour"/>
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw sprites</param>
+        /// <param name="iconRectangle">The icon's rectangle</param>
+        public override void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
+        {
+            // Calling base, adjusting rectangle, and drawing information
+            base.DrawInformation(spriteBatch, iconRectangle);
+            iconRectangle.X -= 2 * iconRectangle.Width / 3;
+            iconRectangle.Y -= 5 * iconRectangle.Height / 2;
+            iconRectangle.Width *= 3;
+            iconRectangle.Height = 2 * iconRectangle.Height;
+            spriteBatch.DrawString(SharedData.InformationFonts[3], $"Defense: {defence}", iconRectangle.Location.ToVector2() + cornerBuffer + 2 * verticalBuffer, Color.Black);
+            spriteBatch.DrawString(SharedData.InformationFonts[3], $"Durability: {durabilityBar.CurrentValue}/{durabilityBar.MaxValue}", iconRectangle.Location.ToVector2() + cornerBuffer + 3 * verticalBuffer, Color.Black);
+        }
+
+        /// <summary>
         /// Subprogram to generate a random <see cref="Armour"/>
         /// </summary>
         /// <returns>The random <see cref="Armour"/></returns>

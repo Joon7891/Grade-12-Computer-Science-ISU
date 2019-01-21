@@ -5,6 +5,7 @@
 // Modified Date: 01/04/2018
 // Description: Class to hold HealthPotion object
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -49,6 +50,22 @@ namespace ISU_Medieval_Odyssey
             // Incrementing player health and calling base use subprogram
             player.Health += healthIncrease;
             base.Use(player);
+        }
+
+        /// <summary>
+        /// Subprogram to draw information about this <see cref="HealthPotion"/>
+        /// </summary>
+        /// <param name="spriteBatch">Spritebatch to draw sprites</param>
+        /// <param name="iconRectangle">The icon's rectangle</param>
+        public override void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
+        {
+            // Calling base, adjusting rectangle, and drawing information
+            base.DrawInformation(spriteBatch, iconRectangle);
+            iconRectangle.X -= 2 * iconRectangle.Width / 3;
+            iconRectangle.Y -= 5 * iconRectangle.Height / 2;
+            iconRectangle.Width *= 3;
+            iconRectangle.Height = 2 * iconRectangle.Height;
+            spriteBatch.DrawString(SharedData.InformationFonts[3], $"Health Increase: {healthIncrease}", iconRectangle.Location.ToVector2() + cornerBuffer + 2 * verticalBuffer, Color.Black);
         }
     }
 }
