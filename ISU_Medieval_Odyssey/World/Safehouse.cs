@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Author: Steven Ung
+// File Name: Safehouse.cs
+// Project Name: ISU_Medieval_Odyssey
+// Creation Date: 01/20/2019
+// Modified Date: 01/20/2019
+// Description: Class to hold an instance of a safehouse
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISU_Medieval_Odyssey
 {

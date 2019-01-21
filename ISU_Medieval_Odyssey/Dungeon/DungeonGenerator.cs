@@ -19,6 +19,9 @@ namespace ISU_Medieval_Odyssey
 {
     class DungeonGenerator
     {
+        /// <summary>
+        /// How many times to attempt creating new rooms
+        /// </summary>
         const int ROOM_ATTEMPTS = 20;
 
         /// <summary>
@@ -141,6 +144,12 @@ namespace ISU_Medieval_Odyssey
 
         }
 
+        /// <summary>
+        /// Determines if the tile some offset away from the given tile is out of bounds
+        /// </summary>
+        /// <param name="cur"> the initial tile </param>
+        /// <param name="offset"> an offset that determines the tile to change </param>
+        /// <returns> false if out of bounds, true otherwise </returns>
         private bool LegalMove(Vector2Int cur, Vector2Int offset)
         {
             if ((offset + cur).X >= MAX_WIDTH || (offset + cur).Y >= MAX_WIDTH)
@@ -404,51 +413,30 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// prints the current layout in console.
+        /// </summary>
+        private void DebugOutput()
+        {
+            for (int i = 0; i < MAX_HEIGHT; i++)
+            {
+                for (int j = 0; j < MAX_WIDTH; j++)
+                {
+                    Console.Write(region[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        /// <summary>
         /// Generates a tile based dungeon
         /// </summary>
         /// <returns> Returns a 2d array that contains dungeon data. -1 indicates impassible tiles and any other number indicates a seperate room </returns>
         public int[,] GenerateDungeon()
         {
             GenerateRooms();
-            for (int i = 0; i < MAX_HEIGHT; i++)
-            {
-                for (int j = 0; j < MAX_WIDTH; j++)
-                {
-                    Console.Write(region[i, j]);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
             CreateMazes();
-            for (int i = 0; i < MAX_HEIGHT; i++)
-            {
-                for (int j = 0; j < MAX_WIDTH; j++)
-                {
-                    Console.Write(region[i, j]);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
             ConnectRegions();
-            for (int i = 0; i < MAX_HEIGHT; i++)
-            {
-                for (int j = 0; j < MAX_WIDTH; j++)
-                {
-                    Console.Write(region[i, j]);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
             FillDeadEnds();
-            for (int i = 0; i < MAX_HEIGHT; i++)
-            {
-                for (int j = 0; j < MAX_WIDTH; j++)
-                {
-                    Console.Write(region[i, j]);
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
             return region;
         }
 

@@ -68,8 +68,6 @@
     <Compile Include="Data Structures\CollisionTree.cs" />
     <Compile Include="Data Structures\SettingsData.cs" />
     <Compile Include="Core\SharedData.cs" />
-    <Compile Include="Data Structures\SplayNode.cs" />
-    <Compile Include="Data Structures\SplayTree.cs" />
     <Compile Include="Dungeon\DungeonGenerator.cs" />
     <Compile Include="Graphics\AnimationSpriteSheet.cs" />
     <Compile Include="Graphics\Circle.cs" />
