@@ -94,8 +94,7 @@ namespace ISU_Medieval_Odyssey
 
             // Creating terrtain generator and generating terrain
             terrainGenerator = new TerrainGenerator(seed);
-            AdjustLoadedChunks(new Vector2Int(0, 0));//  Player.Instance.CurrentChunk);
-
+            AdjustLoadedChunks(new Vector2Int(0, 0));
 
             // Giving the player a few basic buildings near spawn
             buildings.Add(new Shop(new Vector2Int(2, 2)));
@@ -456,6 +455,16 @@ namespace ISU_Medieval_Odyssey
             if (buildingChance == 1)
             {
                 cachedBuildings.Add(new Shop(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
+            }
+            if (buildingChance == 2)
+            {
+                cachedBuildings.Add(new Safehouse(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
+            }
+
+            buildingChance = SharedData.RNG.Next(200);
+            if (buildingChance == 3)
+            {
+                cachedBuildings.Add(new Dungeon(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
         }
 
