@@ -193,7 +193,7 @@ namespace ISU_Medieval_Odyssey
             Instance = this;
 
             // Setting up player speed, rectangle, and camera components
-            Speed = 3;
+            Speed = 4;
             center = Vector2Int.Zero;
             rectangle = new Rectangle(0, 0, PIXEL_SIZE, PIXEL_SIZE);
             unroundedLocation = rectangle.Location.ToVector2();
@@ -238,14 +238,15 @@ namespace ISU_Medieval_Odyssey
             inventory[4].Item = new MetalShoulders();
             inventory[5].Item = new MetalHelmet();
 
-            attributes[0] = new Attribute(new Rectangle(110, 230, 100, 30), "Health", () =>
+            // Setting up player attributes
+            attributes[0] = new Attribute(new Rectangle(108, 230, 100, 30), "Health", () =>
             {
                 healthBar.MaxValue += 20;
                 healthBar.CurrentValue += 20;
             });
-            attributes[1] = new Attribute(new Rectangle(110, 295, 100, 30), "Attack");
-            attributes[2] = new Attribute(new Rectangle(110, 360, 100, 30), "Defense");
-            attributes[3] = new Attribute(new Rectangle(110, 425, 100, 30), "Speed");
+            attributes[1] = new Attribute(new Rectangle(108, 295, 100, 30), "Attack");
+            attributes[2] = new Attribute(new Rectangle(108, 360, 100, 30), "Defense");
+            attributes[3] = new Attribute(new Rectangle(108, 425, 100, 30), "Speed");
 
             // Serializing player data
             // IO.SavePlayer(this);
