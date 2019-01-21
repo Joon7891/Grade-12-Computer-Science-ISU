@@ -414,6 +414,24 @@ namespace ISU_Medieval_Odyssey
         }
 
         /// <summary>
+        /// Returns true if the enemy is stuck in a solid tile
+        /// </summary>
+        public bool IsStuck()
+        {
+            Vector2Int tileCenter = World.PixelToTileCoordinate(center);
+            bool stuck = World.Instance.GetTileAt(tileCenter).InsideObstructState;
+            for(int i = 0; i < 4; i++)
+            {
+                Vector2Int next = tileCenter + adjacentMoves[i];
+                if (!World.Instance.GetTileAt(next).InsideObstructState)
+                {
+                    stuck = false;
+                }
+            }
+            return stuck;
+        }
+
+        /// <summary>
         /// Subprogram to generate a random <see cref="Enemy"/>
         /// </summary>
         /// <param name="tileCoordinate">The <see cref="Tile"/> coordinate at which to generate the enemy</param>
