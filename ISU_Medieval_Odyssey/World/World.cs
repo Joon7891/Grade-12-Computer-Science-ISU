@@ -50,7 +50,6 @@ namespace ISU_Medieval_Odyssey
         private List<LiveItem> liveItems = new List<LiveItem>();
         private List<IBuilding> buildings = new List<IBuilding>();
         private List<Projectile> projectiles = new List<Projectile>();
-
         public List<Enemy> DungeonEnemies { get; set; } = new List<Enemy>();
 
         // A set of cached buildings
@@ -95,19 +94,15 @@ namespace ISU_Medieval_Odyssey
 
             // Creating terrtain generator and generating terrain
             terrainGenerator = new TerrainGenerator(seed);
-            AdjustLoadedChunks(new Vector2Int(0, 0));//  Player.Instance.CurrentChunk);
+            AdjustLoadedChunks(new Vector2Int(0, 0));
 
-            // Remove
+            // Giving the player a few basic buildings near spawn
             buildings.Add(new Shop(new Vector2Int(2, 2)));
             cachedBuildings.Add(buildings[0]);
-
             buildings.Add(new Dungeon(new Vector2Int(10, 10)));
             cachedBuildings.Add(buildings[1]);
-
             buildings.Add(new Safehouse(new Vector2Int(-10, -10)));
             cachedBuildings.Add(buildings[2]);
-
-            enemies.Add(new Zombie(new Vector2Int(-1, -1), false));
         }
 
         /// <summary>
@@ -153,12 +148,15 @@ namespace ISU_Medieval_Odyssey
             if (enemyGenerationTimer > ENEMY_GENERATE_TIME)
             {
                 chunkBounaryID = SharedData.RNG.Next(chunkBoundaries.Length);
-                enemies.Add(Enemy.RandomEnemy(chunkBoundaries[chunkBounaryID] + Player.Instance.CurrentTile, false));
+
+                if (!GetTileAt(chunkBoundaries[chunkBounaryID] + Player.Instance.CurrentChunk).OutsideObstructState)
+                {
+                    enemies.Add(Enemy.RandomEnemy(chunkBoundaries[chunkBounaryID] + Player.Instance.CurrentTile, false));
+                }
                 enemyGenerationTimer = 0;
             }
 
             // Updating enemies
-
             if (!IsInside)
             {
                 for (int i = enemies.Count - 1; i >= 0; --i)

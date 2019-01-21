@@ -54,10 +54,8 @@ namespace ISU_Medieval_Odyssey
             optionButtons[1] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/loadGameButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, BUTTON_INITIAL_Y + BUTTON_SPACING, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.Game;
-             //   GameScreen.Instance.Player = IO.LoadPlayer();
                 MediaPlayer.Stop();
             });
-            optionButtons[1].Active = IO.WorldExists();
             optionButtons[2] = new Button(Main.Content.Load<Texture2D>("Images/Sprites/Buttons/howToPlayButton"), new Rectangle(SharedData.SCREEN_WIDTH / 2 - 150, BUTTON_INITIAL_Y + 2 * BUTTON_SPACING, 300, 100), () =>
             {
                 Main.CurrentScreen = ScreenMode.HowToPlay;
@@ -82,6 +80,9 @@ namespace ISU_Medieval_Odyssey
             {
                 MediaPlayer.Play(backgroundMusic);
             }
+
+            // Updating whether the "Load game" button is valid
+            optionButtons[1].Active = GameScreen.Instance.Player != null && GameScreen.Instance.World != null;
 
             // Updating various main menu buttons
             for (int i = 0; i < optionButtons.Length; ++i)

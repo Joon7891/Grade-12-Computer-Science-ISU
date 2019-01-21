@@ -7,24 +7,28 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
-    public abstract class Item
+    public class Item
     {
         /// <summary>
         /// The value of the item - the price at which it will be purchased at
         /// </summary>
+        [JsonProperty]
         public virtual int Value { get; protected set; }
 
         /// <summary>
         /// Whether the item is valid or not - does it still exist
         /// </summary>
+        [JsonProperty]
         public bool Valid { get; protected set; } = true;
 
         /// <summary>
         /// Whether the item is the <see cref="Player"/>'s item
         /// </summary>
+        [JsonProperty]
         public bool IsPlayerItem { get; set; } = true;
 
         // The image the item's icon
