@@ -40,12 +40,13 @@ namespace ISU_Medieval_Odyssey
         /// Constuctor for <see cref="Goblin"/> object
         /// </summary>
         /// <param name="tileCoordinate">The <see cref="Tile"/> coordinate of where to create the Goblin</param>
-        public Goblin(Vector2Int tileCoordinate)
+        public Goblin(Vector2Int tileCoordinate, bool isInside)
         {
             // Setting up various components of Goblin
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
             InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
+            this.isInside = isInside;
         }
     }
 }

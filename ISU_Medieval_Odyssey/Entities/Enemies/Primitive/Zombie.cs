@@ -40,12 +40,13 @@ namespace ISU_Medieval_Odyssey
         /// Constructor for <see cref="Zombie"/> object
         /// </summary>
         /// <param name="tileCoordinate">The <see cref="Tile"/> coordiante of where to create this <see cref="Enemy"/></param>
-        public Zombie(Vector2Int tileCoordinate)
+        public Zombie(Vector2Int tileCoordinate, bool isInside)
         {
             // Setting up various components of Zombie
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
             InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
+            this.isInside = isInside;
         }
     }
 }

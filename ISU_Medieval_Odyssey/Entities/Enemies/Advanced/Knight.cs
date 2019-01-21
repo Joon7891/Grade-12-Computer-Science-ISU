@@ -40,12 +40,13 @@ namespace ISU_Medieval_Odyssey
         /// Constructor for <see cref="Knight"/> object
         /// </summary>
         /// <param name="tileCoordinate">The coordinate of the <see cref="Tile"/> this <see cref="Knight"/> is to be created at</param>
-        public Knight(Vector2Int tileCoordinate)
+        public Knight(Vector2Int tileCoordinate, bool isInside)
         {
             // Setting up various components of Knight
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
             InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
+            this.isInside = isInside;
         }
     }
 }

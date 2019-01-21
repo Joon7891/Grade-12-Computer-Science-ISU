@@ -108,7 +108,7 @@ namespace ISU_Medieval_Odyssey
             buildings.Add(new Safehouse(new Vector2Int(-10, -10)));
             cachedBuildings.Add(buildings[2]);
 
-            enemies.Add(new Zombie(new Vector2Int(-1, -1)));
+            enemies.Add(new Zombie(new Vector2Int(-1, -1), false));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace ISU_Medieval_Odyssey
             if (enemyGenerationTimer > ENEMY_GENERATE_TIME)
             {
                 chunkBounaryID = SharedData.RNG.Next(chunkBoundaries.Length);
-                enemies.Add(Enemy.RandomEnemy(chunkBoundaries[chunkBounaryID] + Player.Instance.CurrentTile));
+                enemies.Add(Enemy.RandomEnemy(chunkBoundaries[chunkBounaryID] + Player.Instance.CurrentTile, false));
                 enemyGenerationTimer = 0;
             }
 

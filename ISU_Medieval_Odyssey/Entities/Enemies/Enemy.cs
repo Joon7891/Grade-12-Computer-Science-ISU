@@ -75,6 +75,8 @@ namespace ISU_Medieval_Odyssey
 
         protected int scanRange;
 
+        protected bool isInside; 
+
         // Graphics-realted data
         protected int numFrames;
         protected int currentFrame = 0;
@@ -383,8 +385,12 @@ namespace ISU_Medieval_Odyssey
         private bool ValidTile(Vector2Int tileCoordinate)
         {
             // If the tile in question is not valid, return false
-            if (World.Instance.GetTileAt(tileCoordinate).OutsideObstructState || 
-                World.Instance.GetTileAt(tileCoordinate).InsideObstructState)
+            if (World.Instance.GetTileAt(tileCoordinate).OutsideObstructState)
+            {
+                return false;
+            }
+
+            if(isInside && World.Instance.GetTileAt(tileCoordinate).InsideObstructState)
             {
                 return false;
             }
@@ -402,13 +408,13 @@ namespace ISU_Medieval_Odyssey
             return true;
         }
 
-
         /// <summary>
         /// Subprogram to generate a random <see cref="Enemy"/>
         /// </summary>
         /// <param name="tileCoordinate">The <see cref="Tile"/> coordinate at which to generate the enemy</param>
+        /// <param name="isInside"> If the enemy is inside a building or not >
         /// <returns>The random <see cref="Enemy"/></returns>
-        public static Enemy RandomEnemy(Vector2Int tileCoordinate)
+        public static Enemy RandomEnemy(Vector2Int tileCoordinate, bool isInside)
         {
             // Determing the type of enemy
             int randomEnemyValue = SharedData.RNG.Next(100);
@@ -416,31 +422,31 @@ namespace ISU_Medieval_Odyssey
             // Generating and returning appropriate random enemy type
             if (randomEnemyValue < SKELETON_CHANCE_MAX)
             {
-                return new Skeleton(tileCoordinate);
+                return new Skeleton(tileCoordinate, isInside);
             }
             else if (randomEnemyValue < GOBLIN_CHANCE_MAX)
             {
-                return new Goblin(tileCoordinate);
+                return new Goblin(tileCoordinate, isInside);
             }
             else if (randomEnemyValue < ZOMBIE_CHANCE_MAX)
             {
-                return new Zombie(tileCoordinate);
+                return new Zombie(tileCoordinate, isInside);
             }
             else if (randomEnemyValue < WIZARD_CHANCE_MAX)
             {
-                return new Wizard(tileCoordinate);
+                return new Wizard(tileCoordinate, isInside);
             }
             else if (randomEnemyValue < KNIGHT_CHANCE_MAX)
             {
-                return new Knight(tileCoordinate);
+                return new Knight(tileCoordinate, isInside);
             }
             else if (randomEnemyValue < WITCH_CHANCE_MAX)
             {
-                return new Witch(tileCoordinate);
+                return new Witch(tileCoordinate, isInside);
             }
             else
             {
-                return new Dragon(tileCoordinate);
+                return new Dragon(tileCoordinate, isInside);
             }
         }
     }

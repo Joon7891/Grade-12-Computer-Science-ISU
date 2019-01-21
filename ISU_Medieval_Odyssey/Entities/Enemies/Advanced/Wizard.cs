@@ -40,12 +40,13 @@ namespace ISU_Medieval_Odyssey
         /// Constructor for <see cref="Wizard"/> object
         /// </summary>
         /// <param name="tileCoordinate">The coordinate of the <see cref="Tile"/> this <see cref="Wizard"/> is to be created at</param>
-        public Wizard(Vector2Int tileCoordinate)
+        public Wizard(Vector2Int tileCoordinate, bool isInside)
         {
             // Setting up various components of Wizard
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
             InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
+            this.isInside = isInside;
         }
     }
 }

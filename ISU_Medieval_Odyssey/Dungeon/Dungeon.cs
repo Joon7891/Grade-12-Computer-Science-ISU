@@ -80,7 +80,7 @@ namespace ISU_Medieval_Odyssey
                     {
                         if (rng.Next(0, 101) < ENEMY_CHANCE)
                         {
-                            World.Instance.DungeonEnemies.Add(Enemy.RandomEnemy(currentTile + cornerTile));
+                            World.Instance.DungeonEnemies.Add(Enemy.RandomEnemy(currentTile + cornerTile, true));
                         }
 
                         currentTile *= tileSpacing;

@@ -46,12 +46,13 @@ namespace ISU_Medieval_Odyssey
         /// Constructor for <see cref="Witch"/> object
         /// </summary>
         /// <param name="tileCoordinate">The coordinate of the <see cref="Tile"/> this <see cref="Witch"/> is to be created at</param>
-        public Witch(Vector2Int tileCoordinate)
+        public Witch(Vector2Int tileCoordinate, bool isInside)
         {
             // Setting up various components of Witch
             base.directionalSpriteSheet = directionalSpriteSheet;
             InitializeGraphics(tileCoordinate, WIDTH, HEIGHT, HITBOX_BUFFER_X, HITBOX_BUFFER_Y, NUM_FRAMES, COUNTER_MAX);
             InitializeStatistics(SCAN_RANGE, MIN_HEALTH, MAX_HEALTH, MIN_DAMAGE, MAX_DAMAGE, SPEED, ATTACK_SPEED);
+            this.isInside = isInside;
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace ISU_Medieval_Odyssey
             timeToSpawn += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (timeToSpawn >= SPAWN_TIME)
             {
-                World.Instance.AddEnemy(new Skeleton(CurrentTile));
+                World.Instance.AddEnemy(new Skeleton(CurrentTile, false));
                 timeToSpawn = 0;
             }
         }

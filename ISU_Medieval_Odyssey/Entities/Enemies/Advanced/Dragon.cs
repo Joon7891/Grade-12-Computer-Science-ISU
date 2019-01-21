@@ -40,7 +40,7 @@ namespace ISU_Medieval_Odyssey
         /// Constructor for <see cref="Dragon"/> object
         /// </summary>
         /// <param name="tileCoordinate">The coordinate of the <see cref="Tile"/> this <see cref="Dragon"/> is to be created at</param>
-        public Dragon(Vector2Int tileCoordinate)
+        public Dragon(Vector2Int tileCoordinate, bool isInside)
         {
             // Setting up various components of this Dragon
             base.directionalSpriteSheet = directionalSpriteSheet;
