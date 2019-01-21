@@ -45661,9 +45661,65 @@
 /processorParam:TextureFormat=Color
 /build:Images/Backgrounds/howToPlayBackgroundImage1.png
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+#begin Images/Sprites/Tiles/stair_down.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Tiles/stair_down.png
+
+#begin Images/Sprites/Tiles/stair_up.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Tiles/stair_up.png
+
+#begin Images/Sprites/Buildings/homebaseimage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buildings/homebaseimage.png
+
+#begin Images/Sprites/Buildings/homeOutsideImage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Sprites/Buildings/homeOutsideImage.png
+=======
+=======
+>>>>>>> f1dc327abeccfceca701ff395347b5bc83fa3748
 #begin Audio/SoundEffects/enemyHit.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/enemyHit.mp3
+<<<<<<< HEAD
+>>>>>>> f1dc327abeccfceca701ff395347b5bc83fa3748
+=======
+>>>>>>> f1dc327abeccfceca701ff395347b5bc83fa3748
 

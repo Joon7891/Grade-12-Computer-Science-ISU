@@ -37,8 +37,8 @@ namespace ISU_Medieval_Odyssey
             enterLocation = new Vector2Int(4, 6);
 
             // loading textures
-            insideImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopInsideImage");
-            outsideImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/shopOutsideImage");
+            insideImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/homebaseimage");
+            outsideImage = Main.Content.Load<Texture2D>("Images/Sprites/Buildings/homeOutsideImage");
 
             // Setting up inside obstruction tiles
             for (int i = 0; i <= INSIDE_HEIGHT; ++i)

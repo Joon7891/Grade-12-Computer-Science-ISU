@@ -46,13 +46,17 @@ namespace ISU_Medieval_Odyssey
         /// Graphics related fields
         /// </summary>
         static Texture2D tile;
-        List<Sprite> tileSprites;
+        static Texture2D stairUp;
+        static Texture2D stairDown;
         Sprite enterSprite;
         Sprite exitSprite;
+        List<Sprite> tileSprites;
 
         static Dungeon()
         {
             tile = Main.Content.Load<Texture2D>("Images/Sprites/Tiles/tileStone");
+            stairUp = Main.Content.Load<Texture2D>("Images/Sprites/Tiles/stair_up");
+            stairDown = Main.Content.Load<Texture2D>("Images/Sprites/Tiles/stair_down");
             tileSpacing = new Vector2Int(TILE_SIZE, TILE_SIZE);
         }
 
@@ -112,9 +116,9 @@ namespace ISU_Medieval_Odyssey
             enterLocation += cornerTile;
             exitLocation += cornerTile;
 
-            enterSprite = new Sprite(tile, new Rectangle(enterLocation.X * TILE_SIZE, enterLocation.Y * TILE_SIZE
+            enterSprite = new Sprite(stairDown, new Rectangle(enterLocation.X * TILE_SIZE, enterLocation.Y * TILE_SIZE
                                     , TILE_SIZE, TILE_SIZE));
-            exitSprite = new Sprite(tile, new Rectangle(exitLocation.X * TILE_SIZE, exitLocation.Y * TILE_SIZE
+            exitSprite = new Sprite(stairUp, new Rectangle(exitLocation.X * TILE_SIZE, exitLocation.Y * TILE_SIZE
                                     , TILE_SIZE, TILE_SIZE));
 
             CornerTile = cornerTile;
@@ -131,13 +135,13 @@ namespace ISU_Medieval_Odyssey
                 World.Instance.GetTileAt(insideObstructionLocs[i]).InsideObstructState = true;
             }
 
-            World.Instance.GetTileAt(exitLocation).OnInteractProcedure = new Interaction(Direction.Down, (player) =>
+            World.Instance.GetTileAt(exitLocation).OnInteractProcedure = new Interaction(Direction.Left, (player) =>
             {
                 World.Instance.IsInside = false;
                 World.Instance.CurrentBuilding = null;
             });
 
-            World.Instance.GetTileAt(enterLocation).OnInteractProcedure = new Interaction(Direction.Up, (player) =>
+            World.Instance.GetTileAt(enterLocation).OnInteractProcedure = new Interaction(Direction.Right, (player) =>
             {
                 World.Instance.IsInside = true;
                 World.Instance.CurrentBuilding = this;
