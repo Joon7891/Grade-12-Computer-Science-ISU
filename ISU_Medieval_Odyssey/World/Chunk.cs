@@ -5,7 +5,6 @@
 // Modified Date: 12/29/2018
 // Description: Class to hold Chunk object - used to optimize graphics rendering
 
-using System;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;

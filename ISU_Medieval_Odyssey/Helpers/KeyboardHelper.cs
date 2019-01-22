@@ -5,13 +5,7 @@
 // Modified Date: 09/20/2018
 // Desription: Class to hold various subprograms to help with keyboard functionality
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace ISU_Medieval_Odyssey

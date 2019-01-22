@@ -6,12 +6,9 @@
 // Description: Class to hold GameScreen object, implements IScreen
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -71,7 +68,7 @@ namespace ISU_Medieval_Odyssey
             miniMapCamera.Position = miniMapBorder.Rectangle.Location.ToVector2();
 
             // Importing audio
-            deathSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/deathSoundEffect");
+            deathSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/deathSoundEffects");
         }
 
         /// <summary>

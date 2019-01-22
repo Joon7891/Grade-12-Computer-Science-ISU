@@ -5,9 +5,6 @@
 // Modified Date: 12/27/2018
 // Description: Class to hold Hair object - default for no helmet
 
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace ISU_Medieval_Odyssey
 {
     public sealed class Hair : Head

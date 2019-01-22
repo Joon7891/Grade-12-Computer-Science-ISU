@@ -5,12 +5,6 @@
 // Modified Date: 12/17/2018
 // Description: Class to hold Direction enum
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ISU_Medieval_Odyssey
 {
     /// <summary>

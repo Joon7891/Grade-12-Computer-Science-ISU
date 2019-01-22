@@ -5,11 +5,6 @@
 // Modified Date: 12/19/2018
 // Description: Class to hold Sword object
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

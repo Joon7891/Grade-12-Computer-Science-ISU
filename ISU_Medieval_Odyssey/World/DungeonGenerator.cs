@@ -58,8 +58,8 @@ namespace ISU_Medieval_Odyssey
             new Vector2Int(-1, 0)
         };
 
+        // Importing objects
         Random rng;
-
         CollisionTree collisionTree;
 
         // The rooms of the dungeon
@@ -71,6 +71,9 @@ namespace ISU_Medieval_Odyssey
         // The region that is currently being generated 
         int currentRegion;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public DungeonGenerator()
         {
             rng = new Random();
@@ -128,11 +131,10 @@ namespace ISU_Medieval_Odyssey
                     continue;
                 }
 
+                // Adding rooms
                 rooms.Add(room);
                 roomRectangles.Add(new CollisionRectangle(room));
-
                 currentRegion++;
-
                 for(int j = room.X; j <= room.X + room.Width; j++)
                 {
                     for(int k = room.Y; k <= room.Y + room.Height; k++)
@@ -152,6 +154,7 @@ namespace ISU_Medieval_Odyssey
         /// <returns> false if out of bounds, true otherwise </returns>
         private bool LegalMove(Vector2Int cur, Vector2Int offset)
         {
+            // Determining if it is a legal move
             if ((offset + cur).X >= MAX_WIDTH || (offset + cur).Y >= MAX_WIDTH)
             {
                 return false;
@@ -179,10 +182,9 @@ namespace ISU_Medieval_Odyssey
         /// <param name="current"> the tile to start on </param>
         private void ExpandMaze(Vector2Int current) 
         {
+            // Expanding maze
             currentRegion++;
-
             region[current.X, current.Y] = currentRegion;
-
             int lastDirection = -1;
             Stack<Vector2Int> stack = new Stack<Vector2Int>();
             stack.Push(current);

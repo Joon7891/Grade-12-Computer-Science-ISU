@@ -45697,12 +45697,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buildings/homeOutsideImage.png
 
-#begin Audio/SoundEffects/deathSoundEffect.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/SoundEffects/deathSoundEffect.mp3
-
 #begin Images/Backgrounds/howToPlayBackgroundImage3.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -45750,4 +45744,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/bowSoundEffect.wav
+
+#begin Audio/SoundEffects/deathSoundEffects.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SoundEffects/deathSoundEffects.mp3
 

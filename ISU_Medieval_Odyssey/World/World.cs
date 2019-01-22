@@ -6,10 +6,10 @@
 // Description: Class to hold World object / Information about the current map
 
 using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 
 namespace ISU_Medieval_Odyssey
 {
@@ -168,6 +168,7 @@ namespace ISU_Medieval_Odyssey
             }
             else
             {
+                // Updating dungeon enemies
                 for (int i = DungeonEnemies.Count - 1; i >= 0; --i)
                 {
                     DungeonEnemies[i].Update(gameTime);
@@ -205,6 +206,7 @@ namespace ISU_Medieval_Odyssey
                     hitEnemies = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
                 }
                 
+                // Inflicting damage on enemies that are hit by the projectile and removing the projectile
                 for (int j = 0; j < hitEnemies.Count; ++j)
                 {
                     hitEnemies[j].Health -= projectiles[i].DamageAmount;
@@ -220,6 +222,7 @@ namespace ISU_Medieval_Odyssey
             {
                 liveItems[i].Update(gameTime);
 
+                // Removing item if it despawns
                 if (!liveItems[i].Live)
                 {
                     liveItems.RemoveAt(i);
@@ -444,6 +447,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="chunkY">The y-coordinate of the <see cref="Chunk"/></param>
         private void AddBuilding(int chunkX, int chunkY)
         {
+            // Adding a building if the chance is right
             int buildingChance = SharedData.RNG.Next(200);
             if (buildingChance < 15)
             {

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-
 namespace ISU_Medieval_Odyssey
 {
     public sealed class CollisionTree

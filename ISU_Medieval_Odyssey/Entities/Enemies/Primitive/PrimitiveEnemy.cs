@@ -5,7 +5,6 @@
 // Modified Date: 01/18/2019
 // Description: Class to hold BruteEnemy object
 
-using System;
 using Microsoft.Xna.Framework;
 
 namespace ISU_Medieval_Odyssey
