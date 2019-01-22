@@ -95,6 +95,7 @@ namespace ISU_Medieval_Odyssey
             // Creating terrtain generator and generating terrain
             terrainGenerator = new TerrainGenerator(seed);
             AdjustLoadedChunks(new Vector2Int(0, 0));
+            cachedBuildings.Add(new Dungeon(new Vector2Int(0, 0)));
         }
 
         /// <summary>
@@ -285,7 +286,7 @@ namespace ISU_Medieval_Odyssey
                     enemies[i].Draw(spriteBatch);
                 }
             }
-            else
+            else if (CurrentBuilding is Dungeon)
             {
                 for(int i = 0; i < DungeonEnemies.Count; i++)
                 {
@@ -443,18 +444,16 @@ namespace ISU_Medieval_Odyssey
         /// <param name="chunkY">The y-coordinate of the <see cref="Chunk"/></param>
         private void AddBuilding(int chunkX, int chunkY)
         {
-            int buildingChance = SharedData.RNG.Next(25);
-            if (buildingChance == 1)
+            int buildingChance = SharedData.RNG.Next(200);
+            if (buildingChance < 15)
             {
                 cachedBuildings.Add(new Shop(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
-            if (buildingChance == 2)
+            else if (buildingChance < 23)
             {
                 cachedBuildings.Add(new Safehouse(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
-
-            buildingChance = SharedData.RNG.Next(200);
-            if (buildingChance == 3)
+            else if (buildingChance < 28)
             {
                 cachedBuildings.Add(new Dungeon(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }

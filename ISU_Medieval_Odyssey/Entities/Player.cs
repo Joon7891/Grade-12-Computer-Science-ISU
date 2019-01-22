@@ -105,7 +105,9 @@ namespace ISU_Medieval_Odyssey
         [JsonIgnore]
         public int ItemSlotsAvailable => inventory.SubArray(ARMOUR_SIZE, 3 * ROW_SIZE).Count(itemSlot => itemSlot.Item == null);
 
-        // Graphics-related data
+        // Movement-related data
+        private bool multiDirection;
+        private float diagonalFactor = (float)(Math.Sqrt(2) / 2);
         private MovementType movementType = MovementType.Walk;
         private static MovementSpriteSheet movementSpriteSheet;
 
@@ -341,8 +343,8 @@ namespace ISU_Medieval_Odyssey
                 // Putting item in "hand" if user left clicks the item
                 if (MouseHelper.NewLeftClick() && CollisionHelper.PointToRect(MouseHelper.Location, inventory[i].Rectangle))
                 {
-                    if ((i < ARMOUR_SIZE && (ItemInHand == null || ValidArmourFit(i))) || 
-                        (i >= ARMOUR_SIZE && (ItemInHand == null || ItemInHand.IsPlayerItem)))
+                    if ((i < ARMOUR_SIZE && (ItemInHand == null || (ItemInHand != null && ValidArmourFit(i) && ItemInHand.IsPlayerItem)) || 
+                        (i >= ARMOUR_SIZE && (ItemInHand == null || ItemInHand.IsPlayerItem))))
                     {
                         tempSwapItem = inventory[i].Item;
                         inventory[i].Item = ItemInHand;
@@ -612,6 +614,8 @@ namespace ISU_Medieval_Odyssey
             }
 
             // Updating player coordinate-related variables
+            multiDirection = (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Up) || KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Down)) &&
+                (KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Left) || KeyboardHelper.IsKeyDown(SettingsScreen.Instance.Right));
             rectangle.X = (int)(unroundedLocation.X + 0.5);
             rectangle.Y = (int)(unroundedLocation.Y + 0.5);
             hitBox.X = rectangle.X + (PIXEL_SIZE >> 2);
@@ -629,7 +633,7 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         /// <returns>The <see cref="Player"/>'s speed in pixels</returns>
-        private float GetPixelSpeed(GameTime gameTime) => (1 + 0.05f * attributes[3].Level) * (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+        private float GetPixelSpeed(GameTime gameTime) => (multiDirection ? diagonalFactor : 1) * (1 + 0.05f * attributes[3].Level) * (SpeedBoostTime > 0 ? 1.5f : 1.0f) * (Tile.SPACING * Speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
 
         /// <summary>
         /// Subprogram to update the player's direction

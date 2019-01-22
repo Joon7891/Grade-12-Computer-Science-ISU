@@ -45697,18 +45697,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/Sprites/Buildings/homeOutsideImage.png
 
-#begin Images/Backgrounds/howToPlayBackgroundImage2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/Backgrounds/howToPlayBackgroundImage2.png
-
 #begin Audio/SoundEffects/deathSoundEffect.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -45744,4 +45732,22 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/SoundEffects/enemyHit.mp3
+
+#begin Images/Backgrounds/howToPlayBackgroundImage2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Backgrounds/howToPlayBackgroundImage2.png
+
+#begin Audio/SoundEffects/bowSoundEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SoundEffects/bowSoundEffect.wav
 

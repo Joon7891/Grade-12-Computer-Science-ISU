@@ -112,7 +112,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">Spritebatch to draw sprites</param>
         /// <param name="iconRectangle">The icon's rectangle</param>
         public override void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
-        {
+        {            
             // Calling base, adjusting rectangle, and drawing information
             base.DrawInformation(spriteBatch, iconRectangle);
             iconRectangle.X -= 2 * iconRectangle.Width / 3;

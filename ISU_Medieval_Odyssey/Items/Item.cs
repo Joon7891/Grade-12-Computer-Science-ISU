@@ -72,7 +72,7 @@ namespace ISU_Medieval_Odyssey
         /// <param name="spriteBatch">Spritebatch to draw sprites</param>
         /// <param name="iconRectangle">The icon's rectangle</param>
         public virtual void DrawInformation(SpriteBatch spriteBatch, Rectangle iconRectangle)
-        {                  
+        {
             // Adjusting rectangle and drawing backing
             iconRectangle.X -= 2 * iconRectangle.Width / 3;
             iconRectangle.Y -= 5 * iconRectangle.Height / 2;

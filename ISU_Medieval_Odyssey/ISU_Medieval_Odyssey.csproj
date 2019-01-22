@@ -45,7 +45,7 @@
     <Compile Include="Data Structures\DisjointSet.cs" />
     <Compile Include="Data Structures\ICollidable.cs" />
     <Compile Include="Data Structures\Quadrant.cs" />
-    <Compile Include="Dungeon\Dungeon.cs" />
+    <Compile Include="World\Dungeon.cs" />
     <Compile Include="Entities\Attribute.cs" />
     <Compile Include="Entities\Enemies\Primitive\Zombie.cs" />
     <Compile Include="Items\Weapon\MeleeWeapon.cs" />
@@ -69,7 +69,7 @@
     <Compile Include="Data Structures\CollisionTree.cs" />
     <Compile Include="Data Structures\SettingsData.cs" />
     <Compile Include="Core\SharedData.cs" />
-    <Compile Include="Dungeon\DungeonGenerator.cs" />
+    <Compile Include="World\DungeonGenerator.cs" />
     <Compile Include="Graphics\AnimationSpriteSheet.cs" />
     <Compile Include="Graphics\Circle.cs" />
     <Compile Include="Graphics\DirectionalSpriteSheet.cs" />

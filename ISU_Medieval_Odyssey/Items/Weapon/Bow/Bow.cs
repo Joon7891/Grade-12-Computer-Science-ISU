@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ISU_Medieval_Odyssey
@@ -22,10 +23,11 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         public const int NUM_FRAMES = 10;
 
-        // Bow & Arrow specific images
+        // Bow & Arrow specific images and audio
         private new static DirectionalSpriteSheet directionalSpriteSheet;
         private static DirectionalSpriteSheet arrowSpriteSheet;
         private new static Texture2D iconImage;
+        private static SoundEffect shootSoundEffect;
 
         // Various constants for Sword components
         private const int MIN_DAMAGE = 10;
@@ -38,12 +40,13 @@ namespace ISU_Medieval_Odyssey
         /// </summary>
         static Bow()
         {
-            // Loading in various Bow images
+            // Loading in various Bow images and sound effects
             string basePath = "Images/Sprites/Weapon/Shoot/";
             string weaponTypeName = "bow";
             directionalSpriteSheet = new DirectionalSpriteSheet($"{basePath}Bow/", weaponTypeName, NUM_FRAMES);
             arrowSpriteSheet = new DirectionalSpriteSheet($"{basePath}Arrow/", "arrow", NUM_FRAMES);
             iconImage = Main.Content.Load<Texture2D>("Images/Sprites/IconImages/bowIcon");
+            shootSoundEffect = Main.Content.Load<SoundEffect>("Audio/SoundEffects/bowSoundEffect");
         }
 
         /// <summary>
@@ -81,7 +84,8 @@ namespace ISU_Medieval_Odyssey
             // Calling base use subprogram
             base.Use(player);
 
-            // Adding projectile to world
+            // Adding projectile to world and making sound effect
+            shootSoundEffect.CreateInstance().Play();
             World.Instance.AddProjectile(new Arrow(player.Direction, player, damage * (int)(0.5 + player.AttackBoostTime > 0 ? 1 + AttackPotion.BOOST_AMOUNT : 1)));
         }
     }
