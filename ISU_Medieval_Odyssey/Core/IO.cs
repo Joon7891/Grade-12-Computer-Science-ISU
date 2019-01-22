@@ -91,6 +91,7 @@ namespace ISU_Medieval_Odyssey
         {
             // Raw and serialized data
             SettingsData settings = null;
+            string serializedData;
 
             // Try-Catch block
             try
@@ -100,8 +101,8 @@ namespace ISU_Medieval_Odyssey
                 {
 
                     inFile = File.OpenText(SETTINGS_PATH);
-                    string serializedSettings = inFile.ReadLine();
-                    settings = SettingsData.Deserialize(serializedSettings);
+                    serializedData = inFile.ReadToEnd();
+                    settings = SettingsData.Deserialize(serializedData);
 
                     // Closing file and returning settings
                     inFile.Close();

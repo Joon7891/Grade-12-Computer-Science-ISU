@@ -135,7 +135,6 @@ namespace ISU_Medieval_Odyssey
             // Loading settings data
             SettingsData settingsData;
             settingsData = IO.LoadSettingsData();
-            defaultSettingsData = new SettingsData();
 
             // Setting up singleton
             Instance = this;
