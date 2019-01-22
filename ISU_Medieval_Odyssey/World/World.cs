@@ -449,15 +449,15 @@ namespace ISU_Medieval_Odyssey
         {
             // Adding a building if the chance is right
             int buildingChance = SharedData.RNG.Next(200);
-            if (buildingChance < 15)
+            if (buildingChance < 10)
             {
                 cachedBuildings.Add(new Shop(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
-            else if (buildingChance < 23)
+            else if (buildingChance < 15)
             {
                 cachedBuildings.Add(new Safehouse(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
-            else if (buildingChance < 28)
+            else if (buildingChance < 18)
             {
                 cachedBuildings.Add(new Dungeon(new Vector2Int(chunkX * Chunk.SIZE + Chunk.SIZE / 3, chunkY * Chunk.SIZE + Chunk.SIZE / 3)));
             }
