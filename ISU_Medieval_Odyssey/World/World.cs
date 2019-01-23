@@ -56,7 +56,6 @@ namespace ISU_Medieval_Odyssey
         [JsonProperty]
         private HashSet<IBuilding> cachedBuildings = new HashSet<IBuilding>();
         private HashSet<Vector2Int> visitedChunks = new HashSet<Vector2Int>();
-        private Dictionary<Vector2Int, Chunk> cachedChunks = new Dictionary<Vector2Int, Chunk>();
 
         /// <summary>
         /// The rectangle representing the bounds of this <see cref="World"/>
@@ -112,7 +111,6 @@ namespace ISU_Medieval_Odyssey
 
             // Creating chunk and caching it
             chunk = new Chunk(x, y, terrainGenerator);
-            cachedChunks.Add(coordinate, chunk);
             
             // Returning initialized chunk
             return chunk;
@@ -385,20 +383,13 @@ namespace ISU_Medieval_Odyssey
             Chunk chunk;
             Vector2Int chunkCoordinate = new Vector2Int(x, y);
 
-            if (cachedChunks.ContainsKey(chunkCoordinate))
+            // Initializing chunk and adding it
+            chunk = new Chunk(x, y, terrainGenerator);
+            if (!visitedChunks.Contains(chunkCoordinate))
             {
-                chunk = cachedChunks[chunkCoordinate];
+                AddBuilding(chunkCoordinate.X, chunkCoordinate.Y);
             }
-            else
-            {
-                chunk = new Chunk(x, y, terrainGenerator);
-                cachedChunks.Add(chunkCoordinate, chunk);
-                if (!visitedChunks.Contains(chunkCoordinate))
-                {
-                    AddBuilding(chunkCoordinate.X, chunkCoordinate.Y);
-                }
-                visitedChunks.Add(chunkCoordinate);
-            }
+            visitedChunks.Add(chunkCoordinate);
 
             // Returning the chunk
             return chunk;
