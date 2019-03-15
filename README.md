@@ -1,4 +1,4 @@
-# Medieval-Odyssey
+# Medieval Odyssey
 Independent Study Unit Project for Grade 12 Computer Science - Grid-Based Survival Game with Procedural World Generation
 
 **Techniques/Technologies Used:**
