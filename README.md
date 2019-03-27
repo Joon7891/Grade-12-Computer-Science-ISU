@@ -6,6 +6,7 @@ Independent Study Unit Project for Grade 12 Computer Science - Grid-Based Surviv
 - Object Oriented Programming
 - Flexible Graphical and Logistical APIs 
 - Spanning Tree for Dungeon Generation
+- Quadrant Tree for Fast Collision Detection
 - Dijskatra's Algorithm for Enemy Pathfinding
 - Perlin Noise for Procedural World Generation
 - Serialization/Deserialization in JSON for Local and Global Saves
