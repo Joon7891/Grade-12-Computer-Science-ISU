@@ -56,6 +56,7 @@ namespace ISU_Medieval_Odyssey
         [JsonProperty]
         private HashSet<IBuilding> cachedBuildings = new HashSet<IBuilding>();
         private HashSet<Vector2Int> visitedChunks = new HashSet<Vector2Int>();
+        private Dictionary<Vector2Int, Chunk> cachedChunks = new Dictionary<Vector2Int, Chunk>();
 
         /// <summary>
         /// The rectangle representing the bounds of this <see cref="World"/>
@@ -111,7 +112,8 @@ namespace ISU_Medieval_Odyssey
 
             // Creating chunk and caching it
             chunk = new Chunk(x, y, terrainGenerator);
-            
+            cachedChunks.Add(coordinate, chunk);
+
             // Returning initialized chunk
             return chunk;
         }
@@ -203,7 +205,7 @@ namespace ISU_Medieval_Odyssey
                 {
                     hitEnemies = collisionTree.GetCollisions(projectiles[i].HitBox, enemies);
                 }
-                
+
                 // Inflicting damage on enemies that are hit by the projectile and removing the projectile
                 for (int j = 0; j < hitEnemies.Count; ++j)
                 {
@@ -265,7 +267,7 @@ namespace ISU_Medieval_Odyssey
             {
                 // Drawing the current building the player is in
                 CurrentBuilding.DrawInside(spriteBatch);
-            }           
+            }
 
             // Drawing projectiles
             for (byte i = 0; i < projectiles.Count; ++i)
@@ -289,7 +291,7 @@ namespace ISU_Medieval_Odyssey
             }
             else if (CurrentBuilding is Dungeon)
             {
-                for(int i = 0; i < DungeonEnemies.Count; i++)
+                for (int i = 0; i < DungeonEnemies.Count; i++)
                 {
                     DungeonEnemies[i].Draw(spriteBatch);
                 }
@@ -383,13 +385,20 @@ namespace ISU_Medieval_Odyssey
             Chunk chunk;
             Vector2Int chunkCoordinate = new Vector2Int(x, y);
 
-            // Initializing chunk and adding it
-            chunk = new Chunk(x, y, terrainGenerator);
-            if (!visitedChunks.Contains(chunkCoordinate))
+            if (cachedChunks.ContainsKey(chunkCoordinate))
             {
-                AddBuilding(chunkCoordinate.X, chunkCoordinate.Y);
+                chunk = cachedChunks[chunkCoordinate];
             }
-            visitedChunks.Add(chunkCoordinate);
+            else
+            {
+                chunk = new Chunk(x, y, terrainGenerator);
+                cachedChunks.Add(chunkCoordinate, chunk);
+                if (!visitedChunks.Contains(chunkCoordinate))
+                {
+                    AddBuilding(chunkCoordinate.X, chunkCoordinate.Y);
+                }
+                visitedChunks.Add(chunkCoordinate);
+            }
 
             // Returning the chunk
             return chunk;
