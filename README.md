@@ -1,5 +1,16 @@
 # Medieval Odyssey
-Independent Study Unit Project for Grade 12 Computer Science - Grid-Based Survival Game with Procedural World Generation
+Medieval Odyssey is a top-down role-playing game where the player navigates an endless world, collecting loot, killing enemies, and conquering dungeons to ensure their best chances at survival.
+
+<table>
+  <tr>
+    <td><img src="https://i.imgur.com/U2p42Qc.jpg" width="400"></td>
+    <td><img src="https://i.imgur.com/OvzT3k1.png" width="400"></td>
+  </tr>
+  <tr>
+    <td><img src="https://i.imgur.com/fcbCZ0u.jpg" width="600"></td>
+    <td><img src="https://i.imgur.com/t0W1IxX.jpg" width="600"></td>
+  </tr>
+</table>
 
 **Techniques/Technologies Used:**
 - MonoGame
